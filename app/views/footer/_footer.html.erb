@@ -1,0 +1,93 @@
+<footer>
+	<div class="chat_bar">
+		<div class="chats">
+			<div class="list">
+				<div class="chat">
+					<div class="box" style="display: none;">
+						<div class="header">
+							<span class="status"><?= Asset::img('icons/online_white.png'); ?></span><h4>Roy Hibbert</h4>
+							<span class="close_chat">X</span>
+							<span class="minimize_chat">_</span>
+						</div>
+						<div class="conversation">
+							<div class="received">
+								<h4>Roy Hibbert</h4><span class="timestamp">11:33PM</span>
+								<p>I’ll be better next year I promise I’ll hit the boards for more rebounds. I’ll practice all summer long. Just me another chance.</p>
+							</div>
+							<div class="sent">
+								<h4>Andrew Luck</h4><span class="timestamp">11:36PM</span>
+								<p>Nah... bro you sucked. Indiana doesn’t want to hear your excuses!</p>
+							</div>
+							<div class="received">
+								<h4>Roy Hibbert</h4><span class="timestamp">11:37PM</span>
+								<p>You'll regret it!</p>
+							</div>
+						</div>
+						<div class="textbox">
+							<textarea placeholder="Type a message..." style="resize: none;"></textarea>
+						</div>
+					</div>
+					<div class="user">
+						<span class="status"><?= Asset::img('icons/online_white.png'); ?></span><h4>Roy Hibbert</h4>
+						<!-- <span class="notifications" style="display: none;">3</span> -->
+					</div>
+				</div>
+				<div class="chat">
+					<div class="box" style="display: none;">
+						<div class="header">
+							<span class="status"><?= Asset::img('icons/online_white.png'); ?></span><h4>Peyton Manning</h4>
+							<span class="close_chat">X</span>
+							<span class="minimize_chat">_</span>
+						</div>
+						<div class="conversation">
+							
+						</div>
+						<div class="textbox">
+							<textarea placeholder="Type a message..." style="resize: none;"></textarea>
+						</div>
+					</div>
+					<div class="user">
+						<span class="status"><?= Asset::img('icons/online_white.png'); ?></span><h4>Peyton Manning</h4>
+						<span class="notifications">3</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="power">
+			<h3 class="on">CHAT ON</h3>
+			<h3 class="off" style="display: none;">CHAT OFF</h3>
+		</div>
+		<div class="my_status">
+			<div class="status_list">
+				
+			</div>
+			<div class="current_status">
+				<h3>AVAILABLE</h3><span><?= Asset::img('icons/online_white.png'); ?></span>
+			</div>
+		</div>
+		<div class="contacts">
+			<h3>CONTACTS</h3>
+		</div>
+	</div>	
+</footer>
+<script type="text/javascript">
+	var first_name = "dips",
+		last_name = "khosla",
+		start_password = false,
+		valid_password = false;
+	$(document).ready(function() {
+		$('.notifications_view #profile_info input').focusin(Settings.change_info);
+		$('.notifications_view input[name="fname"]').keyup(Settings.update_info);
+		$('.notifications_view input[name="lname"]').keyup(Settings.update_info);
+		$('.notifications_view input[name="mobile[]"]').keydown(Settings.update_phone);
+		$('.notifications_view input[name="mobile[]"]').keyup(Settings.check_phone);
+		$('.notifications_view .profile_info #save_changes').click(Settings.save_changes);
+		$('.notifications_view .profile_info #change_password').click(Settings.change_password);
+		$('.notifications_view .profile_info #save_password').click(Settings.save_password);
+		$('.notifications_view .profile_info #cancel_password').click(Settings.cancel_password);
+		$('.notifications_view .check_data').focusout(Settings.check_user_data);
+		//$('.notifications_view input[name="current_password"]').focusout(Settings.check_password);
+		//$('.notifications_view input[name="new_password"]').keyup(Settings.valid_password);
+		//$('.notifications_view input[name="verify_password"]').keyup(Settings.confirm_password);
+	});
+</script>

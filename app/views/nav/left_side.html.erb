@@ -1,0 +1,12 @@
+<div id="left_side">
+	<div id="left_side_fixed">
+		<?= isset($left_side) ? $left_side : null ?>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#left_side').height($(window).height());
+	$('#left_side_fixed').height($(window).height());
+});
+</script>

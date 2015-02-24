@@ -1,0 +1,15 @@
+
+<%= form_for @page,:url=>{:action=>'update_social_settings'},:html=>{:id => "social_settings_form",:class=>'about_form'} do |f| %>
+  <%=  render 'settings_about_account', {'account_details' => @account_details}  %>
+  <% if @account_type.to_i == 2 %>
+    <%=  render 'settings_about_trainer', {'account_trainers' => @account_trainers} %>
+  <%  elsif @account_type.to_i == 3 %>
+    <%=  render 'settings_about_gym', {'account_gyms' => @account_gyms}  %>
+  <%  else %>
+  
+  <% end %>
+<% if @account_type.to_i != 3 %> 
+  <input class="btn btn-primary" type="submit" value="save">
+  <a class="btn btn-default bck" onclick='window.history.go(-2)' href="javascript:void(0);" title="Cancel">Cancel</a>
+<% end %>
+  <% end %>

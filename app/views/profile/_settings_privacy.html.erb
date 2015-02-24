@@ -1,0 +1,35 @@
+<div class='privacy_settings'>
+	<%= form_tag() %>
+	<!-- array('action' => 'update_privacy') -->
+
+	<table style="width:100%">
+
+	<tr>
+	  <td></td>
+	  <td style="width:50px">Show</td> 
+	  <td style="width:50px">Hide</td>
+	  <td style="width:20px"></td>
+	</tr>
+
+	<%# foreach ($privacies as $privacy) : %>
+	<tr>
+	  <td><%#= $privacy->privacy; %></td>
+	  <%# $is_private = $account->is_private($privacy->id); %>
+	  <td><input type='radio' name='<%#= $privacy->privacy_name; %>' value='0' <%#= $is_private ? null : 'checked' %>><div class="radio"><div class="checked"></div></div></td> 
+	  <td><input type='radio' name='<%#= $privacy->privacy_name; %>' value='1' <%#= $is_private ? 'checked' : null %>><div class="radio"><div class="checked"></div></div></td>
+	  <td></td>
+	</tr>
+	<%# endforeach %>
+
+	</table>
+
+	<button id="save_changes" type="submit" disabled>Save Changes</button>
+
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		// var inputs = $('input:radio');
+		$('.privacy_settings input:radio').change(Settings.validate_privacy);
+	});
+</script>

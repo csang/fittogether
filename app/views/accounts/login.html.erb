@@ -1,0 +1,12 @@
+<div id="account_container">
+	<div id="login_logo"></div>
+	<div id="login_container">
+		<div id="login_view">
+			<h1>Login to FitTogether</h1>
+			<% form_tag(:action => 'login') %>
+				<%= text_field(:account, :login_username) %>
+				<%= password_field(:account, :login_password) %>
+				<%= submit_tag('Sign In') %>
+		</div>
+	</div>
+</div>

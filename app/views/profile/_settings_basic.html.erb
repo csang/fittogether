@@ -1,0 +1,77 @@
+<div id="form">	
+  <div class="profile_pic">
+    <%= form_tag() %>
+    <!-- array('action' => 'update_avatar', 'enctype' => 'multipart/form-data') -->
+    <span class="image">
+      <%= image_tag(@account['info']['image']) %>
+    </span>
+    <span class="upload">Upload Profile Picture</span>
+    <input type="file" name="avatar" onchange="this.form.submit()" accept="image/*">
+  </div>
+  <div class="profile_info">
+    <%= form_tag() %>
+    <!-- array('action' => 'update_profile') -->
+    <div id="profile_info">
+      <div class="name row">
+        <h2>NAME</h2>
+        <div class="input">
+          <label for="fname">FIRST</label>
+          <input type="text" name="fname" value="<%= @account['info']['first_name'] %>">
+          <label for="lname">LAST</label>
+          <input type="text" name="lname" value="<%= @account['info']['last_name'] %>">
+        </div>
+      </div>
+      <div class="email row">
+        <h2>EMAIL</h2>
+        <div class="input">
+          <input type="text" class="check_data" name="email" value="<%= @account['info']['email'] %>"><span class="check"></span></div>
+      </div>
+      <div class="username row">
+        <h2>USERNAME</h2>
+        <div class="input">
+          <input type="text" class="check_data" name="username" value="<%= @account['info']['nickname'] %>"><span class="check"></span>
+        </div>
+      </div>
+      <div class="url row">
+        <h2>WEBSITE URL</h2>
+        <div class="input">
+          <input type="text" class="check_data" name="url" value="<%= @account['info']['url'] %>"><span class="check"></span>
+        </div>
+      </div>
+      <div class="mobile row">
+        <h2>MOBILE</h2>
+        <div class="input">
+          <input type="text" name="mobile[]" maxlength="3" value="<%#= $account->get_mobile(1) %>"><input type="text" name="mobile[]" maxlength="3" value="<%#= $account->get_mobile(2) %>"><input type="text" name="mobile[]" maxlength="4" value="<%#= $account->get_mobile(3) %>" data-index="last">
+        </div>
+      </div>
+      <div class="password row">
+        <button id="save_changes" type="submit" disabled>Save Changes</button><span id="change_password">Change Password</span>
+      </div>
+    </div>
+    <%= form_tag() %>
+    <!-- array('action' => 'update_password') -->
+    <div  id="password_info" style="display:none;">
+      <div class="change row">
+        <h2>Current Password:</h2>
+        <div class="input">
+          <input type="password" name="current_password"><span class="check"></span>
+        </div>
+      </div>
+      <div class="change row">
+        <h2>New Password:</h2>
+        <div class="input">
+          <input type="password" name="new_password"><span class="check"></span>
+        </div>
+      </div>
+      <div class="change row">
+        <h2>Verify New Password:</h2>
+        <div class="input">
+          <input type="password" name="verify_password"><span class="check"></span>
+        </div>
+      </div>
+      <div class="change row">
+        <button id="save_password" type="submit" disabled>Save Password</button><span id="cancel_password">Cancel</span>
+      </div>
+    </div>
+  </div>
+</div>

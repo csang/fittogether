@@ -1,0 +1,250 @@
+var first_name = "<%#= $account->metadata->first_name %>",
+	last_name = "<%#= $account->metadata->last_name %>",
+	start_password = false,
+	valid_password = false;
+
+Settings_Url = {
+
+	url: function(url)
+	{
+		if(window.location.hostname == '127.0.0.1')
+		{
+			return 'http://127.0.0.1/fittogether/public/' + url;
+		}
+		else
+		{
+			return window.location.origin + '/' + url;
+		}
+	},
+};
+
+Model_Settings = {
+
+	check_user_data: function(attr) {
+		$.ajax({
+			url: Settings_Url.url('check_user_data'),
+			type:'POST',
+			dataType: 'json',
+			data: {
+				username: attr.username,
+				type: attr.check_type,
+			},
+			success: attr.success,
+		});	
+	},
+
+	check_password: function(attr) {
+		$.ajax({
+			url: Settings_Url.url('check_password'),
+			type:'POST',
+			dataType: 'json',
+			data: {
+				password: attr.password,
+			},
+			success: attr.success,
+		});	
+	},
+
+	valid_password: function(attr) {
+		$.ajax({
+			url: Settings_Url.url('valid_password'),
+			type:'POST',
+			dataType: 'json',
+			data: {
+				password: attr.password,
+			},
+			success: attr.success,
+		});	
+	},
+
+};
+
+Settings = {
+
+	check_user_data: function(){
+		var that = $(this);
+		that.next().html('<img src="' + Settings_Url.url('assets/global/round_loader.gif') + '">');
+		Model_Settings.check_user_data({
+			username:that.val(),
+			check_type:that.attr('name'),
+			success: function(data) {
+				if(data['success']){
+					that.next().html('&#9813;');
+					$('.notifications_view .profile_info #save_changes').attr('disabled','disabled');
+				}else{
+					that.next().html('&#9819;');
+					$('.notifications_view .profile_info #save_changes').removeAttr('disabled');
+				} 
+			}
+		});
+	},
+
+	check_password: function(e){
+		var that = $(this);
+		that.next().html('<img src="' + Settings_Url.url('assets/global/round_loader.gif') + '">');
+		Model_Settings.check_password({
+			password:that.val(),
+			success: function(data) {
+				if(data['success']){
+					that.next().html('&#9813;');
+					start_password = true;
+				}else{
+					that.next().html('&#9819;');
+					start_password = false;
+				} 
+			}
+		});
+	},
+
+	valid_password: function(e){
+		var that = $(this);
+		that.next().html('<img src="' + Settings_Url.url('assets/global/round_loader.gif') + '">');
+		Model_Settings.valid_password({
+			password:that.val(),
+			success: function(data) {
+				if(data['success']){
+					valid_password = true;
+					that.next().html('&#9813;');
+				}else{
+					valid_password = false;
+					that.next().html('&#9819;');
+				} 
+			}
+		});
+	},
+
+	confirm_password: function(e){
+		var same_password = false;
+		$(this).next().html('<img src="' + Settings_Url.url('assets/global/round_loader.gif') + '">');
+		if($('#profile_info input[name="new_password"]').val() == $(this).val()){
+			$(this).next().html('&#9813;');
+			same_password = true;
+		}else{
+			$(this).next().html('&#9819;');
+			same_password = false;
+		}
+		if(same_password && start_password && valid_password){
+			$('#profile_info .profile_info #save_password').removeAttr('disabled');
+		}else{
+			$('#profile_info #save_password').attr('disabled','disabled');
+		}
+		console.log($(this).val())
+	},
+
+	update_info: function(e){
+		if($(this).val() == first_name || $(this).val() == last_name){
+			$('#save_changes').attr('disabled','disabled');
+		}else{
+			$('#save_changes').removeAttr('disabled');
+		}
+	},
+
+	update_phone: function(e){
+		if(e.keyCode == 46 || e.keyCode == 8 || e.keyCode == 9 || e.keyCode == 27 || e.keyCode == 13 || (e.keyCode == 65 && e.ctrlKey === true) || (e.keyCode >= 35 && e.keyCode <= 39)){
+			return true ;
+		}else {
+			if (e.shiftKey || (e.keyCode < 48 || e.keyCode > 57) && (e.keyCode < 96 || e.keyCode > 105 )){
+				return false;
+			}
+		}
+	},
+
+	check_phone: function(e){
+		var first = $($('#profile_info input[name="mobile[]"]')[0]),
+			second = $($('#profile_info input[name="mobile[]"]')[1]),
+			third = $($('#profile_info input[name="mobile[]"]')[2]),
+			one = first.val().length,
+			two = second.val().length,
+			three = third.val().length;
+
+		if(one + two + three == 10){
+			$('#profile_info .profile_info #save_changes').removeAttr('disabled');
+		}else{
+			$('#profile_info #save_changes').attr('disabled','disabled');
+		}
+
+		if(one == 3 && 
+			e.keyCode != 8 && 
+			e.keyCode != 9 && 
+			e.keyCode != 37 && 
+			e.keyCode != 39 &&
+			first.is(':focus')){
+			second.focus();
+		}else if(one == 3 && 
+			two == 3 && 
+			e.keyCode != 8 && 
+			e.keyCode != 9 && 
+			e.keyCode != 37 && 
+			e.keyCode != 39 &&
+			second.is(':focus')){
+			third.focus();
+		}else if(one == 3 && 
+			two == 3 && 
+			three == 4 && 
+			e.keyCode != 8 && 
+			e.keyCode != 9 && 
+			e.keyCode != 37 && 
+			e.keyCode != 39 &&
+			third.is(':focus')){
+			$('#profile_info #save_changes').focus();
+		}
+	},
+
+	change_info: function(e){
+		$('#profile_info #change_password').show();
+		$('#profile_info #password_info').hide();
+	},
+
+	change_password: function(e){
+		$('#profile_info #password_info').show();
+		$('#profile_info #change_password').hide();
+		$('#profile_info #save_changes').attr('disabled','disabled');
+		// $('.notifications_view input[name="current_password"]').focus();
+		return false;
+	},
+
+	cancel_password: function(e){
+		$('#profile_info #password_info').hide();
+		$('#profile_info #change_password').show();
+	},
+
+	validate_privacy:function(inputs){
+		// if(inputs != $('input:radio')){
+			$('.privacy_settings button').removeAttr('disabled');
+		// }else{
+		// 	$('.privacy_settings button').attr('disabled','disabled');
+		// }
+	},
+
+	add_goal:function(e){
+		$(this).parent().find('select:first-child').clone().prependTo($('.goals.row .input'));
+	},
+
+	add_why:function(e){
+		$(this).parent().find('select:first-child').clone().prependTo($('.why.row .input'));
+	},
+
+	init: function() {
+		$('.notification_menu #settings li').click(this.settings_views);
+		$('.add_goal').click(this.add_goal);
+		$('.add_why').click(this.add_why);
+
+		$('#profile_info input').focusin(Settings.change_info);
+		$('#profile_info input[name="fname"]').keyup(Settings.update_info);
+		$('#profile_info input[name="lname"]').keyup(Settings.update_info);
+		$('#profile_info input[name="mobile[]"]').keydown(Settings.update_phone);
+		$('#profile_info input[name="mobile[]"]').keyup(Settings.check_phone);
+		$('#save_changes').click(Settings.save_changes);
+		$('#change_password').click(Settings.change_password);
+		$('#profile_info .profile_info #save_password').click(Settings.save_password);
+		$('#profile_info .profile_info #cancel_password').click(Settings.cancel_password);
+		$('#profile_info .check_data').keyup(Settings.check_user_data);
+		$('#profile_info input[name="current_password"]').focusout(Settings.check_password);
+		$('#profile_info input[name="new_password"]').keyup(Settings.valid_password);
+		$('#profile_info input[name="verify_password"]').keyup(Settings.confirm_password);
+	}
+};
+
+$(document).ready(function(){
+	Settings.init();
+});

@@ -1,0 +1,14 @@
+  <div class="about">
+<ul class="activities">
+      <% @account.account_activity.each do |activity| %>
+        <% activity.activity_id.each do |act| %>
+          <li style="float:left; margin-left:10px; width:100px;">
+            <% @value =  get_activity_name(act) %>
+           <% @value1 = (@value == 'Weight Lifting' ) ? 'weight_lifting' : @value %>
+            <%= image_tag('activities/'+@value1.downcase+'_icon.png') %>
+            <span style="float:right; width:100px;"><%= @value %></span>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>

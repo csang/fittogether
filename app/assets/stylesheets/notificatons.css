@@ -1,0 +1,787 @@
+#notifications{
+	/*position: fixed;*/
+	width: 100%;
+	top: 55px;
+	border-left: 1px solid #a6a7a7;
+	border-right: 1px solid #a6a7a7;
+	z-index: 99;
+	background-color: #ffffff;
+	float: left;
+}
+
+#notifications_nav{
+	width: 100%;
+	background-color: #434343;
+	font-weight: normal;
+	position: absolute;
+}
+
+#notifications_nav a{
+	height: 40px;
+	width: 14.28%;
+	float: left;
+	color: #fff;
+	text-transform: uppercase;
+	text-align: center;
+	background-color: #434343;
+	line-height: 40px;
+	font-size: 16px;
+	text-decoration: none;
+	position: relative;
+}
+
+#notifications_nav a:last-of-type{
+	/*width: 205px;*/
+}
+
+#notifications_nav .count{
+	color: #82ebae;
+}
+
+#notifications_nav .selected_nub{
+	display: block;
+	width: 0;
+	height: 0;
+	position: absolute;
+	bottom: -13px;
+	left: 50%;
+	left: calc(50% - 8px);
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-top: 13px solid #434343;
+}
+
+.notification_menu{
+	/*position: fixed;*/
+	/*border-right: 1px solid #a6a7a7;*/
+	/*background-color: #E5E5E5;*/
+	/*height: 135px;*/
+	/*border-bottom: 4px solid #2f8352;*/
+	/*width: 960px;*/
+}
+
+.notification_menu h2{
+	clear: both;
+	float: left;
+	font-size: 24px;
+	color: #2f8352;
+	height: 50px;
+	padding: 25px 0 0 10px;
+}
+
+.notification_menu h2 .notification_count{
+	color: #2f8352;
+}
+
+.notification_menu label{
+	font-size: 16px;
+	margin: 0 20px;
+	color: #2f8352;
+}
+
+.notification_menu input{
+	height: 35px;
+	width: 250px;
+	margin: 20px 0;
+}
+
+.notification_menu button,
+.notifications_view .profile_info button,
+.privacy_settings button,
+.notifications_view #support_header button,
+.about_form button{
+	float: right;
+	height: 40px;
+	width: 185px;
+	background-color: #434343;
+	border: none;
+	color: #fff;
+	font-size: 16px;
+	/*margin: 17.5px 10px;*/
+}
+
+.notifications_view #support_header .back{
+	float: left;
+	cursor: pointer;
+	margin: 10px 0 0 10px;
+	color: #2f8352;
+	font-family: Helvetica;
+	text-decoration: underline;
+}
+
+.notification_menu #notification_settings{
+	background-color: #434343;
+}
+
+.notification_menu #new_message{
+	background-color: #2f8352;
+}
+
+.notification_menu ul{
+	float: right;
+	text-align: center;
+	margin: 34px 5px 0 0;
+}
+
+.notification_menu li{
+	float: left;
+	width: 80px;
+	height: 40px;
+	color: #8f8f8f;
+	line-height: 40px;
+	cursor: pointer;
+	background-color: #E5E5E5;
+	border-top: 1px solid #BABABA;
+	border-right: 1px solid #BABABA;
+}
+
+.notification_menu li:first-of-type{
+	border-left: 1px solid #BABABA;
+}
+
+.notification_menu .selected{
+	color: #ffffff;
+	background-color: #2f8352;
+}
+
+#notifications .notifications_list{
+	clear: both;
+	width: 1028px;
+}
+
+#notifications #mail_list li,
+.notifications_list li{
+	height: 75px;
+	border-bottom: 1px solid #a6a7a7;
+}
+
+#notifications #mail_list li button,
+.notifications_list li button{
+	float: right;
+	height: 35px;
+	width: 95px;
+	color: #fff;
+	text-transform: uppercase;
+	border: none;
+	margin: 20px 10px;
+}
+
+#notifications #mail_list li img,
+.notifications_list li img{
+	float: left;
+	margin: 10px;
+	height: 55px;
+}
+
+#notifications #mail_list li p,
+.notifications_list li p{
+	float: left;
+	font-weight: normal;
+	height: 30px;
+	margin-bottom: 10px;
+}
+
+#notifications #mail_list li p span,
+.notifications_list li p span{
+	color: #2f8352;
+	font-weight: bold;
+}
+
+.notifications_list li p{
+	line-height: 75px;
+}
+
+#notifications #mail_list li button:first-of-type,
+.notifications_list li button{
+	background-color: #434343;
+}
+
+#notifications #mail_list li button:last-of-type{
+	background-color: #2f8352;
+}
+
+#notifications #mail_list{
+	font-weight: normal;
+	width: 400px;
+	overflow: scroll;
+	float: left;
+	border-right: 1px solid #a6a7a7;
+}
+
+#notifications #mail_list li{
+	cursor: pointer;
+}
+
+#notifications #mail_list h2{
+	float: left;
+	margin: 10px 0;
+	color: #2f8352;
+}
+
+#notifications #mail_list h3{
+	margin: 10px;
+	float: right;
+	color: #2f8352;
+}
+
+#notifications #mail_list p{
+	text-align: left;
+	padding-top: 0;
+	width: 315px;
+	height: 30px;
+}
+
+#notifications #mail_view{
+	width: 627px;
+	float: left;
+	height: 300px;
+}
+
+/*.message_view{
+	width: 475px;
+	float: left;
+	background-color: #e5eef3;
+	border: 1px solid #1c4966;
+	border-top: none;
+	border-left: none;
+	height: 675px;
+}*/
+
+.message_view .message_view_contact_name{
+	height: 30px;
+	padding-top: 17px;
+	text-align: center;
+	background-color: #347DAA;
+	font-family: helvetica;
+	font-size: 14px;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #ffffff;
+}
+
+.message_view{
+	overflow: scroll;
+	margin: 0 5px;
+	padding-top: 5px;
+}
+
+.message_view  .message_display_time{
+	font-family: helvetica;
+	font-size: 12px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.message_view ul{
+	margin-top:20px;
+	padding:0;
+}
+
+.message_view ul li{
+	width: 617px;
+	border-right: none !important;
+}
+
+.message_view .message_display_time{
+	padding:0;
+	margin: 0 auto 3px;
+	width: 200px;
+	text-align: center;
+	font-size: 12.5px;
+}
+
+.message_view .message_display_image{
+	width: 55px;
+	height: 55px;
+	float: left;
+	margin: 0 6px;
+	padding: 4px;
+}
+
+.message_view .message_display_message .message_display_to_message, .message_view .message_display_message .message_display_from_message{
+	border-radius: 5px;
+	display:block;
+	padding: 8px;
+}
+
+.message_view .message_display_message .message_display_to_message{
+	float: right;
+}
+
+.message_view .message_display_message .message_display_from_message{
+	float: left;
+}
+
+.message_view .message_display_message{
+	width: 450px;
+	min-height: 30px;
+	margin: 10px 8px 15px;
+	font-size: 14px;
+	float: left;
+	font-family: helvetica;
+	font-weight: normal;
+	color: #ffffff;
+}
+
+.message_view .sent_nub{
+	display: block;
+	position: relative;
+	top: 10px;
+	left: 447px;
+	width: 0; 
+	height: 0; 
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent;
+	border-left: 15px solid #707070;
+}
+
+.message_view .received_nub{
+	display: block;
+	position: relative;
+	top: 10px;
+	right: 12px;
+	width: 0; 
+	height: 0; 
+	border-top: 8px solid transparent;
+	border-bottom: 8px solid transparent; 
+	border-right: 15px solid #2f8352;
+}
+
+.message_view .message_display_to_message{
+	background-color: #707070;
+}
+
+.message_view .message_display_from_message{
+	background-color: #2f8352;
+}
+
+#mail_view .mail_respond{
+	width: 627px;
+	position: fixed;
+	bottom: 0;
+	background-color: #e5e5e5;
+	height: 201px;
+	border-bottom: 1px solid #a6a7a7;
+	border-top: 1px solid #a6a7a7;
+}
+
+#mail_view .mail_respond h3{
+	float: left;
+	margin: 15px 10px 5px;
+	padding-top: 3px;
+	color: #383838;
+	height: 17px;
+}
+
+#mail_view .mail_respond h3:first-of-type{
+	width: 30px;
+	padding-left: 25px;
+	background: url(../img/profile/feed_post.png) no-repeat center left;
+}
+
+#mail_view .mail_respond h3:last-of-type{
+	width: 85px;
+	padding-left: 30px;
+	background: url(../img/profile/feed_image.png) no-repeat center left;
+}
+
+#mail_view .mail_respond textarea{
+	margin: 7px;
+	width: 605px;
+	height: 68px;
+	font-size: 14px;
+	resize: none;
+}
+
+#mail_view .mail_respond button{
+	width: 95px;
+	height: 50px;
+	border: none;
+	float: right;
+	margin: 7px;
+	background-color: #2f8352;
+	color: #ffffff;
+	border: 1px solid #020303;
+	text-transform: uppercase;
+	font-weight: bold;
+	border: none;
+}
+
+.notifications_view{
+	/*height: 1700px;*/
+	min-height: 1440px;
+	/*border-right: 1px solid #a6a7a7;*/
+	padding: 0 0 60px;
+}
+
+#notifications #right_side{
+	position: fixed;
+	bottom: 0;
+	right: 0;
+}
+
+#notifications + footer .contacts{
+	display: block;
+}
+
+.notifications_view #form{
+	/*padding: 30px 0;*/
+	/*width: 600px;*/
+	margin: 0 45px;
+}
+
+.notifications_view .profile_pic{
+	width: 300px;
+	height: 130px;
+	margin: 30px 0;
+}
+
+.notifications_view .profile_pic .image{
+	border: 1px solid #a6a7a7;
+	border-radius: 150px;
+	display: block;
+	width: 128px;
+	height: 128px;
+	line-height: 15px;
+	position: absolute;
+	overflow: hidden;
+}
+
+.notifications_view .profile_pic .upload{
+	line-height: 130px;
+	margin-left: 150px;
+}
+
+.notifications_view .profile_pic img{
+	width:100%; height:100%; display:inline-block; vertical-align:top;
+}
+
+.notifications_view .profile_pic input{
+	height: 130px;
+	width: 300px;
+	opacity: 0;
+	cursor: pointer;
+	position: relative;
+	top: -130px;
+}
+
+.notifications_view .profile_pic span,
+#change_password,
+#cancel_password{
+	color: #2f8352;
+	text-decoration: underline;
+	font-size: 10pt;
+	font-weight: bold;
+	text-align: center;
+}
+
+#change_password,
+#cancel_password{
+	float: right;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+.notifications_view .profile_pic input:focus{ 
+	outline: 0;
+}
+
+.notifications_view .profile_info{
+	/*width: 450px;*/
+	/*height: 700px;*/
+}
+
+/*.notifications_view .profile_info dl{
+	clear: both;
+}*/
+
+/*.notifications_view #profile_info{
+	height: 262px;
+}*/
+
+.notifications_view .row{
+	border-top: 1px solid #696969;
+}
+
+.notifications_view .row{
+	padding: 17px 9px;
+	clear: both;
+	margin:0px;
+}
+
+.notifications_view h2, .notifications_view label{
+	line-height:33px;
+	font-size: 20px;
+	color: #696969;
+}
+
+.notifications_view, .notifications_view #password_info{
+	clear: both;
+}
+
+.notifications_view h2, .notifications_view .input{
+	display: inline-block;
+}
+.notifications_view h2{padding:5px 0 0;}
+.notifications_view h3{
+	display: inline-block;
+	color: #696969;
+	font-size: 14px;
+}
+
+.notifications_view .input{
+	float: right;
+}
+
+.notifications_view .name .input,
+.notifications_view .mobile .input{
+	/*margin-right: 25px;*/
+	margin-right: 0px;
+}
+
+.notifications_view label{
+	margin: 5px 20px 0 40px;
+	width: 60px;
+	display: inline-block;
+	vertical-align:top;
+}
+
+.notifications_view .name input{
+	/*width: 274px;*/
+	width: 400px;
+}
+
+.select{
+	display: inline-block;
+	z-index: 2;
+}
+
+.options{
+	padding: 3px;
+    background-color: #2c2c2c;
+    color: #ffffff;
+    margin: 5px;
+    border-radius: 5px;
+    position: absolute;
+    max-height: 150px;
+    overflow: scroll;
+    display: none;
+    min-width: 160px;
+}
+
+.options h4{
+	padding: 8px;
+	cursor: pointer;
+	border-radius: 5px;
+}
+
+.options h4:hover{
+	background-color: #2f8352;
+}
+
+.notifications_view .email input,
+.notifications_view .username input,
+.notifications_view .url input,
+.notifications_view #password_info .change input{
+	width: 670px;
+}
+
+.notifications_view .mobile input{
+	margin: 0 0 0 20px;
+	width: 139px;
+}
+
+.notifications_view .mobile input:last-child{
+	width: 200px;
+}
+
+.notifications_view input{
+	height:46px;
+	padding:10px 10px;
+	border: 1px solid #050506;
+	font-size: 20px;
+	background-color: #f1f1f1;
+}
+
+.notifications_view input::-webkit-input-placeholder {
+   color: #696969;
+}
+
+.notifications_view input:-moz-placeholder { /* Firefox 18- */
+   color: #696969;  
+}
+
+.notifications_view input::-moz-placeholder {  /* Firefox 19+ */
+   color: #696969;  
+}
+
+.notifications_view input:-ms-input-placeholder {  
+   color: #696969;  
+}
+
+.notifications_view #password_info{
+	clear: both;
+	padding-top: 10px;
+	/*height: 127px;*/
+}
+
+.notifications_view .profile_info .check{
+	display:block;
+	float: right;
+	width: 25px;
+	height: 36px;
+}
+
+.notifications_view .profile_info .check img{
+	display: block;
+	margin: 10px auto;
+	height: 16px;
+	width: 16px;
+}
+
+.notifications_view .profile_info button{
+	/*margin: 0 26px 0 10px;*/ margin: 0 1px 0 10px;
+}
+
+.notifications_view .profile_info button:disabled,
+.privacy_settings button:disabled,
+.about_form button:disabled,
+.write_ticket_view button:disabled,
+.respond_ticket_view button:disabled{
+	background-color: #9E9E9E;
+	color: #7C7C7C;
+	cursor: default;
+}
+
+.notifications_view .activities_h1{
+	text-align: center;
+	padding: 20px 0;
+	font-size: 24px;
+	font-weight: bold;
+	color: #2f8352;
+}
+
+.notifications_view .activities_h2{
+	text-align: center;
+	margin-bottom: 20px;
+	font-size: 16px;
+}
+
+.notifications_view .activities_view{
+	width: 535px;
+	margin: 0 auto;
+	padding-bottom: 3px;
+	border: 1px solid #a6a7a7;
+}
+
+.notifications_view .activities_view li{
+	height: 95px;
+	width: 130px;
+	float: left;
+	margin: 3px 0 0 3px;
+	font-weight: normal;
+	color: #ffffff;
+	background-color: #2f8352;
+	text-align: center;
+	cursor: pointer;
+}
+
+.notifications_view .activities_view li span{
+	display: block;
+	width: 130px;
+}
+
+.notifications_view .activities_view li span:first-of-type{
+	height: 60px;
+	padding-top: 10px;
+}
+
+.privacy_settings table{
+	color: #2f8352;
+}
+
+.privacy_settings table td:nth-child(1n+2){
+	text-align: center;
+}
+
+/*.privacy_settings table input[type="radio"]{
+	 opacity: 0;
+	 cursor: pointer;
+	 height: 16px;
+}
+
+.privacy_settings table input[type="radio"] + span{
+	display: inline-block;
+    width: 11px;
+    height: 11px;
+    margin: 0 0 0 -16px;
+    border: 2px solid #196439;
+    background-color: #ffffff;
+}
+
+.privacy_settings table input[type="radio"]:checked + span{
+	display: inline-block;
+    width: 11px;
+    height: 11px;
+    border: 2px solid #196439;
+    background-color: #196439;
+}*/
+
+.privacy_settings table td{
+	border: 1px solid #bababa;
+	padding: 11px 13px;
+}
+/* ================================== new  css ============================================================================================*/
+.notifications_view .settings_activities input[type="checkbox"]{margin:28px 0 0 0; height:auto; background:inherit; border:none; padding:0px;}
+.notifications_view h1{font-size:21px; padding:0 0 10px 9px;}
+.ch-in input[type="checkbox"]{height:auto; margin:11px 0 0;}
+.trainer-heading h2{font-size: 21px; color:#333; padding:0 0 5px 9px;}
+.notifications_view .row.trainer-heading{border-top:none;}
+/* ================================== new  css end ============================================================================================*/
+
+@media screen and (max-width: 1280px){
+	#notifications{
+		width: 759px;
+	}
+	#notifications_nav{
+		width: 760px;
+	}
+	#notifications_nav p{
+		/*width: 380px;*/
+		font-size: 14px;
+	}
+	#notifications_nav div,
+	#notifications .notifications_list{
+		width: 758px;
+	}
+	#notifications #mail_view{
+		width: 482px;
+	}
+	#notifications #mail_list{
+		width: 275px;
+	}
+	#notifications #mail_list p{
+		width: 190px;
+	}
+	.message_view ul li{
+		width: 473px;
+	}
+	.message_view .message_display_message{
+		width: 305px;
+	}
+	.message_view .sent_nub{
+		left: 303px;
+	}
+	#mail_view .mail_respond{
+		width: 482px;
+	}
+	#mail_view .mail_respond textarea{
+		width: 462px;
+	}
+	.notifications_view .input{
+		float: none;
+	}
+	.notifications_view h2, .notifications_view .input{
+		display: block;
+	}
+}

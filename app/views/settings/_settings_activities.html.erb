@@ -1,0 +1,34 @@
+<%= form_for @page, :url=>{:action=>'update_activity'}, :html=>{:class=>'about_form'} do |f| %>
+
+<div class="settings_activities">
+	<!--<h2>Please select minimum of 4 activities</h2>-->
+<%  @activities.each do |activity| %>
+<% check = '' %>
+	<div class="row">
+	    <% if activity.name.to_s == "Lacrosse" %>
+		<%= image_tag('activities/lacrosse_icon.png') %>
+		<% elsif activity.name =='Football' %>
+		<%= image_tag('activities/football_icon.png') %>
+		<% elsif activity.name =='Running' %>
+		<%= image_tag('activities/running_icon.png') %>
+		<% elsif activity.name =='Weight Lifting' %>
+		<%= image_tag('activities/weight_lifting_icon.png') %>
+		<% end %>
+		
+		<h2><%=activity.name %></h2>
+		<div class="input">
+		<% if @accactivity.present? %>
+		<% if @accactivity['activity_id'].include? activity.id.to_s %>
+		<% check = 'Checked' %> 
+		<% end %>
+		<% end %>
+		<input type='checkbox' name=activity[]  value=<%= activity.id %> <%= check %>>
+		</div>
+	</div>
+<% end %>	
+	<div class="row">
+		<h3>*REQUIRED</h3>
+		<button id="save_changes" type="submit" >Save Changes</button>
+	</div>
+</div>
+<% end %>

@@ -1,0 +1,46 @@
+<div class="list-group">
+  <span class="list-group-item list-group-item-info active"> Menu</span>
+  <ul class="admin_navigation">
+    <%#= debug params %>
+    <%= ((params[:controller]=='admin/dashboard') || (params[:controller]=='admin/registrations' && params[:action]=='edit')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+    <% className = (params[:controller]=='admin/dashboard') ? 'list-group-item active' : '' %>
+    <%= link_to "Dashboard", "/admin/dashboard",:class => className %>
+    <ul class="sub-navigation">
+      <%= (params[:controller]=='admin/registrations' && params[:action]=='edit') ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+      <% className = (params[:controller]=='admins' && params[:action]=='edit') ? 'list-group-item active' : '' %>       
+      <%= link_to "Change your password",   edit_admin_registration_path, :class => className %></li>
+    </ul>
+    </li>
+    <%= ((params[:controller]=='admin/accounts')|| (params[:controller]=='admin/accounts' && params[:action]=='listUsers')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+    <% className = ((params[:controller]=='admin/accounts') || (params[:controller]=='accounts' && params[:action]=='listUsers')) ? 'list-group-item active' : '' %>
+    <%= link_to "User Management", admin_accounts_path,:class => className %>
+    <ul class="sub-navigation">
+      <%= (params[:controller]=='admin/accounts' ) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+      <% className = (params[:controller]=='admin/accounts' && params[:action]=='listUsers' && (params[:type]=='' || params[:type]=='user')) ? 'list-group-item active' : '' %>       
+      <%= link_to "General Users",   listUsers_admin_accounts_path(type: 'user'), :class => className %></li>
+      <%= (params[:controller]=='admin/accounts' ) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+      <% className = (params[:controller]=='admin/accounts' && params[:action]=='listUsers' && params[:type] == 'trainer' ) ? 'list-group-item active' : '' %>       
+      <%= link_to "Trainers",   listUsers_admin_accounts_path(type: 'trainer'), :class => className %></li>
+      <%= (params[:controller]=='admin/accounts') ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+      <% className = (params[:controller]=='admin/accounts' && params[:action]=='listUsers' && params[:type] == 'gym' ) ? 'list-group-item active' : '' %>       
+      <%= link_to "Gym Managers",   listUsers_admin_accounts_path(type: 'gym'),:class => className %></li>
+    </ul>
+    </li>
+
+  </ul>
+</div>
+<style>
+  .sub-navigation{display:none;}
+  .selected ul {display:block;}
+  .adminSubMenuActive{color:#FF0000 !important;}
+</style>
+<script type="text/javascript">
+  $('document').ready(function() {
+    $('.admin_navigation > li').click(function() {
+      if ($(this).children('ul').length > 0) {
+        $(this).siblings().removeClass('selected').children('ul').slideUp('slow');
+        $(this).addClass('selected').find('ul').slideToggle('slow');
+      }
+    });
+  });
+</script>

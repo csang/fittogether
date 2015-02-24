@@ -1,0 +1,34 @@
+<div id="left_side" style="height:539px;">
+  <div id="left_side_fixed">
+    <div id="account_info">
+      <div class="user">
+        <div class="mask">        
+                 
+          <% if !@account.avatar.blank? %>
+          <%= link_to(image_tag(@account.avatar), "/#{@account.user_name}") %>
+          <% elsif !@account.pic.blank? %>
+          <%= link_to(image_tag('https://' + @account.pic), "/#{@account['user_name']}") %>
+          <% else %>
+           <%= link_to(image_tag('default.png'), "/#{@account['user_name']}") %>
+          <% end %>
+        </div>
+        <%= link_to("<h3>#{@account.first_name} <br> #{@account.last_name}</h3>".html_safe, "/#{@account.account_url}") %>
+      </div>
+      <div class="data">
+        <dl>
+          <dt>Steps</dt>
+          <dd>5,978</dd>
+        </dl>
+        <dl>
+          <dt>Calories</dt>
+          <dd>3,687</dd>
+        </dl>
+      </div>
+      <%= render(:partial => 'nav/side_nav') %>
+
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+
+</script>

@@ -1,0 +1,221 @@
+<%= form_tag() %>
+<!-- array('action' => 'about/update_about', 'method' => 'post', 'class' => 'about_form') -->
+<div>
+	<div class="gender row">
+		<h2>YOUR GENDER*</h2>
+		<div class="input">
+			<input type="radio" name="gender" value="m" checked><div class="radio"><div class="checked"></div></div>
+			<label>MALE</label>
+			<input type="radio" name="gender" value="f" ><div class="radio"><div class="checked"></div></div>
+			<label>FEMALE</label>
+		</div>
+	</div>
+	<div class="live row">
+		<h2>WHERE DO YOU LIVE?*</h2>
+		<div class="input">
+			<select name='city'>
+				<option value='0'>CITY</option>
+			</select>
+			<select name='state'>
+				<option value='0'>STATE</option>
+			</select>
+			<!-- <label>ZIP</label> -->
+			<input type="text" placeholder="ZIP">
+		</div>
+	</div>
+	<div class="gym row">
+		<h2>DO YOU BELONG TO A GYM?*</h2>
+		<div class="input">
+			<input type="radio" name="belong" value="y" checked><div class="radio"><div class="checked"></div></div>
+			<label>YES</label>
+			<input type="radio" name="belong" value="n" ><div class="radio"><div class="checked"></div></div>
+			<label>NO</label>
+			<select name='gym'>
+				<option value='0'>GYM</option>
+			</select>
+			<select name='location'>
+				<option value='0'>LOCATION</option>
+			</select>
+		</div>
+	</div>
+	<div class="industry row">
+		<h2>WHAT INDUSTRY DO YOU WORK IN?</h2>
+		<div class="input">
+			<select name='industry'>
+				<option value='0'>INDUSTRY</option>
+			</select>
+		</div>
+	</div>
+	<div class="position row">
+		<h2>WHAT IS YOUR PROFESSION?</h2>
+		<div class="input">
+			<select name='title'>
+				<option value='0'>TITLE</option>
+			</select>
+			<input type="text" placeholder="COMPANY">
+		</div>
+	</div>
+	<div class="relationship row">
+		<h2>ARE YOU IN A RELATIONSHIP?</h2>
+		<div class="input">
+			<select name='relationship'>
+				<option value='0'>STATUS</option>
+				<option value='1'>SINGLE</option>
+				<option value='2'>COMPLICATED</option>
+				<option value='3'>DATING</option>
+				<option value='4'>ENGAGED</option>
+				<option value='5'>MARRIED</option>
+			</select>
+		</div>
+	</div>
+	<div class="birthday row">
+		<h2>WHEN IS YOUR BIRTHDAY?</h2>
+		<div class="input">
+			<div class="select">
+				<select name='month'>
+					<option value='0'>MONTH</option>
+					<option value='1'>Jan</option>
+					<option value='2'>Feb</option>
+					<option value='3'>Mar</option>
+					<option value='4'>Apr</option>
+					<option value='5'>May</option>
+					<option value='6'>Jun</option>
+					<option value='7'>Jul</option>
+					<option value='8'>Aug</option>
+					<option value='9'>Sep</option>
+					<option value='10'>Oct</option>
+					<option value='11'>Nov</option>
+					<option value='12'>Dec</option>
+				</select>
+				<div class="options">
+					<h4 value='1'>Jan</h4>
+					<h4 value='2'>Feb</h4>
+					<h4 value='3'>Mar</h4>
+					<h4 value='4'>Apr</h4>
+					<h4 value='5'>May</h4>
+					<h4 value='6'>Jun</h4>
+					<h4 value='7'>Jul</h4>
+					<h4 value='8'>Aug</h4>
+					<h4 value='9'>Sep</h4>
+					<h4 value='10'>Oct</h4>
+					<h4 value='11'>Nov</h4>
+					<h4 value='12'>Dec</h4>
+				</div>
+			</div>
+			<div class="select">
+				<select name='day'>
+					<option value='0'>DAY</option>
+					<option value='1'>1</option>
+					<option value='2'>2</option>
+					<option value='3'>3</option>
+					<option value='4'>4</option>
+					<option value='5'>5</option>
+					<option value='6'>6</option>
+					<option value='7'>7</option>
+					<option value='8'>8</option>
+					<option value='9'>9</option>
+					<option value='10'>10</option>
+					<option value='11'>11</option>
+					<option value='12'>12</option>
+					<option value='13'>13</option>
+					<option value='14'>14</option>
+					<option value='15'>15</option>
+					<option value='16'>16</option>
+					<option value='16'>16</option>
+					<option value='17'>17</option>
+					<option value='18'>18</option>
+					<option value='19'>19</option>
+					<option value='20'>20</option>
+					<option value='21'>21</option>
+					<option value='22'>22</option>
+					<option value='23'>23</option>
+					<option value='24'>24</option>
+					<option value='25'>25</option>
+					<option value='26'>26</option>
+					<option value='27'>27</option>
+					<option value='28'>28</option>
+					<option value='29'>29</option>
+					<option value='30'>30</option>
+					<option value='31'>31</option>
+				</select>
+				<!--div class="selection" title="day">
+					DAY
+				</div-->
+				<div class="options">
+					<h4 value='1'>1</h4>
+					<h4 value='2'>2</h4>
+					<h4 value='3'>3</h4>
+					<h4 value='4'>4</h4>
+					<h4 value='5'>5</h4>
+					<h4 value='6'>6</h4>
+					<h4 value='7'>7</h4>
+					<h4 value='8'>8</h4>
+					<h4 value='9'>9</h4>
+					<h4 value='10'>10</h4>
+					<h4 value='11'>11</h4>
+					<h4 value='12'>12</h4>
+					<h4 value='13'>13</h4>
+					<h4 value='14'>14</h4>
+					<h4 value='15'>15</h4>
+					<h4 value='16'>16</h4>
+					<h4 value='16'>16</h4>
+					<h4 value='17'>17</h4>
+					<h4 value='18'>18</h4>
+					<h4 value='19'>19</h4>
+					<h4 value='20'>20</h4>
+					<h4 value='21'>21</h4>
+					<h4 value='22'>22</h4>
+					<h4 value='23'>23</h4>
+					<h4 value='24'>24</h4>
+					<h4 value='25'>25</h4>
+					<h4 value='26'>26</h4>
+					<h4 value='27'>27</h4>
+					<h4 value='28'>28</h4>
+					<h4 value='29'>29</h4>
+					<h4 value='30'>30</h4>
+					<h4 value='31'>31</h4>
+				</div>
+			</div>
+			<div class="select">
+				<select name='year' disabled>
+					<!-- loop through years -->
+					<option value='0'>YEAR</option>
+					<option>2014</option>
+				</select>
+				<div class="options">
+					<h4>2014</h4>
+					<h4>2013</h4>
+					<h4>2012</h4>
+					<h4>2011</h4>
+					<h4>2010</h4>
+					<h4>2009</h4>
+					<h4>2008</h4>
+					<h4>2007</h4>
+					<h4>2006</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="goals row">
+		<h2>WHAT ARE YOUR FITNESS GOALS?</h2>
+		<div class="input">
+			<select name='goals'>
+				<option value='0'>SELECT</option>
+			</select>
+			<button class="add add_goal" type="button">+</button>
+		</div>
+	</div>
+	<div class="why row">
+		<h2>WHY ARE YOU HERE?</h2>
+		<div class="input">
+			<select name='why'>
+				<option value='0'>SELECT</option>
+			</select>
+			<button class="add add_why" type="button">+</button>
+		</div>
+	</div>
+	<div class="row">
+		<h3>*REQUIRED</h3>
+		<button disabled>Save</button>
+	</div>
+</div>

@@ -1,0 +1,1368 @@
+// Place all the styles related to the feed controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#content .comment_view{
+	/*background-color: #e5e5e5;*/
+	height: 150px;
+	border: 1px solid #024d21;
+	margin: 10px 10px 0;
+}
+
+#content .comment_view_bg{
+	background-color: #d5d5d5;
+	position: fixed;
+	z-index: 9996;
+}
+
+#content .comment_view h3{
+	float: left;
+	margin: 13px 10px 5px;
+	padding-top: 3px;
+	color: #383838;
+	height: 17px;
+	cursor: pointer;
+}
+
+/*#content .comment_view h3:first-of-type{
+	width: 30px;
+	padding-left: 25px;
+	background: url(../img/profile/feed_post.png) no-repeat center left;
+}
+
+#content .comment_view h3:last-of-type{
+	width: 85px;
+	padding-left: 30px;
+	background: url(../img/profile/feed_image.png) no-repeat center left;
+}*/
+
+#content .comment_view .post{
+	height: 103px;
+}
+
+#content .comment_view textarea{
+	width: 694px;
+	height:103px;
+	padding: 12px 7px;
+	font-size: 18px;
+	resize: none;
+	border: none;
+	border-bottom: 1px solid #024d21;
+	font-weight:normal;
+	margin:0px;
+}
+
+#content .comment_view .post_options{
+	clear: both;
+	height: 45px;
+	background-color: #2f8352;
+}
+
+#content .comment_view .post_options div{
+	float: left;
+}
+
+#content .comment_view .post_options .share{
+	clear: both;
+	height: 45px;
+	width: 440px;
+}
+
+#content .comment_view .post_options .share h3{
+	color: #ffffff;
+}
+
+#content .comment_view .post_options .share input{
+	float: left;
+	background-color: rgba(0,0,0,0);
+	border: none;
+	border-bottom: 2px solid #ffffff;
+	padding: 5px 0 4px;
+	margin: 8px 0;
+	font-size: 16px;
+	width: 307px;
+	outline: none;
+	color: #ffffff;
+	font-weight:normal;
+}
+
+#content .comment_view .post_options .share .arrows{
+	height: 45px;
+	float: right;
+	margin: 7px 10px;
+}
+
+#content .comment_view .post_options .share span{
+	display: block;
+}
+
+#content .comment_view .post_options .share:hover,
+#content .comment_view .post_options .extra input:hover + span img,
+#content .comment_view .post_options .extra span img:hover{
+	background-color: #4ca571;
+}
+
+#content .comment_view .post_options .extra{
+	height: 45px;
+	border-right: 1px solid #024d21;
+	border-left: 1px solid #024d21;
+	background-color: #2f8352;
+}
+
+#content .comment_view .post_options .extra input{
+	width: 47px;
+	height: 45px;
+	overflow: hidden;
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	display:inline-block;
+}
+
+#content .comment_view .post_options .extra span img{
+	width:50px;
+	padding: 6px 9px 7px;
+	cursor: pointer;
+	display:inline-block; vertical-align:top;
+}
+
+#content .comment_view button{
+	width: 108px;
+	height: 45px;
+	padding: 0;
+	border: none;
+	float: right;
+	background-color: #4ca571;
+	color: #ffffff;
+	font-size: 18px;
+	text-transform: uppercase;
+	font-weight: normal;
+	border: none;
+}
+
+#content .post_comment{
+	background-color: #e5e5e5;
+	height: 195px;
+	border-right: 1px solid #a6a7a7;
+	border-bottom: 1px solid #a6a7a7;
+}
+
+#content .post_comment h3{
+	float: left;
+	margin: 15px 10px 5px;
+	padding-top: 3px;
+	color: #383838;
+	height: 17px;
+	cursor: pointer;
+}
+
+#content .post_comment div{
+	float: left;
+	height: 88px;
+}
+
+#content .post_comment h3:first-of-type{
+	width: 30px;
+	padding-left: 25px;
+	background: url(../img/profile/feed_post.png) no-repeat center left;
+}
+
+#content .post_comment h3:last-of-type{
+	width: 85px;
+	padding-left: 30px;
+	background: url(../img/profile/feed_image.png) no-repeat center left;
+}
+
+#content .post_comment img{
+	clear: both;
+	display: block;
+	float: left;
+	margin: 7px 0 0 7px;
+}
+
+#content .post_comment textarea{
+	margin: 7px;
+	margin-bottom: 0;
+	width: 691px;
+	height: 78px;
+	font-size: 14px;
+	resize: none;
+	display: block;
+	float: left;
+}
+
+#content .post_comment button{
+	clear: both;
+	width: 95px;
+	height: 50px;
+	border: none;
+	float: right;
+	margin: 7px;
+	background-color: #2f8352;
+	color: #ffffff;
+	border: 1px solid #020303;
+	text-transform: uppercase;
+	font-weight: bold;
+	border: none;
+}
+
+#left_side #account_info{
+	width: 100%;
+	height: 100%;
+}
+
+#left_side #account_info .user{
+	width: 100%;
+	height: 160px;
+}
+
+#left_side #account_info .user .mask{
+	width: 84px;
+	height: 84px;
+	border: 5px solid #ffffff;
+	border-radius: 84px;
+	margin: 30px 15px 30px 20px;
+	float: left;
+	overflow: hidden;
+}
+
+#left_side #account_info .user .mask img{
+	width: 100%; height:100%;
+	border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%;
+}
+
+#left_side #account_info .user h3{
+	width: 145px;
+	color: #ffffff;
+	margin: 55px 0;
+	font-size: 18px;
+	font-weight: bold;
+	float: left;
+	line-height: 20px;
+}
+
+#left_side #account_info h2{
+	clear: both;
+	text-align: center;
+	text-transform: uppercase;
+	color: #2f8352;
+	margin-bottom: 10px;
+}
+
+#left_side #account_info .data{
+	width: 100%;
+	height: 62px;
+	border-top: 1px solid #2f8352;
+	border-bottom: 1px solid #2f8352;
+	margin: 0 0 24px;
+}
+
+#left_side #account_info dl:last-child{
+	border-left: 1px solid #2f8352;
+}
+
+#left_side #account_info dl{
+	width: 49%;
+	height: 62px;
+	float: left;
+	display: block;
+}
+
+#left_side #account_info dl dd{
+	width: 100%;
+	color: #ffffff;
+	font-size: 26px;
+	text-align: center;
+}
+
+#left_side #account_info dl dt{
+	width: 100%;
+	margin-top: 10px;
+	text-transform: uppercase;
+	color: #4ca571;
+	text-align: center;
+}
+
+#left_side #account_info #feed_side_nav{
+	clear: both;
+	overflow: scroll;
+	min-height: 250px;
+}
+
+#left_side #account_info #feed_side_nav li{
+	padding: 10px 0 10px 15px;
+	color: #ffffff;
+	cursor: pointer;
+}
+
+#left_side #account_info #feed_side_nav li img{
+	float: right;
+	height: 29px;
+	margin: -10px 10px;
+}
+
+#left_side #account_info #feed_side_nav li:hover{
+	background-color: #545454;
+}
+
+#left_side #account_info #feed_side_nav li.selected{
+	background-color: #545454;
+}
+
+#left_side #account_info #feed_side_nav li:first-child{
+	border-right: 7px solid #2f8352;
+}
+
+#left_side #account_info #feed_side_nav li:nth-child(2){
+	border-right: 7px solid #ff8400;
+}
+
+#left_side #account_info #feed_side_nav li:nth-child(3){
+	border-right: 7px solid #de11c3;
+}
+
+#left_side #account_info #feed_side_nav li:nth-child(4){
+	border-right: 7px solid #11bfde;
+}
+
+#left_side #account_info #feed_side_nav li:nth-child(5){
+	border-right: 7px solid #346ff6;
+}
+
+#left_side #account_info #feed_side_nav li:last-child{
+	border-right: 7px solid #ff2400;
+}
+
+#left_side #account_info .settings{
+	width: 275px;
+	clear: both;
+	height: 62px;
+	border-top: 1px solid #d5d5d5;
+	border-bottom: 1px solid #d5d5d5;
+	background-color: #3a3a3a;
+	position: fixed;
+	bottom: 30px;
+}
+
+#left_side #account_info .settings div{
+	float: left;
+	width: 49%;
+	width:50%;
+	cursor: pointer;
+}
+
+#left_side #account_info .settings div:first-child:hover{
+	background-color: #34925b;
+}
+
+#left_side #account_info .settings div:last-child{
+	border-left: 1px solid #d5d5d5;
+}
+
+#left_side #account_info .settings div:last-child:hover{
+	background-color: #ff3d3d;
+}
+
+#left_side #account_info .settings div span{
+	float: left;
+	margin: 15px 0 0 7px;
+}
+
+#left_side #account_info .settings div img{
+	height: 32px;
+}
+
+#left_side #account_info .settings div h3{
+	float: left;
+	width: auto;
+	font-size: 16px;
+	font-weight: bold;
+	line-height: 62px;
+	color: #ffffff;
+	margin-left: 10px;
+}
+
+#left_side .advertisement_switch{
+	color: #ffffff;
+	position: fixed;
+	bottom: 92px;
+	width: 275px;
+	padding: 20px;
+	background-color: #343434;
+}
+
+#left_side .advertisement_switch h3{
+	display: inline-block;
+	line-height: 30px;
+}
+
+#left_side .advertisement_switch .switch{
+	width: 80px;
+	height: 30px;
+	background-color: #545454;
+	border-radius: 30px;
+	display: inline-block;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+#left_side .advertisement_switch .switch .on{
+	margin: 0 0 0 15px;
+}
+
+#left_side .advertisement_switch .switch .off{
+	margin: 0 0 0 -5px;
+	opacity: 0;
+}
+
+#left_side .advertisement_switch .switch .knob{
+	/*position: absolute;*/
+	width: 20px;
+	height: 20px;
+	border-radius: 20px;
+	background-color: #00ff4e;
+	margin: -25px 0 0 55px;
+}
+
+.feed{
+	clear: both;
+	padding-top: 160px;
+	background-color: #d5d5d5;
+	opacity: 0;
+}
+
+.vertical_line{
+	width: 2px;
+	height: 990px;
+	background-color: #343434;
+	position: absolute;
+	z-index: 89;
+	margin: 50px 0 0 364px;
+}
+
+.feed .day{
+	text-align: center;
+	color: #ffffff;
+	margin: 30px 0 10px;
+	position: relative;
+	width: 100%;
+	left: 0;
+	z-index: 91;
+	float: left;
+}
+
+.feed .day h3{
+	width: 111px;
+	margin: 0 auto;
+	background-color: #2f8352;
+	padding: 9px 0;
+	border-radius: 5px;
+}
+
+.feed .article{
+	width: 100%;
+}
+
+.feed .post .ad img{
+	display: block;
+	margin: 0 auto;
+}
+
+.feed .post .ad{
+	border: 1px solid #8b8b8b;
+}
+
+/**/
+/*.feed .post:nth-child(even),*/
+.feed .post.right .profile_picture{
+	float: left;
+}
+
+/*.feed .post:nth-child(odd),*/
+.feed .post.left .profile_picture{
+	float: right;
+}
+/**/
+
+/*.feed .post:nth-child(odd),
+.feed .post:nth-child(even){
+	float: left;
+}*/
+
+.feed .post:nth-child(odd){
+	float: left;
+}
+
+.feed .post:nth-child(even){
+	float: right;
+}
+
+.feed .right_white_space{
+	width: 295px;
+	float: right;
+	height: 73px;
+}
+
+.feed .left_white_space{
+	width: 295px;
+	float: left;
+	height: 73px;
+}
+
+.feed .separator{
+	width: 335px;
+	height: 1px;
+}
+
+.feed .profile_picture{
+	width: 60px;
+	margin: 0 auto;
+	text-align: center;
+}
+
+/**/
+
+.feed .post.left .profile_picture{
+	margin: -10px -70px 0 0;
+}
+
+.feed .post.right .profile_picture{
+	margin: -10px 0 0 -70px;
+}
+/**/
+
+.feed .profile_picture .user{
+	position: absolute;
+	z-index: 90;
+}
+
+.feed .post{
+	width: 315px;
+	background-color: #ffffff;
+	margin: 10px;
+}
+
+.feed .post .top{
+	background-color: #343434;
+	padding: 12px;
+}
+
+.feed .post.left .top{
+	border-right: 7px solid #2f8352;
+}
+
+.feed .post.left.challenges .top{
+	border-right: 7px solid #ff8400;
+}
+
+.feed .post.left.fitbit .top{
+	border-right: 7px solid #de11c3;
+}
+
+.feed .post.left.gym .top{
+	border-right: 7px solid #11bfde;
+}
+
+.feed .post.left.fitspots .top{
+	border-right: 7px solid #346ff6;
+}
+
+.feed .post.left.events .top{
+	border-right: 7px solid #ff2400;
+}
+
+.feed .post.right .top{
+	border-left: 7px solid #2f8352;
+}
+
+.feed .post.right.challenges .top{
+	border-left: 7px solid #ff8400;
+}
+
+.feed .post.right.fitbit .top{
+	border-left: 7px solid #de11c3;
+}
+
+.feed .post.right.gym .top{
+	border-left: 7px solid #11bfde;
+}
+
+.feed .post.right.fitspots .top{
+	border-left: 7px solid #346ff6;
+}
+
+.feed .post.right.events .top{
+	border-left: 7px solid #ff2400;
+}
+
+.feed .post .top h3{
+	font-size: 14px;
+	font-weight: bold;
+	margin: 0 0 5px;
+	color: #2f8352;
+}
+
+.feed .post .top{
+	clear: both;
+}
+
+.feed .post .top h2{
+	float: right;
+	font-size: 18px;
+	margin-top: -25px;
+}
+
+.feed .post.challenges .top h3,
+.feed .post.challenges .top h2{
+	color: #ff8400;
+}
+
+.feed .post.fitbit .top h3,
+.feed .post.fitbit .top h2{
+	color: #de11c3;
+}
+
+.feed .post.gym .top h3,
+.feed .post.gym .top h2{
+	color: #11bfde;
+}
+
+.feed .post.fitspots .top h3,
+.feed .post.fitspots .top h2{
+	color: #346ff6;
+}
+
+.feed .post.events .top h3,
+.feed .post.events .top h2{
+	color: #ff2400;
+}
+
+.feed .post .top h4{
+	font-size: 12px;
+	font-weight: bold;
+	color: #ffffff;
+}
+
+.feed .post .top .synch_fitbit{
+	float: right;
+	margin-top: -33px;
+}
+
+/**/
+
+.feed .post.left .top span{
+	position: absolute;
+	margin: -25px 0 0 302px;
+}
+
+.feed .post.right .top span{
+	position: absolute;
+	margin: -25px 0 0 -32px;
+}
+/**/
+
+.feed .post.right .top span img{
+	transform: rotate(180deg);
+	-ms-transform: rotate(180deg); /* IE 9 */
+	-webkit-transform: rotate(180deg); /* Opera, Chrome, and Safari */
+}
+
+.feed .post .data{
+	border-left: 1px solid #8b8b8b;
+	border-right: 1px solid #8b8b8b;
+	/*height: 120px;*/
+	overflow: hidden;
+}
+
+.feed .post .data p{
+	padding: 9px 5px;
+	font-weight: normal;
+	font-size: 16px;
+}
+
+.feed .post .data p span{
+	color: #2f8352;
+	font-weight: bold;
+}
+
+/*.feed .post .data img{
+	width: 100%;
+	max-width: 313px;
+	margin: 0 auto;
+	display: block;
+}*/
+
+.feed .post.challenges .data .info{
+	height: 56px;
+	padding: 5px;
+	clear: both;
+}
+
+.feed .post.challenges .data .info .time,
+.feed .post.challenges .data .info .bet{
+	height: 46px;
+	border: 1px solid #2f8352;
+	float: left;
+}
+
+.feed .post.challenges .data .info .time h2{
+	border-top: 1px solid #2f8352;
+	border-left: 1px solid #2f8352;
+	width: 102px;
+	line-height: 26px;
+	font-size: 24px;
+	text-align: center;
+	background-color: #f4f4f4;
+	color: #343434;
+}
+
+.feed .post.challenges .data .info .bet h2{
+	line-height: 44px;
+	font-size: 24px;
+	color: #2f8352;
+	float: left;
+	margin: 0 2px 0 10px;
+}
+
+.feed .post.challenges .data .info .bet img{
+	margin: 6px;
+	float: left;
+}
+
+.feed .post.challenges .data .info .time h3,
+.feed .post.challenges .data .info .bet h3{
+	line-height: 44px;
+	width: 50px;
+	color: #ffffff;
+	text-align: center;
+	background-color: #2f8352;
+	float: left;
+}
+
+.feed .post.challenges .data .info .time h2,
+.feed .post.challenges .data .info .time h3,
+.feed .post.challenges .data .info .time h4{
+	float: left;
+}
+
+.feed .post.challenges .data .info .time h4{
+	border-left: 1px solid #2f8352;
+	width: 33px;
+	line-height: 17px;
+	text-align: center;
+	color: #343434;
+}
+
+.feed .post.challenges .data .info .time{
+	width: 154px;
+}
+
+.feed .post.challenges .data .info .bet{
+	width: 145px;
+}
+
+.feed .post.challenges .data .standing{
+	height: 200px;
+	border-top: 1px solid #8b8b8b;
+	clear: both;
+}
+
+.feed .post.challenges .data .standing .winning,
+.feed .post.challenges .data .standing .losing{
+	height: 200px;
+	float: left;
+}
+
+.feed .post.challenges .data .standing .losing{
+	border-left: 1px solid #8b8b8b;
+}
+
+.feed .post.challenges .data .standing .winning .person,
+.feed .post.challenges .data .standing .losing .person{
+	width: 156px;
+	height: 161px;
+	border-bottom: 1px solid #8b8b8b;
+	clear: both;
+}
+
+.feed .post.challenges .data .standing .winning .person h3,
+.feed .post.challenges .data .standing .winning .person .avatar{
+	float: left;
+}
+
+.feed .post.challenges .data .standing .losing .person h3,
+.feed .post.challenges .data .standing .losing .person .avatar{
+	float: right;
+}
+
+.feed .post.challenges .data .standing .winning .person h3,
+.feed .post.challenges .data .standing .losing .person h3{
+	color: #ffffff;
+	text-align: center;
+	padding-top: 9px;
+	width: 115px;
+	font-size: 16px;
+}
+
+.feed .post.challenges .data .standing .winning .person .avatar,
+.feed .post.challenges .data .standing .losing .person .avatar{
+	width: 68px;
+	height: 68px;
+	border-radius: 68px;
+	border: 4px solid #ffffff;
+	margin: 9px 20px 0;
+	overflow: hidden;
+	background-color: #000000;
+}
+
+.feed .post.challenges .data .standing .winning .person .avatar img,
+.feed .post.challenges .data .standing .losing .person .avatar img{
+	width: 100%; border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%;
+	}
+
+.feed .post.challenges .data .standing .winning .person{
+	background-color: #2f8352;
+}
+
+.feed .post.challenges .data .standing .losing .person{
+	background-color: #343434;
+}
+
+.feed .post.challenges .data .standing .score{
+	line-height: 38px;
+	background-color: #e1e1e1;
+	font-size: 20px;
+	color: #343434;
+	text-align: center;
+}
+
+.feed .post.challenges .data .standing .challenge{
+	position: absolute;
+	width: 315px;
+	text-align: center;
+}
+
+.feed .post.challenges .data .standing .challenge .badge{
+	width: 89px;
+	height: 84px;
+	background-color: #000000;
+	display: inline-block;
+	margin-top: 27px;
+	color: #ffffff;
+}
+
+.feed .post.challenges .data .standing .challenge .badge .type{
+	width: 83px;
+	height: 54px;
+	background-color: #ff8400;
+	margin: 3px;
+	font-size: 12px;
+}
+
+.feed .post.challenges .data .standing .challenge .badge .type h4{
+	padding: 3px;
+}
+
+.feed .post.challenges .data .standing .challenge .badge .type img{
+	margin-top: -10px;
+}
+
+.feed .post.challenges .data .standing .challenge .badge .goal{
+	padding: 3px;
+}
+
+.feed .post.challenges .data .standing .vs{
+	position: absolute;
+	width: 315px;
+	text-align: center;
+	margin-top: 115px;
+}
+
+.feed .post.fitbit .data div{
+	width: 31%;
+	display: inline-block;
+	text-align: center;
+	padding: 5px 0;
+}
+
+.feed .post.fitbit .data h3{
+	font-size: 28px;
+}
+
+.feed .post.fitbit .data h4{
+	font-size: 18px;
+}
+
+.feed .post.fitbit .data .steps{
+	color: #0b6c70;
+}
+
+.feed .post.fitbit .data .calories{
+	border-left: 1px solid #8b8b8b;
+	border-right: 1px solid #8b8b8b;
+	color: #b44228;
+}
+
+.feed .post.fitbit .data .fitpoints{
+	color: #2f8352;
+}
+
+.feed .post.fitspots .data div:not(.location),
+.feed .post.gym .data div:not(.location){
+	clear: both;
+}
+
+.feed .post.fitspots .data div h3,
+.feed .post.gym .data div h3{
+	font-size: 36px;
+	color: #2f8352;
+	line-height: 90px;
+}
+
+.feed .post.fitspots .data div .location,
+.feed .post.gym .data div .location,
+.feed .post.events .data div .location{
+	width: 70px;
+	height: 70px;
+	border: 3px solid #343434;
+	border-radius: 70px;
+	overflow: hidden;
+	background-color: #000000;
+}
+
+.feed .post.fitspots .data div div,
+.feed .post.fitspots .data div img,
+.feed .post.fitspots .data div h3,
+.feed .post.gym .data div div,
+.feed .post.gym .data div img,
+.feed .post.gym .data div h3{
+	float: left;
+}
+
+.feed .post.fitspots .data div h3
+.feed .post.gym .data div h3{
+	margin: 0 10px;
+}
+
+.feed .post.fitspots .data div .location,
+.feed .post.gym .data div .location{
+	margin: 5px 20px;
+}
+
+.feed .post.fitspots .data div .location iframe,
+.feed .post.gym .data div .location iframe{
+	width: 100%;
+}
+
+.feed .post.fitspots .data div img,
+.feed .post.gym .data div img{
+	margin: 5px 20px 5px 40px;
+}
+
+.feed .post.events .data div:not(.address):not(.location){
+	border-top: 1px solid #8b8b8b;
+	clear: both;
+}
+
+.feed .post.events .data div p,
+.feed .post.events .data div span,
+.feed .post.events .data div .location{
+	float: left;
+}
+
+.feed .post.events .data div p{
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.feed .post.events .data .answers{
+	padding: 7px 6px;
+	height: 36px;
+}
+
+.feed .post.events .data .answers p{
+	border-top: 1px solid #2f8352;
+	border-bottom: 1px solid #2f8352;
+	border-left: 1px solid #2f8352;
+	line-height: 34px;
+	padding: 0 5px;
+}
+
+.feed .post.events .data .answers span{
+	width: 32px;
+	height: 36px;
+}
+
+.feed .post.events .data div:not(.invitation):not(.place):not(.answers) p{
+	margin-top: 5px;
+	margin-left: 5px;
+}
+
+.feed .post.events .data div:not(.place) p{
+	max-width: 250px;
+}
+
+.feed .post.events .data .place p{
+	max-width: 163px;
+	margin-top: 15px;
+	margin-left: 5px;
+}
+
+.feed .post.events .data .invitation{
+	padding-left: 5px;
+}
+
+.feed .post.events .data .invitation p{
+	margin-top: 5px;
+	color: #2f8352;
+	padding-left: 2px;
+}
+
+.feed .post.events .data .invitation p.red{
+	color: #ff3d3d;
+}
+
+.feed .post.events .data div:not(.invitation):not(.place):not(.answers) span{
+	margin: 9px 0 9px 14px;
+}
+
+.feed .post.events .data .place span{
+	margin: 24px 0 9px 14px;
+}
+
+.feed .post.events .data div .location{
+	margin: 10px;
+}
+
+.feed .post.events .data div .location iframe{
+	width: 100%;
+}
+
+.feed .post.events .data .invitation .yes,
+.feed .post.events .data .invitation .no{
+	margin: 8px 0 8px 2px;
+}
+
+.feed .post.events .data .invitation .maybe{
+	width: 15px;
+	height: 15px;
+	border: 2px solid #2f8352;
+	margin: 13px 0 13px 2px;
+}
+
+.feed .post.video .data iframe{
+	margin: 0 5px 3px;
+}
+
+.feed .post.photo .data img{
+	width: 148px;
+	border: 1px solid #959595;
+	margin-left: 5px;
+}
+
+.feed .post .comments{
+	border-right: 1px solid #8b8b8b;
+	border-left: 1px solid #8b8b8b;
+}
+
+.feed .post .comments .comment{
+	border-top: 1px solid #8b8b8b;
+	padding: 8px;
+	clear: both;
+	min-height: 60px;
+}
+
+.feed .post .comments .comment .avatar{
+	width: 45px;
+	height: 45px;
+	border: 5px solid #343434;
+	border-radius: 45px;
+	float: left;
+	overflow: hidden;
+	background-color: #000000;
+}
+
+.feed .post .comments .comment .avatar img{
+	width: 100%;
+	border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%;
+}
+
+.feed .post .comments .comment p{
+	font-weight: normal;
+	font-size: 14px;
+	float: right;
+	width: 235px;
+	margin: 0 0 10px 5px;
+}
+
+.feed .post .comments .comment h3,
+.feed .post .comments .comment span{
+	font-weight: bold;
+	font-size: 14px;
+	color: #2f8352;
+}
+
+.feed .post .comments .comment h3{
+	float: left;
+	margin: 0 0 10px 5px;
+}
+
+.feed .post .comments .comment span{
+	float: right;
+}
+
+.feed .post .comment_box{
+	border-top: 1px solid #8b8b8b;
+	border-right: 1px solid #8b8b8b;
+	border-left: 1px solid #8b8b8b;
+	background-color: #f4f4f4;
+	display: none;
+}
+
+.feed .post .comment_box textarea{
+	margin: 7px 7px 5px;
+	border: 1px solid #5a5a5a;
+	border-radius: 1px;
+	font-size: 14px;
+	padding: 10px 8px 14px;
+	height: 15px;
+	width: 280px;
+}
+
+.feed .post .bottom{
+	background-color: #f4f4f4;
+	border: 1px solid #8b8b8b;
+	padding: 14px 10px;
+	height: 45px;
+	clear: both;
+}
+
+.feed .post .bottom .synch_fitbit{
+	float: left;
+	margin-top: -7px;
+}
+
+.feed .post .bottom a{
+	float: right;
+	margin-left: 10px;
+	text-decoration: none;
+	color: #2f8352;
+}
+
+.feed .user{
+	width:50px;
+	height:50px;
+	border: 4px solid #ffffff;
+	border-radius: 45px; -moz-border-radius: 45px; -webkit-border-radius: 45px;
+	background-color: #000000; 
+	margin: 10px 4px;
+	overflow: hidden;
+}
+
+.feed .user img{
+	width:100%;
+	border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%;
+}
+
+#feed_loader{
+	width: 220px;
+	margin: 0 auto;
+}
+
+@media screen and (max-width: 1279px){
+	/*#content .comment_view{
+		width: 568px;
+	}
+	#content .comment_view textarea{
+		width: 554px;
+	}
+	.feed .post{
+		width: 245px;
+	}
+	.feed .white_space{
+		width: 295px;
+	}
+	.feed .post.left .top span{
+		margin: -25px 0 0 232px;
+	}
+	
+	
+	#left_side #account_info #goal #goal_bg{
+		width: 110px;
+	}
+	#left_side #account_info dl{
+		width: 85px;
+	}
+	#feed_view .post{
+		width: 580px;
+	}
+	#feed_view .post div,
+	#feed_view .post_comment_view div{
+		width: 460px;
+	}
+	#feed_view .post div img{
+		max-width: 360px;
+	}
+	#content .post_comment textarea{
+		width: 559px;
+	}
+	#content .comment_view .post_options .share{
+		width: 300px;
+	}
+	#content .comment_view .post_options .share input{
+		width: 167px;
+	}*/
+
+	#left_side #account_info .user{
+		height: 115px;
+	}
+	#left_side #account_info .user .mask{
+		width: 50px;
+		height: 50px;
+	}
+	#left_side #account_info .user h3{
+		width: 80px;
+		margin: 40px 0;
+	}
+	#left_side .advertisement_switch{
+		width: 222px;
+		bottom: 125px;
+		padding: 0 14px 10px;
+	}
+	#left_side #account_info .profile_actions{
+		margin: 0 auto 3px;
+	}
+}
+
+@media screen and (max-width: 980px){
+	#content{
+		border-right: none;
+	}
+	/*
+	.feed .post{
+		width: 85%;
+	}*/
+	/*.feed .post:nth-child(even) .top span{
+		margin: -25px 0 0 -32px;
+	}*/
+	/*.feed .post:nth-child(even) .top span img{
+		transform: rotate(180deg);
+		-ms-transform: rotate(180deg);
+		-webkit-transform: rotate(180deg);
+	}*/
+	/*.feed .post:nth-child(even) .top.green{
+		border: none;
+		border-left: 7px solid #2f8352;
+	}
+
+	.feed .post:nth-child(even) .top.orange{
+		border: none;
+		border-left: 7px solid #ff8400;
+	}
+
+	.feed .post:nth-child(even) .top.purple{
+		border: none;
+		border-left: 7px solid #de11c3;
+	}
+
+	.feed .post:nth-child(even) .top.cyan{
+		border: none;
+		border-left: 7px solid #11bfde;
+	}
+
+	.feed .post:nth-child(even) .top.blue{
+		border: none;
+		border-left: 7px solid #346ff6;
+	}
+
+	.feed .post:nth-child(even) .top.red{
+		border: none;
+		border-left: 7px solid #ff2400;
+	}
+	.feed .post:nth-child(even){
+		float: right;
+	}
+	.feed .post:nth-child(even) .profile_picture{
+		float: left;
+		margin: -10px 0 0 -70px;
+	}*/
+	/*.vertical_line{
+		display: none;
+	}
+	html{
+		background-color: #d5d5d5;
+	}*/
+}
+
+@media screen and (max-width: 709px){
+	.comment_view_bg{
+		display: none;
+	}
+
+	.feed{
+		padding-top: 0;
+	}
+}
+
+@media screen and (max-width: 550px){
+	#content .comment_view{
+		height: 194px;
+	}
+	#content .comment_view .post_options .share{
+		width: 100%;
+		border-bottom: 1px solid #024d21;
+	}
+	#content .comment_view .post_options .extra{
+		border-left: none;
+	}
+	/*.feed{
+		padding-top: 205px; 
+	}*/
+}
+
+@media screen and (max-width: 450px){
+	.feed .post .profile_picture,
+	.feed .post .top span{
+		display: none;
+	}
+}
+
+@media screen and (max-width: 335px){
+	#content .comment_view{
+		margin: 10px 2.5px 0;
+	}
+	#left_side #account_info{
+		height: 100%;
+	}
+
+	#content .comment_view{
+		width: 313px;
+	}
+	#content .comment_view textarea{
+		width: 299px;
+	}
+	#content .comment_view .post_options .share{
+		width: 100%;
+	}
+	#content .comment_view .post_options .extra{
+		width: 204px;
+	}
+	#content .comment_view .post_options .share input{
+		width: 180px;
+	}
+	nav .search{
+		width: 204px;
+	}
+}
+
+@media screen and (max-device-width: 320px){	
+	#left_side #account_info{
+		height: 78%;
+	}
+	#left_side .advertisement_switch h3{
+		font-size: 12px;
+	}
+	#nav_container .search span{
+		padding: 8px 0 7px;
+	}
+}

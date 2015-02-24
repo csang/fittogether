@@ -1,0 +1,37 @@
+<div class='privacy_settings'>
+	<%= form_for @page, :url=>{:action=>'update_privacy'}, :html=>{:class=>'about_form'} do |f| %>
+	
+	<table style="width:100%">
+
+	<tr>
+	  <td></td>
+	  <td style="width:50px">Show</td> 
+	  <td style="width:50px">Hide</td>
+	  <td style="width:20px"></td>
+	</tr>
+    
+	<% @privacies.each do|privacy| %>
+	<tr>
+	  <td><%= privacy.name %></td>
+	  <% is_private = isprivate(privacy.slug) %>
+	 
+	  <%# is_private = @account.is_private(privacy.id); %>
+	  <td><input type='radio' name='<%= privacy.slug; %>' value='1' <%= is_private ? 'checked' : nil %>><div class="radio"><div class="checked"></div></div></td> 
+	  <td><input type='radio' name='<%= privacy.slug; %>' value='0' <%= is_private ? nil : 'checked' %>><div class="radio"><div class="checked"></div></div></td>
+	  <td></td>
+	</tr>
+	<% end %>
+
+	</table>
+	<div class="button-row">
+	<button id="save_changes" type="submit" disabled>Save Changes</button>
+	</div>
+<% end %>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		// var inputs = $('input:radio');
+		$('.privacy_settings input:radio').change(Settings.validate_privacy);
+	});
+</script>

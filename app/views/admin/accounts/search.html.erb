@@ -1,0 +1,182 @@
+<% if request.host_with_port =='202.164.44.244:3021' %>
+  <% @clientid =  'ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e' %>
+  <% secertid = 'Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7' %>
+  <% @callback = 'http://202.164.44.244:3021/auth/auth0/callback' %>
+<% elsif request.host_with_port =='202.164.44.244:3020' %>
+  <% @clientid = 'r9Sl2O6H91d6YYsNM9PY7ncwzGJP0r1T' %>
+  <% secertid = 'orlOgRVhRzLH-DbmqVcmbdJACUYsA97gKIMZMvi-b_BeaD6Mbo3vmCLovW_erlyg' %>
+  <% @callback = 'http://202.164.44.244:3020/auth/auth0/callback' %>
+<% else %>
+  <% @clientid = 'USZ78oRzwIFx7e4gOjrpYA1VZIDBZo8u' %>
+  <% secertid = 'bwswf2HLFIskZiBv07EP--8Bd_nQNtgRwlosEC2tHSK4lMCD6dqYFV616_GJNWCu' %>
+  <% @callback = 'http://127.0.0.1:3000/auth/auth0/callback' %>
+<% end %>
+<script>
+
+
+  $(function() {
+    // initial sort set using data-sortlist attribute (see HTML below)
+    $(".tablesorter").tablesorter({
+      headers: {
+        '.sort-disabled': {
+          sorter: false
+        }
+      }
+    });
+    $(".tablesorter")
+            .find('.tablesorter-header-inner input#checkall')
+            .click(function() {
+      $(".check").prop("checked", this.checked);
+    });
+
+
+
+    $('.delete_user').on('click', function() {
+      if (confirm('Are you sure you want to delete ?')) {
+        var dataId = $(this).attr('data-id');
+        var rowId = $(this).attr('data-row-id');
+        var cData = {};
+        cData.client_id = '<%= @clientid %>';
+        cData.client_secret = '<%= secertid %>';
+        cData.grant_type = 'client_credentials';
+        userid = 'auth0|' + dataId;
+             $.ajax({
+                  data: {'dataId': dataId},
+                  dataType: "json",
+                  type: 'DELETE',
+                  url: '<%= delete_user_admin_accounts_url %>',
+                  beforeSend: function() {
+                    //$('.dataDiv').html('Loading....');
+                  },
+                  success: function(data) {
+                    if (data == 0) {
+                      alert('There is some error, Please try again');
+                    } else {
+                                            $.ajax({
+                           url: 'https://fittogetherzap.auth0.com/oauth/token',
+                           type: 'POST',
+                           contentType: 'application/json',
+                           dataType: 'json',
+                           data: JSON.stringify(cData),
+                           success: function(xhr, status) {
+                             newtoken = 'Bearer ' + xhr.access_token;
+                             $.ajax({
+                               url: 'https://fittogetherzap.auth0.com/api/users/'+userid,
+                               type: 'DELETE',
+                               contentType: 'application/json',
+                               dataType: 'json',
+                               data: JSON.stringify(cData),
+                               beforeSend: function(xhr) {
+                                 xhr.setRequestHeader('Authorization', newtoken);
+                                 $('.flash-message').html('');
+                               },
+                               success: function(data) {
+
+                               },
+                               error: function(xhr, ajaxOptions, thrownError) {
+                                 console.log(xhr)
+                               }
+                             });
+                           },
+                           error: function(xhr, ajaxOptions, thrownError) {
+                             console.log(xhr)
+                           },
+                         });
+                      $("tr#row-" + rowId).remove();
+                      $('.flashMessage').html('<div class="alert alert-success alert-dismissable">User has been deleted successfully.</div>').show();
+                      setTimeout(function() {
+                        $('.flashMessage').fadeOut('slow', function() {
+                          $('.flashMessage').html('');
+                        });
+                      }, 5000);
+                    }
+                  },
+                  error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(xhr)
+                  }
+                });
+      }
+
+    });
+  });
+
+</script>
+<section class="admin_maincontent">
+  <div class="page-header">
+    <div class="col-sm-9 PaddingLeft">
+      <h1 class="marginNone">Users</h1>
+    </div>
+    <div class="col-sm-3 marginNone PaddingRight">
+      <%= form_tag search_admin_accounts_path, :method => 'get', :class=>'form-search' do %>
+        <div class="input-append">
+          <input type="text" name="search" class="span2 search-query form-control" placeholder="Search">
+          <button type="submit" name="btnGo" class="btn btn-primary">Go</button>
+        </div>
+      <%end%>
+    </div>
+    <div class="clear"></div>
+  </div>   
+  <%= form_tag bulk_actions_admin_tasks_path, :method => 'post', :class=>'bulk-form' do %>  
+    <input type ="hidden" name ='model' value ="Account">
+    <div class="top-selection">
+      <%= render "admin/tasks" %>
+    </div>
+    <div class="table-responsive left width100">
+      <table class="table table-bordered table-hover tablesorter"  id="myTable">
+        <thead>
+          <tr>
+            <th class="sort-disabled check-all" ><%= check_box_tag "checkall" %></th>
+            <th><span></span><%=  "First Name" %></th>
+            <th><span></span><%=  "Last Name" %></th>
+            <th><span></span><%= "Email" %></th>
+            <th><span></span><%= "Created At" %></th>  
+            <th class="sort-disabled"><%= "Status" %></th>
+            <th class="action sort-disabled">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <% if(!@users.blank?) %>
+            <% @users.each do |account| %>
+              <tr id="row-<%= account.id %>">
+                <td><%= check_box_tag "task_ids[]", account.id , false , :class =>'check'%></td>
+                <td><%= account.first_name %></td>
+                <td><%= account.last_name %></td>
+                <td><%= account.email %></td>
+
+                <td>
+                  <% if(!account.created_at.blank?)%>
+                    <%= account.created_at.strftime("%d %b, %Y") %>
+                  <%else%>N-A<%end%>
+                </td>
+
+
+                <td>
+                  <%= form_for([:admin,account]) do |f| %>
+                    <%= f.select :status,[["Select Status",""], ["Active", 1], ["Inactive", 0]], {}, :class=>'change_status', :data=>{'id' =>account.id , 'model' => 'Account'}  %>			
+                  <% end %>
+                </td>
+                <td class="action">
+                  <%= link_to 'show'.html_safe, admin_account_path(account), {:class=>'show-icon', :title=>'Show'} %>
+                  <%= link_to 'edit'.html_safe, edit_admin_account_path(account), {:class=>'edit-icon', :title=>'Edit'} %>
+      <%#= link_to 'delete'.html_safe, admin_account_path(account), :class=>'delete-icon',:onClick=>'deleteUser(1)', :title=>'Delete', method: :delete %>
+
+                  <a href="javascript:void(0);" title= "delete" class = "delete-icon delete_user" data-row-id ="<%= account.id %>" data-id="<%= account.fit_id %>">Delete</a>             
+                </td>
+                </td>
+
+              </tr>
+            <% end %>
+          <%else%>
+            <tr><td colspan="6" align="center">No records found</td></tr>
+          <%end%>
+
+        </tbody>
+      </table>  
+
+      <%= will_paginate @users, :renderer => BootstrapPagination::Rails %>
+      <div class="clear"></div></div>
+    <div class="clear"></div>
+  </section>
+<% end %>
+

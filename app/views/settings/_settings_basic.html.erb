@@ -1,0 +1,176 @@
+<% if request.host_with_port =='202.164.44.244:3021' %>
+	    <% @clientid =  'ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e' %>
+	    <% secertid = 'Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7' %>
+	    <% @callback = 'http://202.164.44.244:3021/auth/auth0/callback' %>
+	 <% elsif request.host_with_port =='202.164.44.244:3020' %>
+	  <% @clientid = 'r9Sl2O6H91d6YYsNM9PY7ncwzGJP0r1T' %>
+	    <% secertid = 'orlOgRVhRzLH-DbmqVcmbdJACUYsA97gKIMZMvi-b_BeaD6Mbo3vmCLovW_erlyg' %>
+	    <% @callback = 'http://202.164.44.244:3020/auth/auth0/callback' %>
+	 <% else %>
+	    <% @clientid = 'USZ78oRzwIFx7e4gOjrpYA1VZIDBZo8u' %>
+	    <% secertid = 'bwswf2HLFIskZiBv07EP--8Bd_nQNtgRwlosEC2tHSK4lMCD6dqYFV616_GJNWCu' %>
+	    <% @callback = 'http://127.0.0.1:3000/auth/auth0/callback' %>
+	 <% end %>
+<div id="form">	
+  <div class="profile_pic">
+    <form novalidate="novalidate" method="post" enctype="multipart/form-data" action="update_avatar" accept-charset="UTF-8">
+    <span class="image"> 
+       <% if !@account.avatar.blank? %>
+          <%= image_tag @account.avatar(:thumb) %>
+          <% elsif !@account.pic.blank? %>
+            <%= image_tag 'https://' + @account.pic %>
+            <% else %>
+            <%= image_tag 'default.png' %>
+          <% end %>
+    </span>
+    <span class="upload">Upload Profile Picture</span>
+    <input type="file" name="avatar" onchange="this.form.submit()" accept="image/*">
+  </div>
+  </form>
+  <div class="profile_info">
+    <%= form_for @page, :url=>{:action=>'update_profile'} , :html=>{ :id=>'updateprofile'} do |f| %>
+    
+    <div id="profile_info">
+      <div class="name row">
+        <h2>NAME</h2>
+        <div class="input">
+			<div class="ctrol-row">
+				<label for="fname">FIRST*</label>
+				<input type="text" name="fname" maxlength="50" value="<%= @account['first_name'] %>">
+			</div>
+			<div class="ctrol-row">
+				<label for="lname">LAST*</label>
+				<input type="text" name="lname" maxlength="50" value="<%= @account['last_name'] %>">
+			</div>
+        </div>
+      </div>
+
+      <div class="username row">
+        <h2>USERNAME*</h2>
+        <div class="input">
+          <input type="text" class="check_data" name="username" maxlength="50" value="<%= @account['user_name'] %>"> &nbsp;
+        </div>
+      </div>
+      <div class="url row">
+        <h2>WEBSITE URL</h2>
+        <div class="input">
+          <input type="text" class="" name="url" value="<%= @account['account_url'] %>">
+        </div>
+      </div>
+      <div class="mobile row">
+        <h2>MOBILE</h2>
+        <div class="input">
+          <input type="text" name="mobile[]" maxlength="3" value="<%= @account.mobile.to_s[0..2] %>"><input type="text" name="mobile[]" maxlength="3" value="<%= @account.mobile.to_s[3..5] %>"><input type="text" name="mobile[]" maxlength="4" value="<%= @account.mobile.to_s[6..9] %>" data-index="last">
+        </div>
+      </div>
+       <% provider =  'auth0' %>
+          
+				<% @account.authorization.each do |ac| %>
+				<% provider = ac.provider.present? ? ac.provider : 'auth0' %>
+				<% end %>
+				
+				
+    
+      <div class="password row">
+        <button id="save_changes" type="submit">Save Changes</button>  <% if provider == 'auth0' %>      
+        <span id="change_password">Change Password</span>
+        <% end %>
+      </div>
+      
+    </div>
+    <% end %>
+  <%= form_for @page, :url=>{:action=>'#'}, :html=>{:class=>'about_form', :id=>'updatepassword'} do |f| %>
+    <!-- array('action' => 'update_password') -->
+    <div  id="password_info" style="display:none;">
+    <!--  <div class="change row">
+        <h2>Current Password:</h2>
+        <div class="input">
+          <input type="password" name="current_password">
+        </div>
+      </div>-->
+      <div class="change row">
+        <h2>New Password:</h2>
+        <div class="input">
+          <input type="password" name="new_password" id="new_password">
+        </div>
+      </div>
+      <div class="change row">
+        <h2>Verify New Password:</h2>
+        <div class="input">
+          <input type="password" name="verify_password">
+        </div>
+      </div>
+      <div class="change row">
+        <button id="save_password" type="button" >Save Password</button><span id="cancel_password">Cancel</span>
+      
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>
+<script>
+  
+  
+  
+  $('#save_password').click(function(event) {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+   if ($("#updatepassword").valid()) {
+   
+  
+    var userData = {};
+    userData.password = $('#new_password').val();   
+    userid = 'auth0|' +'<%= @account.fit_id %>';
+	var cData = {};
+	cData.client_id = '<%= @clientid %>';
+	cData.client_secret = '<%= secertid %>';
+	cData.grant_type = 'client_credentials';
+   
+		
+			$.ajax({
+		  url: 'https://fittogetherzap.auth0.com/oauth/token',
+		  type: 'POST',
+		  contentType: 'application/json',
+		  dataType: 'json',
+		  data: JSON.stringify(cData),
+		  
+		  success: function(xhr, status) {
+		  newtoken = 'Bearer ' + xhr.access_token;
+			  $.ajax({
+			  url: 'https://fittogetherzap.auth0.com/api/users/'+userid+'/password',
+			  type: 'PUT',
+			  contentType: 'application/json',
+			  dataType: 'json',
+			  data: JSON.stringify(userData),
+			  beforeSend: function(xhr) {
+			  	xhr.setRequestHeader('Authorization', newtoken);
+				$('.flash-message').html('');
+			  },
+			  success: function(xhr, status) {
+			  $('.flash-message').html('<div class="alert alert-success">We have just sent you an email to confirm your password. </div>').show();  
+				
+			  },
+			  error: function (xhr, ajaxOptions, thrownError) {
+			  console.log(xhr)
+			  },
+				   
+			});
+			
+		  },
+		  error: function (xhr, ajaxOptions, thrownError) {
+		  console.log(xhr)
+		  },
+			   
+		});
+        
+    
+    }
+    });
+    
+    	
+    
+    
+  
+  
+  </script>

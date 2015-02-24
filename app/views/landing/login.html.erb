@@ -1,0 +1,259 @@
+<% if request.host_with_port =='202.164.44.244:3021' %>
+  <% @clientid =  'ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e' %>
+  <% secertid = 'Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7' %>
+  <% @callback = 'http://202.164.44.244:3021/auth/auth0/callback' %>
+<% elsif request.host_with_port =='202.164.44.244:3020' %>
+  <% @clientid = 'r9Sl2O6H91d6YYsNM9PY7ncwzGJP0r1T' %>
+  <% secertid = 'orlOgRVhRzLH-DbmqVcmbdJACUYsA97gKIMZMvi-b_BeaD6Mbo3vmCLovW_erlyg' %>
+  <% @callback = 'http://202.164.44.244:3020/auth/auth0/callback' %>
+<% else %>
+  <% @clientid = 'USZ78oRzwIFx7e4gOjrpYA1VZIDBZo8u' %>
+  <% secertid = 'bwswf2HLFIskZiBv07EP--8Bd_nQNtgRwlosEC2tHSK4lMCD6dqYFV616_GJNWCu' %>
+  <% @callback = 'http://127.0.0.1:3000/auth/auth0/callback' %>
+<% end %>
+
+<div id="account_container">
+  <div id="login_logo"></div>
+  <div id="login_container">
+    <div id="login_view">
+      <h1>Login to FitTogether</h1>
+      <%= form_tag({:action => '/login'}, {:id => 'loginform', :novalidate => true}) %>
+      <div class="field-row">
+        <input type="email" id="email" name="login_username" placeholder="Email" value="<%#= @account['email'] %>" autofocus>
+      </div>
+      <div class="field-row">
+        <input type="password" id="password" name="login_password" placeholder="Password">
+      </div>
+      <div class="field-row">
+      <div class="term-check">
+      <input type="checkbox" name="remember_me" id="rme">
+      </div>
+      <label class="top-lbl"> Remember me</label> 
+      </div>
+     <div class="text-center"><button class="signin-db" title="Sign In" onclick="get_url();">Sign In</button></div>
+      
+      <div class="fb-option"><span><em class="left"></em>Or<em class="right"></em></span></div>
+      <h2 class="soc-heading">Login with Social Connection</h2>
+      <ul class="social-connect">
+        <li><a href="#login-popup" title="Facebook" contype="facebook" class='login-popup fb'>login with facebook on popup</a></li>
+        <li><a href="#login-popup" title="twitter" contype="twitter" class='login-popup twit'>login with twitter on popup</a></li>
+        <li><a href="#login-popup" title="Linkedin" contype="linkedin" class='login-popup linkdin'>login with linkedin on popup</a></li>
+      </ul>
+    </div>
+    <p>Don't have an account? <span title="Sign Up">Sign Up</span></p>
+    <p id="fp" style="text-decoration: underline;cursor: pointer;" title="Forgot your password?">Forgot your password? </p>
+    </form>
+  </div>
+  <div id="forgot_container" style="display:none">
+    <div id="forgot_view">
+      <h1>Forgot Your Password?</h1>
+      <%= form_tag({:action => '/forgot'}, {:id => 'forgotform', :novalidate => true}) %>
+      <div class="field-row">
+        <input type="email" id="forgotemail" name="login_username" placeholder="Email" value="<%#= @account['email'] %>" autofocus>
+      </div>
+      <div class="field-row">
+        <input type="password" id="forgotpassword" name="login_password" placeholder="New Password">
+      </div>
+      <button class="forgot-db">Submit</button>
+
+      </form>
+    </div>
+    <p style="text-decoration: underline;cursor: pointer;color: #2f8352;">Back To Sign In</p>
+
+  </div>
+
+
+  <div id="register_container"  style="display:none;">
+    <div id="register_view">
+      <h1>Create Account</h1>
+      <%= form_tag({:action =>'#'},{:id=>'registerform',:novalidate => true}) %>
+      <div class="field-row">
+        <ul>
+          <li class="select" data-index="1">User</li>
+          <li data-index="2">Trainer</li>
+          <li data-index="3">Gym</li>
+        </ul>
+      </div>
+      <div class="field-row">
+        <input type="text" name="register_fname" placeholder="First Name" autofocus>
+      </div>
+      <div class="field-row">
+        <input type="text" name="register_lname" placeholder="Last Name">
+      </div>
+      <div class="field-row">
+        <input type="text" name="register_username" placeholder="Username" class="check_data">
+      </div>
+      <div class="field-row">
+        <input type="text" name="register_email" placeholder="Email">
+      </div>
+      <div class="field-row">
+        <input type="password" id="confirm_password" name="register_password" placeholder="Password">
+      </div>
+      <div class="field-row">
+        <input type="password"  name="register_verify_password" placeholder="Verify Password">
+        <input type="hidden" name="register_account_type" value="1">
+      </div>
+
+    <!--  <div class="field-row">
+        <div class="term-check"><%= check_box("register", "tos_agreement", :id=>'t_c') %></div> <label for="t_c">Terms and Conditions</label>
+      </div> -->
+      <div class="field-row">
+        <div class="term-check"><input type="checkbox" value="1" name="register[tos_agreement]" id="t_c"></div> <label for="t_c">Terms and Conditions</label>
+      </div>
+      <div class="text-center"><button class="create-account" title="Create Account">Create Account</button></div>
+    </div>
+    <p>Have an account? <span title="Sign In">Sign In</span></p>
+  </div>
+</div>
+
+
+
+<script>
+
+  var auth0 = new Auth0({
+    domain: 'fittogetherzap.auth0.com',
+    clientID: '<%= @clientid %>',
+    callbackURL: '<%= @callback %>',
+  });
+
+  $('.signin-db').click(function(event) {
+    if ($("#loginform").valid()) {
+      if (event && event.preventDefault) {
+        event.preventDefault();
+      }
+      $('.flash-message').html('');
+      auth0.signin({
+        connection: 'Username-Password-Authentication',
+        username: $('#email').val(),
+        password: $('#password').val()
+      }, function(err) {
+        $('.flash-message').html('<div class="alert alert-danger">' + err.message + '</div>').show();
+        setTimeout(function() {
+          $('.flash-message').fadeOut('slow').html('');
+        }, 5000);
+      });
+    }
+    ;
+
+  });
+
+  $('.create-account').click(function(event) {
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
+    if ($("#registerform").valid()) {
+      var userData = {};
+
+      userData.first_name = $('#register_container input[name=register_fname]').val();
+      userData.last_name = $('#register_container input[name=register_lname]').val();
+      userData.username = $('#register_container input[name=register_username]').val();
+      userData.email = $('#register_container input[name=register_email]').val();
+      userData.password = $('#register_container input[name=register_password]').val();
+      userData.verify_password = $('#register_container input[name=register_verify_password]').val();
+      userData.account_type = $('#register_container input[name=register_account_type]').val();
+      userData.connection = 'Username-Password-Authentication';
+      userData.email_verified = false;
+      var cData = {};
+      cData.client_id = '<%= @clientid %>';
+      cData.client_secret = '<%= secertid %>';
+      cData.grant_type = 'client_credentials';
+      $.ajax({
+        url: 'https://fittogetherzap.auth0.com/oauth/token',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        data: JSON.stringify(cData),
+        success: function(xhr, status) {
+          newtoken = 'Bearer ' + xhr.access_token;
+          $.ajax({
+            url: 'https://fittogetherzap.auth0.com/api/users/',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            data: JSON.stringify(userData),
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader('Authorization', newtoken);
+              $('.flash-message').html('');
+            },
+            success: function(xhr, status) {
+              // We are login the user programatically after creating it
+              auth0.signin({
+                'connection': 'Username-Password-Authentication',
+                'username': userData.email,
+                'password': userData.password
+              }, function(err) {
+                $('.flash-message').html('<div class="alert alert-success">' + err.message + ' </div>').show();
+              });
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+              if (xhr.responseText == 'Unauthorized')
+                $('.flash-message').html('<div class="alert alert-danger">' + xhr.responseText + ' Token </div>').show();
+              else
+                if (xhr.responseJSON['error'] == 'user_exists'){
+                  xhr.responseJSON['error_description'] = 'Email already exists.'
+                }
+                $('.flash-message').html('<div class="alert alert-danger">' + xhr.responseJSON['error_description'] + ' </div>').show();
+            },
+            complete: function() {
+              setTimeout(function() {
+                $('.flash-message').fadeOut('slow').html('');
+              }, 3000);
+            },
+          });
+        }, //end 
+      }); //end 
+
+    }
+  });
+  // login with facebook
+  $('.login-popup').click(function(e) {
+    var connectionType = $(this).attr('contype');
+    e.preventDefault();
+    auth0.login({
+      connection: connectionType,
+      popup: false,
+      popupOptions: {
+        width: 450,
+        height: 600
+      }
+    });
+  });
+
+  $('.forgot-db').click(function(event) {
+    if ($("#forgotform").valid()) {
+      if (event && event.preventDefault) {
+        event.preventDefault();
+      }
+      auth0.changePassword({
+        connection: 'Username-Password-Authentication',
+        username: $('#forgotemail').val(),
+        password: $('#forgotpassword').val()
+      }, function(err, resp) {     
+        if (err != null) {
+          $('.flash-message').html('<div class="alert alert-danger">' + err.message + ' </div>').show();
+        } else{
+          
+           $('#forgot_container p ').trigger('click');
+           $('.flash-message').html('<div class="alert alert-success">We have just sent you an email to reset your password. </div>').show();
+        }
+      });
+    }
+  });
+  
+  function get_url() {
+
+   if ($('#rme').is(":checked")) {
+       $.ajax({
+            url: '<%= set_rememberme_url %>',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(xhr, status) {
+            console.log('ten')
+            },
+      });
+    }
+
+}
+
+</script>

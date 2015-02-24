@@ -1,0 +1,29 @@
+<div id="feed_side_nav">
+	<ul>
+		<li class="selected">ALL POSTS</li>
+		<li>CHALLENGES</li>
+		<li>FITBIT<%= image_tag('global/synchs_with_fitbit.png'); %></li>
+		<li>GYM</li>
+		<li>FITSPOTS</li>
+		<li>EVENTS</li>
+	</ul>
+</div>
+<div class="advertisement_switch">
+	<h3>ADVERTISEMENTS</h3>
+	<div class="switch">
+		<h3 class="on">ON</h3>
+		<h3 class="off">OFF</h3>
+		<div class="knob"></div>
+	</div>
+</div>
+<div class="settings">
+	<div class="url_settings">
+<span>	<%= link_to image_tag("icons/settings.png"), settings_path %></span>
+		
+		<h3>SETTINGS</h3>
+	</div>
+	<div class="logout">
+	<span>	<%= link_to image_tag("icons/settings.png"), logout_path %></span>
+		<h3>LOGOUT</h3>
+	</div>
+</div>

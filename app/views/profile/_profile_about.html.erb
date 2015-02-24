@@ -1,0 +1,127 @@
+<div class="profile_about_view">
+  <div class="profile_data">
+    <div class="profile_about">
+      <div class="head_box">
+        <h2>About</h2>
+      </div>
+      <div class="about">
+        <ul class="personal">
+         <li><%= @account.user_name %><% if @account.account_url.present? %> at <%= link_to("<span>#{@account.account_url}</span>".html_safe, @account.account_url, :target => "_blank") %> <% else %> N/A <% end %></li>
+          <li>Lives in: <%= (@account.city_id.present?) ? get_city_name(@account.city_id) : ''  %><%= (@account.state_id.present?) ? ", " + get_state_name(@account.state_id) : ''  %></li>
+          <li>Works out at: <% if @account.gym_id.present? %>  <%= link_to("<span>#{get_gym_name(@account.gym_id)}</span>".html_safe, '') %> <% else %> N/A <% end %></li>
+          <li>Birthday: 
+            <%=  (@account.dob.present?) ? @account.dob.to_s(:myformat) : '' %>
+          </li>
+
+          <li>Relationship Status: <% if @account.relationship_id.present? %> <%= get_relationship_name(@account.relationship_id) %> <% else %> N/A <% end %></li>
+          <li>Fitness Goals: 
+          
+           <%= @account.goals.map{|goal| get_goal_name(goal)}.join(", ") %>
+<%#= link_to('<span>Staying in Shape</span>'.html_safe, '') %></li>
+          <li>Email: <%=  (@account.email.present?) ? @account.email : '' %></li>
+          <li>Mobile: <%=  (@account.mobile.present?) ? @account.mobile : '' %></li>
+        </ul>
+        <ul class="about_me">
+          <h2>About Me</h2>
+          <p>I am the league’s only five-time MVP and a 13-time 
+            Pro Bowler. I stand alone as the active leader in nearly 
+            every statistical passing category. I own many NFL 
+            records including the 2nd most wins (154), passing TDs 
+            (436), completions (5,082) and attempts  (7,793) by a 
+            quarterback in NFL history, while ranking third with 
+            59,487 career passing yards. In my 12 seasons I’ve 
+            thrown for more than 4,000 yards and 14 campaigns 
+            with 25-plus touchdown passes rank first in league 
+            annals along with his 72 games with 300-plus yards 
+            & 73 contests throwing for at least three touchdowns.
+          </p>
+            <% if @trainer_details.present? %>
+            <p> <%= (@trainer_details.workout_tips.present?) ? @trainer_details.workout_tips.map{|tips| tips}.join(" , ") : ''; %></p>
+            <p> <%= (@trainer_details.certificates.present?) ? @trainer_details.certificates.map{|certificate| certificate}.join(" , ") : '' ;%></p>
+            <% end %>
+        </ul>
+      </div>
+    </div>
+    <div class="profile_analytics">
+      <div class="fitpoints">
+        <div class="a_header">
+          <h3>Fitpoints</h3>
+        </div>
+        <div class="data">
+          <div>
+            <h4>Total</h4>
+            <h1>525</h1>
+          </div>
+          <div>
+            <h4>Earned</h4>
+            <h1>1325</h1>
+          </div>
+          <div>
+            <h4>Lost</h4>
+            <h1>800</h1>
+          </div>
+        </div>
+      </div>
+      <div class="challenges">
+        <div class="a_header">
+          <h3>Challenges</h3>
+          <%= link_to('See Challenges', '/') %>
+        </div>
+        <div class="data">
+          <div>
+            <h4>Won</h4>
+            <h1>151</h1>
+          </div>
+          <div>
+            <h4>Lost</h4>
+            <h1>15</h1>
+          </div>
+          <div>
+            <h4>Active</h4>
+            <h1>12</h1>
+          </div>
+        </div>
+      </div>
+      <div class="fitbit">
+        <div class="a_header">
+          <h3><%= image_tag('global/synchs_with_fitbit.png') %></h3>
+          <%= link_to('See Fitbit', '/') %>
+        </div>
+        <div class="data">
+          <div>
+            <h4>Steps</h4>
+            <h1>33<span>K</span></h1>
+          </div>
+          <div>
+            <h4>Calories</h4>
+            <h1>15<span>K</span></h1>
+          </div>
+          <div>
+            <h4>Distance</h4>
+            <h1>67<span>M</span></h1>
+          </div>
+        </div>
+      </div>
+      <div class="gym">
+        <div class="a_header">
+          <h3>Gym</h3>
+          <%= link_to('See Gym', '/') %>
+        </div>
+        <div class="data">
+          <div>
+            <h4>Check Ins</h4>
+            <h1>120</h1>
+          </div>
+          <div>
+            <h4>This Month</h4>
+            <h1>15</h1>
+          </div>
+          <div>
+            <h4>This Week</h4>
+            <h1>3</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

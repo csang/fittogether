@@ -1,0 +1,10 @@
+   <select name ="action_type" class ='options form-control'>
+		<option value=''>select action</option>
+		<% if params[:controller]!='admin/spams'%>
+			<option value ='Active'>Active</option>
+			<option value='Inactive'>Inactive</option>
+		<%end%>
+		<option value = 'Delete'>Delete</option>			
+   </select>
+   <%= button_tag "Apply",type: 'button', :class =>'bulk_action btn btn-primary', :id =>'bid'%>
+<div id = 'checkerr' class='error'></div>

@@ -1,0 +1,155 @@
+<script>
+var cities = new Array();
+var cid = '<%= @account.city_id %>';
+
+<% for city in @cities -%>
+  cities.push(new Array('<%=h city.state_code %>', '<%=h city.name %>', <%= city.id %>));
+<% end -%>
+
+function citySelected() {
+  state_id = $('#state_id_0').val();
+  var optionsnew = '';
+  $('#city_id_0').empty();
+     $.each(cities, function(key,city) {
+      if (city[0] == state_id) {
+        var sel = cid ==city[2] ? 'selected' :'';
+        optionsnew += "<option value=" + city[2] + " "+ sel+ ">"+ city[1]+" </option>";
+    }
+  });
+    $('#city_id_0').append(optionsnew);
+  
+}
+
+$(window).load(function(){
+  citySelected();
+  $('#state_id_0').on('change', citySelected);
+});
+</script> 
+<%= form_for @page, :url=>{:action=>'update_about'}, :html=>{:class=>'about_form', :id=>'abt'} do |f| %>
+<div>
+	<div class="gender row">
+		<h2>YOUR GENDER*</h2>
+		<div class="input radio-option">
+		<div class="sec-in">
+			<label>MALE</label><input type="radio" name="gender" value="m" <%= @account.gender =="m" ? 'checked=checked' :'' %> ><div class="radio"><div class="checked"></div></div>
+			<label for="gender" generated="true" class="error"></label>
+			</div>
+			<div class="sec-in">
+			<label>FEMALE</label><input type="radio" name="gender" value="f"  <%= @account.gender =="f" ? 'checked=checked' :'' %> ><div class="radio"><div class="checked"></div></div>
+			</div>
+		</div>
+	</div>
+	<div class="live row">
+		<h2>WHERE DO YOU LIVE?*</h2>
+		<div class="input">
+		
+		<% states = State.all.map{|x| [x.name] + [x.state_code]} %>
+		<%= select_tag(:state_id_0, options_for_select(states ,@account.state_id)) %>
+		
+		
+		<% cities = City.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag(:city_id_0, options_for_select(cities, @account.city_id)) %>	
+			<!-- <label>ZIP</label> -->
+			<div class="sec-in"><input type="text" placeholder="ZIP" name="zipcode" value="<%= @account.zipcode %>"></div>
+		</div>
+	</div>
+	<div class="gym row">
+		<h2>DO YOU BELONG TO A GYM?*</h2>
+		<div class="input radio-option">
+			<div class="radio-inner">
+			<label>YES</label><input type="radio" name="belong" value="y" checked><div class="radio"><div class="checked"></div></div>
+			<label>NO</label><input type="radio" name="belong" value="n" ><div class="radio"><div class="checked"></div></div>
+			</div>
+		<% gyms = Gym.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag(:gym, options_for_select(gyms, @account.gym_id)) %>	
+			<select name='location'>
+				<option value='0'>LOCATION</option>
+			</select>
+			</span>
+		</div>
+	</div>
+	<div class="industry row">
+		<h2>WHAT INDUSTRY DO YOU WORK IN?</h2>
+		<div class="input">
+		<% industries = Industry.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag(:industry, options_for_select(industries, @account.industry_id)) %>	
+		</div>
+	</div>
+	<div class="position row">
+		<h2>WHAT IS YOUR PROFESSION?</h2>
+		<div class="input">
+			<% professions = Profession.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag(:profession, options_for_select(professions, @account.profession_id)) %>	
+		
+			<input type="text" placeholder="COMPANY" name="company" value="<%= @account.company %>">
+		</div>
+	</div>
+	<div class="relationship row">
+		<h2>ARE YOU IN A RELATIONSHIP?</h2>
+		<div class="input">
+				<% relationships = Relationship.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag(:relationship, options_for_select(relationships, @account.relationship_id)) %>
+		</div>
+	</div>
+	<div class="birthday row">
+		<h2>WHEN IS YOUR BIRTHDAY?</h2>
+		<div class="input">
+			<div class="select">
+				<%=	select_month(@account.dob.to_s[5..6].to_i) %>
+			</div>
+			<div class="select">
+			<%=	select_day(@account.dob.to_s[8..9].to_i) %>
+			</div>
+			<div class="select">
+			<%=	select_year(@account.dob.to_s[0..3].to_i, :start_year => DateTime.now.year, 
+                        :end_year => DateTime.now.year - 115) %>
+							</div>
+		</div>
+	</div>
+	<div class="goals row">
+		<h2>WHAT ARE YOUR FITNESS GOALS?</h2>
+		<div class="input">
+		<% goals = Goal.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag(:goal, options_for_select(goals, @account.goals.map {|j| j}), multiple: true) %>
+			<!--<button class="add add_goal" type="button">+</button>-->
+		</div>
+	</div>
+	<div class="why row">
+		<h2>WHY ARE YOU HERE?</h2>
+		<div class="input">
+		<% reason = Reason.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag(:reason, options_for_select(reason, @account.reason_id)) %>
+		</div>
+	</div>
+	
+        <% if @account_type.to_i != 2 && @account_type.to_i != 3 %>
+        <div class="gender row">
+		<h2>ARE YOU OK WITH THE TRAINERS CONTACTING YOU?</h2>
+		<!--<div class="input radio-option">
+		<input type="checkbox" name="trainer_contacts" value="1" <%=@account_details.trainer_contacts.to_i == 1 ? 'checked=checked' :'' %>><div class="radio"><div class="checked"></div></div>
+		</div>-->
+		<div class="input radio-option">
+		<div class="sec-in">
+			<label>Yes</label><input type="radio" name="trainer_contacts" value="1"  <%= @account_details.trainer_contacts.to_i == 1 ? 'checked=checked' :'' %> ><div class="radio"><div class="checked"></div></div>
+			</div>
+			<div class="sec-in">
+			<label>No</label><input type="radio" name="trainer_contacts" value="0"  <%= @account_details.trainer_contacts.to_i == 0 ? 'checked=checked' :'' %> ><div class="radio"><div class="checked"></div></div>
+			</div>
+	   </div>		
+		</div>
+	</div>
+        <% end %>
+	<div class="row">
+		<h3>*REQUIRED</h3>
+		<button id="save_changes" type="submit" >Save Changes</button>
+	</div>
+</div>
+<% end %>
+<div class="about_form-new">
+<% if @account_type.to_i == 2 %>
+  <a class="trainer_info btn btn-primary"> Advanced details</a> 
+  <div class="trainer_details_info" style="display:none;">
+    <%=  render 'trainers_details', {'account_details' => @account_details} %>
+   </div> 
+<% end %>
+ </div>

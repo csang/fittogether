@@ -1,0 +1,32 @@
+<%= render(:partial => 'profile_aside') %>
+<div id="content" class="profile_content">
+	<div class="comment_view_bg">
+		<div class="comment_view">
+			<%= render(:partial => 'feed/feed_share') %>
+		</div>
+	</div>
+	<div class="account_info">
+		<div class="profile">
+			<div class="profile_nav">
+				<ul>
+					<%= @profile == 'profile_fit_feed' || @profile == '' ? link_to('<li>Fit Feed</li>'.html_safe, '/profile', html_options = {'class' => 'selected'}) : link_to('<li>Fit Feed</li>'.html_safe, "/profile") %>
+					<%= @profile == 'profile_about' ? link_to('<li>About</li>'.html_safe, "/#{@account.user_name}/about", html_options = {'class' => 'selected'}) : link_to('<li>About</li>'.html_safe, "/#{@account.user_name}/about") %>
+					<%= @profile == 'profile_photos' ? link_to('<li>Photos</li>'.html_safe, "/#{@account.user_name}/photos", html_options = {'class' => 'selected'}) : link_to('<li>Photos</li>'.html_safe, "/#{@account.user_name}/photos") %>
+					<%= @profile == 'profile_videos' ? link_to('<li>Videos</li>'.html_safe, "/#{@account.user_name}/videos", html_options = {'class' => 'selected'}) : link_to('<li>Videos</li>'.html_safe, "/#{@account.user_name}/videos") %>
+					<%= @profile == 'profile_friends' ? link_to('<li>Friends</li>'.html_safe, "/#{@account.user_name}/friends", html_options = {'class' => 'selected'}) : link_to('<li>Friends</li>'.html_safe, "/#{@account.user_name}/friends") %>
+					<%= @profile == 'profile_activities' ? link_to('<li>Activities</li>'.html_safe, "/#{@account.user_name}/activities", html_options = {'class' => 'selected'}) : link_to('<li>Activities</li>'.html_safe, "/#{@account.user_name}/activities") %>
+				</ul>
+			</div>
+			<div class="profile_data">
+				<%= render(:partial => @profile) %>
+			</div>
+		</div>
+	</div>
+	<%= @profile == 'profile_fit_feed' || @profile == '' ? render(:partial => 'feed/feed') : nil %>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	
+})
+</script>

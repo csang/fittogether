@@ -1,0 +1,342 @@
+<div class="feed" >
+	<div class="vertical_line"></div>
+
+	<div class="day">
+		<h3>Today</h3>
+	</div>
+
+	<!-- loop -->
+	<div class="post">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top green">
+			<h3 class='green'>ANDREW LUCK</h3>
+			<h4>30 MIN AGO</h4>
+			<span><%= image_tag('icons/green_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<p>My time is coming <span>@Peyton Manning</span> I’m just waiting for you to realize that you are better at owning pizza shops than being a quarterback. Remember <span>@LA Fitness</span> ? No hard feelings <span>#justsaying</span></p>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+
+	<!-- <div class="post ad">
+		<div class="ad">
+			<%#= image_tag('adds/add_5.png') %>
+			<p>ADVERTISEMENT</p>
+		</div>
+	</div> -->
+
+	<div class="post challenges">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top orange">
+			<h3 class='orange'>ANDREW LUCK</h3>
+			<h4>1 HOUR AGO</h4>
+			<h2>CHALLENGE</h2>
+			<span><%= image_tag('icons/orange_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<div class="info">
+				<div class="time">
+					<h3>TIME</h3>
+					<h4>DAY</h4>
+					<h4>HRS</h4>
+					<h4>MIN</h4>
+					<h2><span class="days">1</span>:<span class="hours">11</span>:<span class="mins">59</span></h2>
+				</div>
+				<div class="bet">
+					<h3>BET</h3>
+					<h2>120</h2>
+					<%= image_tag('global/fp.png') %>
+				</div>
+			</div>
+			<div class="standing">
+				<div class="winning">
+					<div class="person">
+						<h3>WINNING</h3>
+						<div class="avatar"><%= image_tag('profile/trainer.png') %></div>
+						<h3>ANDREW LUCK</h3>
+					</div>
+					<div class="score">
+						<h2><span>12,458</span> STEPS</h2>
+					</div>
+				</div>
+				<div class="challenge">
+					<div class="badge">
+						<div class="type">
+							<h4>CHALLENGE</h4>
+							<%= image_tag('activities/running.png') %>
+						</div>
+						<div class="goal">
+							<h3>18K STEP</h3>
+						</div>	
+					</div>
+				</div>
+				<div class="vs">
+					<%= image_tag('global/vs.png') %>
+				</div>
+				<div class="losing">
+					<div class="person">
+						<h3>LOSING</h3>
+						<div class="avatar"><%#= image_tag(@account.account_user.avatar) %></div>
+						<h3>CARLOS SANG</h3>
+					</div>
+					<div class="score">
+						<h2><span>11,008</span> STEPS</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<div class="synch_fitbit">
+				<%= image_tag('fitbit/synchs_with_fitbit_b.png') %>
+			</div>
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+
+	<div class="post fitbit">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top purple">
+			<h3 class='purple'>ANDREW LUCK</h3>
+			<h4>2 HOURS AGO</h4>
+			<div class="synch_fitbit">
+				<%= image_tag('global/synchs_with_fitbit.png') %>
+			</div>
+			<span><%= image_tag('icons/purple_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<div class="steps">
+				<%= image_tag('activities/steps.png') %>
+				<h3>5,978</h3>
+				<h4>STEPS TAKEN</h4>
+			</div>
+			<div class="calories">
+				<%= image_tag('activities/calories.png') %>
+				<h3>5,978</h3>
+				<h4>CALORIES BURNED</h4>
+			</div>
+			<div class="fitpoints">
+				<%= image_tag('global/fp.png') %>
+				<h3>119</h3>
+				<h4>FITPOINTS EARNED</h4>
+			</div>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+
+	<div class="post gym">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top cyan">
+			<h3 class='cyan'>ANDREW LUCK</h3>
+			<h4>Yesterday 11AM</h4>
+			<h2>GYM</h2>
+			<span><%= image_tag('icons/cyan_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<p>I’m <span>@LIFTING</span> <span>@LA_FITNESS</span></p>
+			<div>
+				<%= image_tag('activities/weight_lifting_bg.png') %>
+				<h3>@</h3>
+				<div class="location">
+					<iframe src=""></iframe>
+				</div>
+			</div>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+
+	<div class="post fitspots">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top blue">
+			<h3 class='blue'>ANDREW LUCK</h3>
+			<h4>Yesterday 11AM</h4>
+			<h2>FITSPOT</h2>
+			<span><%= image_tag('icons/blue_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<p><span>@WARDPARK</span> in <span>Orlando, FL</span> playing <span>@LACROSSE</span> with <span>19 others</span>.</p>
+			<div>
+				<%= image_tag('activities/lacrosse_bg.png') %>
+				<h3>@</h3>
+				<div class="location">
+					<iframe src=""></iframe>
+				</div>
+			</div>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+
+	<div class="post events">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top red">
+			<h3 class='red'>ANDREW LUCK</h3>
+			<h4>Sunday 8PM</h4>
+			<h2>EVENT</h2>
+			<span><%= image_tag('icons/red_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<p><span>Andrew</span> created an event</p>
+			<div class="answers">
+				<p>191 Not Going</p><p>36 Maybe</p><p>25 Going</p><span><%= image_tag('global/dropdown_arrow.png') %></span>
+			</div>
+			<div class="name">
+				<span><%= image_tag('events/calendar.png') %></span>
+				<p>Bascketball Pick Up Game</p>
+			</div>
+			<div class="time">
+				<span><%= image_tag('events/clock.png') %></span>
+				<p>Tomorrow @3pm</p>
+			</div>
+			<div class="place">
+				<span><%= image_tag('events/geo.png') %></span>
+				<!-- <div class="address"> -->
+					<p>West 4th Street Courts Avenue of the Americas New York, NY 10012</p>
+				<!-- </div> -->
+				<div class="location">
+					<iframe src=""></iframe>
+				</div>
+			</div>
+			<div class="invitation">
+				<p>Are you going?</p>
+				<span class="yes"><%= image_tag('events/active_yes.png') %></span><p>Yes</p>
+				<span class="no"><%= image_tag('events/inactive_no.png') %></span><p class="red">No</p>
+				<span class="maybe"></span><p>Maybe</p>
+			</div>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+
+	<div class="post photo">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top green">
+			<h3 class='green'>ANDREW LUCK</h3>
+			<h4>7/4/14 6:30PM</h4>
+			<span><%= image_tag('icons/green_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<p><span>Andrew</span> shared 2 photos</p>
+			<%= image_tag('gym/gym_trainers.png') %><%= image_tag('gym/gym_trainers.png') %>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+
+	<div class="post video">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top orange">
+			<h3 class='orange'>ANDREW LUCK</h3>
+			<h4>7/3/14 3:31PM</h4>
+			<span><%= image_tag('icons/green_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<p><span>Andrew</span> shared a video</p>
+			<iframe width="304" height="205" src="//www.youtube.com/embed/8_V1vFUCyCw" frameborder="0" allowfullscreen></iframe>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+
+	<div class="post">
+		<div class="profile_picture">
+			<div class="user"><%= image_tag('profile/trainer.png') %></div>
+		</div>
+		<div class="top purple">
+			<h3 class='purple'>ANDREW LUCK</h3>
+			<h4>7/2/14 6:31AM</h4>
+			<span><%= image_tag('icons/green_arrow.png') %></span>
+		</div>
+		<div class="data">
+			<p>Ughhh... morning workout... I need a vacay in San Diego!</p>
+		</div>
+		<div class="comments">
+			<div class="comment">
+				<div class="avatar"></div>
+				<h3>NICOLE ANISTON</h3>
+				<span class="time">7:30AM</span>
+				<p>YAY!!! Come see me! Can’t wait ;)</p>
+			</div>
+			<div class="comment">
+				<div class="avatar"><%=image_tag('profile/trainer.png') %></div>
+				<h3>ANDREW LUCK</h3>
+				<span class="time">8:31PM</span>
+				<p>Yo blondie I didn’t say I was coming or that I was single. Calm down and don’t drown sitting down :P!</p>
+			</div>
+			<div class="comment">
+				<div class="avatar"></div>
+				<h3>NICOLE ANISTON</h3>
+				<span class="time">9:30PM</span>
+				<p>AHH HAHA... Your killing me QB!</p>
+			</div>
+		</div>
+		<div class="comment_box">
+			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<%= link_to('Give Kudos!', '/') %>
+			<%= link_to('3 Comments', html_options={:class => 'add_comment'}) %>
+		</div>
+	</div>
+</div>
+
+<div id="feed_loader">
+</div>

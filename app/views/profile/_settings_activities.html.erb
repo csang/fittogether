@@ -1,0 +1,74 @@
+<%= form_tag() %>
+<!-- array('action' => 'about/update_about', 'method' => 'post', 'class' => 'about_form') -->
+<div class="settings_activities">
+	<h2>Please select minimum of 4 activities</h2>
+	<div class="row">
+		<%= image_tag('activities/lacrosse_icon.png') %>
+		<h2>Lacrosse</h2>
+		<div class="input">
+			<select name='location'>
+				<option value='0'>Select</option>
+				<option value='1' selected>Lacrosse</option>
+				<option value='2'>Football</option>
+				<option value='3'>Running</option>
+				<option value='4'>Weight Lifting</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<%= image_tag('activities/football_icon.png') %>
+		<h2>Football</h2>
+		<div class="input">
+			<select name='location'>
+				<option value='0'>Select</option>
+				<option value='1'>Lacrosse</option>
+				<option value='2' selected>Football</option>
+				<option value='3'>Running</option>
+				<option value='4'>Weight Lifting</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<%= image_tag('activities/running_icon.png') %>
+		<h2>Running</h2>
+		<div class="input">
+			<select name='location'>
+				<option value='0'>Select</option>
+				<option value='1'>Lacrosse</option>
+				<option value='2'>Football</option>
+				<option value='3' selected>Running</option>
+				<option value='4'>Weight Lifting</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<%= image_tag('activities/weight_lifting_icon.png') %>
+		<h2>Weight Lifting</h2>
+		<div class="input">
+			<select name='location'>
+				<option value='0'>Select</option>
+				<option value='1'>Lacrosse</option>
+				<option value='2'>Football</option>
+				<option value='3'>Running</option>
+				<option value='4' selected>Weight Lifting</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<%= image_tag('activities/none_icon.png') %>
+		<h2>Select Activity</h2>
+		<div class="input">
+			<select name='location'>
+				<option value='0'>Select</option>
+				<option value='1'>Lacrosse</option>
+				<option value='2'>Football</option>
+				<option value='3'>Running</option>
+				<option value='4'>Weight Lifting</option>
+			</select>
+		</div>
+	</div>
+	<div class="row">
+		<h3>*REQUIRED</h3>
+		<button disabled>Save</button>
+	</div>
+</div>

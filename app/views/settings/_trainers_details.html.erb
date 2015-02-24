@@ -1,0 +1,35 @@
+<%= form_for @page, :url=>{:action=>'update_trainers_details'} do |f| %>
+  <div>   
+    <div class="position certs row">
+      <h2>Certifications</h2>
+      <div class="input">  
+        <% if @account_details.certificates.present? %>  
+          <% @account_details.certificates.each { |x|  %>
+            <textarea name="account_trainers[certificates][]"> <%=  x ;%> </textarea> 
+          <% }%>
+        <%else%>   
+         <textarea name="account_trainers[certificates][]"> </textarea> 
+        <%end%> 
+        <button class="add add_certs" type="button">+</button>
+      </div>
+    </div>
+    <div class="position row tips">
+      <h2>Workout Tips</h2>
+      <div class="input">     
+        <% if @account_details.workout_tips.present? %>
+          <% @account_details.workout_tips.each { |x|  %>
+            <textarea name="account_trainers[workout_tips][]"> <%=  x ;%></textarea> 
+          <% } %>
+        <%else%> 
+        <textarea name="account_trainers[workout_tips][]"> <%=  (@account_details.workout_tips.present?) ? @account_details.workout_tips : '' ;%></textarea> 
+   
+<%end%>      
+         <button class="add add_tips" type="button">+</button>
+      </div>
+    </div>
+    <div class="row">
+      <button id="save_trainer" class="btn btn-primary" type="submit" >Save Changes</button>
+      <span class="cancel_trainer_info btn btn-default">Cancel</span>
+    </div>
+  </div>
+<% end %>

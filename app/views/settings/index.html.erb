@@ -1,0 +1,20 @@
+<div id="notifications">
+	<div class="notification_menu">
+	<div id="notifications_nav">
+		<%= @page == 'settings_basic' ? link_to('<p><span class="selected_nub"></span>BASIC</p>'.html_safe, 'settings') : link_to('<p>BASIC</p>'.html_safe, 'settings') %>
+		<%= @page == 'settings_about' ? link_to('<p><span class="selected_nub"></span>ABOUT</p>'.html_safe, 'about') : link_to('<p>ABOUT</p>'.html_safe, 'about') %>
+		<%= @page == 'settings_activities' ? link_to('<p><span class="selected_nub"></span>ACTIVITIES</p>'.html_safe, 'activities') : link_to('<p>ACTIVITIES</p>'.html_safe, 'activities') %>
+		<%= @page == 'settings_privacy' ? link_to('<p><span class="selected_nub"></span>PRIVACY</p>'.html_safe, 'privacy') : link_to('<p>PRIVACY</p>'.html_safe, 'privacy') %>
+		<%= @page == 'settings_social_settings' ? link_to('<p><span class="selected_nub"></span>SOCIAL SETTINGS</p>'.html_safe, 'social_settings') : link_to('<p>SOCIAL SETTINGS</p>'.html_safe, 'social_settings') %>
+		<%= @page == 'settings_fitbit' ? link_to('<p><span class="selected_nub"></span>FITBIT</p>'.html_safe, 'fitbit') : link_to('<p>FITBIT</p>'.html_safe, 'fitbit') %>
+		<%= @page == 'settings_support' ? link_to('<p><span class="selected_nub"></span>SUPPORT</p>'.html_safe, 'support') : link_to('<p>SUPPORT</p>'.html_safe, 'support') %>
+	</div>
+	<div style="height:60px;"></div>
+	</div>
+
+	<div class="notifications_view">
+		<%= render(:partial => @page) %>
+		
+	</div>
+</div>
+

@@ -1,0 +1,28 @@
+<%= form_tag() %>
+<!-- array('action' => 'new_post', 'type' => 'post', 'onKeyPress' => 'event.keyCode == 13 ? submit() : null', 'enctype' => 'multipart/form-data') -->
+	<div class="post">
+		<textarea name="post" placeholder="What did you do today?"></textarea>
+	</div>
+	<div class="post_options">
+		<div class="share" title="Who do you want to share this with?">
+			<h3>Share with:</h3>
+			<input type="text" placeholder="@everyone" list="options">
+			<datalist id="options">
+				<option value="@everyone">
+				<option value="@Alex">
+				<option value="@Carlos">
+				<option value="@Corey">
+				<option value="@Eric">
+			</datalist>
+			<div class="arrows">
+				<span><%= image_tag('icons/up.png') %></span>
+				<span><%= image_tag('icons/down.png') %></span>						
+			</div>
+		</div>
+		<div class="extra">
+			<input name="photo" type="file" accept="image/*"><span><%= image_tag('icons/picture.png') %></span>
+			<input name="video" type="file" accept="video/*"><span><%= image_tag('icons/video.png') %></span>
+			<input name="location" type="hidden"><span><%= image_tag('icons/geo_location.png') %></span>
+		</div>
+		<button>Share</button>
+	</div>

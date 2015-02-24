@@ -1,0 +1,24 @@
+<div id="right_side">
+	<div id="right_side_fixed">
+		<?= isset($right_side) ? $right_side : null ?>
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	// $('#right_side').height() > $(window).height() ? $('#right_side').height($('#right_side').height() + 10) : $('#right_side').height($(window).height());
+	// $('#right_side_fixed').height() > $(window).height() ? $('#right_side_fixed').height($('#right_side_fixed').height() + 10) : $('#right_side_fixed').height($(window).height());
+	// $(window).scroll(function(event) {
+	// 	if($(window).scrollTop() > $('#right_side_fixed').height() - $(window).height() + $('nav').height()){
+	// 		$('#right_side_fixed').css({
+	// 			position: 'fixed',
+	// 			bottom: 0,
+	// 		});
+	// 	}else{
+	// 		$('#right_side_fixed').css({
+	// 			position: 'none',
+	// 		});
+	// 	}
+	// });
+});
+</script>

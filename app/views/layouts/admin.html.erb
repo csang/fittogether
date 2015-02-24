@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+ <title><%= content_for?(:title) ? yield(:title) : "Welcome" %> - FitTogether</title> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="keywords" content="<%= content_for?(:meta_keyword) ? yield(:meta_keyword) : "Fittogether Keyword" %> "/>
+    <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Fittogether Description" %>" />
+  <% if request.host_with_port =='202.164.44.244:3021' %>
+  <% @@clientid =  'ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e' %>
+  <% @@secertid = 'Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7' %>
+  <% @@callback = 'http://202.164.44.244:3021/auth/auth0/callback' %>
+<% elsif request.host_with_port =='202.164.44.244:3020' %>
+  <% @@clientid = 'r9Sl2O6H91d6YYsNM9PY7ncwzGJP0r1T' %>
+  <% @@secertid = 'orlOgRVhRzLH-DbmqVcmbdJACUYsA97gKIMZMvi-b_BeaD6Mbo3vmCLovW_erlyg' %>
+  <% @@callback = 'http://202.164.44.244:3020/auth/auth0/callback' %>
+<% else %>
+  <% @@clientid = 'USZ78oRzwIFx7e4gOjrpYA1VZIDBZo8u' %>
+  <% @@secertid = 'bwswf2HLFIskZiBv07EP--8Bd_nQNtgRwlosEC2tHSK4lMCD6dqYFV616_GJNWCu' %>
+  <% @@callback = 'http://127.0.0.1:3000/auth/auth0/callback' %>
+<% end %>
+    <%= stylesheet_link_tag  "admin/reset", :media => "all" %>
+    <%= stylesheet_link_tag  "admin/bootstrap", :media => "all" %>
+	<%= stylesheet_link_tag  "admin/admin", :media => "all" %>
+    <%= javascript_include_tag "jquery", :media => "all" %>
+    <%= javascript_include_tag "jquery_ujs", :media => "all" %>
+    <%= javascript_include_tag "admin/jquery-1.2.6.min", :media => "all" %>
+    <%= javascript_include_tag "admin/jquery.tablesorter", :media => "all" %>
+     <%= javascript_include_tag "jquery.validate", :media => "all" %>
+    <%= javascript_include_tag "admin/admin", :media => "all" %>
+    <%= javascript_include_tag "admin/dashboard", :media => "all" %>
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+    <%= csrf_meta_tags %>
+    <script>
+		var BASE_URL = 'http://<%= request.host_with_port  %>/';
+    </script>
+  </head>
+  <body>
+	 
+	<header class="admin_header">
+		<div class="container-fuild">
+			<% if current_admin %>
+				&nbsp;
+				<% else %>
+				&nbsp;
+			<% end %>
+		</div>
+	</header>
+    <div class="navbar navbar-inverse navbar-fixed-top marginBottom" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>	
+          <% if admin_signed_in? %>	  
+           <a class="navbar-brand" href="/admin">
+              FitTogether Admin 
+          </a>
+          <% else %>
+           <a class="navbar-brand" href="/admins/sign_in">
+              FitTogether Admin 
+          </a>
+          <% end %>
+          
+          <!-- <%= link_to  "TBD" , "/", :class=>'navbar-brand' %> -->
+        </div>
+        <div class="collapse navbar-collapse">
+
+          <ul class="nav navbar-nav pull-right">
+            <% if current_admin %>
+              <li><a><span>Hi <%= current_admin.email%>,</span></a></li>
+              <li><%= link_to "Sign Out", destroy_admin_session_path, :method => :delete %></li>
+            <% end %>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+    <div class="main-container">
+		<div class ='flashMessage'></div> 
+      <% if(alert) %>
+        <div class="alert alert-danger alert-dismissable">
+          <%= alert %>
+        </div>
+      <% end %>
+     
+      <section class="page_content">
+        <% if(notice) %>
+          <div class="alert alert-success alert-dismissable">
+            <%= notice %>
+          </div>
+        <% end %>
+        <aside class="admin_menunavigation">        
+          <% if current_admin %>
+
+            <%= render 'layouts/admin_left_menu' %>
+
+          <% end %>
+        </aside>
+        <%= yield %>
+      </section>
+	<div class="clear"></div>
+    </div>
+    <footer class="navbar navbar navbar-fixed-bottom" role="navigation">
+      <div class="container">
+        <div class="collapse navbar-collapse">
+          <center>Fittogether &copy;2015</center>
+        </div>
+      </div>
+        
+    </footer>
+  </body>
+</html>
+
