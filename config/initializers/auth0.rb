@@ -1,8 +1,8 @@
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider(
     :auth0,
-    'ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e',
-    'Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7',
+    'oeOfvZxqJotXpmoV1Us0VFlFbP0iNna3',
+    '-oaaNrv0GnbmqiSNuk-go-m7Ct-5D7IoF7NnuDBM_ip3sinY4gIQn6wEdl66_SqB',
     'fittogetherzap.auth0.com',
     callback_path: "/auth/auth0/callback"
   )
