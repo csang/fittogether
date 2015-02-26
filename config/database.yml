@@ -13,15 +13,15 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  username: root
-  password: 
-  #username: fittogether
-  #password: 34cRH4ayrq8sG
+  #username: root
+  #password: ztech@44
+  username: fittogether
+  password: 34cRH4ayrq8sG
   #socket: /tmp/mysql.sock
 
 development:
   <<: *default
-  database: fittogether_qa
+  database: fittogether_dev
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
