@@ -13,10 +13,10 @@ default: &default
   adapter: mysql2
   encoding: utf8
   pool: 5
-  #username: root
-  #password: ztech@44
-  username: fittogether
-  password: 34cRH4ayrq8sG
+  username: root
+  password: stvwwmtldcke
+  #username: fittogether
+  #password: 34cRH4ayrq8sG
   #socket: /tmp/mysql.sock
 
 development:
