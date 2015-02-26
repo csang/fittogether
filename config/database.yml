@@ -14,7 +14,7 @@ default: &default
   encoding: utf8
   pool: 5
   username: root
-  password: stvwwmtldcke
+  password: 
   #username: fittogether
   #password: 34cRH4ayrq8sG
   #socket: /tmp/mysql.sock
