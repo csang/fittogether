@@ -1,6 +1,6 @@
   <div class="about">
 <ul class="activities">
-      <% @account.account_activity.each do |activity| %>
+      <% @profileuser.account_activity.each do |activity| %>
         <% activity.activity_id.each do |act| %>
           <li style="float:left; margin-left:10px; width:100px;">
             <% @value =  get_activity_name(act) %>

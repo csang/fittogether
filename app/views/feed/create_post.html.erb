@@ -1,0 +1,51 @@
+<% if @post.present? %>
+<%	@image = @post.account.avatar
+    @pic = @post.account.pic
+    @name = @post.account.first_name + ' ' + @post.account.last_name
+    @time = @post.created_at %>
+    
+<div class="post right " id="<%= @post.id %>" style="margin: 75px 10px 10px; float: right;">
+		<div class="profile_picture">
+			<div class="user">	
+			<% if !@image.blank? %>
+          <%= image_tag @image %>
+          <% elsif !@pic.blank? %>
+            <%= image_tag 'https://' + @pic %>
+            <% else %>
+            <%= image_tag 'default.png' %>
+          <% end %>
+          </div>
+	</div>
+		<div class="top green">
+			<h3 class='green'><%= @name %> </h3>
+			<h4><%= time_ago_in_words(@time) %> AGO</h4>
+			<span><%= image_tag('icons/green_arrow.png') %></span>
+		</div>
+		<div class="data">
+		<p><%= @post.text %></p>
+		</div>
+   <% if @post.image.present? %>		
+	<div class="data-img">
+		<%= image_tag(@post.image(:medium)) %>
+	</div>
+	<% end %>
+	<% if @post.video.present? %>		
+	<div class="data-img">
+		<video id='video'  controls width="300" height="300">
+  <source src='<%= @post.video %>' type='video/mp4'/>
+  Your browser does not support the video .
+</video>
+
+	</div>
+		
+	<% end %>
+	<div class="comments" id="cmt<%= @post.id %>">
+	</div>
+	<div class="comment_box">
+			<textarea class="comment" data-id="<%= @post.id %>" style="resize: none"></textarea>
+		</div>
+		<div class="bottom">
+			<% link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', 'javascript:void(0);', html_options={:class => 'add_comment'}) %>
+		</div>
+<% end %>

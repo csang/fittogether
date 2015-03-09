@@ -1,32 +1,116 @@
-<div class="feed" >
-	<div class="vertical_line"></div>
+<script>
+$(document).ready(function(){
+$(document).on("click",'.add_comment', function(){
 
-	<div class="day">
+	if($(this).parent().parent().find('.comment_box').is(':hidden')){
+			$(this).parent().parent().find('.comment_box').show();
+		}else{
+			$(this).parent().parent().find('.comment_box').hide();
+		}
+});		
+});		
+</script>		
+<div class="feed" style="opacity: 1;" >
+<% if @posts.present? %>
+	<div class="vertical_line"></div>
+<% end %>	
+	
+
+	<!--<div class="day">
 		<h3>Today</h3>
-	</div>
+	</div> -->
 
 	<!-- loop -->
-	<div class="post">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
+<div id="feeds">
+	
+	<% @posts.each do |post| %>
+	
+	<% if post.share_with != 'Private' || @account.id == post.account_id %>
+	
+	<% if (post.share_with == 'Friends' && check_if_friend(post.account.id,@account.id) || (post.share_with == 'Friends' && @account.id == post.account.id))  || post.share_with == 'Public' %>
+	  
+	 
+	<%	@image = post.account.avatar
+		@pic = post.account.pic
+		@name = post.account.first_name + ' ' + post.account.last_name
+		@time = post.created_at %>
+		
+		<div class="post" id="<%= post.id %>">
+			<div class="profile_picture">
+				<div class="user">	
+				<% if !@image.blank? %>
+          <%= image_tag @image %>
+          <% elsif !@pic.blank? %>
+            <%= image_tag 'https://' + @pic %>
+            <% else %>
+            <%= image_tag 'default.png' %>
+          <% end %>
+          </div>
+	</div>
 		<div class="top green">
-			<h3 class='green'>ANDREW LUCK</h3>
-			<h4>30 MIN AGO</h4>
+			<h3 class='green'><%= @name %> </h3>
+			<h4><%= time_ago_in_words(@time) %> AGO</h4>
 			<span><%= image_tag('icons/green_arrow.png') %></span>
 		</div>
 		<div class="data">
-			<p>My time is coming <span>@Peyton Manning</span> I’m just waiting for you to realize that you are better at owning pizza shops than being a quarterback. Remember <span>@LA Fitness</span> ? No hard feelings <span>#justsaying</span></p>
+		<p><%= post.text %></p>
 		</div>
+   <% if post.image.present? %>		
+	<div class="data-img">
+		<%= image_tag(post.image(:medium)) %>		
+	</div>
+		
+	<% end %>
+	<% if post.video.present? %>		
+	<div class="data-img">
+	
+	<video id='video'  controls width="300" height="300">
+  <source src='<%= post.video %>' type='video/mp4'/>
+  Your browser does not support the video .
+</video>
+
+	</div>
+		
+	<% end %>
+	
+	<div class="comments" id="cmt<%= post.id %>">
+		
+		<% post.comment.each do |cm| %>
+		<div class="comment">
+			 <% abc =  get_user_detail(cm.account_id) %>
+			 <% if abc.present? %>
+		<div class="avatar">
+	
+		<% if abc.avatar.present? %>
+			
+					<%= image_tag abc.avatar(:thumb) %>
+					
+			  <% elsif abc.pic.present? %>
+				<%= image_tag 'https://' + abc.pic %>
+				<% else %>
+				<%= image_tag 'default.png' %>
+			  <% end %>
+			</div>
+				<h3><a href="<%= abc.user_name %>" ><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></a></h3>
+				<% end %>
+				<span class="time"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> AGO</span>
+				<p> <%= cm.text %> </p>
+		 </div>
+	<% end %>
+	
+	</div>
+	
 		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
+			<textarea class="comment" data-id="<%= post.id %>" style="resize: none"></textarea>
 		</div>
 		<div class="bottom">
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
+			<% link_to('Give Kudos!', '/') %>
+			<%= link_to('Comment', 'javascript:void(0);', html_options={:class => 'add_comment'}) %>
 		</div>
 	</div>
-
+<% end %>
+<% end %>
+<% end %>
 	<!-- <div class="post ad">
 		<div class="ad">
 			<%#= image_tag('adds/add_5.png') %>
@@ -34,309 +118,125 @@
 		</div>
 	</div> -->
 
-	<div class="post challenges">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
-		<div class="top orange">
-			<h3 class='orange'>ANDREW LUCK</h3>
-			<h4>1 HOUR AGO</h4>
-			<h2>CHALLENGE</h2>
-			<span><%= image_tag('icons/orange_arrow.png') %></span>
-		</div>
-		<div class="data">
-			<div class="info">
-				<div class="time">
-					<h3>TIME</h3>
-					<h4>DAY</h4>
-					<h4>HRS</h4>
-					<h4>MIN</h4>
-					<h2><span class="days">1</span>:<span class="hours">11</span>:<span class="mins">59</span></h2>
-				</div>
-				<div class="bet">
-					<h3>BET</h3>
-					<h2>120</h2>
-					<%= image_tag('global/fp.png') %>
-				</div>
-			</div>
-			<div class="standing">
-				<div class="winning">
-					<div class="person">
-						<h3>WINNING</h3>
-						<div class="avatar"><%= image_tag('profile/trainer.png') %></div>
-						<h3>ANDREW LUCK</h3>
-					</div>
-					<div class="score">
-						<h2><span>12,458</span> STEPS</h2>
-					</div>
-				</div>
-				<div class="challenge">
-					<div class="badge">
-						<div class="type">
-							<h4>CHALLENGE</h4>
-							<%= image_tag('activities/running.png') %>
-						</div>
-						<div class="goal">
-							<h3>18K STEP</h3>
-						</div>	
-					</div>
-				</div>
-				<div class="vs">
-					<%= image_tag('global/vs.png') %>
-				</div>
-				<div class="losing">
-					<div class="person">
-						<h3>LOSING</h3>
-						<div class="avatar"><%#= image_tag(@account.account_user.avatar) %></div>
-						<h3>CARLOS SANG</h3>
-					</div>
-					<div class="score">
-						<h2><span>11,008</span> STEPS</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<div class="synch_fitbit">
-				<%= image_tag('fitbit/synchs_with_fitbit_b.png') %>
-			</div>
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
 
-	<div class="post fitbit">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
-		<div class="top purple">
-			<h3 class='purple'>ANDREW LUCK</h3>
-			<h4>2 HOURS AGO</h4>
-			<div class="synch_fitbit">
-				<%= image_tag('global/synchs_with_fitbit.png') %>
-			</div>
-			<span><%= image_tag('icons/purple_arrow.png') %></span>
-		</div>
-		<div class="data">
-			<div class="steps">
-				<%= image_tag('activities/steps.png') %>
-				<h3>5,978</h3>
-				<h4>STEPS TAKEN</h4>
-			</div>
-			<div class="calories">
-				<%= image_tag('activities/calories.png') %>
-				<h3>5,978</h3>
-				<h4>CALORIES BURNED</h4>
-			</div>
-			<div class="fitpoints">
-				<%= image_tag('global/fp.png') %>
-				<h3>119</h3>
-				<h4>FITPOINTS EARNED</h4>
-			</div>
-		</div>
-		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
-
-	<div class="post gym">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
-		<div class="top cyan">
-			<h3 class='cyan'>ANDREW LUCK</h3>
-			<h4>Yesterday 11AM</h4>
-			<h2>GYM</h2>
-			<span><%= image_tag('icons/cyan_arrow.png') %></span>
-		</div>
-		<div class="data">
-			<p>I’m <span>@LIFTING</span> <span>@LA_FITNESS</span></p>
-			<div>
-				<%= image_tag('activities/weight_lifting_bg.png') %>
-				<h3>@</h3>
-				<div class="location">
-					<iframe src=""></iframe>
-				</div>
-			</div>
-		</div>
-		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
-
-	<div class="post fitspots">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
-		<div class="top blue">
-			<h3 class='blue'>ANDREW LUCK</h3>
-			<h4>Yesterday 11AM</h4>
-			<h2>FITSPOT</h2>
-			<span><%= image_tag('icons/blue_arrow.png') %></span>
-		</div>
-		<div class="data">
-			<p><span>@WARDPARK</span> in <span>Orlando, FL</span> playing <span>@LACROSSE</span> with <span>19 others</span>.</p>
-			<div>
-				<%= image_tag('activities/lacrosse_bg.png') %>
-				<h3>@</h3>
-				<div class="location">
-					<iframe src=""></iframe>
-				</div>
-			</div>
-		</div>
-		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
-
-	<div class="post events">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
-		<div class="top red">
-			<h3 class='red'>ANDREW LUCK</h3>
-			<h4>Sunday 8PM</h4>
-			<h2>EVENT</h2>
-			<span><%= image_tag('icons/red_arrow.png') %></span>
-		</div>
-		<div class="data">
-			<p><span>Andrew</span> created an event</p>
-			<div class="answers">
-				<p>191 Not Going</p><p>36 Maybe</p><p>25 Going</p><span><%= image_tag('global/dropdown_arrow.png') %></span>
-			</div>
-			<div class="name">
-				<span><%= image_tag('events/calendar.png') %></span>
-				<p>Bascketball Pick Up Game</p>
-			</div>
-			<div class="time">
-				<span><%= image_tag('events/clock.png') %></span>
-				<p>Tomorrow @3pm</p>
-			</div>
-			<div class="place">
-				<span><%= image_tag('events/geo.png') %></span>
-				<!-- <div class="address"> -->
-					<p>West 4th Street Courts Avenue of the Americas New York, NY 10012</p>
-				<!-- </div> -->
-				<div class="location">
-					<iframe src=""></iframe>
-				</div>
-			</div>
-			<div class="invitation">
-				<p>Are you going?</p>
-				<span class="yes"><%= image_tag('events/active_yes.png') %></span><p>Yes</p>
-				<span class="no"><%= image_tag('events/inactive_no.png') %></span><p class="red">No</p>
-				<span class="maybe"></span><p>Maybe</p>
-			</div>
-		</div>
-		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
-
-	<div class="post photo">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
-		<div class="top green">
-			<h3 class='green'>ANDREW LUCK</h3>
-			<h4>7/4/14 6:30PM</h4>
-			<span><%= image_tag('icons/green_arrow.png') %></span>
-		</div>
-		<div class="data">
-			<p><span>Andrew</span> shared 2 photos</p>
-			<%= image_tag('gym/gym_trainers.png') %><%= image_tag('gym/gym_trainers.png') %>
-		</div>
-		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
-
-	<div class="post video">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
-		<div class="top orange">
-			<h3 class='orange'>ANDREW LUCK</h3>
-			<h4>7/3/14 3:31PM</h4>
-			<span><%= image_tag('icons/green_arrow.png') %></span>
-		</div>
-		<div class="data">
-			<p><span>Andrew</span> shared a video</p>
-			<iframe width="304" height="205" src="//www.youtube.com/embed/8_V1vFUCyCw" frameborder="0" allowfullscreen></iframe>
-		</div>
-		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', '/', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
-
-	<div class="post">
-		<div class="profile_picture">
-			<div class="user"><%= image_tag('profile/trainer.png') %></div>
-		</div>
-		<div class="top purple">
-			<h3 class='purple'>ANDREW LUCK</h3>
-			<h4>7/2/14 6:31AM</h4>
-			<span><%= image_tag('icons/green_arrow.png') %></span>
-		</div>
-		<div class="data">
-			<p>Ughhh... morning workout... I need a vacay in San Diego!</p>
-		</div>
-		<div class="comments">
-			<div class="comment">
-				<div class="avatar"></div>
-				<h3>NICOLE ANISTON</h3>
-				<span class="time">7:30AM</span>
-				<p>YAY!!! Come see me! Can’t wait ;)</p>
-			</div>
-			<div class="comment">
-				<div class="avatar"><%=image_tag('profile/trainer.png') %></div>
-				<h3>ANDREW LUCK</h3>
-				<span class="time">8:31PM</span>
-				<p>Yo blondie I didn’t say I was coming or that I was single. Calm down and don’t drown sitting down :P!</p>
-			</div>
-			<div class="comment">
-				<div class="avatar"></div>
-				<h3>NICOLE ANISTON</h3>
-				<span class="time">9:30PM</span>
-				<p>AHH HAHA... Your killing me QB!</p>
-			</div>
-		</div>
-		<div class="comment_box">
-			<textarea placeholder="Type comment..." style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<%= link_to('Give Kudos!', '/') %>
-			<%= link_to('3 Comments', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
+</div>
 </div>
 
 <div id="feed_loader">
 </div>
+<script>
+//function to check file size before uploading.
+function beforeSubmit(){
+
+    if( $('.posttext').val()=='') //check empty input filed
+        {
+			 $('.flash-message').html('<div class="alert alert-danger"> Please Enter Text!').show();
+            return false ;
+        }
+    //check whether browser fully supports all File API
+   if (window.File && window.FileReader && window.FileList && window.Blob)
+    {
+    
+      
+       
+        if( !$('#photo').val()) //check empty input filed
+        {
+            return ;
+        }
+        
+        
+       
+        var fsize = $('#photo')[0].files[0].size; //get file size
+        var ftype = $('#photo')[0].files[0].type; // get file type
+       
+
+        //allow only valid image file types
+        switch(ftype)
+        {
+            case 'image/png': case 'image/gif': case 'image/jpeg': case 'image/pjpeg':
+                break;
+            default:
+              // $("#output").html("Only png, jpg, gif file formats are allowed.");
+               $('.flash-message').html('<div class="alert alert-danger">Only png, jpg, gif file formats are allowed.</div>').show();
+          
+                return false
+        }
+       
+        //Allowed file size is less than 1 MB (1048576)
+        if(fsize>10485760)
+        {
+            $('.flash-message').html('<div class="alert alert-danger"> Too big Image file! Please reduce the size of your photo using an image editor.').show();
+            
+            return false
+        }
+               
+       
+    }
+    else
+    {
+       
+       $('.flash-message').html('<div class="alert alert-danger"> please upgrade your browser, because your current browser lacks some new features we need!').show();
+        return false;
+    }
+} 
+                     
+   //onchange height
+    $(document).ready(function() { 
+		$(document).on('keydown', '.comment', function(e)   {
+			if(e.keyCode == 13){
+				var text = $(this).val();
+				if (text == '') {
+					return false;
+				}
+				var postid = $(this).attr('data-id'); 
+				//var postid = 1; 
+				$.ajax({
+				type: "POST",
+				url: '/create_comment/', //sumbits it to the given url of the form
+				data: { text : text, post : postid },
+				dataType: "HTML",
+				 beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+					}
+					}).success(function(data){
+					  $(".comment_box").hide();
+					  $("#cmt"+postid).append(data);
+					   
+						 
+					});
+			
+			}
+		
+		});
+	   
+				var options = {
+				type: "POST",
+				url: '/create_post/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				beforeSubmit: beforeSubmit,
+					success: function(data){					
+					    $("#feeds").prepend(data);					   
+					    $("#photo").val('');					   
+					    $("#video").val('');					   
+						 
+					},
+					 error: function (xhr, ajaxOptions, thrownError) {
+                       console.log(JSON.stringify(xhr, null, 4));
+                         $('.flash-message').html('<div class="alert alert-danger"> Please Try again!').show();
+					}
+					
+					
+					};
+					
+					$( "#share_post" ).click(function(e) {	
+				      e.preventDefault();
+				      $('#update_post').ajaxSubmit(options);
+				   });
+		
+			
+			
+		
+		
+		
+    }); // end of document ready
+                </script>

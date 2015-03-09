@@ -12,7 +12,7 @@
            <%= link_to(image_tag('default.png'), "/#{@account['user_name']}") %>
           <% end %>
         </div>
-        <%= link_to("<h3>#{@account.first_name} <br> #{@account.last_name}</h3>".html_safe, "/#{@account.account_url}") %>
+        <%= link_to("<h3>#{@account.first_name} <br> #{@account.last_name}</h3>".html_safe, "/#{@account['user_name']}") %>
       </div>
       <div class="data">
         <dl>

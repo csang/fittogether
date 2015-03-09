@@ -10,6 +10,21 @@ Rails.application.routes.draw do
   
   match '/settings/check_user_data/', to: 'settings#check_user_data', :via => [:get,:post] 
   match 'set_remember/(:message)', to: 'callback#set_remember', :via => [:get,:post] , :as=>:set_rememberme
+  match 'create_comment', to: 'feed#create_comment', :via => [:post] , :as=>:create_comment
+  match 'create_post', to: 'feed#create_post', :via => [:post] , :as=>:create_post
+  match 'search_people/:search', to: 'profile#search_people', :via => [:post] , :as=>:searchpeople
+  match 'addfriend', to: 'friendships#friend_request', :via => [:post] , :as => :addfriend
+  match 'cancelrequest', to: 'friendships#friend_request_cancel', :via => [:delete] , :as => :cancelrequest
+  match 'rejectrequest', to: 'friendships#friend_request_reject', :via => [:delete] , :as => :rejectrequest
+  match 'acceptrequest', to: 'friendships#friend_request_accept', :via => [:put] , :as => :acceptrequest
+  
+  match 'deleteimage/(:imgid)', to: 'feed#delete_image', :via => [:delete] , :as => :deleteimage
+  
+  post 'createalbum', to:'feed#create_album', :as=>:createalbum  
+  get 'showalbum/:id', to:'feed#show_album', :as=>:showalbum  
+  post 'update_album', to:'feed#update_album', :as=>:update_album  
+  
+  
   
   
   get 'login', to: 'landing#login'
@@ -17,6 +32,8 @@ Rails.application.routes.draw do
 
   get 'feed/index'
   get 'feed', to: 'feed#index'
+  #post 'update_post', to: 'feed#update_post',:as=>:update_post
+  
 
   get 'settings/index'
   get 'settings', to: 'settings#index'
@@ -34,6 +51,8 @@ Rails.application.routes.draw do
   get ':id/videos', to: 'profile#videos'
   get ':id/friends', to: 'profile#friends'
   get ':id/activities', to: 'profile#activities'
+  get ':id/members', to: 'profile#members'
+  get ':id/notifications', to: 'profile#notifications'
   
  
   post 'update_avatar', to:'settings#update_avatar'
@@ -43,9 +62,16 @@ Rails.application.routes.draw do
   post 'update_about', to:'settings#update_about', :as=>:update_about
   post 'update_social_settings', to:'settings#update_social_settings', :as=>:update_social_settings
   post 'update_trainers_details', to:'settings#update_trainers_details', :as=>:update_trainers_details  
-  
+  post 'update_about_gym', to:'settings#update_about_gym', :as=>:update_about_gym  
 
-  
+	  resources :friendships do
+	  member do
+		put 'friend_request'
+		put 'friend_request_accept'
+		delete 'friend_request_cancel'
+	  end
+	end
+
   # get 'landing/login'
 
   # The priority is based upon order of creation: first created -> highest priority.
@@ -129,6 +155,7 @@ Rails.application.routes.draw do
     
   match ':controller(/:action(/id))', :via => :get
   match "*path", to: "errors#error_404", via: :all
+  
   if Rails.env.production? then
     unless Rails.application.config.consider_all_requests_local
       get '*not_found', to: 'errors#error_404'

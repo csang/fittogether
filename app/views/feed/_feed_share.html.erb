@@ -1,28 +1,52 @@
-<%= form_tag() %>
-<!-- array('action' => 'new_post', 'type' => 'post', 'onKeyPress' => 'event.keyCode == 13 ? submit() : null', 'enctype' => 'multipart/form-data') -->
+<%= form_for @profile, :url=>{:action=>'create_post'}, :html=>{:name=>'sharepost',:id => "update_post", :enctype=>"multipart/form-data"} do |f| %>
+
 	<div class="post">
-		<textarea name="post" placeholder="What did you do today?"></textarea>
+		<textarea name="post" placeholder="What did you do today?" class="posttext"></textarea>
 	</div>
 	<div class="post_options">
 		<div class="share" title="Who do you want to share this with?">
 			<h3>Share with:</h3>
-			<input type="text" placeholder="@everyone" list="options">
-			<datalist id="options">
-				<option value="@everyone">
-				<option value="@Alex">
-				<option value="@Carlos">
-				<option value="@Corey">
-				<option value="@Eric">
-			</datalist>
+			<%= f.select :share_with, options_for_select(["Public", "Private","Friends"]), :class => 'genForm_dropBox' %>		
 			<div class="arrows">
 				<span><%= image_tag('icons/up.png') %></span>
 				<span><%= image_tag('icons/down.png') %></span>						
 			</div>
 		</div>
 		<div class="extra">
-			<input name="photo" type="file" accept="image/*"><span><%= image_tag('icons/picture.png') %></span>
-			<input name="video" type="file" accept="video/*"><span><%= image_tag('icons/video.png') %></span>
-			<input name="location" type="hidden"><span><%= image_tag('icons/geo_location.png') %></span>
+			<input name="photo" id="photo" type="file" accept="image/*"><span><%= image_tag('icons/picture.png') %></span>
+			<input name="video" id="video" type="file" accept="video/*"><span><%= image_tag('icons/video.png') %></span>
+			
+			
 		</div>
-		<button>Share</button>
+		<button id="share_post">Share</button>
 	</div>
+	<% end %>
+<%= form_for @profile, :url=>{:action=>'create_album'}, :html=>{:name=>'createalbum',:id => "create_album", :enctype=>"multipart/form-data"} do |f| %>
+<input style="display:none;" name="album" id="album" type="file" accept="image/*"><span id="create_album"></span>
+<button id="share_album">Create Album</button>
+<% end %>
+
+<script>
+document.getElementById('share_album').onclick = function() {
+document.getElementById("create_album").reset();
+$('#album').click();
+			if( !$('#album').val()) //check empty input filed
+				{
+					return false;
+				}
+			
+
+};
+$('#album').on('change',function(e) {
+ if( !$('#album').val()) //check empty input filed
+		{
+			return false;
+		}
+ else {		
+			
+		    e.preventDefault();		    
+    		$('#create_album').submit();	 
+		    return false;
+}		    
+	});
+</script>

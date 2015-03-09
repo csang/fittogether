@@ -46,9 +46,7 @@ Feed = {
 		}
 	},
 
-	add_comment: function(e){
-		$(this).parent().parent().next().toggle();
-	},
+	
 
 	change_category: function(e){
 
@@ -213,7 +211,7 @@ Feed = {
 		$('.comment_view h3').click(this.comment_view);
 		$('#left_side #account_info #feed_side_nav li').click(this.change_category);
 		$('#left_side .advertisement_switch .switch').click(this.ad_switch);
-		$('.feed .post .bottom .add_comment').click(this.add_comment)
+	//	$('.add_comment').on('click',this.add_comment)
 	}
 };
 

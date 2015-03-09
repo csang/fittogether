@@ -1144,7 +1144,10 @@ input:-ms-input-placeholder {
 .right_ad .tiled_ads img{
 	width: 154px; /*136*/
 }
-
+.album-img{position:absolute; left:0px; top:0px; width:100%; height:100%;}
+.album-img img{width:100%; height:100%;}
+.account_info .profile_photos_view .collection .photo.album-hover{overflow:inherit!Important;}
+.album-delete{width:23px; height:22px; position:absolute; right:-6px; top:-7px; background:url(../assets/album-delete.png) no-repeat; z-index:20;}
 /*---------------icons-----------------------*/
 
 .online{
@@ -1169,7 +1172,20 @@ input:-ms-input-placeholder {
 .weight_lifting{
 	background: url(../img/icons/weight_lifting.png) no-repeat center center;
 }
-
+.modal{z-index:9999; padding: 100px 0 0;}
+.modal-content img{width:100%; height:auto;}
+.photo.album-hover .close {margin: -22px -15px 0 0;}
+.controls{          
+        width:50px;
+        display:block;
+        font-size:11px;
+        padding-top:8px;
+        font-weight:bold;          
+    }
+    .next {
+        float:right;
+        text-align:right;
+    }
 @media screen and (max-width: 1279px){
 	/*#container{
 		width: 960px;

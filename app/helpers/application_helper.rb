@@ -62,8 +62,8 @@ def error_messages(curr_resource)
    end
    
    def get_gym_name(id)
-     gymName = Gym.where(:id => id).first
-     return (gymName.present?) ?  gymName['name'] : false ; 
+     gymName = AccountGym.where(:id => id).first
+     return (gymName.present?) ?  gymName['name'] : 'N/A' ; 
    end
    
    def get_city_name(id)
@@ -88,6 +88,42 @@ def error_messages(curr_resource)
    def get_field_value(model,column, value)
      result = model.constantize.where(:id => value).first
      return (result.present?) ?  result[column] : false ;
+   end
+   
+    def get_specialty_name(id)
+     speName = Specialty.where(:id => id).first
+     return (speName.present?) ?  speName['name'] : false ; 
+   end
+   
+    def get_amenity_name(id)
+     ameName = Amenity.where(:id => id).first
+     return (ameName.present?) ?  ameName['name'] : false ; 
+   end
+   
+    def get_user_name(id)
+     gymName = AccountGym.where(:id => id).first
+     if gymName.present?
+       uName = Account.select('user_name').where(:id => gymName['account_id']).first
+      end 
+      return (uName.present?) ?  uName['user_name'] : false ; 
+   end
+   
+   def get_user_detail(id)
+   
+     userdetails =  Account.where(:id => id).first
+      
+      return userdetails;
+	
+   end 
+   
+   def check_if_friend(postuserid, loginuserid)
+    
+    @friend = Friendship.where(:account_id => postuserid , :friend_id =>loginuserid, :approved => true).first 
+	if !@friend.present?
+		@friend = Friendship.where(:account_id => loginuserid  , :friend_id =>loginuserid, :approved => true).first 
+	end	
+     return (@friend.present?) ?  true : false ; 
+   
    end
    
      

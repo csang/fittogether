@@ -220,6 +220,9 @@ Settings = {
         add_tips:function(e){
 		$(this).parent().find('textarea:first-child').clone().prependTo($('.tips .input'));
 	},
+	 add_address:function(e){
+		$(this).parent().find('textarea:first-child').clone().prependTo($('.Address .input'));
+	},
    trainer_info: function(e){
 		$('.notifications_view .trainer_details_info').show();
 		$('.notifications_view .trainer_info').hide();
@@ -240,6 +243,7 @@ Settings = {
                 $('.add_tips').click(this.add_tips);
                 $('.trainer_info').click(this.trainer_info);
                 $('.cancel_trainer_info').click(this.cancel_trainer_info);
+                 $('.add_address').click(this.add_address);
 	}
 };
 

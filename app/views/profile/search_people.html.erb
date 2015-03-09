@@ -1,0 +1,236 @@
+<div class="search_results">
+		<div class="top_results column" style="display:none;">
+			<h2>TOP RESULTS</h2>
+			<div class="activities">
+				<div class="column_header">
+					<h3>ACTIVITIES</h3>
+				</div>
+				<div class="list">
+					<div class="activity">
+						<div class="logo">
+							<%= image_tag('activities/lacrosse.png'); %>
+						</div>
+						<div class="name">
+							<h4>LACROSSE</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="fitspots">
+				<div class="column_header">
+					<h3>FITSPOTS</h3>
+				</div>
+				<div class="list">
+					<div class="place">
+						<div class="avatar">
+							<%= image_tag('fitspot/fitspot.png'); %>
+						</div>
+						<div class="name">
+							<h4>WARD PARK</h4>
+						</div>
+						<div class="data">
+							<h5 class="miles">2.1 Miles</h5>
+							<span class="check_ins">12 Lacrosse Check Ins</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="gyms">
+				<div class="column_header">
+					<h3>GYMS</h3>
+				</div>
+				<div class="list">
+					<div class="place">
+						<div class="avatar">
+							<%= image_tag('gym/24_hour_fitness.png'); %>
+						</div>
+						<div class="name">
+							<h4>24 HOUR FITNESS</h4>
+						</div>
+						<div class="data">
+							<h5 class="miles">2.1 Miles</h5>
+							<span class="check_ins">12 Members</span>
+						</div>
+					</div>
+					<div class="place">
+						<div class="avatar">
+							<%= image_tag('gym/gym_photo.png'); %>
+						</div>
+						<div class="name">
+							<h4>LA FITNESS</h4>
+						</div>
+						<div class="data">
+							<h5 class="miles">2.1 Miles</h5>
+							<span class="check_ins">12 Members</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="local_groups">
+				<div class="column_header">
+					<h3>LOCAL GROUPS</h3>
+				</div>
+				<div class="list">
+					<div class="place" style="display:none;">
+						<div class="logo">
+							<%= image_tag('activities/lacrosse.png'); %>
+						</div>
+						<div class="name">
+							<h4>ORLANDO, FL</h4>
+							<h4>LACROSSE</h4>
+						</div>
+						<div class="data">
+							<span class="check_ins">134 Active</span>
+						</div>
+					</div>
+					<div class="place">
+						<div class="logo">
+							<%= image_tag('activities/lacrosse.png'); %>
+						</div>
+						<div class="name">
+							<h4>WINTER PARK, FL</h4>
+							<h4>LACROSSE</h4>
+						</div>
+						<div class="data">
+							<span class="check_ins">189 Active</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="people column">
+		<% if @user.present? %>
+			<h2>PEOPLE</h2>			
+			<%  @user.each do |abc| %>
+			<div class="trainers">
+				<div class="column_header">
+				<% if abc.user_type == 2 %>
+					<h3>Trainer</h3>
+				<% elsif abc.user_type == 3 %>	
+				<h3>Gym</h3>
+				<% else %>
+				<h3>User</h3>
+				<% end %>
+					<%= link_to('MORE', "/#{abc.user_name}"); %>
+				</div>
+				<div class="list">
+					<div class="person">
+						<div class="avatar">
+				 <% @privacy = nil %>
+				   <% if abc.account_privacy.present? %>
+						<% if abc.account_privacy.account_id!=@account.id  %>
+							<% @privacy = abc.account_privacy %>
+					   <% end %>
+				   <% end %>
+				   		
+					<%  if !@privacy.present? %>	
+						<% if !abc.avatar.blank? %>
+						  <%= image_tag abc.avatar %>
+						  <% elsif !abc.pic.blank? %>
+							<%= image_tag "https://" + abc.pic %>
+							<% else %>
+							<%= image_tag 'default.png' %>
+						  <% end %>
+				<% else %>						  
+				    <% if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  %>
+						<% if !abc.avatar.blank? %>
+							  <%= image_tag abc.avatar %>
+							  <% elsif !abc.pic.blank? %>
+								<%= image_tag "https://" + abc.pic %>
+								<% else %>
+								<%= image_tag 'default.png' %>
+							  <% end %>
+				<% else %>
+							  <%= image_tag('default.png') %>
+							<% end %>					  
+					<% end %>						  
+				    
+				    		  
+						</div>
+						<div class="name">
+						<% if abc.user_type == 3 %>
+							<h4> <%= abc.account_gym.name.present? ? abc.account_gym.name : abc.first_name  %></h4>
+						<% else %>
+							<h4><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></h4>
+						<% end %>	
+						</div>
+						<!--<div class="data">
+							<span class="miles">2.1 Miles</span>
+							<span class="check_ins">12 Check Ins</span>
+						</div> -->
+					</div>
+				</div>
+			</div>
+	<% end %>	
+	<% else %>
+	<h2> No user found </h2>	
+	<% end %>		
+		<div class="places column" style="display:none;">
+			<h2>PLACES</h2>
+			<div class="fitspots">
+				<div class="column_header">
+					<h3>FITSPOTS</h3>
+					<%= link_to('MORE', '/'); %>
+				</div>
+				<div class="list">
+					<div class="place">
+						<div class="avatar">
+							<%= image_tag('fitspot/fitspot.png'); %>
+						</div>
+						<div class="name">
+							<h4>WARD PARK</h4>
+						</div>
+						<div class="data">
+							<h5 class="miles">2.1 Miles</h5>
+							<span class="check_ins">12 Lacrosse Check Ins</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="gyms">
+				<div class="column_header">
+					<h3>GYMS</h3>
+					<%= link_to('MORE', '/'); %>
+				</div>
+				<div class="list">
+					<div class="place">
+						<div class="avatar">
+							<%= image_tag('gym/24_hour_fitness.png'); %>
+						</div>
+						<div class="name">
+							<h4>24 HOUR FITNESS</h4>
+						</div>
+						<div class="data">
+							<h5 class="miles">2.1 Miles</h5>
+							<span class="check_ins">12 Members</span>
+						</div>
+					</div>
+					<div class="place">
+						<div class="avatar">
+							<%= image_tag('gym/gym_photo.png'); %>
+						</div>
+						<div class="name">
+							<h4>LA FITNESS</h4>
+						</div>
+						<div class="data">
+							<h5 class="miles">2.1 Miles</h5>
+							<span class="check_ins">12 Members</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="activities column" style="display:none;">
+			<h2>ACTIVITIES</h2>
+			<div class="list">
+				<div class="activity">
+					<div class="logo">
+						<%= image_tag('activities/lacrosse.png'); %>
+					</div>
+					<div class="name">
+						<h4>LACROSSE</h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>

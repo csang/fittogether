@@ -1,4 +1,5 @@
 <div id="left_side">
+
 	<div id="left_side_fixed">
 		<div id="account_info" class="profile_aside">
 			<div class="cover">
@@ -6,19 +7,79 @@
 			</div>
 			<div class="user">
 				<div class="mask">
-                                  <% if !@account.avatar.blank? %>
-					<%= image_tag(@account.avatar(:medium)) %>
-                                  <% else  %>
-                                  <%= image_tag('default.png') %>
-                                  <% end %>
+				  <% @privacy = nil %>
+				   <% if @profileuser.account_privacy.present? %>
+						<% if @profileuser.account_privacy.account_id!=@account.id  %>
+							<% @privacy = @profileuser.account_privacy %>
+					   <% end %>
+				   <% end %>
+				   <%  if !@privacy.present? %>
+									<% if @profileuser.avatar.present? %>
+											<%= image_tag(@profileuser.avatar(:medium)) %>
+											  <% else  %>
+											  <%= image_tag('default.png') %>
+											  <% end %>
+					<% else %>						  
+				    <% if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  %>
+										   <% if @profileuser.avatar.present? %>
+											<%= image_tag(@profileuser.avatar(:medium)) %>
+											  <% else  %>
+											  <%= image_tag('default.png') %>
+											  <% end %>
+							<% else %>
+							  <%= image_tag('default.png') %>
+							<% end %>					  
+					<% end %>					  
 				</div>
-				<% if @account.last_name.present? %>
-				<% lname = @account.last_name %>
+				<% if @profileuser.last_name.present? %>
+				<% lname = @profileuser.last_name %>
 				 <% else %>
 				<%  lname = '' %>
 				<% end %>
-				<h3><%= @account.first_name + ' ' +  lname  %><span>Friends</span></h3>
-			</div>
+				<h3><label class="pro-name"><%= @profileuser.first_name + ' ' +  lname  %></label>
+			
+				  <% unless @account.id == @profileuser.id %>	
+				 
+					  <% if @account.pending_friends.present? %>					  
+					         <% @account.pending_friends.each do |friendship| %>		
+					         		    
+					         	  <% if friendship.id == @profileuser.id %>	
+					         	  <button data-id="<%= Base64.encode64(friendship.id.to_s)%>" class="cancelfriend">Cancel Request</button>
+								  <button data-id="" class="addfriend" style="display:none;" >Add Friend</button>							         	
+								  
+									
+									 <% end %>
+							<% end %>		
+							<% end %>		
+							
+							<% if !@friend.present? %>
+							 
+							      <% if @profileuser.user_type.to_i == 3 && @account.user_type.to_i == 3 %>
+							     <span></span>
+							     <% else %>
+									  <button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" class="addfriend">
+									  <%=  @profileuser.user_type==3 ? 'Join' :'Add Friend'%>						  
+									  </button>
+							<% end %>		  
+							
+									<button data-id="" class="cancelfriend" style="display:none;">Cancel Request</button>	
+									<% elsif @friend.approved== true %>
+									   <div class="reqsent">
+										<span>Friend</span>							     
+										</div>	
+									<% else %>
+								
+									  <div class="reqsent">
+										<span><%= @profileuser.id == @friend.account_id ? 'Request Pending ' : 'Request Sent ' %></span>							     
+										</div>		
+									<% end %>
+				      		
+				      
+				   
+				<% end %>
+				
+				</h3>
+						</div>
 			<div class="profile_actions">
 				<button class="message">Message</button
 				><button class="challenge">Challenge</button>
@@ -30,5 +91,67 @@
 	</div>
 </div>
 <script type="text/javascript">
+$(document).ready(function(){
+
+//remove friend
+
+$('.cancelfriend').on('click', function() {
+var toid = $(this).attr('data-id');
+
+	$.ajax({
+				type: "DELETE",
+				url: '/cancelrequest/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('.cancelfriend').hide();
+					$('.addfriend').show();
+					$('.addfriend').attr('data-id', data);					
+					$('.flash-message').html('<div class="alert alert-success"> Request Removed Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+// add friend
+$('.addfriend').on('click', function() {
+var toid = $(this).attr('data-id');
+	$.ajax({
+				type: "POST",
+				url: '/addfriend/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {toid:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('.addfriend').hide();
+					$('.cancelfriend').show();
+					$('.cancelfriend').attr('data-id', data);
+					
+					$('.flash-message').html('<div class="alert alert-success"> Request Sent Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+	    
+	    
+      
+});	  // end of document.ready  
+	    
 
 </script>

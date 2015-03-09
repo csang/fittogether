@@ -54,6 +54,7 @@ class CallbackController < ApplicationController
       @account['last_name'] = session[:account][:last_name]
       @account['user_name'] = session[:account][:username] 
       @account['email'] = session[:account][:email] 
+      @account['user_type'] = session[:account][:account_type].to_i
         if @account.save
           case session[:account][:account_type].to_i
           when 2
