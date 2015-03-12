@@ -590,9 +590,7 @@ City.create([
 Specialty.create([
 { name: 'Aerobic'}, 
 { name: 'Athletic Clubs'}, 
-{ name: 'Broadcast engineering'}, 
 { name: 'Boxing'},
-{ name: 'Country Clubs'},
 { name: 'Cross Fit'},
 { name: 'Dance'},
 { name: 'Fitness'},
