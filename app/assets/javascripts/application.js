@@ -207,25 +207,41 @@ Nav = {
 	},
 
 	show_results: function(e){
-		if(e.keyCode == 13){
-			if($('#nav_container .search input').val().length < 1){
-				$('.search_results_section').animate({
-					height: '0px',
-				},500);
-			}else{
-				if(!$('.search_results_section').is(':animated')){
-					$('.search_results_section').animate({
-						height: window.innerHeight - 145,
-					}, 500);
-
-					$('#content').click(function(){
-						$('.search_results_section').animate({
-							height: '0px',
-						},500);	
-					})
-				};
-			};
-		};
+	
+		e.preventDefault();
+		if (e.keyCode == 27) {
+			$('.search_results_section').hide('slow');
+			return false;
+		}	
+	    var keyword = $(this).val();
+	    if (keyword.length < 1) {
+			$('.search_results_section').hide('slow');
+			return false;
+		}	
+		if (keyword.length >= 2) {
+		$.ajax({
+			type: "POST",
+			url: '/search_people/'+ keyword, //sumbits it to the given url of the form
+			dataType: "HTML",
+			beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+					},
+		    success: function(data){
+			
+				$('.search_results_section').html(data);
+				
+				$('.search_results_section').show('slow');
+				
+				},
+		    error:	function (xhr, ajaxOptions, thrownError) {
+				console.log(xhr.status)
+				
+			}	
+		
+	    });
+		}
+		
+		
 	},
 
 	display_previews: function(e){

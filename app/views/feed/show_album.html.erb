@@ -1,0 +1,71 @@
+<%= render(:partial => 'feed_aside') %>
+<div id="content">
+	<div class="profile photo-album">
+		<div class="comment_view">
+	<%= form_for @profile, :url=>{:action=>'update_album'}, :html=>{:name=>'updatealbum',:id => "updatealbum", :enctype=>"multipart/form-data"} do |f| %>	
+	<div class="collection">
+	
+	       <% @album.album_images.each do |ac| %>			
+	<div class="photo-new" id="photo_<%= ac.id %>">		
+	<a class="album-delete" href="javascript:void(0);" title="Delete" data-id="<%= Base64.encode64(ac.id.to_s)%>"></a>		
+			<%= image_tag(ac.image,  height: '300', width: '300' ) %>  
+	</div>
+		<% end %>
+		
+		</div>
+	       
+	       <div class="album-input">
+			<input name="photo[]" id="photo" type="file" accept="image/*">
+			<input name="photo[]" id="photo" type="file" accept="image/*">
+			<input name="photo[]" id="photo" type="file" accept="image/*">
+			<input name="photo[]" id="photo" type="file" accept="image/*">
+			<input name="photo[]" id="photo" type="file" accept="image/*">
+			</div>
+			<div class="album-title">Album Title   <input type="text" name="title" value="<%= @album.title.present? ? @album.title : 'untitled' %>">	
+	      <input type="hidden" name="album_id" value="<%= Base64.encode64(@album.id.to_s) %>">
+	      </div>
+	      	<%= f.select :share_with, options_for_select(["Public", "Private","Friends"]), :class => 'selectpicker' %>		
+		
+			<button id="share_album">Upload</button>
+			  <a class="btn btn-default bck" onclick='window.history.go(-1)' href="javascript:void(0);" title="Cancel">Cancel</a>
+		</div>
+		
+	</div>
+	<% end %>
+		</div>
+	</div>
+	
+</div>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+$('.album-delete').on('click', function() {
+var toid = $(this).attr('data-id');
+
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '/deleteimage/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {imgid:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#photo_'+data).fadeOut();
+									
+					$('.flash-message').html('<div class="alert alert-success"> Image Removed Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+	
+})
+</script>

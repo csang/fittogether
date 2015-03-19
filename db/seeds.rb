@@ -587,3 +587,36 @@ City.create([
  { name:'Zwolle', state_code:  'LA'}
 
 ]);
+Specialty.create([
+{ name: 'Aerobic'}, 
+{ name: 'Athletic Clubs'}, 
+{ name: 'Boxing'},
+{ name: 'Cross Fit'},
+{ name: 'Dance'},
+{ name: 'Fitness'},
+{ name: 'Kick Boxing'},
+{ name: 'MMA'},
+{ name: 'Pilates'},
+{ name: 'Weights (Strength and Conditioning)'},
+{ name: 'Yoga'},
+{ name: 'Others'}
+]);
+
+Amenity.create([
+{ name: 'Swimming Pool'}, 
+{ name: 'Basketball'}, 
+{ name: 'Day Care'}, 
+{ name: 'Dry Cleaning'},
+{ name: 'Food/Juice Bar'},
+{ name: 'Guest Services '},
+{ name: 'Locker Rooms'},
+{ name: 'Massage'},
+{ name: 'Nutrition'},
+{ name: 'Parking'},
+{ name: 'Racquetball'},
+{ name: 'Squash'},
+{ name: 'Sauna'},
+{ name: 'Steam'},
+{ name: 'Tennis Courts'}
+]);
+

@@ -34,7 +34,7 @@ $fitpoints: #f3e500;
 .account_info .profile_nav a{
 	color: #2f8352;
 	padding:9px 0;
-	margin: 0 16px;
+	margin: 0 15px;
 }
 
 .account_info .profile_nav ul{
@@ -218,7 +218,7 @@ $fitpoints: #f3e500;
 	width: 100%;
 	float: none;
 	text-transform: uppercase;
-	margin: 71px 0 0;
+	margin: 61px 0 0;
 }
 
 #left_side #account_info.profile_aside .user h3 span{
@@ -227,7 +227,8 @@ $fitpoints: #f3e500;
 	color: #2f8352;
 	margin: 16px 0 0 -71px;
 }
-
+#left_side #account_info.profile_aside .user h3 .reqsent{display:inline-block; width:100%; text-align:center; vertical-align:top;}
+#left_side #account_info.profile_aside .user h3 .reqsent span{margin:3px 0 0 0px;display:inline-block;vertical-align:top; position:relative;}
 #left_side #account_info.profile_aside .user h3 span::before{
 	content: url('icons/checked.png');
 	margin: 0 5px;
@@ -472,3 +473,8 @@ $fitpoints: #f3e500;
 	position: absolute;
 }
 .sec-in{display:inline-block; vertical-align:top;}
+.personal-new{}
+.account_info .profile_about .personal.personal-new li:before{}
+.account_info .profile_about .personal.personal-new li{margin:0px;}
+.account_info .profile_about .personal.personal-new li:nth-child(n):before{content:"";}
+

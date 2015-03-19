@@ -1,24 +1,139 @@
+
 <div class="profile_photos_view">
-	<div class="photos_sub_nav">
+
+<% @album.each do |albm| %>
+<% if albm.album_images.count > 0 %>
+
+<% if albm.share_with == 'Private' || @account.id == albm.account_id %>
+
+	
+<div class="photos_sub_nav">
 		<div class="breadcrumbs">
-			<p><span>Album</span>><span>Big Life Moments</span></p>
+			<p><span>Album</span>><span>
+			<% if @profileuser.id == @account.id %>
+			<%= link_to  albm.title.present? ? albm.title : 'untitled', showalbum_path(albm.id) %>
+			<% else %>
+			<%=  albm.title.present? ? albm.title : 'untitled' %>
+			<% end %>
+			</span></p>
 		</div>
 		<div class="photo_options">
 			<div class="amount">
-				<p>8 Photos</p>
+				<p><%= albm.album_images.count %> Photos</p>
 			</div>
 		</div>
 	</div>
 	<div class="collection">
-		<% ['1','2','3','4','5','6','7','8'].each do |image| %>
-		<div class="photo">
+	<% albm.album_images.each do |img| %>
+		<div class="photo album-hover ">
 			<div class="on_hover">
-				<%= image_tag('icons/photos_view.png') %>
-				<%= image_tag('icons/photos_comment.png') %>
+				<% image_tag('icons/photos_view.png') %>
+				<% image_tag('icons/photos_comment.png') %>
 				<span>28</span>
 			</div>
-			<%= image_tag('photos/'+image+'.png') %>
+			
+			<a class="album-img" href="#" data-toggle="modal" data-target="#basicModal<%= img.id %>"> <img src="<%= img.image %>" height="300" widht="300"> </a>
+			
+			<div class="modal fade " id="basicModal<%= img.id %>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+			   <div class="modal-dialog">
+				<div class="modal-content">
+				 <div class="modal-body">
+
+			   
+				  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+				  <img src="<%= img.image %>" height="600" widht="600" >
+				</div>
+            
+              </div>
+            </div>
+            </div>
 		</div>
 		<% end %>
 	</div>
+	
+	<% elsif (albm.share_with == 'Friends' && check_if_friend(albm.account_id,@account.id) || (albm.share_with == 'Friends' && @account.id == albm.account_id))  || albm.share_with == 'Public'  %>
+
+	<div class="photos_sub_nav">
+		<div class="breadcrumbs">
+			<p><span>Album</span>><span>
+			<% if @profileuser.id == @account.id %>
+			<%= link_to  albm.title.present? ? albm.title : 'untitled', showalbum_path(albm.id) %>
+			<% else %>
+			<%=  albm.title.present? ? albm.title : 'untitled' %>
+			<% end %>
+			</span></p>
+		</div>
+		<div class="photo_options">
+			<div class="amount">
+				<p><%= albm.album_images.count %> Photos</p>
+			</div>
+		</div>
+	</div>
+	<div class="collection">
+	<% albm.album_images.each do |img| %>
+		<div class="photo album-hover ">
+			<div class="on_hover">
+				<% image_tag('icons/photos_view.png') %>
+				<% image_tag('icons/photos_comment.png') %>
+				<span>28</span>
+			</div>
+			
+			<a class="album-img" href="#" data-toggle="modal" data-target="#basicModal<%= img.id %>"> <img src="<%= img.image %>" height="300" widht="300"> </a>
+			
+			<div class="modal fade " id="basicModal<%= img.id %>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+			   <div class="modal-dialog">
+				<div class="modal-content">
+				 <div class="modal-body">
+
+			   
+				  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+				  <img src="<%= img.image %>" height="600" widht="600" >
+				</div>
+            
+              </div>
+            </div>
+            </div>
+		</div>
+		<% end %>
+	</div>
+	
+	<% end %>
+	<% end %>
+	<% end %>
 </div>
+<!-- script src="https://code.jquery.com/jquery-1.10.2.min.js"></script -->
+<script>
+        $(document).ready(function(){        
+            $('li img').on('click',function(){
+                var src = $(this).attr('src');
+                var img = '<img src="' + src + '" class="img-responsive"/>';
+                
+                //start of new code new code
+                var index = $(this).parent('li').index();   
+                
+                var html = '';
+                html += img;                
+                html += '<div style="height:25px;clear:both;display:block;">';
+                html += '<a class="controls next" href="'+ (index+2) + '">next &raquo;</a>';
+                html += '<a class="controls previous" href="' + (index) + '">&laquo; prev</a>';
+                html += '</div>';
+                
+                $('#basicModal').modal();
+                $('#basicModal').on('shown.bs.modal', function(){
+                    $('#basicModal .modal-body').html(html);
+                    //new code
+                    $('a.controls').trigger('click');
+                })
+                $('#basicModal').on('hidden.bs.modal', function(){
+                    $('#basicModal .modal-body').html('');
+                });
+                
+                
+                
+                
+           });
+        
+        })       
+        
+    </script>
+

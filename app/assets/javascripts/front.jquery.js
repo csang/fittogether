@@ -341,8 +341,168 @@ $(document).ready(function () {
             $(element).removeClass("error");
         }
     });
+    
+    $('#groupclasses').on('click', function() {
+		
+		var ss = $(this).val()
+     	if (ss.indexOf("7") != -1) {
+			$('.Dance').show();
+		} else {
+			$('.Dance').hide();
+		}	
+		});
+   $('#tyes').on('click', function(){
+	   $('.fee').show();
+	});		
+	
+	$('#tno').on('click', function(){
+	   $('.fee').hide();
+	});		
 
     
+        $("#update_about_gym").validate({
+        rules: {
+            'name': {
+                required: true,
+              },
+            'address[]': {
+                required: true,
+                
+            },
+            'specialty[]': {
+                required: true,
+                
+            },
+            'franchise': {
+                required: true,
+                
+            },
+            'groupclasses[]': {
+                required: true,
+                
+            },
+            'train_client_at_your_gym': {
+                required: true,
+                
+            },
+            'sunday_start' : {
+				 required: true
+			 },
+		     'sunday_end' : {
+				 required: true
+			 },
+		     'monday_start' : {
+				 required: true
+			 },
+		     'monday_end' : {
+				 required: true
+			 },
+		     'tuesday_start' : {
+				 required: true
+			 },
+		     'tuesday_end' : {
+				 required: true
+			 },
+		     'wednesday_start' : {
+				 required: true
+			 },
+		     'wednesday_end' : {
+				 required: true
+			 },
+		     'thrusday_start' : {
+				 required: true
+			 },
+		     'thrusday_end' : {
+				 required: true
+			 },
+		     'firday_start' : {
+				 required: true
+			 },
+		     'friday_end' : {
+				 required: true
+			 },
+		     'saturday_start' : {
+				 required: true
+			 },
+		     'saturday_end' : {
+				 required: true
+			 },
+            'amenity[]': {
+                required: true,
+                
+            }								 		
+        },
+        messages: {
+            'name': {
+                required: 'Please enter name.',
+                
+            },
+            'address[]': {
+                required: 'Please enter address.',
+            },
+            'specialty[]': {
+                required: 'Please select specialty.',
+            },
+            'franchise': {
+                required: 'Please select franchise.',
+            },
+            'groupclasses[]': {
+                required: 'Please select group.',
+            },
+            'train_client_at_your_gym': {
+                required: 'Please select train.',
+                
+            },
+            'sunday_start' : {
+				 required: 'Please select open time.',
+			 },
+		     'sunday_end' : {
+				 required: 'Please select close time.',
+			 },
+		     'monday_start' : {
+				 required: 'Please select open time.',
+			 },
+		     'monday_end' : {
+				 required: 'Please select close time.',
+			 },
+		     'tuesday_start' : {
+				 required: 'Please select open time.',
+			 },
+		     'tuesday_end' : {
+				 required: 'Please select close time.',
+			 },
+		     'wednesday_start' : {
+				 required: 'Please select open time.',
+			 },
+		     'wednesday_end' : {
+				 required: 'Please select close time.',
+			 },
+		     'thuresday_start' : {
+				 required: 'Please select open time.',
+			 },
+		     'thuresday_end' : {
+				 required: 'Please select close time.',
+			 },
+		     'firday_start' : {
+				 required: 'Please select open time.',
+			 },
+		     'friday_end' : {
+				 required: 'Please select close time.',
+			 },
+		     'saturday_start' : {
+				 required: 'Please select open time.',
+			 },
+		     'saturday_end' : {
+				 required: 'Please select close time.',
+			 },
+		     'amenity[]' : {
+				 required: 'Please select amenity.',
+			 }		
+        },
+	    highlight: function(element) {
+            $(element).removeClass("error");
+        }
+    });
    
 }); // end of document dot ready
 

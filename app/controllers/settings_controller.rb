@@ -8,6 +8,7 @@ class SettingsController < ApplicationController
   end
 
   def settings
+    
 		@page = 'settings_basic'
 	end
 
@@ -19,7 +20,12 @@ class SettingsController < ApplicationController
 	def about
     @cities = City.all()
     model = (@account_type.to_i == 2) ? AccountTrainer : AccountUser
-	  @account_details = model.where(:account_id=>@account.id).first 
+    @account_details = model.where(:account_id=>@account.id).first 
+	 
+	if @account_type == "3"
+      @account_gyms = AccountGym.where(:account_id=>@account.id).first 
+    end
+    #abort(@account_gyms.inspect) 
 		@page = 'settings_about'
 		render 'index'
 	end
@@ -41,9 +47,7 @@ class SettingsController < ApplicationController
     @account_details = Account.where(:id=>@account.id).first
     if @account_type.to_i == 2
       @account_trainers = AccountTrainer.where(:account_id=>@account.id).first 
-    elsif @account_type == 3
-      @account_gyms = AccountGym.where(:account_id=>@account.id).first 
-    else
+   else
       @account_users= AccountUser.where(:account_id=>@account.id).first 
     end
   	
@@ -102,12 +106,17 @@ class SettingsController < ApplicationController
   end
   
   def isprivate(slug)
-    ip = AccountPrivacy.where(:account_id=>@account.id).select(slug).first
-    if ip.present? 
-      return ip[slug]
-	  else 
-      return false
-	  end	
+    pre = AccountPrivacy.where(:account_id=>@account.id)
+    if !pre.present?
+     return 123 
+    else
+		ip = AccountPrivacy.where(:account_id=>@account.id).select(slug).first
+		if ip.present? 
+		  return ip[slug]
+		  else 
+		  return false
+		  end	
+	end	  
       
   end
   
@@ -190,6 +199,34 @@ class SettingsController < ApplicationController
       }
     end
     # render nothing: true 
+  end
+  
+  def update_about_gym
+ # abort(@account.id.inspect)
+  timing = Hash.new
+  timing['sunday_start'] =params[:sunday_start] 
+  timing['sunday_end'] =params[:sunday_end] 
+  timing['monday_start'] =params[:monday_start] 
+  timing['monday_end'] =params[:monday_end] 
+  timing['tuesday_start'] =params[:tuesday_start] 
+  timing['tuesday_end'] =params[:tuesday_end] 
+  timing['wednesday_start'] =params[:wednesday_start] 
+  timing['wednesday_end'] =params[:wednesday_end] 
+  timing['thrusday_start'] =params[:thrusday_start] 
+  timing['thrusday_end'] =params[:thrusday_end]
+  timing['friday_start'] =params[:friday_start] 
+  timing['friday_end'] =params[:friday_end]
+  timing['saturday_start'] =params[:saturday_start] 
+  timing['saturday_end'] =params[:saturday_end]
+  
+  @account_details = AccountGym.where(:account_id=>@account.id).first
+  @res = @account_details.update_attributes(:name => params[:name], :address =>params[:address], :specialties => params[:specialty], :franchise => params[:franchise], :groupclasses => params[:groupclasses], :dancetypes => params[:dancetype], :train_client_at_your_gym => params[:train_client_at_your_gym], :fee => params[:fee], :amenities => params[:amenity], :timings => timing)
+    if @res
+     flash[:notice] = "About settings has been updated successfully."
+      else 
+        flash[:error] = "About settings cannot be updated. Please try again"
+      end
+   redirect_to request.env['HTTP_REFERER'] and return
   end
 
 end

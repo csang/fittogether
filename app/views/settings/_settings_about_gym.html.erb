@@ -1,109 +1,195 @@
-<%= form_for @page,:url=>{:action=>'update_social_settings'},:html=>{:id => "social_settings_form"} do |f| %>
- <div class="position row">
-    <h2>Main gym you train</h2>
-    <div class="input">
-      <input type="text" name="account_trainers[gym_id]" placeholder="" value="<%= @account_trainers['gym_id'] %>">
-    </div>
-  </div>
+ <script>
+  
+   $(function() {
+                    $('.start').timepicker();
+                    $('.end').timepicker();
+                   
+                });
+            </script>
+ 
+<%= form_for @page,:url=>{:action=>'update_about_gym'},:html=>{:id => "update_about_gym"} do |f| %>
+
 <div class="position row">
-    <h2>What fitness disciplines do you specialize in?</h2>
-    <div class="input">
-      <input type="textarea" name="account_trainers[fitness_discpline]" placeholder="" value="<%= @account_trainers['fitness_discpline'] %>">
-    </div>
-  </div>
-<div class="position row">
-    <h2>What certs do you have?</h2>
-    <div class="input">
-      <input type="textarea" name="account_trainers[certs]" placeholder="" value="<%= @account_trainers['certs'] %>">
-    </div>
-  </div>
-<div class="position row">
-    <h2>Other qualifications or awards?</h2>
-    <div class="input">
-      <input type="textarea" name="account_trainers[awards]" placeholder="" value="<%= @account_trainers['awards'] %>">
-    </div>
-  </div>
-<div class="position row">
-    <h2>Do you do personal training sessions in people's homes?</h2>
-    <div class="input radio-option">
-	<div class="radio-inner"><label>YES</label>
-      <input type='radio' name="account_trainers[personal_training]" value='yes' <%= (@account_trainers['personal_training'] == 'yes') ? 'checked' : nil %> ><div class="radio"><div class="checked"></div></div>
-	 </div>
-	 <div class="radio-inner"><label>NO</label>
-	 <input type='radio' name="account_trainers[personal_training]" value='no' <%= (@account_trainers['personal_training'] == 'no') ? 'checked' : nil %>><div class="radio"><div class="checked"></div></div>
-	 </div>
-    </div>
-  </div>
-<div class="position row">
-    <h2>Age</h2>
-    <div class="input">
-      <input type="text" name ="account_trainers[age]" placeholder="" value="<%= @account_trainers['age'] %>">
-    </div>
-  </div>
-<div class="position row">
-    <h2>Do you have a bootcamp?</h2>
-    <div class="input radio-option">
-	<div class="radio-inner"><label>YES</label>
-      <input type='radio' name="account_trainers[bootcamp]" value='yes' <%= (@account_trainers['bootcamp'] == 'yes') ? 'checked' : nil %> ><div class="radio"><div class="checked"></div></div>
-	  </div>
-	  <div class="radio-inner"><label>NO</label>
-      <input type='radio' name="account_trainers[bootcamp]" value='no' <%= (@account_trainers['bootcamp'] == 'no') ? 'checked' : nil %> ><div class="radio"><div class="checked"></div></div>  
-	  </div>
-    </div>
-  </div>
-<div class="position row">
-    <h2>Location of the boot camp?</h2>
-    <div class="input">
-      <input type="textarea" name="account_trainers[location_bootcamp]" placeholder="" value="<%= @account_trainers['location_bootcamp'] %>">
-    </div>
-  </div>
-<div class="position row">
-    <h2>Do you offer group training?</h2>
-    <div class="input radio-option">
-	<div class="radio-inner"><label>YES</label>
-      <input type='radio' name="account_trainers[group_training]" value='yes'<%= (@account_trainers['group_training'] == 'yes') ? 'checked' : nil %> ><div class="radio"><div class="checked"></div></div>
-	  </div>
-	  <div class="radio-inner"><label>NO</label>
-      <input type='radio' name="account_trainers[group_training]" value='no' <%= (@account_trainers['group_training'] == 'no') ? 'checked' : nil %> ><div class="radio"><div class="checked"></div></div>  
-	  </div>
-    </div>
-  </div>
-<div class="position row">
-    <h2>Are you an affiliate for any products/services? Which ones?</h2>
-    <div class="input">
-      <input type="textarea" name="account_trainers[affiliate]" placeholder="" value="<%= @account_trainers['affiliate'] %>">
+
+    <h2>Gym Name</h2>
+    <div class="input">      
+     <input type="text" name="name" value="<%= @account_gyms.name %>">
+      </select>
       
     </div>
   </div>
-<div class="position row">
-    <h2>Do you have a business website? List the url</h2>
-    <div class="input">
-      <input type="textarea" name="account_trainers[url]" placeholder="" value="<%= @account_trainers['affiliate'] %>">
+  
+  <div class="Address row">
+		<h2>Address</h2>
+		<div class="input">
+		 <% if @account_gyms.address.present? %>  
+          <% @account_gyms.address.each { |x|  %>
+			<textarea name="address[]"><%= x %> </textarea>
+			<% } %>
+			   <%else%> 
+			   <textarea name="address[]"></textarea>
+			   <% end %>
+			<button class="add add_address" type="button">+</button>
+		</div>
+	</div>
+  
+  <div class="position row">
+    <h2>Specialty </h2>
+    <div class="input">      
+  	<% special = Specialty.all.map{|x| [x.name] + [x.id]} %>
+			<%= select_tag(:specialty, options_for_select(special,@account_gyms.specialties.map {|j| j}), multiple: true) %>
+      
     </div>
   </div>
-<div class="position row">
-    <h2>Do you train both men and women?</h2>
-    <div class="input radio-option">
-	<div class="radio-inner"><label>YES</label>
-       <input type='radio' name="account_trainers[train_user_type]" value='yes' <%= (@account_trainers['train_user_type'] == 'yes') ? 'checked' : nil %>><div class="radio"><div class="checked"></div></div>
-	   </div>
-	   <div class="radio-inner"><label>NO</label>
-      <input type='radio' name="account_trainers[train_user_type]" value='no' <%= (@account_trainers['train_user_type'] == 'no') ? 'checked' : nil %>><div class="radio"><div class="checked"></div></div>
-	  </div>
+  
+  	<div class="gender row">
+			<h2>Are you a franchise?</h2>
+			
+			<div class="input radio-option">
+			<div class="sec-in">
+				<label>Yes</label><input type="radio" name="franchise" value="1"  <%= @account_gyms.franchise.to_i == 1 ? 'checked=checked' :'' %> ><div class="radio"><div class="checked"></div></div>
+				</div>
+				<div class="sec-in">
+				<label>No</label><input type="radio" name="franchise" value="0" <%= @account_gyms.franchise.to_i == 0 ? 'checked=checked' :'' %>><div class="radio"><div class="checked"></div></div>
+				</div>
+		   </div>		
+			</div>
+		
+       <div class="position row">
+    <h2>Group Classes offered</h2>
+    <div class="input">      
+    <% gspecial = Specialty.all.map{|x| [x.name] + [x.id]} %>
+     <%= select_tag(:groupclasses, options_for_select(gspecial,@account_gyms.groupclasses.map{|j| j}),multiple: true) %>
     </div>
   </div>
-<div class="position row">
-    <h2>Do you do in home training?</h2>
-    <div class="input radio-option">
-	<div class="radio-inner"><label>YES</label>
-      <input type='radio' name="account_trainers[home_training]" value='yes' <%= (@account_trainers['home_training'] == 'yes') ? 'checked' : nil %>><div class="radio"><div class="checked"></div></div>
-	  </div>
-	  <div class="radio-inner"><label>NO</label>
-      <input type='radio' name="account_trainers[home_training]" value='no' <%= (@account_trainers['home_training'] == 'no') ? 'checked' : nil %>><div class="radio"><div class="checked"></div></div>
-	  </div>
+  
+   <div class="Dance row" style="display:none">
+		<h2>Dance Type</h2>
+		<div class="input">
+			<textarea name="dancetype"></textarea>
+			
+		</div>
+	</div>
+  	<div class="gender row">
+			<h2>Do you allow trainers not affiliated with your gym to train clients at your gym for a fee?</h2>
+		
+			<div class="input radio-option">
+			<div class="sec-in">
+				<label>Yes</label><input type="radio" name="train_client_at_your_gym" value="1" id="tyes" <%= @account_gyms.train_client_at_your_gym.to_i == 1 ? 'checked=checked' :'' %> ><div class="radio"><div class="checked"></div></div>
+				</div>
+				<div class="sec-in">
+				<label>No</label><input type="radio" name="train_client_at_your_gym" value="0" id="tno" <%= @account_gyms.train_client_at_your_gym.to_i == 0 ? 'checked=checked' :'' %> ><div class="radio"><div class="checked"></div></div>
+				</div>
+		   </div>		
+			
+		<% if @account_gyms.train_client_at_your_gym.to_i==1 %>
+		<% style = "display:block" %>
+		<% else %>
+		  <% style = "display:none" %>
+		<% end %>
+		
+		<div class="fee row" style="<%= style %>">
+    <h2>What is the fee?</h2>
+    <div class="input">      
+     <input type="text" name="fee" value="<%=  @account_gyms.fee %>">
+      </select>
+      
     </div>
   </div>
-<input  type="hidden" name="account_trainers[account_id]" value='<%= @account.id %>'>
+
+  <div class="gender row">
+			<h2>What are your hours?</h2>
+			
+		</div>
+		 <div class="gender row">
+			<h2>Sunday</h2>
+				<div class="input radio-option">
+			<div class="sec-in">
+				<label>Open</label><input type="text" name="sunday_start" class="start"   autocomplete="off" value="<%=  @account_gyms.timings["sunday_start"] %>" >
+				</div>
+				<div class="sec-in">
+				<label>Close</label><input type="text" name="sunday_end" class="end" autocomplete="off" value="<%=  @account_gyms.timings["sunday_end"] %>">
+				</div>
+		   </div>		
+			</div>
+	
+		 <div class="gender row">
+			<h2>Monday</h2>
+				<div class="input radio-option">
+			<div class="sec-in">
+				<label>Open</label><input type="text" name="monday_start" class="start" autocomplete="off" value="<%=  @account_gyms.timings["monday_start"] %>" >
+				</div>
+				<div class="sec-in">
+				<label>Close</label><input type="text" name="monday_end" class="end" autocomplete="off" value="<%=  @account_gyms.timings["monday_end"] %>">
+				</div>
+		   </div>		
+			</div>
+	
+		
+		 <div class="gender row">
+			<h2>Tuesday</h2>
+				<div class="input radio-option">
+			<div class="sec-in">
+				<label>Open</label><input type="text" name="tuesday_start" class="start" value="<%=  @account_gyms.timings["tuesday_start"] %>" >
+				</div>
+				<div class="sec-in">
+				<label>Close</label><input type="text" name="tuesday_end" class="end" value="<%=  @account_gyms.timings["tuesday_end"] %>">
+				</div>
+		   </div>		
+			</div>
+			<div class="gender row">
+			<h2>Wednesday</h2>
+				<div class="input radio-option">
+			<div class="sec-in">
+				<label>Open</label><input type="text" name="wednesday_start" class="start" value="<%=  @account_gyms.timings["wednesday_start"] %>">
+				</div>
+				<div class="sec-in">
+				<label>Close</label><input type="text" name="wednesday_end" class="end" value="<%=  @account_gyms.timings["wednesday_end"] %>">
+				</div>
+		   </div>		
+			</div>
+			<div class="gender row">
+			<h2>Thrusday</h2>
+				<div class="input radio-option">
+			<div class="sec-in">
+				<label>Open</label><input type="text" name="thrusday_start" class="start" value="<%=  @account_gyms.timings["thrusday_start"] %>" >
+				</div>
+				<div class="sec-in">
+				<label>Close</label><input type="text" name="thrusday_end" class="end" value="<%=  @account_gyms.timings["thrusday_end"] %>">
+				</div>
+		   </div>		
+			</div>
+			<div class="gender row">
+			<h2>Friday</h2>
+				<div class="input radio-option">
+			<div class="sec-in">
+				<label>Open</label><input type="text" name="friday_start" class="start" value="<%=  @account_gyms.timings["friday_start"] %>" >
+				</div>
+				<div class="sec-in">
+				<label>Close</label><input type="text" name="friday_end" class="end" value="<%=  @account_gyms.timings["friday_end"] %>" >
+				</div>
+		   </div>		
+			</div>
+			<div class="gender row">
+			<h2>Saturday</h2>
+				<div class="input radio-option">
+			<div class="sec-in">
+				<label>Open</label><input type="text" name="saturday_start" class="start" value="<%=  @account_gyms.timings["saturday_start"] %>" >
+				</div>
+				<div class="sec-in">
+				<label>Close</label><input type="text" name="saturday_end" class="end" value="<%=  @account_gyms.timings["saturday_end"] %>">
+				</div>
+		   </div>		
+			</div>
+		</div>
+  <div class="gender row">
+    <h2>What amenities do you have?</h2>
+    <div class="input">      
+    <% amenity = Amenity.all.map{|x| [x.name] + [x.id]} %>
+			<%= select_tag(:amenity, options_for_select(amenity,@account_gyms.amenities.map{|j| j}), multiple: true) %>
+    </div>
+  </div>
+  
 <input type="submit" class="btn btn-primary" value="save">
 <a class="btn btn-default bck" onclick='window.history.go(-3)' href="javascript:void(0);" title="Cancel">Cancel</a>
 <% end %>

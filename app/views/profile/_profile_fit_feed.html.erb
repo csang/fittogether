@@ -1,15 +1,15 @@
-<div class="profile_about">
-  <div class="head_box">
+  <!--<div class="profile_about">
+<div class="head_box">
    
   </div>
   <div class="about">
     <ul class="personal">
       
-      <li>Lives in: <% if @account.city_id.present? %> <%= get_city_name(@account.city_id) %> , <%= get_state_name(@account.state_id) %> <% else %> N/A <% end %> </li>
-      <li>Works out at:  <% if @account.gym_id.present? %> <%= link_to("<span>#{get_gym_name(@account.gym_id)}</span>".html_safe, '') %> <% else %> N/A <% end %> </li>
+  <li>Lives in: <% if @profileuser.city_id.present? %> <%= get_city_name(@profileuser.city_id) %> , <%= get_state_name(@profileuser.state_id) %> <% else %> N/A <% end %> </li>
+      <li>Works out at:  <% if @profileuser.gym_id.present? %> <%= link_to("<span>#{get_gym_name(@profileuser.gym_id)}</span>".html_safe, '') %> <% else %> N/A <% end %> </li>
     </ul>
-    <ul class="activities">
-      <% @account.account_activity.each do |activity| %>
+   <ul class="activities">
+      <% @profileuser.account_activity.each do |activity| %>
         <% activity.activity_id.each do |act| %>
           <li>
             <% @value =  get_activity_name(act) %>
@@ -47,5 +47,5 @@
         <%= image_tag('users/'+friend+'.png') %>
       </div>
     <% end %>
-  </div>
-</div>
+  </div> 
+</div> -->

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150210063800) do
+ActiveRecord::Schema.define(version: 20150303102800) do
 
   create_table "account_activities", force: true do |t|
     t.integer  "account_id"
@@ -51,6 +51,15 @@ ActiveRecord::Schema.define(version: 20150210063800) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "account_id"
+    t.string   "address"
+    t.string   "specialties"
+    t.integer  "franchise"
+    t.string   "groupclasses"
+    t.string   "dancetypes"
+    t.integer  "train_client_at_your_gym"
+    t.float    "fee",                      limit: 24
+    t.string   "amenities"
+    t.string   "timings"
   end
 
   create_table "account_privacies", force: true do |t|
@@ -149,6 +158,9 @@ ActiveRecord::Schema.define(version: 20150210063800) do
     t.string   "company"
     t.string   "zipcode"
     t.integer  "belong",              limit: 1
+    t.string   "pic"
+    t.string   "remember_token"
+    t.integer  "user_type",           limit: 1, default: 1
   end
 
   add_index "accounts", ["id"], name: "index_accounts_on_id", using: :btree
@@ -177,6 +189,31 @@ ActiveRecord::Schema.define(version: 20150210063800) do
   add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
   add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
 
+  create_table "album_images", force: true do |t|
+    t.integer  "album_id"
+    t.string   "image"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+  end
+
+  create_table "albums", force: true do |t|
+    t.string   "title"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "share_with"
+    t.integer  "account_id"
+  end
+
+  create_table "amenities", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "authorizations", force: true do |t|
     t.string   "provider"
     t.string   "uid"
@@ -199,6 +236,15 @@ ActiveRecord::Schema.define(version: 20150210063800) do
     t.string   "state_code", limit: 4
   end
 
+  create_table "comments", force: true do |t|
+    t.integer  "post_id"
+    t.integer  "account_id"
+    t.text     "text"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "companies", force: true do |t|
     t.string   "name",       limit: 55
     t.datetime "created_at"
@@ -209,6 +255,15 @@ ActiveRecord::Schema.define(version: 20150210063800) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "friendships", force: true do |t|
+    t.integer  "account_id"
+    t.integer  "friend_id"
+    t.boolean  "approved"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "seen",       default: 0
   end
 
   create_table "goals", force: true do |t|
@@ -228,6 +283,25 @@ ActiveRecord::Schema.define(version: 20150210063800) do
     t.string   "name",       limit: 20
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "posts", force: true do |t|
+    t.integer  "account_id"
+    t.text     "text"
+    t.string   "share_with"
+    t.integer  "status"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.string   "image"
+    t.string   "video"
+    t.string   "video_file_name"
+    t.string   "video_content_type"
+    t.integer  "video_file_size"
+    t.datetime "video_updated_at"
   end
 
   create_table "privacies", force: true do |t|
@@ -251,6 +325,12 @@ ActiveRecord::Schema.define(version: 20150210063800) do
 
   create_table "relationships", force: true do |t|
     t.string   "name",       limit: 20
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "specialties", force: true do |t|
+    t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

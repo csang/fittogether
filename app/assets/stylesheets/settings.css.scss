@@ -1,6 +1,26 @@
+select::-moz-focus-inner {
+  border: 0;
+}
+
+select:focus
+{
+  outline: none;
+}
 .about_form select::-ms-expand {
     display: none;
 }
+.about_form select, select, .selection {
+   -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+	outline : none;
+}
+select::-ms-expand{
+  display:none;
+}
+.about_form select::-ms-expand{display:none;}
 #settings{
 	/*position: fixed;*/
 	width: 100%;
@@ -738,6 +758,9 @@
 .notifications_view label.error{line-height: 20px;margin: 0;padding: 0;width: 100%;color: #ff0000;display: block;}
 .about_form select[multiple],select[multiple]{background:#2f8352; padding:10px;}
 .radio-inner{display:inline-block; vertical-align:top; padding:7px 10px 0 0;}
+.member-data .row{margin:10px 0 5px; background:#ececec; padding:5px 3px; border:1px solid #c0c0c0;}
+
+.member-data .row a img{width:80px; height:80px; border-radius: 50%; -moz-border-radius:50%; -webkit-border-radius:50%; -o-border-radius:50%;}
 /* ================================== new  css end ============================================================================================*/
 @media screen and (max-width: 1280px){
 	#settings{
