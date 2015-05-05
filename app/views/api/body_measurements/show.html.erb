@@ -1,0 +1,46 @@
+<%= render(:partial => 'feed/feed_aside') %>
+<div id="content">
+	<div class="comment_view_bg">
+		
+          <div class="profile">
+            <div class ="account_info">
+			<div class="profile_nav">
+				<ul>
+				
+					<a class="selected" href="<%=  api_body_measurements_path %>"><li>FitBit Goals</li></a>
+					
+					<a  href="<%= api_activity_path %> "><li>FitBit Activities</li></a>
+				</ul>
+			</div>
+			
+			<div class="profile_data listing">
+
+		
+    <div class="about">                      
+  <ul class="about_me">
+  
+    <li> Weight Goal:	<%=  @body.weightgoal %> </li>
+    <li> Fat:	<%=  @body.fatgoal %> </li>
+   
+  </ul>
+    
+  <ul class="about_me">
+    <li> Bicep:	<%=  @body.bicep %> </li>
+    <li> Calf	<%=  @body.calf %> </li>
+    <li> Forearm	<%=  @body.forearm %> </li>
+    <li> Chest	<%=  @body.chest %> </li>
+   
+  </ul>
+   <div>
+	        
+
+			</div> 
+			</div> 
+		</div>
+	</div>
+	
+	
+
+		
+</div>
+

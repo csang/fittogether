@@ -1,0 +1,46 @@
+<script>
+function filldata(that){
+ 
+   $('#tags').val($(that).attr('data-name'));
+    $('#rip').val($(that).attr('datacid'));
+   
+   
+   $('.arport').fadeOut('slow');
+   }
+ </script>  
+		<% if @user.present? %>
+		
+			<%  @user.each do |abc| %>
+			<li class="trainers" onclick="javascript:filldata(this)"  datacid="<%= Base64.encode64(abc.id.to_s) %>" data-name="<%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %>">
+				<div class="column_header">
+				<div class="imageRound">
+				 <% img = useravatar(abc) %>
+				  <%= image_tag(img) %>	  			    
+					  
+				</div>
+				<div class="name">
+                                </h3><% if abc.user_type == 2 %>
+				Trainer
+				<% elsif abc.user_type == 3 %>	
+				Gym
+				<% else %>
+				User
+				<% end %>
+				 <%=  abc.id == @account.id ? '(me)' : '' %></h3>
+				
+				<% if abc.user_type == 3 %>
+					<h4> <%= abc.account_gym.name.present? ? abc.account_gym.name : abc.first_name  %></h4>
+				<% else %>
+					<h4><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></h4>
+				<% end %>	
+                                       
+                                       
+				</div>
+				<div class="clear"></div>
+				</div>
+			</li>
+	<% end %>	
+	<% else %>
+	<h2> No user found </h2>	
+	<% end %>		
+		

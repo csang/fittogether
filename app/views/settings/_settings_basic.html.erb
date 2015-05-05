@@ -1,20 +1,4 @@
-<% if request.host_with_port =='202.164.44.244:3021' %>
-  <% @clientid =  'ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e' %>
-  <% secertid = 'Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7' %>
-  <% @callback = 'http://202.164.44.244:3021/auth/auth0/callback' %>
-<% elsif request.host_with_port =='202.164.44.244:3020' %>
-  <% @clientid = 'r9Sl2O6H91d6YYsNM9PY7ncwzGJP0r1T' %>
-  <% secertid = 'orlOgRVhRzLH-DbmqVcmbdJACUYsA97gKIMZMvi-b_BeaD6Mbo3vmCLovW_erlyg' %>
-  <% @callback = 'http://202.164.44.244:3020/auth/auth0/callback' %>
-<% elsif request.host_with_port =='127.0.0.1:3000' %>
-  <% @clientid = 'USZ78oRzwIFx7e4gOjrpYA1VZIDBZo8u' %>
-  <% secertid = 'bwswf2HLFIskZiBv07EP--8Bd_nQNtgRwlosEC2tHSK4lMCD6dqYFV616_GJNWCu' %>
-  <% @callback = 'http://127.0.0.1:3000/auth/auth0/callback' %>
-<% else %>
-  <% @clientid = 'oeOfvZxqJotXpmoV1Us0VFlFbP0iNna3' %>
-  <% secertid = '-oaaNrv0GnbmqiSNuk-go-m7Ct-5D7IoF7NnuDBM_ip3sinY4gIQn6wEdl66_SqB' %>
-  <% @callback = 'http://104.236.205.185:3000/auth/auth0/callback' %>
-<% end %>
+<%= render(:partial => '/nav/classvar') %>
 <div id="form">	
   <div class="profile_pic">
     <form novalidate="novalidate" method="post" enctype="multipart/form-data" action="update_avatar" accept-charset="UTF-8">
@@ -127,8 +111,8 @@
     userData.password = $('#new_password').val();   
     userid = 'auth0|' +'<%= @account.fit_id %>';
 	var cData = {};
-	cData.client_id = '<%= @clientid %>';
-	cData.client_secret = '<%= secertid %>';
+	cData.client_id =  clientid ;
+	cData.client_secret = secertid ;
 	cData.grant_type = 'client_credentials';
    
 		

@@ -10,7 +10,7 @@
 			  <% end %>
 			</div>
 				<h3><a href="<%= abc.user_name %>" ><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></a></h3>
-				<span class="time"><% @comment.created_at.strftime("%B %e at %l:%M") %><%= time_ago_in_words(@comment.created_at)  %>AGO</span>
+				<span class="time"><% @comment.created_at.strftime("%B %e at %l:%M") %><%= time_ago_in_words(@comment.created_at)  %> ago</span>
 				<p> <%= @comment.text %> </p>
 		 </div>
 	

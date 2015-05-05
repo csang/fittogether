@@ -1,0 +1,52 @@
+<%= javascript_include_tag "inline_edit" %>
+<div class="events">
+  <div class="ad-btn">
+  </div>	
+  <div class="conver-area">
+    <div class="conver-left" id="conver">
+      <div class="" id="tblData">
+        <% if @conversation.present? %>
+          <% updateread(@conversation) %>
+       <ul>
+         
+          <% @conversation.each do |con| %>
+        <% kont =  countaliveconversation(con.id) %>
+         <% if kont > 0 %>
+            <% 	@receiver = interlocutor(con) %>
+
+            
+              <li id="cv_<%= con.id %>">
+                <div class="imageRound">	
+
+                  <% img = useravatar(@receiver) %>
+                  <%= image_tag(img) %>
+                </div>
+                <div class="user-name">
+                  <h2><%= link_to("<h3>#{@receiver.first_name} </h3>".html_safe, "/#{@receiver.user_name}") %>
+                  </h2>
+                  
+                  <div class="messageList msgLink" style="cursor:pointer;"  >
+                    <a href="<%= conversations_path(Base64.encode64(con.id.to_s)) %>"> <%= raw  getmessage(con.id) %></a>
+                  </div>
+                </div>
+              <% end %>
+
+            <% end %>
+            <% end %>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="conver-right">
+      <%= render(:partial => 'conversations/conversations', :message => @messages) %>
+    </div>
+    <% if !@messages.present? %>
+      <div style="display:inline-block; width:100%;">
+        <h2 class="noti-heading">  No Message found</h2>
+        <div class="conver-btn text-center"><button class="newmsf btn btn-primary" data-toggle="modal" data-target="#messageForm" >New Message</button></div>
+      </div>
+    <% end  %>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>

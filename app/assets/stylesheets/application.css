@@ -36,7 +36,6 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -124,7 +123,7 @@ body {
 	left: 0;
 	height: 109px;
 	background-color: #2f8352;
-	z-index: 9999;
+	z-index: 400;
 }
 
 #nav_container nav{
@@ -636,6 +635,7 @@ x:-o-prefocus, #nav_container .search span{
 	float: left;
 	width: 275px;
 	overflow: hidden;
+	height:600px!important;
 }
 
 #container #left_side #left_side_fixed{
@@ -908,7 +908,7 @@ footer .chat_bar{
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	z-index: 9997;
+	z-index:100;
 	clear: both;
 	border-top: 1px solid #050506;
 }
@@ -1120,7 +1120,7 @@ input:-ms-input-placeholder {
 
 #content{
 	width: 730px;
-	min-height: 990px;
+	/*min-height: 990px;*/min-height:600px;
 	float: left;
 	background-color: #d5d5d5;
 	padding-bottom: 35px;
@@ -1233,7 +1233,56 @@ float:right;}
 .copywrite{color:#fff; color:#fff; text-align:center; padding:9px 0 0 0; font-size:13px;}
 #content.profile_content .fit-feed .feed{padding-top:70px;}
 .pro-name{display:inline-block; width:100%; text-align:center;}
+#messageForm textarea{margin:0px;}
+#messageForm .modal-footer{margin:0px;}
+.conver-area{margin: 0px; padding:10px 0 0; border-left:1px solid #ccc;  border-right:1px solid #ccc; min-height:600px;}
 
+.conver-left{width:30%; float:left;border-right:1px solid #ccc;}
+.conver-left ul, ul.chating{margin:0px; padding:0px; display:inline-block; vertical-align:top; width:100%;}
+.conver-left ul{max-height:580px; overflow:auto;}
+ul.chating{max-height:400px; overflow:auto;}
+.conver-left ul li, ul.chating li{padding:8px; border-bottom:1px solid #ccc;display:inline-block; vertical-align:top; width:100%;}
+.conver-left .imageRound, ul.chating .imageRound{float:left; width:50px; height:50px; overflow:hidden;}
+ul.chating .imageRound{width:70px; height:70px;}
+.conver-left .imageRound img, ul.chating .imageRound img{width:100%; height:100%;}
+.conver-left{font-weight:normal;}
+.conver-left h2, .conver-right h2{font-weight:bold; color:#333; font-size:16px; padding:3px 0 5px;text-transform: capitalize;}
+.conver-left p a{color:#9197a3;}
+.conver-right{font-weight:normal;}
+.conver-right p{color:#333;}
+.conver-right{width:70%;float:left;border-left:1px solid #ccc; padding:5px 5px 50px; margin:0 0 0 -1px;}
+.user-name{padding:0 0 0 80px;}
+.chat-time{float:right; padding:7px 0 0; color:#9197a3;}
+.reply-box{padding:10px 0 50px 0;}
+.reply-box textarea{margin:0px 0 5px;}
+.chat-delete{background:url(../assets/chat-delete.png) no-repeat; width:11px; height:13px;text-indent: -9999px;float: right; border:none; padding:0px; opacity:0;}
+ul.chating li:hover .chat-delete{opacity:1;} 
+.listing{background:#fff; border:1px solid #bababa; padding:15px 15px 15px;}
+.listing .head_box h2{padding:5px 0px;}
+.listing ul.about_me li{border-bottom:1px solid #646464; padding:8px 0px;}
+.msg-right{margin:0 0 0 15%;}
+.modal-footer{margin-top:10px;}
+.msg-right .detail-box{font-size:14px; margin:7px 0px 0; color:#000;}
+.msg-right .detail-box span{font-size:14px; font-weight:bold; margin:0 8px 0 0; color:#515763; float:left;}
+.msg-right .detail-box p{padding:0 0 0 40px;}
+.modal-content .pop-row textarea, .modal-content .pop-row select{margin:0px;}
+.msg-right .user-name a.btn{margin:10px 10px 0 0; float:left;}
+.chat-edit{background:url(../assets/chat-edit.png) no-repeat; width:13px; height:13px;text-indent: -9999px;float: right; border:none; padding:0px; opacity:0; margin:0 10px 0 0;}
+ul.chating li:hover .chat-edit{opacity:1;}
+.msg-right ul.chating{max-height:inherit!important;}
+.msg-right .chat-edit, .msg-right .chat-delete{opacity:1;}
+.msg-right .detail-inner{float:left; margin:10px 30px 0 0;}
+.msg-right .detail-inner span{float;none;}
+.msg-right .detail-inner p{display:inline; padding:0px;}
+.msg-right #notifications_nav{position:relative; display:inline-block; vertical-align:top; width:100%; color:#fff; height:40px; line-height:40px; font-size:16px; text-transform:uppercase; padding:0px 10px; margin:0 0 10px;}
+.msg-btn{display:inline-block; vertical-align:top; width:100%;}
+#notifications_nav a.goal-btn{ background:#2f8352;font-size: 12px; height: auto; line-height: 28px; margin: 6px 0 0;
+    padding: 0 15px; width: auto;}
+.conver-right.msg-noborder{border:none;}
+.noti-heading, .conver-left h2.noti-heading{ color: #4cae4c; font-size: 17px; padding: 20px 0; text-align: center;}
+.modal-backdrop{display:none;}
+.notification-msg{text-align: center;font-size: 17px;color: #2F8352;margin: 20px 0 0;}
+.about_form select option, select option, .selection option{padding:1px 5px;}
 /* ================================== new  css end ========================================================================================*/
 @media screen and (max-width: 1279px){
 	/*#container{

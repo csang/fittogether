@@ -7,7 +7,7 @@
 		<div class="share" title="Who do you want to share this with?">
 			<h3>Share with:</h3>
 			<%= f.select :share_with, options_for_select(["Public", "Private","Friends"]), :class => 'genForm_dropBox' %>		
-			<div class="arrows">
+			<div class="arrows" style="display:none;">
 				<span><%= image_tag('icons/up.png') %></span>
 				<span><%= image_tag('icons/down.png') %></span>						
 			</div>
@@ -22,8 +22,8 @@
 	</div>
 	<% end %>
 <%= form_for @profile, :url=>{:action=>'create_album'}, :html=>{:name=>'createalbum',:id => "create_album", :enctype=>"multipart/form-data"} do |f| %>
-<input style="display:none;" name="album" id="album" type="file" accept="image/*"><span id="create_album"></span>
-<button id="share_album">Create Album</button>
+<input style="display:none;" name="album" id="album" type="file" accept="image/* , video/mp4"><span id="create_album"></span>
+<button id="share_album" title="You can create album of videos and images">Create Album</button>
 <% end %>
 
 <script>

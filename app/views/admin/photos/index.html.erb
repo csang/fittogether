@@ -1,0 +1,69 @@
+
+<section class="admin_maincontent">
+
+  <div class="page-header">
+    <div class="col-sm-9 PaddingLeft">
+     <h1 class="marginNone">Photos/Videos</h1>
+        </div>
+    <div class="col-sm-3 marginNone PaddingRight">
+      <%= form_tag search_admin_photos_path, :method => 'get', :class=>'form-search' do %>
+        <div class="input-append">
+          <input type="text" name="search" class="span2 search-query form-control" placeholder="Search">
+          <button type="submit" name="btnGo" class="btn btn-primary">Go</button>
+        </div>
+      <%end%>
+    </div>
+    <div class="clear"></div>
+  </div>   
+  <%= form_tag bulk_actions_admin_tasks_path, :method => 'post', :class=>'bulk-form' do %>  
+    <input type ="hidden" name ='model' value ="Account">
+    <div class="table-responsive left width100">
+      <table class="table table-bordered table-hover tablesorter"  id="myTable">
+        <thead>
+          <tr>
+            <th><span></span><%=  "Album" %></th>
+            <th><span></span><%=  "Username" %></th>
+            
+           <th><span></span><%= "Created At" %></th>  
+            <th class="action sort-disabled">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if(!@albums.blank?) %>
+            <% @albums.each do |album| %>
+ 
+             <% if(!album.album_images.blank?) %>
+              <tr id="row-<%= album.id %>">
+                <td><%= album.title.capitalize %></td>
+                <td><%= album.account.first_name.capitalize + ' ' + album.account.last_name.capitalize %></td>
+                
+                <td>
+                  <% if(!album.created_at.blank?)%>
+                    <%= album.created_at.strftime("%d %b, %Y") %>
+                  <%else%>N-A<%end%>
+                </td>
+
+                <td class="action">
+                  <%= link_to 'show'.html_safe, admin_photo_path(album), {:class=>'show-icon', :title=>'Show'} %>
+                  <%= link_to 'Delete'.html_safe, url_for(action: :destroy , id: album.id , model: 'Album'), method: :delete, :class=>'delete-icon', data: {confirm: "Are you sure you want delete?"} %>
+           
+                </td>
+
+              </tr>
+             
+             <% end %>
+              
+            <% end %>
+          <%else%>
+            <tr><td colspan="6" align="center">No records found</td></tr>
+          <%end%>
+
+        </tbody>
+      </table>  
+
+      <%= will_paginate @albums, :renderer => BootstrapPagination::Rails %>
+      <div class="clear"></div></div>
+    <div class="clear"></div>
+  </section>
+<% end %>
+

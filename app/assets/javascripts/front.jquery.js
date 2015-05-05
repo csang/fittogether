@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    
  	jQuery.validator.addMethod("require_from_group", function(value, element, options) {
     var numberRequired = options[0];
     var selector = options[1];
@@ -85,7 +86,7 @@ $(document).ready(function () {
             },
             'register_username': {
                 required: true,
-                alphanumeric:true,
+                userRegex:true,
                 minlength:3,
                 maxlength:25
             },
@@ -269,7 +270,16 @@ $(document).ready(function () {
 		 setTimeout(function() {
 			$('.full-loader').hide();
 			  }, 1000)
+                           setTimeout(function() {
+                            $('.flash-message').fadeOut();
+			  }, 5000)
+                          
+                          
 	});
+        
+          $.validator.addMethod("userRegex", function(value, element) {
+        return this.optional(element) || /^[a-z0-9\-_@]+$/i.test(value);
+    }, "Username must contain only letters, numbers,underscore, @ or dashes.");
 	
 	$("#updateprofile").validate({
         rules: {
@@ -287,7 +297,7 @@ $(document).ready(function () {
             },
             'username': {
                 required: true,
-                alphanumeric:true,
+                userRegex:true,
                 minlength:3,
                 maxlength:25
             },
@@ -503,6 +513,117 @@ $(document).ready(function () {
             $(element).removeClass("error");
         }
     });
+    
+   $("#challenge_form").validate({
+        rules: {
+            'challenge[text]': {
+                required: true,
+              },
+              'challenge[qty]':{
+             required: true,
+             number:true,        
+          
+              },
+              'valid_date' :{
+                required: true,
+              }
+        },
+        messages: {
+            'challenge[text]': {
+                required: 'Please enter text.',
+                
+            },
+              'challenge[qty]':{
+                required: 'Please enter quantity.',
+                number: 'Please enter only numeric value.',
+              },
+              'valid_date' :{
+                required: 'Please select date.',
+              }
+        },
+	  
+    });   
+    
+      $("#conversation_form").validate({
+        rules: {
+            'message[body]': {
+                required: true,
+              }
+        },
+        messages: {
+            'message[body]': {
+                required: 'Please enter message.',
+                
+            }
+        },
+	  
+    });   
+    
+    
+       
+   $("#goal_form").validate({
+        rules: {
+            'account_goal[text]': {
+                required: true,
+              },
+              'account_goal[qty]':{
+             required: true,
+             number:true,        
+          
+              },
+              'valid_date' :{
+                required: true,
+              }
+        },
+        messages: {
+            'account_goal[text]': {
+                required: 'Please enter text.',
+                
+            },
+              'account_goal[qty]':{
+                required: 'Please enter quantity.',
+                number: 'Please enter only numeric value.',
+              },
+              'valid_date' :{
+                required: 'Please select date.',
+              }
+        },
+	  
+    });   
+    
+    
    
 }); // end of document dot ready
+
+
+	
+	
+var source;
+//sse();  
+setTimeout(function () {
+  sse();
+
+}, 12000);
+
+
+function sse() {
+    if (typeof (EventSource) !== "undefined") { //check for browser support
+        if (typeof source != "undefined") {
+            source.close();
+        }
+        source = new EventSource("checkmsgcount");
+        source.onmessage = function (event) {  //detect message receipt
+            var output = JSON.parse(event.data);
+            //console.log(output.totalMsg);
+            if (0 != output.totalMsg) {
+                $('#newmsg').html(output.totalMsg).fadeIn();
+
+            }
+        };
+    } else {
+        alert("Whoops! Your browser doesn't  receive server-sent events.");
+    }
+}
+
+
 

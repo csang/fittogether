@@ -1,0 +1,42 @@
+<div class="events">
+<div class="ad-btn">
+</div>	
+<div class="conver-area">
+
+	
+	<div class="conver-right msg-right">
+<div class="notification_menu">
+  <div id="notifications_nav">Edit Chalanges</div>
+
+</div>
+<%= form_for( @challenge,  :url => challenges_edit_path, :html => {id: "challenge_form"}) do |f| %>
+	 <% gspecial = Category.where(:ctype =>'challenge').map{|x| [x.name] + [x.id]} %>
+<div class="pop-row">
+  <label>Category:</label>
+	 <%= select_tag("challenge[category_id]", options_for_select(gspecial)) %>
+ </div>
+<div class="pop-row">
+ <%= f.label :text, 'Quantity:' %>
+	<%= f.text_field :qty, class: " form-control" %>
+  </div>
+<div class="pop-row">
+	 <%= f.label :text, 'Description:' %>
+  <%= f.text_area :text, class: "boxtextarea form-control" %>
+</div>
+<div class="pop-row">
+  <label>Till Date:</label>
+  <input class="form-control" type="text" value="<%= @challenge.valid_till.strftime("%d %b %Y")  %>  " readonly name="challenge[valid_till]" id="datepicker">
+  <input type="hidden" name="id" value="<%= Base64.encode64(@challenge.id.to_s) %> ">
+  </div>
+<div class="pop-row">
+ <%= f.label :reward_points, 'Reward Points:' %>
+	<%= select_tag("challenge[reward_points]", options_for_select((50..500).step(50))) %>
+</div>
+<%= f.submit 'Update Challenge' , :class => "btn btn-primary" %>
+<% end %> 
+</div>
+  </div>
+<div class="clear"></div>
+</div>
+<div class="clear"></div>
+</div>

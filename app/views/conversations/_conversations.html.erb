@@ -1,0 +1,284 @@
+
+<div id="conv">
+  
+  <% if @messages.present? %>
+<div class="conver-btn">
+ 
+
+  <button class="newmsf btn btn-primary pull-right" style="margin-bottom:10px;" data-toggle="modal" data-target="#messageForm" >New Message</button></div>
+  
+<div class="conver-btn"><div class="clear"></div></div>
+
+<ul class="chating uniq">
+  <% @i = 0 %>
+<% @messages.each do |message| %>
+  
+<% @type = self_or_other(message) %>
+<% if (@type=='self' && message.status==true) || (@type=='other' && message.recipient_status==true)  %>
+  <% if @i ==0 %>
+   <button class="delconv btn btn-primary pull-right" data-did="<%= @messages[0].conversation_id %>"  data-cid ="<%= Base64.encode64(@messages[0].conversation_id.to_s) %>">Delete Conversations</button>
+<% end %>
+    <% @i = 1%>
+        <% @msg = true %>
+<li class="<%= @type %> profile_data" id="<%= message.id %>">
+
+<div class="imageRound">
+<% img = useravatar(message.account) %>
+<%= image_tag(img) %>
+</div>
+<div class="chatboxmessagecontent user-name">
+<span class="chat-time">
+<time datetime="<%= message.created_at %>" title="<%= message.created_at.strftime("%d %b %Y at %I:%M%p") %>">
+  <%= message.created_at.strftime("%H:%M %p") %>
+</time>
+</span>
+<h2><%= message.account.first_name %></h2>
+<p><%= raw  message.body %></p>
+
+<button data-id="<%= @type +'-' + Base64.encode64(message.id.to_s) %>" class="del chat-delete"> Delete</button>
+</div>
+</li> 	
+<% else %>
+<% @msg = false %>
+<% end %>
+<% end %>
+</ul>
+<% end %>
+</div>
+<% if @messages.present? && @msg.present?  %>
+
+<div class="reply-box" id="reply-box">
+
+ <%# cktext_area :message, :body, :class => "bodyboxtextarea  form-control"  %>
+  <textarea name="editor1" class="ckeditor bodyboxtextarea  form-control"></textarea>
+ <button type="button" id="reply" style="margin-top: 15px;" class="btn btn-primary"  data-cid ="<%= Base64.encode64(@messages[0].conversation_id.to_s) %>" >Reply</button>
+</div>
+<% end %>
+
+<div class="modal fade" id="messageForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Message</h4>
+      </div>
+      <div class="modal-body">
+        <div class="pop-row listing-hover">
+          <label>To:</label>
+          <input class="form-control" type="text" id="tags" value="" name="search" placeholder="Search..." autocomplete="off">
+          
+            <ul class="arport" style="display:none;">
+            
+               
+            </ul>
+        </div>
+ 	<%= render(:partial => 'messages/message') %>
+      </div>
+      <div class="modal-footer">
+        <input id="rip" value="" type="hidden">
+        <button type="button" id="sendmessage" class="btn btn-primary"   data-sip =" <%=  Base64.encode64(@account.id.to_s) %>" >Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+$('#reply').on('click', function() {
+var cid = $(this).attr('data-cid');
+var bodytext =CKEDITOR.instances['editor1'].getData()
+//var bodytext = $('#message_body').val();
+if (bodytext =='') {
+	$('.flash-message').html('<div class="alert alert-danger"> Please enter text</div>').show();
+	return false;
+}
+
+
+	$.ajax({
+				type: "POST",
+				url: '<%= sendmessage_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {conversation_id:cid, body:bodytext},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#conv').append(data);
+					CKEDITOR.instances['editor1'].setData("");
+							
+					$('.flash-message').html('<div class="alert alert-success"> Message Sent Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+	    
+// delete msg
+$('#conv').on('click','.del', function() {
+var cid = $(this).attr('data-id');
+var id = cid.split('-')
+if (confirm("Do you want to delete message?")) {
+	$.ajax({
+				type: "DELETE",
+				url: '<%= deletemessage_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {type:id[0], mid:id[1]},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#'+data).fadeOut('slow');
+                                      		
+					$('.flash-message').html('<div class="alert alert-success"> Message Removed Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    }
+	    });	
+	    
+// delete msg
+$('.delconv').on('click', function() {
+var cid = $(this).attr('data-cid');
+var did = $(this).attr('data-did');
+if (confirm("Do you want to delete conversation?")) {
+
+	$.ajax({
+				type: "DELETE",
+				url: '<%= deleteconv_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {cid:cid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){	
+                                         $('#reply-box').hide();
+					$('.chating').fadeOut('slow');				
+					$('.delconv').fadeOut('slow');				
+					$('#cv_'+did).fadeOut('slow');	
+                                        
+                                       
+							
+					$('.flash-message').html('<div class="alert alert-success"> Conversation Removed Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    }
+	    });	 
+		
+	    
+});	 
+
+$("#tags").keyup(function(){
+ 
+  var keyword = $(this).val();
+  
+	if (keyword.length >= 2) {
+		$.ajax({
+			type: "POST",
+			url: '/search_user/'+ keyword, //sumbits it to the given url of the form
+			dataType: "HTML",
+			beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+					},
+		    success: function(data){
+			
+				$('.arport').fadeIn()
+				$('.arport').html(data)
+				},
+		    error:	function (xhr, ajaxOptions, thrownError) {
+				console.log(xhr.status)
+				
+			}	
+		
+	    });
+		}
+});
+
+// add friend
+$('#sendmessage').on('click', function(e) {
+e.preventDefault();
+CKEDITOR.instances['message_body'].updateElement();
+if ($('#conversation_form').valid()) {
+var sid = $(this).attr('data-sip')
+var rid = $("#rip").val();
+var bodytext = CKEDITOR.instances['message_body'].getData()
+if (rid =='') {
+	$('.flash-message').html('<div class="alert alert-danger"> Please select user</div>').show();
+	return false;
+}
+
+	$.ajax({
+				type: "POST",
+				url: '<%= messages_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {sender_id:sid, recipient_id:rid, body:bodytext},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					//$('#tags').val('');	
+					 window.location.reload();
+					$('.flash-message').html('<div class="alert alert-success"> Message Sent Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+                        }
+	    
+	    });
+var source;            
+ setTimeout(function () {
+
+    getconv();
+}, 20000);
+           
+     
+ function getconv() {
+    var li = '<li id="{ID}" class="{TYPE} profile_data"><div class="imageRound"><img src="{IMG_SRC}" alt="Default"></div><div class="chatboxmessagecontent user-name"><span class="chat-time"><time>{TIME}</time></span><h2>{USERNAME}</h2><p>{MESSAGE}</p><button class="del chat-delete" data-id="other-Nw=="> Delete</button></div></li>';
+
+    if (typeof EventSource !== "undefined") {
+
+        source = new EventSource("getconv");
+
+        source.onmessage = function (event) {  //detect message receipt
+            var output = JSON.parse(event.data);
+            var n = li.replace("{ID}", output.id);
+            n = n.replace("{TYPE}", output.type);
+            n = n.replace("{IMG_SRC}", output.img);
+            n = n.replace("{MESSAGE}", output.m);
+            n = n.replace("{TIME}", output.tym);
+            n = n.replace("{USERNAME}", output.name);
+            if ($(".uniq").append(n)) {
+                $.ajax({
+                    type: "POST",
+                    url: "updatestatus/" + output.id,
+                    dataType: "json",
+                })
+            }
+        };
+    } else {
+        console.log("Whoops! Your browser doesn't receive server-sent events.")
+    }
+
+}    
+   
+</script>

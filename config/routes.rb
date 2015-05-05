@@ -1,4 +1,41 @@
 Rails.application.routes.draw do
+
+ 
+ 
+  get 'challenges', to: 'challenges#index'
+  #patch 'cupdate', to: 'challenges#update',:as => :challange_update
+  match 'challenge/', :to=>'challenges#create',:via => [:post,:get] ,  :as => :challenge
+  match 'deletechallenge', to: 'challenges#del_challenge', :via => [:delete] , :as => :deletechallenge
+  match 'changechallengestatus/:cid/:status', to: 'challenges#change_challenge_status', :via => [:get, :post] , :as => :changechallengestatus
+  get 'challenges/show' 
+  match 'challenges/edit/(:id)', to: 'challenges#edit',:via => [:patch,:get], :as=>:challenges_edit
+  match 'search_user/:search/(:type)', to: 'challenges#search_user', :via => [:post] , :as=>:searchuser
+  
+  get 'goals', to: 'goals#index'
+  match 'goal/', :to=>'goals#create',:via => [:post,:get] ,  :as => :account_goals
+  match 'deletegoal', to: 'goals#del_goal', :via => [:delete] , :as => :deletegoal
+  match 'changegoalestatus/:cid/:status', to: 'challenges#change_goal_status', :via => [:get, :post] , :as => :changegoalstatus
+  get 'goals/show' 
+  match 'goals/edit/(:id)', to: 'goals#edit',:via => [:patch,:get], :as=>:goals_edit
+ 
+  
+
+ 
+
+  get 'messages/create'
+  match '/messages/(:sender_id)/(:recipient_id)/(:body)', :to => 'messages#create', :via => [:post,:get] , :as => :messages
+  match 'sendmessage', to: 'messages#send_message', :via => [:post] , :as => :sendmessage
+  match 'checkmsgcount', to: 'messages#checkmsgcount', :via => [:get, :post] , :as => :checkmsgcount
+  match 'deletemessage', to: 'messages#del_message', :via => [:delete] , :as => :deletemessage
+  match 'getconv', to: 'conversations#getconv', :via => [:get, :post] , :as => :getconv
+  match 'deleteconv', to: 'conversations#del_conversation', :via => [:delete] , :as => :deleteconv
+  match 'updatestatus/(:cid)', to: 'conversations#updatestatus', :via => [:get, :post] , :as => :updatestatus
+
+
+  get 'conversations/create'
+  get 'conversations/show'
+  get 'conversations/(:cid)', to: 'conversations#index', :as=> :conversations
+
   devise_for :admins ,  :controllers => { :sessions => "admin/sessions" ,:registrations => "admin/registrations"}
   root 'landing#index'
 
@@ -23,6 +60,7 @@ Rails.application.routes.draw do
   post 'createalbum', to:'feed#create_album', :as=>:createalbum  
   get 'showalbum/:id', to:'feed#show_album', :as=>:showalbum  
   post 'update_album', to:'feed#update_album', :as=>:update_album  
+  get 'un_sync', to:'feed#un_sync', :as=>:un_sync  
   
   
   
@@ -49,6 +87,7 @@ Rails.application.routes.draw do
   get ':id/about', to: 'profile#about'
   get ':id/photos', to: 'profile#photos'
   get ':id/videos', to: 'profile#videos'
+  get ':id/appointments', to: 'profile#appointments'
   get ':id/friends', to: 'profile#friends'
   get ':id/activities', to: 'profile#activities'
   get ':id/members', to: 'profile#members'
@@ -63,14 +102,27 @@ Rails.application.routes.draw do
   post 'update_social_settings', to:'settings#update_social_settings', :as=>:update_social_settings
   post 'update_trainers_details', to:'settings#update_trainers_details', :as=>:update_trainers_details  
   post 'update_about_gym', to:'settings#update_about_gym', :as=>:update_about_gym  
-
-	  resources :friendships do
+ 
+        get '/get_user_appointment/:id/(:pid)' => 'appointments#get_user_appointment', :as =>:get_user_appointment
+        post '/save_user_appointment' => 'appointments#save_user_appointment', :as =>:save_user_appointment
+        delete '/delete_user_event/:id' => 'appointments#delete_user_event', :as =>:delete_user_event
+ 
+  resources :friendships do
 	  member do
-		put 'friend_request'
-		put 'friend_request_accept'
-		delete 'friend_request_cancel'
+      put 'friend_request'
+      put 'friend_request_accept'
+      delete 'friend_request_cancel'
 	  end
 	end
+	
+  # Routes for the api interfaces
+  namespace :api do
+    get 'activity', controller: 'activities', action: 'index'
+    get 'body_measurements', controller: 'body_measurements', action: 'show'
+   
+    resources :activities, only: [:index]
+   # resources :foods, only: [:index]
+  end	
 
   # get 'landing/login'
 
@@ -129,9 +181,9 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   
-    #get "admins/change_password", :to =>'admin/registrations#edit', :as => :changepassword
+  #get "admins/change_password", :to =>'admin/registrations#edit', :as => :changepassword
     
-   # match "admin/database_list",:as => :admin_dashboard_list
+  # match "admin/database_list",:as => :admin_dashboard_list
     
 	get "admins", to: "admin/users#new", :via => :get ,:as => :admin_sign_in
 	
@@ -151,6 +203,14 @@ Rails.application.routes.draw do
         get "bulk_actions"
 		  end
 		end	
+    resources :photos do
+		  collection do
+        match "search"	, :via => :get
+        match "listPhotos"	,:via => :get	
+       
+		  end
+		end	
+    
 	end
     
   match ':controller(/:action(/id))', :via => :get

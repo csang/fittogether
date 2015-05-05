@@ -17,11 +17,11 @@
       <div class="data">
         <dl>
           <dt>Steps</dt>
-          <dd>5,978</dd>
+          <dd><%= @account.fitbit.present? ? number_with_delimiter(@account.fitbit.steps) : 'N/A'  %> </dd>
         </dl>
         <dl>
           <dt>Calories</dt>
-          <dd>3,687</dd>
+          <dd><%= @account.fitbit.present? ? number_with_delimiter(@account.fitbit.summary_calories) : 'N/A'  %></dd>
         </dl>
       </div>
       <%= render(:partial => 'nav/side_nav') %>

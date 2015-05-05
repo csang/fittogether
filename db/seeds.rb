@@ -24,7 +24,7 @@ Relationship.create([
 
 Industry.create([
 { name: 'Software'}, 
-{ name: 'Helth'}, 
+{ name: 'Health'}, 
 { name: 'Machinery'}, 
 { name: 'Cement'}
 ]);
@@ -618,5 +618,11 @@ Amenity.create([
 { name: 'Sauna'},
 { name: 'Steam'},
 { name: 'Tennis Courts'}
+]);
+Category.create([
+{ name: 'Steps to Walk', ctype: 'challenge'}, 
+{ name: 'Calories to Burn', ctype: 'challenge'}, 
+{ name: 'Weight to Lift', ctype: 'challenge'} 
+
 ]);
 

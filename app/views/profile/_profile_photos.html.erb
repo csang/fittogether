@@ -9,7 +9,7 @@
 	
 <div class="photos_sub_nav">
 		<div class="breadcrumbs">
-			<p><span>Album</span>><span>
+			<p><span>Album</span> ><span>
 			<% if @profileuser.id == @account.id %>
 			<%= link_to  albm.title.present? ? albm.title : 'untitled', showalbum_path(albm.id) %>
 			<% else %>
@@ -32,7 +32,16 @@
 				<span>28</span>
 			</div>
 			
-			<a class="album-img" href="#" data-toggle="modal" data-target="#basicModal<%= img.id %>"> <img src="<%= img.image %>" height="300" widht="300"> </a>
+			<a class="album-img" href="#" data-toggle="modal" data-target="#basicModal<%= img.id %>">
+                          <% if img.image_content_type!='video/mp4' %>  
+                              <img src="<%= img.image %>" height="300" widht="300">
+                        <% else %>
+                              <video id='video'  controls width="161" height="146">
+                              <source src='<%= img.image %>' type='video/mp4'/>
+                              Your browser does not support the video .
+                            </video>                          
+                        <% end %>
+                        </a>
 			
 			<div class="modal fade " id="basicModal<%= img.id %>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
 			   <div class="modal-dialog">
@@ -41,7 +50,14 @@
 
 			   
 				  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
-				  <img src="<%= img.image %>" height="600" widht="600" >
+				        <% if img.image_content_type!='video/mp4' %>  
+                              <img src="<%= img.image %>" height="600" widht="600">
+                        <% else %>
+                              <video id='video'  controls width="558" height="500">
+                              <source src='<%= img.image %>' type='video/mp4'/>
+                              Your browser does not support the video .
+                            </video>                          
+                        <% end %>
 				</div>
             
               </div>
@@ -55,7 +71,7 @@
 
 	<div class="photos_sub_nav">
 		<div class="breadcrumbs">
-			<p><span>Album</span>><span>
+			<p><span>Album</span> ><span>
 			<% if @profileuser.id == @account.id %>
 			<%= link_to  albm.title.present? ? albm.title : 'untitled', showalbum_path(albm.id) %>
 			<% else %>
@@ -78,7 +94,15 @@
 				<span>28</span>
 			</div>
 			
-			<a class="album-img" href="#" data-toggle="modal" data-target="#basicModal<%= img.id %>"> <img src="<%= img.image %>" height="300" widht="300"> </a>
+			<a class="album-img" href="#" data-toggle="modal" data-target="#basicModal<%= img.id %>"> 
+                             <% if img.image_content_type!='video/mp4' %>  
+                              <img src="<%= img.image %>" height="300" widht="300">
+                        <% else %>
+                              <video id='video'  controls width="161" height="146">
+                              <source src='<%= img.image %>' type='video/mp4'/>
+                              Your browser does not support the video .
+                            </video>                          
+                        <% end %> </a>
 			
 			<div class="modal fade " id="basicModal<%= img.id %>" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
 			   <div class="modal-dialog">
@@ -87,7 +111,15 @@
 
 			   
 				  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
-				  <img src="<%= img.image %>" height="600" widht="600" >
+				  ton aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+				        <% if img.image_content_type!='video/mp4' %>  
+                              <img src="<%= img.image %>" height="600" widht="600">
+                        <% else %>
+                              <video id='video'  controls width="558" height="500">
+                              <source src='<%= img.image %>' type='video/mp4'/>
+                              Your browser does not support the video .
+                            </video>                          
+                        <% end %>
 				</div>
             
               </div>

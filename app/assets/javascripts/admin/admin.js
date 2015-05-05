@@ -232,10 +232,10 @@ function validatemultipleaction() {
     }
     
    else if (PageOptions == 'Delete' && confirm('Are you sure you want to delete' + appmessage)) {
-		
+	
        var Data = {}; 
-       Data.client_id = "ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e";
-       Data.client_secret = "Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7";
+       Data.client_id = clientid;
+       Data.client_secret = secertid;
        Data.grant_type = "client_credentials";
        $.ajax({
        url: 'https://fittogetherzap.auth0.com/oauth/token',

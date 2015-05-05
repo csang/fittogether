@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150303102800) do
+ActiveRecord::Schema.define(version: 20150413093913) do
 
   create_table "account_activities", force: true do |t|
     t.integer  "account_id"
@@ -41,6 +41,11 @@ ActiveRecord::Schema.define(version: 20150303102800) do
     t.integer  "goal_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "for_id"
+    t.text     "text"
+    t.integer  "qty"
+    t.integer  "status"
+    t.datetime "valid_till"
   end
 
   add_index "account_goals", ["account_id"], name: "index_account_goals_on_account_id", using: :btree
@@ -161,6 +166,9 @@ ActiveRecord::Schema.define(version: 20150303102800) do
     t.string   "remember_token"
     t.string   "pic"
     t.integer  "user_type",           limit: 1, default: 1
+    t.string   "uid"
+    t.string   "oauth_token"
+    t.string   "access_secret"
   end
 
   add_index "accounts", ["id"], name: "index_accounts_on_id", using: :btree
@@ -226,7 +234,28 @@ ActiveRecord::Schema.define(version: 20150303102800) do
     t.string   "name",       limit: 20
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "ctype"
   end
+
+  create_table "challenges", force: true do |t|
+    t.integer  "category_id"
+    t.integer  "account_id"
+    t.integer  "to_id"
+    t.string   "text"
+    t.integer  "accept_status",    default: 0
+    t.integer  "reward_points"
+    t.string   "status",           default: "new"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "is_read",          default: false
+    t.integer  "qty"
+    t.boolean  "sender_status",    default: true
+    t.boolean  "recipient_status", default: true
+    t.datetime "valid_till"
+  end
+
+  add_index "challenges", ["account_id"], name: "index_challenges_on_account_id", using: :btree
+  add_index "challenges", ["category_id"], name: "index_challenges_on_category_id", using: :btree
 
   create_table "cities", force: true do |t|
     t.integer  "state_id"
@@ -251,10 +280,26 @@ ActiveRecord::Schema.define(version: 20150303102800) do
     t.datetime "updated_at"
   end
 
+  create_table "conversations", force: true do |t|
+    t.integer  "sender_id"
+    t.integer  "recipient_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "countries", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "fitbits", force: true do |t|
+    t.integer  "steps"
+    t.integer  "calories"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "account_id"
+    t.integer  "distance"
   end
 
   create_table "friendships", force: true do |t|
@@ -284,6 +329,20 @@ ActiveRecord::Schema.define(version: 20150303102800) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "messages", force: true do |t|
+    t.text     "body"
+    t.boolean  "is_read",          default: false
+    t.boolean  "status",           default: true
+    t.integer  "conversation_id"
+    t.integer  "account_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.boolean  "recipient_status", default: true
+  end
+
+  add_index "messages", ["account_id"], name: "index_messages_on_account_id", using: :btree
+  add_index "messages", ["conversation_id"], name: "index_messages_on_conversation_id", using: :btree
 
   create_table "posts", force: true do |t|
     t.integer  "account_id"

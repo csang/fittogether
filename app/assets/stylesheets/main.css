@@ -17,7 +17,6 @@ time, mark, audio, video {
 	padding: 0;
 	border: 0;
 	font-size: 100%;
-	font: inherit;
 	vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
@@ -1172,7 +1171,7 @@ input:-ms-input-placeholder {
 .weight_lifting{
 	background: url(../img/icons/weight_lifting.png) no-repeat center center;
 }
-.modal{z-index:9999; padding: 100px 0 0;}
+.modal{z-index:9999; padding: 100px 0 0; background:rgba(0,0,0, 0.5);}
 .modal-content img{width:100%; height:auto;}
 .photo.album-hover .close {margin: -22px -15px 0 0;}
 .controls{          

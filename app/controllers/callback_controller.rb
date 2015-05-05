@@ -3,10 +3,19 @@ class CallbackController < ApplicationController
     # example request.env['omniauth.auth'] in https://github.com/auth0/omniauth-auth0#auth-hash
     # id_token = session[:userinfo]['credentials']['id_token']
     # store the user profile in session and redirect to root
-	
+	#abort(request.env['omniauth.auth'].inspect)
     issocial = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['isSocial']    
+    connection = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['connection']    
+   
+   
+    if issocial && connection == "fitbit"
+			session[:oauth_token] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['access_token']  
+			session[:oauth_secret] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['access_token_secret']  
+			session[:uid] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id']  
+			
+			redirect_to('/feed') and return	
+	end	
     session[:fit_id] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id']
-    
     if session[:remember_me].present?
     remember_token = Account.encrypt("#{Time.now.utc}")
      @user = Account.find_by_fit_id(session[:fit_id])    
@@ -17,33 +26,34 @@ class CallbackController < ApplicationController
 		end    
 	            
     end
-    if issocial       
-        connection = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['connection']    
-        if connection == "twitter"
-        fullname = request.env['omniauth.auth']['info']['name'].split(' ')
-		session[:first_name] = fullname[0]
-        session[:last_name] = fullname[1]
-        else
-        session[:first_name] = request.env['omniauth.auth']['info']['first_name']
-        session[:last_name] = request.env['omniauth.auth']['info']['last_name']
-        end
-        #abort(request.env['omniauth.auth'].inspect)
-        session[:avatar] = request.env['omniauth.auth']['info']['image'].sub('https://','')
-        session[:user_name] = request.env['omniauth.auth']['info']['username']
-        session[:email] = request.env['omniauth.auth']['info']['email']
-        session[:provider] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['provider']
-        @authorization = Authorization.find_by_provider_and_uid(session[:provider], session[:fit_id])
-        if @authorization
-           redirect_to('/feed')
-        else
-			
-          user = Account.new :fit_id => session[:fit_id], :first_name => session[:first_name], :last_name => session[:last_name], :email => session[:email],:user_name => session[:username],:pic => session[:avatar]
-          user.authorization.build :provider => session[:provider], :uid => session[:fit_id]
-          user.save
-          @accountUser = AccountUser.new :account_id => user.id   
-          @accountUser.save
-         redirect_to('/feed') and return
-        end
+    
+    if issocial
+     	if connection == "twitter"
+				fullname = request.env['omniauth.auth']['info']['name'].split(' ')
+				session[:first_name] = fullname[0]
+				session[:last_name] = fullname[1]
+			else
+				session[:first_name] = request.env['omniauth.auth']['info']['first_name']
+				session[:last_name] = request.env['omniauth.auth']['info']['last_name']
+			end
+				#abort(request.env['omniauth.auth'].inspect)
+				session[:avatar] = request.env['omniauth.auth']['info']['image'].sub('https://','')
+				session[:user_name] = session[:first_name] + '_' + connection
+				session[:email] = request.env['omniauth.auth']['info']['email']
+				session[:provider] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['provider']
+      
+				@authorization = Authorization.find_by_provider_and_uid(session[:provider], session[:fit_id])
+				if @authorization
+				   redirect_to('/feed')
+				else
+					
+				  user = Account.new :fit_id => session[:fit_id], :first_name => session[:first_name], :last_name => session[:last_name], :email => session[:email],:user_name => session[:user_name],:pic => session[:avatar]
+				  user.authorization.build :provider => session[:provider], :uid => session[:fit_id]
+				  user.save
+				  @accountUser = AccountUser.new :account_id => user.id   
+				  @accountUser.save
+				 redirect_to('/feed') and return
+				end
     else  # for other users
       @user =  Account.find_by fit_id: session[:fit_id]
       session[:account] = request.env['omniauth.auth']['extra']['raw_info']

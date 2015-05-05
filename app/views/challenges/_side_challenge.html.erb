@@ -1,0 +1,224 @@
+
+<div class="notification_menu">
+  <div id="notifications_nav">Challenges <span style="float:right"><a style="width:auto;" class="goal-btn" href="javascript:void(0)" data-toggle="modal" data-target="#challengeForm">New Challenge</a></spa></div>
+
+</div>
+<div id="conv">
+  <% if @allchallenge.present? %>
+
+    <ul class="chating">
+      <% @allchallenge.each do |message|
+         @type = self_or_other(message) 
+   
+        if message.sender_status!=false && message.valid_till >= Date.today && (message.status!='reject' || @type =='self' )
+        %>
+
+
+          
+
+          <li class="<%= @type %> profile_data" id="<%= message.id %>">
+    <% 	@receiver = interlocutor(message) %>
+            <div class="imageRound">
+              <% img = useravatar(@receiver) %>
+              <%= image_tag(img) %>
+            </div>
+            <div class="chatboxmessagecontent user-name">
+              <span class="chat-time">
+                <time>
+                 Target Date: <%= message.valid_till.present? ? message.valid_till.strftime("%d %b %Y at %I:%M%p") : message.created_at.strftime("%d %b %Y at %I:%M%p") %>
+                </time>
+              </span>
+              <h2>
+               <%= link_to("<h3>#{@receiver.first_name} </h3>".html_safe, "/#{@receiver.user_name}") %>
+              </h2>
+            <!--<% if message.to_id != @account.id %>
+               <div class="detail-box"><span>Challenge To: </span><p> 
+                  <%  victim =   get_user_detail(message.to_id) %>                
+                  <%= link_to("<h3>#{victim.first_name.capitalize} </h3>".html_safe, "/#{victim.user_name}") %> 
+                     </p></div>
+              <% else  %>
+             <div class="detail-box"><span>Challenge To: </span><p>  You </p></div>
+              <% end  %>  -->
+              <div class="detail-box"><span>Challenge:</span><p><%= message.text %></p></div>
+              <div class="detail-box detail-inner"><span><%= message.category.name %>:</span><p><%= message.qty %></p></div>
+              <div class="detail-box detail-inner"><span>Reward Points:</span><p><%= message.reward_points %></p></div>
+              <div class="detail-box detail-inner"><span>Status:</span><p class="newstatus">
+                   <% if message.status=='reject' or message.status=='accept' %>
+                  <%=  message.status.capitalize + 'ed' %>
+                  <% else %>
+                    <%=  message.status.capitalize %>
+                  <% end %>
+          
+                </p></div>
+                  
+              <% challengeid =  Base64.encode64(message.id.to_s) %>
+                 
+              <% if @type =='self' %>
+                <button data-id="<%=  challengeid %>" class="del chat-delete"> Delete</button>
+               
+                <%=  link_to 'edit',challenges_edit_path(challengeid),  :class =>" chat-edit" %>
+              <%  else %>
+                <div class="msg-btn">
+                <%=  link_to 'Reject Challenge', changechallengestatus_path(challengeid,'reject'),:remote=>true, :class=>'btn btn-primary btn-sm reject'            
+              %>
+                <%= 
+                if message.status!='accept'
+                  link_to 'Accept Challenge', changechallengestatus_path(challengeid,'accept'),:remote=>true, :class=>'btn btn-primary btn-sm accept' 
+                  end  
+
+              %>
+                  </div>
+              <% end  %>
+            </div>
+            
+          </li> 	
+
+
+        <% end %>
+      <% end %>
+    </ul>
+    <%= will_paginate @allchallenge, :renderer => BootstrapPagination::Rails %>
+  <% else %>
+ 
+ 
+         <h4 class="noti-heading">No Challenge set yet. You can create new challenge by clicking 'New Challenge' link above.</h4>
+       
+  
+  <% end %>
+</div>
+<div class="modal fade" id="challengeForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Challenge</h4>
+      </div>
+      <div class="modal-body">
+        <div class="pop-row listing-hover">
+          <label>To:</label>
+          <input class="form-control" type="text" id="tags" value="" name="search" placeholder="search...">
+          
+            <ul class="arport" style="display:none;">
+            
+               
+            </ul>
+        </div>
+        
+ 	<%= render(:partial => 'challenges/challenge') %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="challenge" class="btn btn-primary"    >Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+ 
+$(document).on("click", ".reject", function() { 
+  $(this).closest("li").fadeOut(); 
+ 
+ 
+});
+$('.msg-btn').on("click", ".accept", function() { 
+  $(this).fadeOut(); 
+   $(this).closest('li').find('.newstatus').text('accepted');
+ 
+});
+
+// delete msg
+  $('#conv').on('click', '.del', function() {
+    var cid = $(this).attr('data-id');
+
+    if (confirm("Do you want to delete challenge")) {
+      $.ajax({
+        type: "DELETE",
+        url: '<%= deletechallenge_path %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: {cid: cid},
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          $('#' + data).fadeOut('slow');
+
+
+          $('.flash-message').html('<div class="alert alert-success"> Challenge Removed Succesfully</div>').show();
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+    }
+  });
+
+
+ $(function() {
+
+$("#tags").keyup(function(){
+ 
+  var keyword = $(this).val();
+  
+	if (keyword.length >= 2) {
+		$.ajax({
+			type: "POST",
+			url: '/search_user/'+ keyword, //sumbits it to the given url of the form
+			dataType: "HTML",
+			beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+					},
+		    success: function(data){
+			
+				$('.arport').fadeIn()
+				$('.arport').html(data)
+				},
+		    error:	function (xhr, ajaxOptions, thrownError) {
+				console.log(xhr.status)
+				
+			}	
+		
+	    });
+		}
+});
+
+$('#challenge').on('click', function() {
+if ($('#challenge_form').valid()) {
+var rid = $('#rip').val();
+if(rid==''){
+  alert('Please select user');
+  return false;
+}
+var bodytext = $('.boxtextarea').val();
+var categoryid = $('#category_id').val();
+var rewardpoints = $('#reward_points').val();
+var qty = $('#challenge_qty').val();
+var valid_till = $('#datepicker').val();
+
+
+	$.ajax({
+				type: "POST",
+				url: '<%= challenge_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {to_id:rid, category_id:categoryid, text:bodytext, reward_points:rewardpoints,qty:qty,valid_till:valid_till},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#challengeForm').modal('hide');						
+					$('.flash-message').html('<div class="alert alert-success"> Challenge Sent Succesfully</div>').show();
+					location.reload(); 
+                                        },
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+}                        
+	    
+	    });	  
+});
+</script>

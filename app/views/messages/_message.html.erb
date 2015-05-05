@@ -1,0 +1,3 @@
+ <%= form_for( Message.new, :remote => true, :html => {id: "conversation_form"}) do |f| %>
+<%= f.cktext_area :body, class: "bodyboxtextarea  newtext form-control" %>
+<% end %> 

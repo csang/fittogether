@@ -33,7 +33,11 @@ class ProfileController < ApplicationController
 	
 	 @profile = 'profile_about'
 	  @profileuser = Account.where(:status =>1,:user_name =>params[:id]).first
-	  if (@profileuser.user_type==3)
+    @allchalenge = Challenge.where("challenges.account_id =? OR challenges.to_id =? AND(sender_status=?) ", @profileuser.id,@profileuser.id,1).count
+    @chal = Challenge.where("challenges.valid_till < ? AND (challenges.account_id =? OR challenges.to_id =? ) ", Date.today, @profileuser.id,@profileuser.id).count
+    @echal = Challenge.where("(status =? and challenges.account_id!=?) AND (challenges.account_id =? OR challenges.to_id =? ) and challenges.valid_till > ? ", 'reject', @profileuser.id, @profileuser.id,@profileuser.id, Date.today).count
+	  @chal = @chal + @echal;
+    if (@profileuser.user_type==3)
 	 @profileuser_gyms = @profileuser.account_gym
 	 end
      if (@account_type.to_i == 2) 
@@ -133,6 +137,18 @@ class ProfileController < ApplicationController
 	 @profile = 'profile_notifications'
 	 render 'index'
 	 end	
+	end
+  
+  
+  
+	def appointments
+	    @profileuser = Account.where(:status =>1,:user_name =>params[:id]).first
+	    @friend = Friendship.where(:account_id => @account.id , :friend_id =>@profileuser.id).first 
+			if !@friend.present?
+			@friend = Friendship.where(:account_id => @profileuser.id  , :friend_id =>@account.id).first 
+			end	
+		@profile = 'profile_appointments'
+		render 'index'
 	end
 	
   

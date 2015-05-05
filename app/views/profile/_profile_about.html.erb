@@ -14,36 +14,48 @@
        <% end %>
         <ul class="personal">
            
-         <li><%= @profileuser.user_name %><% if @profileuser.account_url.present? %> at <%= link_to("<span>#{@profileuser.account_url}</span>".html_safe, @profileuser.account_url, :target => "_blank") %> <% else %> N/A <% end %></li>
+         <li><%= @profileuser.user_name %><% if @profileuser.account_url.present? %> at <%= link_to("<span>#{@profileuser.account_url}</span>".html_safe, @profileuser.account_url, :target => "_blank") %> <% else %>  <% end %></li>
        
            <li>Relationship Status: <% if @profileuser.relationship_id.present? %> <%= get_relationship_name(@profileuser.relationship_id) %> <% else %> N/A <% end %></li>
           <li>Fitness Goals: 
-          
+          <% if @profileuser.goals.present? %>
            <%= @profileuser.goals.map{|goal| get_goal_name(goal)}.join(", ") %>
-<%#= link_to('<span>Staying in Shape</span>'.html_safe, '') %></li>
+<%#= link_to('<span>Staying in Shape</span>'.html_safe, '') %>
+            <% else %>
+            N/A
+            <% end %>
+          
+          </li>
           <% if !@privacy.present?  %>
          
-           <li>Lives in: <%= (@profileuser.city_id.present?) ? get_city_name(@profileuser.city_id) : ''  %><%= (@profileuser.state_id.present?) ? ", " + get_state_name(@profileuser.state_id) : ''  %></li>
+           <li>Lives in: <%= (@profileuser.city_id.present?) ? get_city_name(@profileuser.city_id) : ''  %><%= (@profileuser.state_id.present?) ? ", " + get_state_name(@profileuser.state_id) : ''  %>
+           <% if !@profileuser.city_id.present? && !@profileuser.state_id.present? %>
+             N/A
+           <% end  %>  
+           </li>
             <li>Works out at: <% if @profileuser.gym_id.present? %>  <%= link_to("<span>#{get_gym_name(@profileuser.gym_id)}</span>".html_safe, '/' + get_user_name(@profileuser.gym_id)) %> <% else %> N/A <% end %></li>
-           <li>Birthday: <%=  (@profileuser.dob.present?) ? @profileuser.dob.to_s(:myformat) : '' %> </li>
+           <li>Birthday: <%=  (@profileuser.dob.present?) ? @profileuser.dob.to_s(:myformat) : 'N/A' %> </li>
             <li>Email: <%=  (@profileuser.email.present?) ? @profileuser.email : '' %></li> 
-             <li>Mobile: <%=  (@profileuser.mobile.present?) ? @profileuser.mobile : '' %></li>
+             <li>Mobile: <%=  (@profileuser.mobile.present?) ? @profileuser.mobile : 'N/A' %></li>
             <% else %>
        
                 <% if @privacy.location.present? &&  @privacy.location==true  %>
 				 <li>Lives in: <%= (@profileuser.city_id.present?) ? get_city_name(@profileuser.city_id) : ''  %><%= (@profileuser.state_id.present?) ? ", " + get_state_name(@profileuser.state_id) : ''  %></li>
-				<% end %>
+				 <% if !@profileuser.city_id.present? && !@profileuser.state_id.present? %>
+                              N/A
+                            <% end  %>  
+                    <% end %>
                 <% if @privacy.work.present? &&  @privacy.work==true  %>
 				  <li>Works out at: <% if @profileuser.gym_id.present? %>  <%= link_to("<span>#{get_gym_name(@profileuser.gym_id)}</span>".html_safe, '/' + get_user_name(@profileuser.gym_id)) %> <% else %> N/A <% end %></li>
 				<% end %>
                 <% if @privacy.birthday.present? &&  @privacy.birthday==true  %>
-				  <li>Birthday: <%=  (@profileuser.dob.present?) ? @profileuser.dob.to_s(:myformat) : '' %> </li>
+				  <li>Birthday: <%=  (@profileuser.dob.present?) ? @profileuser.dob.to_s(:myformat) : 'N/A' %> </li>
 				<% end %>
 				<% if @privacy.email.present? &&  @privacy.email==true  %>
-					<li>Email: <%=  (@profileuser.email.present?) ? @profileuser.email : '' %></li> 
+					<li>Email: <%=  (@profileuser.email.present?) ? @profileuser.email : 'N/A' %></li> 
 				<% end %>
 				<% if @privacy.mobile.present? &&  @privacy.mobile==true  %>
-				  <li>Mobile: <%=  (@profileuser.mobile.present?) ? @profileuser.mobile : '' %></li>
+				  <li>Mobile: <%=  (@profileuser.mobile.present?) ? @profileuser.mobile : 'N/A' %></li>
 				<% end %>
 				
              <% end %>
@@ -77,7 +89,7 @@
         
         
       
-       <!-- <ul class="about_me">
+        <!--<ul class="about_me">
           <h2>About Me</h2>
           <p>I am the league’s only five-time MVP and a 13-time 
             Pro Bowler. I stand alone as the active leader in nearly 
@@ -95,11 +107,11 @@
             <p> <%= (@trainer_details.workout_tips.present?) ? @trainer_details.workout_tips.map{|tips| tips}.join(" , ") : ''; %></p>
             <p> <%= (@trainer_details.certificates.present?) ? @trainer_details.certificates.map{|certificate| certificate}.join(" , ") : '' ;%></p>
             <% end %>
-        </ul>
+        </ul> -->
       </div>
     </div>
-    <div class="profile_analytics">
-      <div class="fitpoints">
+ <div class="profile_analytics">
+    <!--  <div class="fitpoints">
         <div class="a_header">
           <h3>Fitpoints</h3>
         </div>
@@ -117,51 +129,51 @@
             <h1>800</h1>
           </div>
         </div>
-      </div>
+      </div>-->
       <div class="challenges">
         <div class="a_header">
           <h3>Challenges</h3>
-          <%= link_to('See Challenges', '/') %>
+       
         </div>
         <div class="data">
           <div>
-            <h4>Won</h4>
-            <h1>151</h1>
+            <h4>Total</h4>
+            <h1><%= @allchalenge.present? ? @allchalenge : '' %></h1>
           </div>
           <div>
-            <h4>Lost</h4>
-            <h1>15</h1>
+            <h4>Expire</h4>
+            <h1><%= @chal.present? ? @chal : ''  %> </h1>
           </div>
           <div>
             <h4>Active</h4>
-            <h1>12</h1>
+            <h1><%=  @allchalenge.present? ? @allchalenge - @chal : '' %></h1>
           </div>
         </div>
       </div>
       <div class="fitbit">
         <div class="a_header">
-          <h3><%= image_tag('global/synchs_with_fitbit.png') %></h3>
-          <%= link_to('See Fitbit', '/') %>
+          <h3>FitBit</h3>
+       
         </div>
         <div class="data">
           <div>
             <h4>Steps</h4>
-            <h1>33<span>K</span></h1>
+            <h1><%= @profileuser.fitbit.present? ? number_to_human(@profileuser.fitbit.steps , :format => '%n%u', :units => { :thousand => 'K' }) : '0'  %> </h1>
           </div>
           <div>
             <h4>Calories</h4>
-            <h1>15<span>K</span></h1>
+            <h1><%= @profileuser.fitbit.present? ? number_to_human(@profileuser.fitbit.summary_calories , :format => '%n%u', :units => { :thousand => 'K' }) : '0'  %></h1>
           </div>
           <div>
             <h4>Distance</h4>
-            <h1>67<span>M</span></h1>
+            <h1><%= @profileuser.fitbit.present? ? @profileuser.fitbit.distance : '0'  %><span>M</span></h1>
           </div>
         </div>
       </div>
-      <div class="gym">
+    <!--  <div class="gym">
         <div class="a_header">
           <h3>Gym</h3>
-          <%= link_to('See Gym', '/') %>
+          <% link_to('See Gym', '/') %>
         </div>
         <div class="data">
           <div>
@@ -178,6 +190,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>-->
+    </div> 
+  </div> -->
+</div>

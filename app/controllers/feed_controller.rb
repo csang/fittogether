@@ -8,8 +8,21 @@ class FeedController < ApplicationController
     @data = (session[:account].present?) ? session[:account] : nil;
     @profile = 'feed'
     @posts = Post.where(:status=>1).order("id DESC")
- 
-   
+	#abort(session[:oauth_token].inspect)
+    if  session[:oauth_token].present?
+      session[:connect] ='yes'
+	   @acc = Account.find(@account.id)
+		if @acc.present?
+			if @acc.update_attributes(:uid =>session[:uid],:oauth_token =>  session[:oauth_token], :access_secret =>session[:oauth_secret])
+			  flash[:notice] = "User connected with fitbit ."
+			   session.delete(:oauth_token)
+			else 
+			  flash[:error] = "Please try again."
+			end
+		 end	
+	
+    end
+
   end
   
   def create_post
@@ -42,14 +55,18 @@ class FeedController < ApplicationController
   end
   
    def create_album
-	    album =  Album.create(:account_id => @account.id)
+	    album =  Album.create(:account_id => @account.id, :title =>'untitled')
 	    if album
 	  		@image =  AlbumImage.create(:album_id=>album.id, :image=> params[:album])
 	  		
-			if @image
+			if @image.id.present?
 				redirect_to :action => "show_album", :id => album.id
+      else
+        flash[:error] = @image.errors.messages[:image].to_sentence  
+			  redirect_to request.env['HTTP_REFERER'] and return
 			end 
 		else
+        flash[:error] = @image.errors.full_messages.first
 			  redirect_to request.env['HTTP_REFERER'] and return
 	    end 	        
 	
@@ -60,11 +77,15 @@ class FeedController < ApplicationController
     
    def show_album
     @profile = 'album'
-	@album = Album.where(:id=>params[:id] ,:account_id=>@account.id).first
-	if !@album.present?
-		flash[:notice] = "Album does not exist."  
-		redirect_to('/feed')
-	end	
+    if params[:id].present?  
+      @album = Album.where(:id=>params[:id] ,:account_id=>@account.id).first
+      if !@album.present?
+       # flash[:error] = "Album does not exist."  
+        redirect_to('/feed')
+      end	
+    else
+          redirect_to('/feed')
+    end     
 
   end
   
@@ -77,7 +98,13 @@ class FeedController < ApplicationController
 		   
       if params[:photo]     
         params[:photo].each { |image|
-          AlbumImage.create(:album_id=>id, :image=> image)
+         abc = AlbumImage.create(:album_id=>id, :image=> image)
+       
+         if !abc.id.present?
+           flash[:error] = abc.errors.messages[:image].to_sentence  
+           redirect_to request.env['HTTP_REFERER'] and return
+         end
+         
         }
       end
     end  
@@ -121,4 +148,23 @@ class FeedController < ApplicationController
     end
   
   end
+  
+     
+    def un_sync
+   @acc = Account.find(@account.id)
+  
+		if @acc.present?
+			if @acc.update_attributes(:oauth_token => nil, :access_secret => nil)
+          @fb =  Fitbit.where(:account_id=>@account.id).first 
+          if @fb.present? 
+           @fb.destroy
+          end
+			  flash[:notice] = "Successfully disconnected  with fitbit ."
+			   
+			else 
+			  flash[:error] = "Please try again."
+			end
+		 end	
+  redirect_to('/feed')
+  end   
 end # end of class

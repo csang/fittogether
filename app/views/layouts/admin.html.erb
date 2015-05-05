@@ -7,23 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="keywords" content="<%= content_for?(:meta_keyword) ? yield(:meta_keyword) : "Fittogether Keyword" %> "/>
     <meta name="description" content="<%= content_for?(:description) ? yield(:description) : "Fittogether Description" %>" />
-  <% if request.host_with_port =='202.164.44.244:3021' %>
-  <% @@clientid =  'ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e' %>
-  <% @@secertid = 'Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7' %>
-  <% @@callback = 'http://202.164.44.244:3021/auth/auth0/callback' %>
-<% elsif request.host_with_port =='202.164.44.244:3020' %>
-  <% @@clientid = 'r9Sl2O6H91d6YYsNM9PY7ncwzGJP0r1T' %>
-  <% @@secertid = 'orlOgRVhRzLH-DbmqVcmbdJACUYsA97gKIMZMvi-b_BeaD6Mbo3vmCLovW_erlyg' %>
-  <% @@callback = 'http://202.164.44.244:3020/auth/auth0/callback' %>
-<% elsif request.host_with_port =='127.0.0.1:3000' %>
-  <% @@clientid = 'USZ78oRzwIFx7e4gOjrpYA1VZIDBZo8u' %>
-  <% @@secertid = 'bwswf2HLFIskZiBv07EP--8Bd_nQNtgRwlosEC2tHSK4lMCD6dqYFV616_GJNWCu' %>
-  <% @@callback = 'http://127.0.0.1:3000/auth/auth0/callback' %>
-<% else %>
-  <% @@clientid = 'oeOfvZxqJotXpmoV1Us0VFlFbP0iNna3' %>
-  <% @@secertid = '-oaaNrv0GnbmqiSNuk-go-m7Ct-5D7IoF7NnuDBM_ip3sinY4gIQn6wEdl66_SqB' %>
-  <% @@callback = 'http://104.236.205.185:3000/auth/auth0/callback' %>
-<% end %>
     <%= stylesheet_link_tag  "admin/reset", :media => "all" %>
     <%= stylesheet_link_tag  "admin/bootstrap", :media => "all" %>
 	<%= stylesheet_link_tag  "admin/admin", :media => "all" %>
@@ -34,6 +17,7 @@
      <%= javascript_include_tag "jquery.validate", :media => "all" %>
     <%= javascript_include_tag "admin/admin", :media => "all" %>
     <%= javascript_include_tag "admin/dashboard", :media => "all" %>
+    <%= javascript_include_tag "auth0-4.2.min.js", :media => "all" %>
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
     <%= csrf_meta_tags %>
     <script>
@@ -41,7 +25,7 @@
     </script>
   </head>
   <body>
-	 
+<%= render(:partial => '/nav/classvar') %>	 
 	<header class="admin_header">
 		<div class="container-fuild">
 			<% if current_admin %>
@@ -61,7 +45,7 @@
             <span class="icon-bar"></span>
           </button>	
           <% if admin_signed_in? %>	  
-           <a class="navbar-brand" href="/admin">
+           <a class="navbar-brand" href="/admin/">
               FitTogether Admin 
           </a>
           <% else %>

@@ -1,0 +1,24 @@
+ <%= form_for( Challenge.create, :remote => true, :html => {id: "challenge_form"}) do |f| %>
+	 <% gspecial = Category.where(:ctype =>'challenge').map{|x| [x.name] + [x.id]} %>
+<div class="pop-row">
+  <label>Category:</label>
+	 <%= select_tag(:category_id, options_for_select(gspecial)) %>
+ </div>
+<div class="pop-row">
+ <%= f.label :text, 'Quantity:' %>
+	<%= f.text_field :qty, class: " form-control" %>
+  </div>
+<div class="pop-row">
+	 <%= f.label :text, 'Description:' %>
+  <%= f.text_area :text, class: "boxtextarea form-control" %>
+</div>
+<div class="pop-row">
+  <label>Till Date:</label>
+  <input class="form-control" type="text" readonly name="valid_date" id="datepicker">
+  </div>
+<div class="pop-row">
+ <%= f.label :reward_points, 'Reward Points:' %>
+	<%= select_tag(:reward_points, options_for_select((50..500).step(50))) %>
+</div>
+<input type="hidden" value="" id="rip">
+<% end %> 
