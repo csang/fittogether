@@ -44,3 +44,8 @@ gem 'devise', '3.4.1'
 gem 'will_paginate', '~> 3.0'
 gem 'will_paginate-bootstrap'
 gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+gem 'fitgem'
+gem 'backbone-on-rails'
+gem 'ckeditor'
+
+
