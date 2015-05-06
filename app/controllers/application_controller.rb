@@ -24,7 +24,7 @@ class ApplicationController < ActionController::Base
   	@account_type = (session[:account].present?) ? session[:account]['account_type'] : nil;
   	if !@account.present?
   	    session.clear
-  	    flash[:notice] = "Please Sign In to continue to FitTogether."
+  	   # flash[:notice] = "Please Sign In to continue to FitTogether."
   	 	 redirect_to ('/login') and return
   	end 
     

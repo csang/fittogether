@@ -1,6 +1,6 @@
 <div class="list-group">
   <span class="list-group-item list-group-item-info active"> Menu</span>
-  <ul class="admin_navigation">
+  <ul  class="admin_navigation">
     <%#= debug params %>
     <%= ((params[:controller]=='admin/dashboard') || (params[:controller]=='admin/registrations' && params[:action]=='edit')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
     <% className = (params[:controller]=='admin/dashboard') ? 'list-group-item active' : '' %>
@@ -26,7 +26,11 @@
       <%= link_to "Gym Managers",   listUsers_admin_accounts_path(type: 'gym'),:class => className %></li>
     </ul>
     </li>
-
+  <%= ((params[:controller]=='admin/photos') || (params[:controller]=='admin/photos' && params[:action]=='listPhotos')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+    <% className = ((params[:controller]=='admin/photos') || (params[:controller]=='photos' && params[:action]=='listPhotos')) ? 'list-group-item active' : '' %>
+    <%= link_to "Photos/Videos Management", listPhotos_admin_photos_path, :class => className %>
+    </li>
+    
   </ul>
 </div>
 <style>

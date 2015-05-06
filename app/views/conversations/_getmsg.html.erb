@@ -1,0 +1,22 @@
+	<% if @messages.present? %>
+	<ul class="chating">
+		<% @messages.each do |message| %>
+			<li class="<%= self_or_other(message) %> profile_data">
+
+				<div class="imageRound">
+					<% img = useravatar(message.account) %>
+					<%= image_tag(img) %>
+				</div>
+				<div class="chatboxmessagecontent user-name">
+				<span class="chat-time">
+					<time datetime="<%= message.created_at %>" title="<%= message.created_at.strftime("%d %b %Y at %I:%M%p") %>">
+				  <%= message.created_at.strftime("%H:%M %p") %>
+					</time>
+				</span>
+				<h2><%= message.account.first_name %></h2>
+				<p><%= message.body %></p>
+				</div>
+			</li> 	
+		<% end %>
+	</ul>
+	<% end %>

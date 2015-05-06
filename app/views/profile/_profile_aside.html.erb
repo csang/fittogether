@@ -1,35 +1,15 @@
+
 <div id="left_side">
 
 	<div id="left_side_fixed">
 		<div id="account_info" class="profile_aside">
 			<div class="cover">
-				<%= image_tag('covers/cover.png') %>
+				<% image_tag('covers/cover.png') %>
 			</div>
 			<div class="user">
 				<div class="mask">
-				  <% @privacy = nil %>
-				   <% if @profileuser.account_privacy.present? %>
-						<% if @profileuser.account_privacy.account_id!=@account.id  %>
-							<% @privacy = @profileuser.account_privacy %>
-					   <% end %>
-				   <% end %>
-				   <%  if !@privacy.present? %>
-									<% if @profileuser.avatar.present? %>
-											<%= image_tag(@profileuser.avatar(:medium)) %>
-											  <% else  %>
-											  <%= image_tag('default.png') %>
-											  <% end %>
-					<% else %>						  
-				    <% if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  %>
-										   <% if @profileuser.avatar.present? %>
-											<%= image_tag(@profileuser.avatar(:medium)) %>
-											  <% else  %>
-											  <%= image_tag('default.png') %>
-											  <% end %>
-							<% else %>
-							  <%= image_tag('default.png') %>
-							<% end %>					  
-					<% end %>					  
+				<% img =  useravatar(@profileuser)  %>
+                                <%= image_tag(img) %>			  
 				</div>
 				<% if @profileuser.last_name.present? %>
 				<% lname = @profileuser.last_name %>
@@ -80,19 +60,56 @@
 				
 				</h3>
 						</div>
-			<div class="profile_actions">
-				<button class="message">Message</button
-				><button class="challenge">Challenge</button>
-			</div>
+						<% if @account.id != @profileuser.id %>
+							<div class="profile_actions">			
+								<button class="message" data-toggle="modal" data-target="#messageForm">Message</button
+								><button class="message" data-toggle="modal" data-target="#challengeForm">Challenge</button
+								>
+							</div>
+			            <% end %>
 			
-			<%= render(:partial => 'nav/side_nav') %>
+			<%= render(:partial => 'nav/side_nav', :profileuser => @profileuser) %>
 			
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="messageForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Message</h4>
+      </div>
+      <div class="modal-body">
+ 	<%= render(:partial => 'messages/message') %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="sendmessage" class="btn btn-primary"  data-sid ="<%= Base64.encode64(@account.id.to_s) %>", data-rip =" <%=  Base64.encode64(@profileuser.id.to_s) %>" >Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Challenge -->
+<div class="modal fade" id="challengeForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Challenge</h4>
+      </div>
+      <div class="modal-body">
+ 	<%= render(:partial => 'challenges/challenge') %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="challenge" class="btn btn-primary"   data-rip =" <%=  Base64.encode64(@profileuser.id.to_s) %>" >Send</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
-$(document).ready(function(){
 
+$(document).ready(function(){
+ 
 //remove friend
 
 $('.cancelfriend').on('click', function() {
@@ -122,6 +139,43 @@ var toid = $(this).attr('data-id');
 	    
 	    });
 // add friend
+$('#sendmessage').on('click', function(e) {
+e.preventDefault();
+CKEDITOR.instances['message_body'].updateElement();
+
+if ($('#conversation_form').valid()) {
+var sid = $(this).attr('data-sid');
+var rid = $(this).attr('data-rip');
+var bodytext = $('.bodyboxtextarea').val();
+
+
+
+	$.ajax({
+				type: "POST",
+				url: '<%= messages_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {sender_id:sid, recipient_id:rid, body:bodytext},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#messageForm').modal('hide');	
+							
+					$('.flash-message').html('<div class="alert alert-success"> Message Sent Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+                        }
+	    
+	    });
+	    
+	    
+// add friend
 $('.addfriend').on('click', function() {
 var toid = $(this).attr('data-id');
 	$.ajax({
@@ -148,6 +202,39 @@ var toid = $(this).attr('data-id');
 			});
 	    
 	    });
+	    
+$('#challenge').on('click', function() {
+if ($('#challenge_form').valid()) {
+var rid = $(this).attr('data-rip');
+var bodytext = $('.boxtextarea').val();
+var categoryid = $('#category_id').val();
+var rewardpoints = $('#reward_points').val();
+var qty = $('#challenge_qty').val();
+var valid_till = $('#datepicker').val();
+
+
+	$.ajax({
+				type: "POST",
+				url: '<%= challenge_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {to_id:rid, category_id:categoryid, text:bodytext, reward_points:rewardpoints,qty:qty,valid_till:valid_till},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#challengeForm').modal('hide');						
+					$('.flash-message').html('<div class="alert alert-success"> Challenge Sent Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+}                        
+	    
+	    });	    	    
 	    
 	    
       

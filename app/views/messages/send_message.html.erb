@@ -1,0 +1,20 @@
+<% @type = self_or_other(@message) %>
+<ul class="chating">
+<li class="<%= self_or_other(@message) %> profile_data" id="<%= @message.id %>">
+
+<div class="imageRound">
+<% img = useravatar(@message.account) %>
+<%= image_tag(img) %>
+</div>
+<div class="chatboxmessagecontent user-name">
+<span class="chat-time">
+<time datetime="<%= @message.created_at %>" title="<%= @message.created_at.strftime("%d %b %Y at %I:%M%p") %>">
+  <%= @message.created_at.strftime("%H:%M %p") %>
+</time>
+</span>
+<h2><%= @message.account.first_name %></h2>
+<p><%= @message.body.html_safe %></p>
+<button data-id="<%= @type +'-' + Base64.encode64(@message.id.to_s) %>" class="del chat-delete"> Delete</button>
+</div>
+</li> 
+</ul>

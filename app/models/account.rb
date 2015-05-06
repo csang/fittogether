@@ -1,25 +1,32 @@
 class Account < ActiveRecord::Base
 
-    serialize :goals, Array
+  serialize :goals, Array
 	has_one :account_user, :dependent => :delete
-   has_one :account_trainer , :dependent => :delete
+  has_one :account_trainer , :dependent => :delete
 	has_one :account_gym , :dependent => :delete
 	has_many :authorization, :dependent =>:delete_all
 	has_many :post, :dependent =>:delete_all
 	has_one :account_privacy, :dependent =>:delete
 	has_many :friendships
-    has_many :passive_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
+  has_many :albums, :dependent =>:delete_all
+  has_many :passive_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
 
-    has_many :active_friends, -> { where(friendships: { approved: true}) }, :through => :friendships, :source => :friend
-    has_many :passive_friends, -> { where(friendships: { approved: true}) }, :through => :passive_friendships, :source => :account
-    has_many :pending_friends, -> { where(friendships: { approved: false}) }, :through => :friendships, :source => :friend
-    has_many :requested_friendships, -> { where(friendships: { approved: false}) }, :through => :passive_friendships, :source => :account 
-    has_many :requested_friendships_seen, -> { where(friendships: { approved: false, seen: false}) }, :through => :passive_friendships, :source => :account 
-
-
-    def friends
-      active_friends | passive_friends
-    end
+  has_many :active_friends, -> { where(friendships: { approved: true}) }, :through => :friendships, :source => :friend
+  has_many :passive_friends, -> { where(friendships: { approved: true}) }, :through => :passive_friendships, :source => :account
+  has_many :pending_friends, -> { where(friendships: { approved: false}) }, :through => :friendships, :source => :friend
+  has_many :requested_friendships, -> { where(friendships: { approved: false}) }, :through => :passive_friendships, :source => :account 
+  has_many :requested_friendships_seen, -> { where(friendships: { approved: false, seen: false}) }, :through => :passive_friendships, :source => :account 
+    
+  has_many :conversations, :foreign_key => :sender_id, :dependent =>:delete_all
+    
+  has_many :challenges, :dependent =>:delete_all
+  has_many :account_goals, :dependent =>:delete_all
+  has_many :passive_challenge, :class_name => "Challenge", :foreign_key => "to_id"
+  has_many :requested_challenges_seen, -> { where(challenges: { is_read: false}) }, :through => :passive_challenge, :source => :account 
+  has_one :fitbit , :dependent => :delete 
+  def friends
+    active_friends | passive_friends
+  end
 	
   has_many :account_activity
 	has_attached_file :avatar, 
@@ -32,21 +39,50 @@ class Account < ActiveRecord::Base
 	def account_info
 		'sweet'
 	end
+  def linked?
+    oauth_token.present? && access_secret.present?
+	end
+  
+  
+  def fitbit_data
 	
-	def add_provider(auth_hash)
-  # Check if the provider already exists, so we don't add it twice
-  unless authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
-    Authorization.create :user => self, :provider => auth_hash["provider"], :uid => auth_hash["uid"]
+    raise "Account is not linked with a Fitbit account" unless linked?
+    @client ||= Fitgem::Client.new(
+      :consumer_key => 'c661f3ba999e4314ab3d58dce5d612a7',
+      :consumer_secret => '90eb02b4ada24d51ada8b0c383793471',
+      :token => oauth_token,
+      :secret => access_secret,
+      :user_id => uid,
+      :ssl => true
+    )
   end
-end
+	
+  def unit_measurement_mappings
+    @unit_mappings ||= {
+      :distance => @client.label_for_measurement(:distance),
+      :duration => @client.label_for_measurement(:duration),
+      :elevation => @client.label_for_measurement(:elevation),
+      :height => @client.label_for_measurement(:height),
+      :weight => @client.label_for_measurement(:weight),
+      :measurements => @client.label_for_measurement(:measurements),
+      :liquids => @client.label_for_measurement(:liquids),
+      :blood_glucose => @client.label_for_measurement(:blood_glucose)
+    }
+  end	
+	def add_provider(auth_hash)
+    # Check if the provider already exists, so we don't add it twice
+    unless authorization.find_by_provider_and_uid(auth_hash["provider"], auth_hash["uid"])
+      Authorization.create :user => self, :provider => auth_hash["provider"], :uid => auth_hash["uid"]
+    end
+  end
 
 	def self.encrypt(string)
-      secure_hash("#{string}")
-    end
+    secure_hash("#{string}")
+  end
     
-    def self.secure_hash(string)
-      Digest::SHA2.hexdigest(string)
-    end
+  def self.secure_hash(string)
+    Digest::SHA2.hexdigest(string)
+  end
 
 	
   

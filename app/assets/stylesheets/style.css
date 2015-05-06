@@ -5,4 +5,38 @@
 .error-right h2{text-transform:uppercase; color:#000; font-size:30px;}
 .error-right p{color:#181818; font-size:17px; line-height:20px; padding:10px 25% 10px;}
 .error-right a{color:#2f8352; font-size:17px;}
+.pop-row{margin-bottom:15px;}
+.pop-last{margin-bottom:0px;}
+.pop-row label{margin:0 0 8px; display:block;}
+.ui-widget-content{border:1px solid #ccc;}
+.ui-widget-header{background:#2f8352; border:none;}
+.arport, .arport2 {
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #cccccc;
+    display: block;
+    font-size: 13px;
+    position: absolute;
+    top:100%;
+    width: 99.8%;
+    z-index: 10;
+}
+.arport li, .arport2 li {
+    border-bottom: 1px solid #cccccc;
+    list-style: none outside none;
+    padding: 7px;
+    font-size:15px;
+}
+.arport li:nth-child(odd){background:#f8f8f8;}
+.arport li:nth-child(even){background:#fff;}
+.arport li:last-child{border-bottom:none;}
+.arport li:hover, .arport2 li:hover {
+    background: none repeat scroll 0 0 #3399ff;
+    border-bottom: 1px solid #cccccc;
+    color: #fff;
+}
+.listing-hover{position: relative;}
+.column_header{}
+.column_header .imageRound{float:left; width:50px; height:50px; }
+.column_header .name{padding:5px 0 0 60px;}
+.column_header h3{font-size:16px;}
 /* ================================== new  css end ========================================================================================*/

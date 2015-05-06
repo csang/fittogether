@@ -1,3 +1,4 @@
+
 <script>
   $(function() {
     // initial sort set using data-sortlist attribute (see HTML below)
@@ -22,8 +23,8 @@
         var rowId = $(this).attr('data-row-id');
         var provider = $(this).attr('data-provider');
         var cData = {};
-        cData.client_id = '<%= @@clientid %>';
-        cData.client_secret = '<%= @@secertid  %>';
+        cData.client_id = clientid ;
+        cData.client_secret = secertid  ;
         cData.grant_type = 'client_credentials';
         userid = provider +'|' + dataId;
              $.ajax({

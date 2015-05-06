@@ -1,0 +1,106 @@
+<%= form_for([:admin,@user]) do |f| %>
+  <% if @user.errors.any? %>
+    <div id="error_explanation">
+      <h2 class="error"><%= pluralize(@user.errors.count, "error") %> found:</h2>
+      <ul>
+        <% @user.errors.full_messages.each do |msg| %>
+          <li class="error"><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ <div class="control-group">
+    <%= f.label :email %>
+    <div class="controls">
+      <%= f.text_field :email, :disabled=>'disabled', :class=>'form-control' %>
+    </div>
+     <div class="clear"></div>
+  </div>
+  <div class="control-group">
+    <%= f.label :first_name ,"First Name" %>
+    <div class="controls">
+      <%= f.text_field :first_name, :class=>'form-control' %>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label :last_name , "Last Name" %>
+    <div class="controls">
+      <%= f.text_field :last_name, :class=>'form-control' %>
+    </div>
+    <div class="clear"></div>
+  </div>
+  
+  
+  <div class="control-group">
+    <%= f.label :user_name , "User Name" %>
+    <div class="controls">
+      <%= f.text_field :user_name, :class=>'form-control' %>
+    </div>
+    <div class="clear"></div>
+  </div>
+ 
+  <div class="control-group">
+    <%= f.label :account_url , "Account Url" %>
+    <div class="controls">
+      <%= f.text_field :account_url, :class=>'form-control' %>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+<div class="control-group">
+    <%= f.label :profession_id , "Profession" %>
+    <div class="controls">
+     <% professions = Profession.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag( 'account[profession_id]', options_for_select(professions, @user[:profession_id])) %>	
+    </div>
+    <div class="clear"></div>
+  </div>
+
+<div class="control-group">
+    <%= f.label :company , "Company" %>
+    <div class="controls">
+      <%= f.text_field :company, :class=>'form-control' %>
+    </div>
+    <div class="clear"></div>
+  </div>
+<div class="control-group">
+    <%= f.label :industry_id , "Industry" %>
+    <div class="controls">
+      <% industries = Industry.all.map{|x| [x.name] + [x.id]} %>
+      <%= select_tag('account[industry_id]', options_for_select(industries, @user[:industry_id])) %>	
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="control-group">
+    <%= f.label :gym_id , "Gym" %>
+    <div class="controls">
+      <% gyms = Gym.all.map{|x| [x.name] + [x.id]} %>
+        <%= select_tag('account[gym_id]', options_for_select(gyms, @user[:gym_id])) %>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+<div class="control-group">
+    <%= f.label :goals , "Goals" %>
+    <div class="controls">
+     <% goals = Goal.all.map{|x| [x.name] + [x.id]} %>
+		<%= select_tag('account[goals]', options_for_select(goals, @user[:goals].map {|j| j}), multiple: true) %>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+
+
+    <div class="control-group">
+      <%= f.label :status %>
+       <div class="controls">
+    <%= f.select :status, [["Select Status",""], ["Active", 1], ["Inactive", 0]] %>
+	</div>
+    <div class="control-group actions">
+      <div class="controls contro">   <%= f.submit :class=>'btn btn-primary'  %>
+      <a class="btn btn-default bck" onclick='window.history.go(-1)' href="javascript:void(0);" title="Cancel">Cancel</a></div>
+      <div class="clear"></div>
+    </div>
+  <% end %>

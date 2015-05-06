@@ -408,8 +408,8 @@
 }
 
 .notifications_view{
-	/*height: 1700px;*/
-	min-height: 1440px;
+	/*height: 1700px; min-height: 1440px;*/
+	min-height:600px;
 	/*border-right: 1px solid #a6a7a7;*/
 	padding: 0 0 60px;
 }

@@ -128,4 +128,7 @@ table.tablesorter .tablesorter-headerUnSorted span, table.tablesorter .tablesort
 table.tablesorter .tablesorter-headerDesc span{background: url("desc-new.png") no-repeat;}
 table.tablesorter .tablesorter-headerAsc span{background: url("asc-new.png") no-repeat;}
 table.tablesorter .tablesorter-headerUnSorted span{background: url("bg-new.png") no-repeat;}
+.photo-album .photo-new{border:1px solid #000; background:#fff; padding:3px; float:left; width:200px; height:200px;margin: 10px 10px 10px 10px; position:relative;}
+.photo-album .photo-new img{width:100%; height:100%;}
+.album-delete{width:23px; height:22px; position:absolute; right:-6px; top:-7px; background:url(../../assets/album-delete.png) no-repeat; z-index:20; text-indent:-9999px;}
 /* ================================== new  css end ============================================================================================*/

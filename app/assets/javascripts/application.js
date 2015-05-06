@@ -13,7 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 // require turbolinks
+//= require ckeditor/init
 //= require_tree .
+
 var chat = true;
 Main_List_Url = {
 

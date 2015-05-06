@@ -23,10 +23,12 @@
 			
 			<% if @account.present? %>
 		<% @countreq = @account.requested_friendships_seen.present? ? @account.requested_friendships_seen.count : '' %> 
+		<% @countreqchallenge = @account.requested_challenges_seen.present? ? @account.requested_challenges_seen.count : '' %> 
 		
-				<span class="new"> <%= @countreq %> </span> <a class="nav_option" href="/<%=  @ahref %>" title="notifications"> <%= image_tag('icons/notification.png'); %></a>
-				<%= 1==0 ? '<span class="new">17</span>'.html_safe : nil %><a class="nav_options" title="challenges"><%= image_tag('icons/trophy.png'); %></a>
-				<%= 1==0 ? '<span class="new">99+</span>'.html_safe : nil %><a class="nav_options" title="messages"><%= image_tag('icons/mail.png'); %></a>
+		
+				<span class="new"> <%= @countreq %> </span> <a class="nav_option" href="/<%=  @ahref %>" title="Friend Notifications"> <%= image_tag('icons/notification.png'); %></a>
+				<span class="new"><%= @countreqchallenge %></span><a class="nav_option" href="/challenges" title="Challenges"><%= image_tag('icons/trophy.png'); %></a>
+			   <span class="new" id="newmsg"><%= messagecount() %></span><a class="nav_option" title="Messages" href="/conversations" ><%= image_tag('icons/mail.png'); %></a>
 			<% end %>
 			<div class="previews">
 				<div class="notifications_preview">

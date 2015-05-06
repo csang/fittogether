@@ -1,0 +1,6 @@
+$(document).ready ->
+  $(".accept").on("ajax:before", (e, data, status, xhr) ->
+   
+   console.log('sfsdfs')
+  ).on "ajax:error", (e, xhr, status, error) ->
+    console.log('sfsdfs')

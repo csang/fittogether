@@ -1,9 +1,37 @@
+<%= render(:partial=>'/nav/classvar') %>
 <div id="feed_side_nav">
 	<ul>
-		<li class="selected">ALL POSTS</li>
-		<li>CHALLENGES</li>
-		<li>FITBIT<%= image_tag('global/synchs_with_fitbit.png'); %></li>
-		<li>GYM</li>
+        
+		<li class="<% if request.original_url.include? 'feed' %>
+                          selected
+                          <% else %>
+                            mp
+                             <% end %> ">
+                           
+                  
+                  
+                  <a href="/feed">ALL POSTS</a></li>
+		<li> <%= link_to 'CHALLENGES', challenge_path %></li>
+		<li> <%= link_to 'GOAL', account_goals_path %></li>
+                    <% if !@profileuser.present? %>
+		<li class="<% if request.original_url.include? 'api' %>
+                          selected
+                          <% else %>
+                            mp
+                             <% end %> ">           
+               
+		<% if @account.linked? or session[:oauth_secret].present? %>
+                <% session.delete(:oauth_secret) %>
+			<a href="<%= api_activity_path %> ">FITBIT</a>
+			<a href="<%= un_sync_path %>" ><%= image_tag('global/unsynchs_with_fitbit.png'); %></a></li>
+		<% else %>
+		FITBIT
+	         
+		 <a href="#login-popup" target="_blank" title="fitibit" contype="fitbit" class='login-popup fitbit' ><%= image_tag('global/synchs_with_fitbit.png'); %></a></li>
+		<% end  %>
+		<% end  %>
+	
+                <li>GYM</li>
 		<li>FITSPOTS</li>
 		<li>EVENTS</li>
 	</ul>
@@ -27,3 +55,19 @@
 		<h3>LOGOUT</h3>
 	</div>
 </div>
+<script>
+  // login with facebook
+  $('.login-popup').click(function(e) {
+    var connectionType = $(this).attr('contype');
+    e.preventDefault();
+    auth0.login({
+      connection: connectionType,
+      popup: false,
+      popupOptions: {
+        width: 450,
+        height: 600
+      }
+    });
+  });
+ 
+  </script>

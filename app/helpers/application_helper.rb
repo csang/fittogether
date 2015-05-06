@@ -102,10 +102,11 @@ def error_messages(curr_resource)
    
     def get_user_name(id)
      gymName = AccountGym.where(:id => id).first
+  
      if gymName.present?
        uName = Account.select('user_name').where(:id => gymName['account_id']).first
       end 
-      return (uName.present?) ?  uName['user_name'] : false ; 
+      return (uName.present?) ?  uName['user_name'] : 'N/A' ; 
    end
    
    def get_user_detail(id)
@@ -126,5 +127,51 @@ def error_messages(curr_resource)
    
    end
    
+   def useravatar(profileuser)
+     #abort(profileuser.inspect)
+    @privacy = nil 
+    @profileuser = profileuser 
+   
+	if @profileuser.account_privacy.present? 
+	 
+      if @profileuser.account_privacy.account_id!=@account.id  
+		 @privacy = @profileuser.account_privacy 
+      end 
+   end 
+		
+	if !@privacy.present? 
+			if @profileuser.avatar.present? 
+					@img = @profileuser.avatar(:thumb)
+      elsif   @profileuser.pic.present?  
+          @img = 'https://' + @profileuser.pic
+			else  
+			     @img = 'default.png'
+		  end 
+	else 						  
+    if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  
+      if @profileuser.avatar.present? 
+       @img = @profileuser.avatar(:thumb)
+       elsif   @profileuser.pic.present?  
+          @img = 'https://' + @profileuser.pic
+      else 
+      @img = 'default.png'
+      end 
+	 else 
+	 @img = 'default.png'
+	 end 				  
+ end 					 
+   return @img
+ end
+   
+   def messagecount
+	@conversation =	Conversation.involving(@account.id).order("id DESC")
+	conv = []
+	@conversation.each do |abc|
+    conv.push(abc.id)
+    end
+    
+	cont = Message.where("account_id != ? && is_read = ? && conversation_id IN (?)" , @account.id, 0, conv).count
+	return cont > 0 ? cont : ''
+   end
      
 end

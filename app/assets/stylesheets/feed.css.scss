@@ -12,7 +12,7 @@
 #content .comment_view_bg{
 	background-color: #d5d5d5;
 	position: fixed;
-	z-index: 9996;
+	z-index: 300;
 }
 
 #content .comment_view h3{
@@ -101,7 +101,7 @@
 #content .comment_view .post_options .extra span img:hover{
 	background-color: #4ca571;
 }
-
+#content .comment_view .post_options .share:hover{background:#2f8352;}
 #content .comment_view .post_options .extra{
 	height: 45px;
 	border-right: 1px solid #024d21;
@@ -278,7 +278,7 @@
 
 #left_side #account_info dl dt{
 	width: 100%;
-	margin-top: 10px;
+	margin-top:2px;
 	text-transform: uppercase;
 	color: #4ca571;
 	text-align: center;
@@ -286,7 +286,7 @@
 
 #left_side #account_info #feed_side_nav{
 	clear: both;
-	overflow: scroll;
+	overflow:hidden;
 	min-height: 250px;
 }
 
@@ -295,7 +295,7 @@
 	color: #ffffff;
 	cursor: pointer;
 }
-
+#left_side #account_info #feed_side_nav li a{display:inline-block; width:100%; }
 #left_side #account_info #feed_side_nav li img{
 	float: right;
 	height: 29px;
@@ -1111,7 +1111,7 @@
 .feed .post .comments .comment span{
 	float: right;
 }
-
+.feed .post .comments .comment span.time{font-weight:normal; font-size:11px;}
 .feed .post .comment_box{
 	border-top: 1px solid #8b8b8b;
 	border-right: 1px solid #8b8b8b;

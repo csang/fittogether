@@ -1,0 +1,20 @@
+ <%= form_for(AccountGoal.create, :remote => true, :html => {id: "goal_form"}) do |f| %>
+	 <% gspecial = Goal.all.map{|x| [x.name] + [x.id]} %>
+<div class="pop-row">
+  <label>Category:</label>
+	 <%= select_tag(:goal_id, options_for_select(gspecial)) %>
+ </div>
+<div class="pop-row">
+ <%= f.label :text, 'Quantity:' %>
+	<%= f.text_field :qty, class: " form-control" %>
+  </div>
+<div class="pop-row">
+	 <%= f.label :text, 'Description:' %>
+  <%= f.text_area :text, class: "boxtextarea form-control" %>
+</div>
+<div class="pop-row">
+  <label>Till Date:</label>
+  <input class="form-control" type="text" readonly name="valid_date" id="datepicker">
+  </div>
+<input type="hidden" value="" id="rip">
+<% end %> 

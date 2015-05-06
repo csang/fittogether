@@ -1,0 +1,31 @@
+<section class="admin_maincontent">
+    <div class="page-header">
+        <div class="col-sm-9 PaddingLeft">
+            <h1 class="NoMargin"><%= @album.title %></h1>
+        </div>
+        <div class="col-sm-3 PaddingRight">
+            <div class="show_back_right">
+                <%= link_to 'Back', listPhotos_admin_photos_path , :class => 'btn btn-default' %>
+            </div></div>
+        <div class="clear"></div>
+    </div>
+
+    <div class="collection photo-album">
+        <% @album.album_images.each do |img| %>
+          <div class="photo album-hover photo-new">
+               <% if img.image_content_type!='video/mp4' %>  
+                              <img src="<%= img.image %>" height="200" widht="300">
+                        <% else %>
+                              <video id='video'  controls width="195" height="200">
+                              <source src='<%= img.image %>' type='video/mp4'/>
+                              Your browser does not support the video .
+                            </video>                          
+                        <% end %>
+             <%= link_to 'Delete',url_for(action: :destroy, id: img.id, model: 'AlbumImage'),method: :delete, :class=>'album-delete', data: {confirm: "Are you sure you want delete?"} %>
+          </div>
+        <% end %>
+    </div>
+
+
+    <div class="clear"</div>
+</section>

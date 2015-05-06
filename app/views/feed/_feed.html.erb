@@ -49,7 +49,7 @@ $(document).on("click",'.add_comment', function(){
 	</div>
 		<div class="top green">
 			<h3 class='green'><%= @name %> </h3>
-			<h4><%= time_ago_in_words(@time) %> AGO</h4>
+			<h4><%= time_ago_in_words(@time) %> ago</h4>
 			<span><%= image_tag('icons/green_arrow.png') %></span>
 		</div>
 		<div class="data">
@@ -93,7 +93,7 @@ $(document).on("click",'.add_comment', function(){
 			</div>
 				<h3><a href="<%= abc.user_name %>" ><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></a></h3>
 				<% end %>
-				<span class="time"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> AGO</span>
+				<span class="time"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</span>
 				<p> <%= cm.text %> </p>
 		 </div>
 	<% end %>
@@ -218,6 +218,7 @@ function beforeSubmit(){
 					    $("#feeds").prepend(data);					   
 					    $("#photo").val('');					   
 					    $("#video").val('');					   
+					    $(".posttext").val('');					   
 						 
 					},
 					 error: function (xhr, ajaxOptions, thrownError) {
