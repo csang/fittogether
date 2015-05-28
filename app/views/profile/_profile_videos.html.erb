@@ -1,0 +1,31 @@
+
+<div class="profile_photos_view">
+  
+  
+  <div id="calendar"></div>
+  
+</div>
+<style>
+	#calendar {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+</style>
+<script>
+          $(document).ready(function(){  
+                    
+             $('#calendar').fullCalendar({
+     
+			 header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        defaultDate: new Date(),
+        selectable: true,
+        selectHelper: false,
+		});
+          });
+  
+</script> 

@@ -42,7 +42,13 @@
 			 <% end %>
            
                 
-         
+           <p class="profile-info">( <%= if member.user_type==2 
+                'Trainer' 
+                elsif member.user_type==3
+                'Gym'
+           else
+             'user' 
+           end %> ) </p>  
 </div>
 <% end %>
 <% end %>
@@ -84,7 +90,13 @@
 			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend">Remove</button>
 			  <% end %>
            
-                
+                 <p class="profile-info"> (<%= if member.user_type==2 
+                'Trainer' 
+                elsif member.user_type==3
+                'Gym'
+           else
+             'user' 
+                 end %> ) </p>     
          
 </div>
 <% end %>

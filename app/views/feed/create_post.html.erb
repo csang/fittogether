@@ -18,7 +18,7 @@
 	</div>
 		<div class="top green">
 			<h3 class='green'><%= @name %> </h3>
-			<h4><%= time_ago_in_words(@time) %> ago</h4>
+			<h4><%= @time.present? ? time_ago_in_words(@time) : 'less than a minute' %> ago</h4>
 			<span><%= image_tag('icons/green_arrow.png') %></span>
 		</div>
 		<div class="data">

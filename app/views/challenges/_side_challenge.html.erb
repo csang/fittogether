@@ -1,6 +1,10 @@
 
 <div class="notification_menu">
-  <div id="notifications_nav">Challenges <span style="float:right"><a style="width:auto;" class="goal-btn" href="javascript:void(0)" data-toggle="modal" data-target="#challengeForm">New Challenge</a></spa></div>
+  <div id="notifications_nav"><a class="goal-btn" href="<%= challenge_path() %>" >Challenges </a>
+    <% if @account.user_type == 2 %>
+    <span style="float:right;"><a style="width:auto; margin-right:10px;" class="goal-btn" href="<%=  challenges_show_path %> " >Manage Teammate Challenge</a></spa>
+   <% end %>
+      <span style="float:right"><a style="width:auto;" class="goal-btn" href="javascript:void(0)" data-toggle="modal" data-target="#challengeForm">New Challenge</a></spa></div>
 
 </div>
 <div id="conv">
@@ -10,7 +14,7 @@
       <% @allchallenge.each do |message|
          @type = self_or_other(message) 
    
-        if message.sender_status!=false && message.valid_till >= Date.today && (message.status!='reject' || @type =='self' )
+        if  message.status!='reject' || @type =='self' 
         %>
 
 
@@ -39,7 +43,7 @@
               <% else  %>
              <div class="detail-box"><span>Challenge To: </span><p>  You </p></div>
               <% end  %>  -->
-              <div class="detail-box"><span>Challenge:</span><p><%= message.text %></p></div>
+              <div class="detail-box"><span>Challenge:</span><p class="challenge-text"><%= message.text %></p></div>
               <div class="detail-box detail-inner"><span><%= message.category.name %>:</span><p><%= message.qty %></p></div>
               <div class="detail-box detail-inner"><span>Reward Points:</span><p><%= message.reward_points %></p></div>
               <div class="detail-box detail-inner"><span>Status:</span><p class="newstatus">
@@ -96,7 +100,7 @@
       <div class="modal-body">
         <div class="pop-row listing-hover">
           <label>To:</label>
-          <input class="form-control" type="text" id="tags" value="" name="search" placeholder="search...">
+          <input class="form-control" autocomplete="off" type="text" id="tags" value="" name="search" placeholder="search...">
           
             <ul class="arport" style="display:none;">
             

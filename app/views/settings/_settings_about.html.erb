@@ -56,16 +56,34 @@ $(window).load(function(){
 		</div>
 		<div class="gym row">
 			<h2>DO YOU BELONG TO A GYM?*</h2>
-			<div class="input radio-option">
+			<div class="input radio-option location-input">
 				<div class="radio-inner">
 				<label>YES</label><input type="radio" name="belong" value="y" checked><div class="radio"><div class="checked"></div></div>
 				<label>NO</label><input type="radio" name="belong" value="n" ><div class="radio"><div class="checked"></div></div>
 				</div>
-			<% gyms = AccountGym.all.map{|x| [x.name] + [x.id]} %>
-			<%= select_tag(:gym, options_for_select(gyms, @account.gym_id)) %>	
-				<select name='location'>
-					<option value='0'>LOCATION</option>
+			<% gyms = AccountGym.where("name !=?", "").map{|x| [x.name] + [x.id]} %>
+			  
+			<%= select_tag(:gym, options_for_select(gyms, @account.gym_id), prompt: "select gym") %>	
+                        <%  if @account.gym_id.present? %>
+                          <select name='location' id="location">
+                            <option value="">Location</option>
+                         <% gyddata =     getgymlocations(@account.gym_id) %>
+                        <%      if gyddata.present?
+                                 x = 1
+                                gyddata.address.each { |y| 
+                                sel = x == @account.gym_location_id ? 'selected' :'' %>
+                                <option <%= sel %> value="<%= x %>"><%= y %> </option>
+                        <%  
+                         x += 1
+                        } 
+                        end
+                        %>
+                            </select>
+                          <% else %>
+				<select name='location' id="location">
+					<option value=''>Location</option>
 				</select>
+                          <% end  %>
 				</span>
 			</div>
 		</div>
@@ -162,3 +180,36 @@ $(window).load(function(){
    </div> 
 <% end %>
  </div>
+        <script>
+   $(function() {
+  $('#gym').on('change', function() {
+    var id = $(this).val();
+    var opt ='';
+    if (id !="") {
+      $.ajax({  
+        type: "POST",
+        url: '<%= get_address_path %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: {id: id},
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          
+          $('#location').html(data);
+        
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+      
+          console.log(thrownError);
+
+        }
+
+      });
+    }
+  });
+  });
+          
+          
+          
+        </script>

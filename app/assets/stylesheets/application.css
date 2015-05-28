@@ -43,6 +43,7 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+
 input[type="file"]:focus, input[type="radio"]:focus, input[type="checkbox"]:focus, a:focus{outline:none;}
 body {
 	line-height: 1;
@@ -427,8 +428,8 @@ x:-o-prefocus, #nav_container .search span{
 }
 
 .search_results_section{
-	width: 49%;
-	left:26%;
+	width: 46%;
+	left:27%;
 	height: 0px;
 	margin-top: 0;
 	background-color: rgba(226,226,226,.3);
@@ -444,6 +445,7 @@ x:-o-prefocus, #nav_container .search span{
 	margin: 0 auto;
 	clear: both;
 	overflow: scroll;
+	overflow-y:hidden;
 }
 
 .search_results .column{
@@ -1255,7 +1257,7 @@ ul.chating .imageRound{width:70px; height:70px;}
 .chat-time{float:right; padding:7px 0 0; color:#9197a3;}
 .reply-box{padding:10px 0 50px 0;}
 .reply-box textarea{margin:0px 0 5px;}
-.chat-delete{background:url(../assets/chat-delete.png) no-repeat; width:11px; height:13px;text-indent: -9999px;float: right; border:none; padding:0px; opacity:0;}
+.chat-delete{background:url(../assets/chat-delete.png) no-repeat; width:11px; height:13px;text-indent: -9999px;float: right; border:none; padding:0px; opacity:0; margin:10px 0 0;}
 ul.chating li:hover .chat-delete{opacity:1;} 
 .listing{background:#fff; border:1px solid #bababa; padding:15px 15px 15px;}
 .listing .head_box h2{padding:5px 0px;}
@@ -1264,16 +1266,18 @@ ul.chating li:hover .chat-delete{opacity:1;}
 .modal-footer{margin-top:10px;}
 .msg-right .detail-box{font-size:14px; margin:7px 0px 0; color:#000;}
 .msg-right .detail-box span{font-size:14px; font-weight:bold; margin:0 8px 0 0; color:#515763; float:left;}
-.msg-right .detail-box p{padding:0 0 0 40px;}
+.msg-right .detail-box p{padding:0 0 0 40px; line-height:18px;}
+.msg-right .detail-box p.challenge-text{padding:0 0 0 83px;}
 .modal-content .pop-row textarea, .modal-content .pop-row select{margin:0px;}
+.select-border textarea, .select-border  select{margin:0px;}
 .msg-right .user-name a.btn{margin:10px 10px 0 0; float:left;}
-.chat-edit{background:url(../assets/chat-edit.png) no-repeat; width:13px; height:13px;text-indent: -9999px;float: right; border:none; padding:0px; opacity:0; margin:0 10px 0 0;}
+.chat-edit{background:url(../assets/chat-edit.png) no-repeat; width:13px; height:13px;text-indent: -9999px;float: right; border:none; padding:0px; opacity:0; margin:10px 15px 0 0;}
 ul.chating li:hover .chat-edit{opacity:1;}
 .msg-right ul.chating{max-height:inherit!important;}
 .msg-right .chat-edit, .msg-right .chat-delete{opacity:1;}
 .msg-right .detail-inner{float:left; margin:10px 30px 0 0;}
 .msg-right .detail-inner span{float;none;}
-.msg-right .detail-inner p{display:inline; padding:0px;}
+.msg-right .detail-inner p{display:inline; padding:0px; line-height:15px;}
 .msg-right #notifications_nav{position:relative; display:inline-block; vertical-align:top; width:100%; color:#fff; height:40px; line-height:40px; font-size:16px; text-transform:uppercase; padding:0px 10px; margin:0 0 10px;}
 .msg-btn{display:inline-block; vertical-align:top; width:100%;}
 #notifications_nav a.goal-btn{ background:#2f8352;font-size: 12px; height: auto; line-height: 28px; margin: 6px 0 0;
@@ -1283,6 +1287,38 @@ ul.chating li:hover .chat-edit{opacity:1;}
 .modal-backdrop{display:none;}
 .notification-msg{text-align: center;font-size: 17px;color: #2F8352;margin: 20px 0 0;}
 .about_form select option, select option, .selection option{padding:1px 5px;}
+.event-indication{display:inline-block; vertical-align:top; text-align:center; padding:15px 0 20px; width:100%;}
+.event-box{display:inline-block; vertical-align:top; margin-right:20px; font-size:15px; }
+span.event-color{border:1px solid #fff; width:16px; height:16px; float:left;}
+.event-box p{padding:0px 0 0 23px; font-weight: normal;}
+.requirement{float:right; margin:22px 54px 0 0;}
+.search_results .column .list .person .requirement span{color:#fff;}
+.img-area{display:inline-block; vertical-align:top; text-align:center;}
+.img-area .imageRound{display:inline-block; vertical-align:top; float:none;}
+span.ver{padding:15px 3px 0;display:inline-block; vertical-align:top;}
+.show-challanges h2 a{font-size:14px;}
+.modal-title{font-size:18px;}
+.show-challanges .user-name{padding:0px 0 0 205px; float:none;}
+.show-challanges select, .show-challanges .selection{padding: 5px 65px 5px 10px; background: #2F8352 url("support/select_arrow.png") no-repeat scroll right -13px;}
+.chat-left{float:left;}
+.msg-right .show-challanges .show-inner{float:right; margin:10px 0 0;}
+.post-delete{background:url(../assets/close.png) no-repeat 4px 4px; width:19px; height:19px; position:absolute; right:4px; top:4px; text-indent:-9999px;border: 1px solid #5F5F5F; border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%; -o-border-radius:50%;}
+.profile-info{display: inline-block;margin: 0px 0px 0px 5px;font-weight: normal;color: rgb(140, 140, 140)}
+.goal-setting label{margin:10px 0 0; padding:0px;}
+.goal-setting .col-md-9{margin:0; padding:0px;}
+.goal-setting .col-md-9 select{padding:6px 65px 8px 10px; width:50%; margin:0px;background: url("support/select_arrow.png") no-repeat scroll right -10px #2F8352;}
+.goal-setting .col-md-9 input[type="text"]{width:50%; float:left;}
+.exten{padding:10px 0 0 5px; float:left; font-size:13px;}
+.location-input{max-width:850px; text-align:right;}
+.location-input #gym{margin-bottom:10px;}
+.location-input select#location{max-width:100%;}
+/* =============== increase the width of right content  css end 
+#content{width:1000px!important;}
+.account_info .profile_nav, .account_info .profile_data{width:970px;}
+.account_info .profile_nav a{font-size:18px;margin: 0px 15px;} ============*/
+
+
+
 /* ================================== new  css end ========================================================================================*/
 @media screen and (max-width: 1279px){
 	/*#container{

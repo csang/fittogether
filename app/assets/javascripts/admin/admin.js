@@ -206,6 +206,7 @@ $(document).ready(function() {
 }); //end of document dot ready
 
 function validatemultipleaction() {
+   
     var count = $(".check:checked").length;
     var counter = $(".check").length;
     var PageOptions = $(".options").val();
@@ -278,9 +279,11 @@ function validatemultipleaction() {
 		   },
          });
       setTimeout( function(){
+      
        $('.bulk-form').submit();
 	},3500);
     } else {
+   
 		 $('.bulk-form').submit();
 	 }
     

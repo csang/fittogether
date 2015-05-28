@@ -34,7 +34,8 @@ $fitpoints: #f3e500;
 .account_info .profile_nav a{
 	color: #2f8352;
 	padding:9px 0;
-	margin: 0 15px;
+	margin: 0 10px;
+        font-size:15px;
 }
 
 .account_info .profile_nav ul{
@@ -97,33 +98,33 @@ $fitpoints: #f3e500;
 	text-align: center;
 }
 
-.account_info .profile_about .personal li:nth-child(1)::before{
+.account_info .profile_about .personal li.user::before{
 	content: url('icons/briefcase.png');
 }
 
-.account_info .profile_about .personal li:nth-child(2)::before{
+.account_info .profile_about .personal li.location::before{
 	content: url('icons/location.png');
 }
 
-.account_info .profile_about .personal li:nth-child(3)::before{
+.account_info .profile_about .personal li.fitness::before{
 	content: url('icons/pulse.png');
 }
 
-.account_info .profile_about .personal li:nth-child(4)::before{
+.account_info .profile_about .personal li.birday::before{
 	content: url('icons/birthday.png');
 }
 
-.account_info .profile_about .personal li:nth-child(5)::before{
+.account_info .profile_about .personal li.relation::before{
 	content: url('icons/heart.png');
 }
 
-.account_info .profile_about .personal li:nth-child(6)::before{
+.account_info .profile_about .personal li.works::before{
 	content: url('icons/target.png');
 }
-.account_info .profile_about .personal li:nth-child(7)::before{
+.account_info .profile_about .personal li.email::before{
 	content: url('icons/email.png');margin: -1px 0 0 -35px;
 }
-.account_info .profile_about .personal li:nth-child(8)::before{
+.account_info .profile_about .personal li.mobile::before{
 	content: url('icons/phone.png'); margin: -1px 0 0 -35px;
 }
 .account_info .profile_about .personal a{
@@ -269,7 +270,7 @@ $fitpoints: #f3e500;
 }
 
 .profile_content .account_info{
-	position: fixed;
+	/*position: fixed;*/
 	background-color: #d5d5d5;
 	z-index: 400;
 }

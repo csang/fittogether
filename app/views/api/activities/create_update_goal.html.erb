@@ -1,0 +1,58 @@
+<%= render(:partial => 'feed/feed_aside') %>
+<div id="content">
+	<div class="comment_view_bg">
+		</div>
+          <div class="profile">
+            <div class ="account_info">
+			<div class="profile_nav">
+				<ul>
+				<a  href="<%= api_activity_path %>"><li>FitBit Activities</li></a>
+				<a  href="<%=  api_fitness_tracking_path %>"><li>Fitness Tracking</li></a>
+                                 <a class="selected" href="<%=  api_create_update_goal_path %>"><li>Create/Update Goal</li></a> 
+					
+				</ul>
+			</div>
+			
+			<div class="profile_data listing">
+
+		
+    <div class="about">   
+  
+  <%= form_tag api_create_update_goal_path, :class => 'goal-setting', :id => 'weekly_goal' do %>
+	<div class="pop-row">
+		<label class="col-md-3">Select Goal Type</label>
+		<div class="col-md-9">
+			<%=  select_tag "type", options_for_select([ "steps", "distance" ]) %> 
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="pop-row">
+		<label class="col-md-3">Value</label>
+		<div class="col-md-9">
+			<%= text_field_tag "value", nil, :class => 'form-control' %>
+                        <h6 class="exten" style="display:none;">In miles</h6>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="pop-row">
+		<label class="col-md-3">&nbsp;</label>
+		<div class="col-md-9">
+		<%= submit_tag "Update", :class=> 'btn btn-primary' %>
+		</div>
+		<div class="clear"></div>
+	</div>
+<% end %>
+ 	
+      <div>
+	        
+
+			</div> 
+			</div> 
+		</div>
+	</div>
+	
+	
+
+		
+</div>
+ 

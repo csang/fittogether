@@ -45,7 +45,7 @@ class Admin::PhotosController < ApplicationController
 	
 	# List based on type of users
   def listPhotos   
-    @albums =  Album.order('id').paginate(page: params[:page], per_page: 10)
+    @albums =  Album.order('id').paginate(page: params[:page], per_page: 20)
     render :index
   end
  

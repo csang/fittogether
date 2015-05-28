@@ -4,7 +4,7 @@
 <div class="conver-area">
 
 	
-	<div class="conver-right msg-right">
+	<div class="conver-right msg-right msg-noborder select-border">
 <div class="notification_menu">
   <div id="notifications_nav">Edit Chalanges</div>
 
@@ -21,7 +21,7 @@
   </div>
 <div class="pop-row">
 	 <%= f.label :text, 'Description:' %>
-  <%= f.text_area :text, class: "boxtextarea form-control" %>
+  <%= f.text_area :text, class: "boxtextarea form-control", :maxlength=>"200" %>
 </div>
 <div class="pop-row">
   <label>Till Date:</label>

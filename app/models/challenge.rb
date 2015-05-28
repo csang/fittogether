@@ -9,6 +9,6 @@ class Challenge < ActiveRecord::Base
   validates :category_id, presence: true
   
   	scope :involving, ->(account) do
-	where("challenges.account_id =? OR challenges.to_id =?",account,account)
+	where("valid_till >=? AND sender_status != ? AND (challenges.account_id =? OR challenges.to_id =?) ",Date.today, false , account,account)
 	end
 end

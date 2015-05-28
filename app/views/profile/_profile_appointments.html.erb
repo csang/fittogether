@@ -1,0 +1,265 @@
+
+<div class="profile_photos_view">
+  <div class="event-indication">
+    
+    <div class="event-box">
+      <span class="event-color" style="background:#2a6496;"></span>
+      <p>New Event</p>
+    </div>
+    <div class="event-box">
+      <span class="event-color" style="background:#2f8352;"></span>
+      <p>Approved</p>
+    </div>
+  </div>
+
+  <div id="calendar"></div>
+  
+
+  <div class="modal fade" id="createUserEventModal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content hideMe" id="ActionHeader">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"><b id="SelectedEventFullTitle"></b> <span>Event</span></h4>
+          <br />
+          <h4 class="modal-title"><b>Title:</b> <span id="SelectedUserEventTitle"></span></h4>
+          <h4 class="modal-title"><b>Description:</b> <span id="SelectedUserEventDesc"></span></h4>
+
+        </div>
+        <div class="modal-body">
+          <div class="col-xs-12 text-center">
+            <button type="button" id="EditEvent" class="btn btn-primary">Edit Event</button>
+            <button type="button" id="RemoveUserEvent" class="btn btn-default btn-danger">Remove Event</button>
+            <button type="button" style="display:none;" id="ApproveUserEvent" class="btn btn-primary">Approve Event</button>
+            <button type="button" class="btn btn-default close-modal" data-dismiss="modal" id="cncl">Cancel</button>
+          </div>  
+          <div class="clear"></div>
+        </div>
+      </div>   
+      <div class="modal-content hideMe" id="EventEditFormSection" style="display: none">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"><span id="actionTitle">Create New </span><b id="SelectedEventTitle"></b> <span>Event</span></h4>
+        </div>
+
+        <div class="modal-body">
+          <!-- The form is placed inside the body of modal -->
+          <form id="createUserEventForm" method="post" class="form-horizontal">
+            <input type="hidden" value="<%= @account.id %>" name="user_event[account_id]" />
+            <input type="hidden" value="<%= @profileuser.id %>" name="user_event[trainor_id]" />
+            <input type="hidden" id="newUserEventId" value="0" name="user_event[id]" />
+            <input type="hidden" id="newUserEventEventId" value="0" name="user_event[event_id]" />
+            <input type="hidden" id="newUserEventStartDate" value="" name="user_event[start_date]" />
+            <input type="hidden" id="newUserEventEndDate" value="" name="user_event[end_date]" />
+            <div class="form-group">
+              <label class="col-xs-3 control-label">Title:</label>
+              <div class="col-xs-9">
+                <input type="text" class="form-control" id="newUserEventTitle" name="user_event[title]" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label">Description:</label>
+              <div class="col-xs-9">
+                <textarea class="form-control" id="newUserEventDescription" name="user_event[description]"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-5 col-xs-offset-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-warning close-modal" data-dismiss="modal" id="svcancel">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-content hideMe" id="RemoveUserEventSection" style="display: none">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title" id="WarningMsg">Are you sure, you want to delete this event?</h4>
+        </div>
+
+        <div class="modal-body">
+          <!-- The form is placed inside the body of modal -->
+          <div class="form-group">
+            <div class="col-xs-5 col-xs-offset-3">
+              <button type="button" id="WarningYesUserEvent" class="btn btn-primary">Yes</button>
+              <button type="button" class="btn btn-default close-modal" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+        <br />
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<style>
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+</style>
+
+<script>
+  $(function() {
+   var accountid = '<%= @account.id %>';
+    $('#calendar').fullCalendar({
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'month,agendaWeek,agendaDay'
+      },
+      defaultDate: new Date(),
+      selectable: true,
+      selectHelper: false,
+      dayClick: function(start, jsEvent, view) {
+        <% if @profileuser.user_type == 2  %>
+        if ( new Date(start).getTime() >= new Date().getTime() - 86400000) {     
+        $('.hideMe').hide();
+        $('#EventEditFormSection').slideDown();
+        $('#actionTitle').html("Create New ");
+        $('#newUserEventTitle, #newUserEventDescription').val("");
+        $('#newUserEventId').val('0');
+        $('#newUserEventStartDate').val(start.format());
+        $('#newUserEventEndDate').val(start.format());        
+        $('#createUserEventModal').modal('show');
+        }
+        <% end %>
+      },
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      events: {
+        url: "/get_user_appointment/" + '<%= @account.id %>' +"/" + '<%= @profileuser.id %>'
+      },
+      eventClick:function(calEvent, jsEvent, view) {
+      console.log(accountid +'/'+ calEvent.trainer_id)
+      
+      if ( new Date(calEvent.start).getTime() >= new Date().getTime() - 86400000 ) {     
+       if (accountid == calEvent.account_id  || accountid == calEvent.trainer_id) {
+       $('#actionTitle').html("Edit ");
+        $('#newUserEventId').val(calEvent.id);
+            $('#newUserEventTitle').val(calEvent.title);
+            $('#newUserEventEventId').val(calEvent.event_id);
+            $('#newUserEventStartDate').val(calEvent._start);
+            $('#newUserEventEndDate').val(calEvent._end);
+            $('#newUserEventDescription').val(calEvent.description);
+            $('#SelectedUserEventTitle').html(calEvent.title);
+            $('#SelectedUserEventDesc').html(calEvent.description);
+           DeleteUserEventId = calEvent._id;
+            $('#ActionHeader').show();
+       $('#createUserEventModal').modal('show');
+        $('#EventEditFormSection').hide();
+        $('#RemoveUserEventSection').hide();
+     
+       if (accountid == calEvent.trainer_id && accountid !=calEvent.account_id && calEvent.status==1) {
+          $('#ApproveUserEvent').show();
+       }  
+       }}
+      }        
+    });
+
+    $('#createUserEventForm').validate({
+      rules: {
+        'user_event[title]': {
+          required: true,         
+          maxlength: 50
+        },
+        'user_event[description]': {
+          maxlength: 200
+        }
+      },
+      messages: {
+        'user_event[title]': {
+          required: 'Please enter event title.',
+         maxlength: 'Event title can be maximum of 50 characters.'
+        },
+        'user_event[description]': {
+          maxlength: 'Event description can be maximum of 200 characters.'
+        }
+      },
+      submitHandler: function(form) {
+        var formData = $('#createUserEventForm').serialize();
+        $.ajax({
+          type: "post",
+          url: "<%= save_user_appointment_path %> ",
+          data: formData,
+          dataType: "json",
+          success: function(resp) {
+            if (resp.status == "ok") {
+              var eventId = resp.event_id;
+              var userEventId = resp.user_event_id;
+              $('#calendar').fullCalendar('refetchEvents');
+              $('#newUserEventEventId, #newUserEventId').val('0');
+              $('#newUserEventTitle').val('');
+              $('.close-modal').click();
+              $('#createUserEventForm').modal('hide');
+               $('#EventEditFormSection').modal('hide');
+            }
+          }
+        });
+      }
+    });
+    
+       $('#EditEvent').click(function(){
+        $('#ActionHeader').hide();
+        $('#EventEditFormSection').slideDown();
+    });
+    
+      
+    
+       $('#RemoveUserEvent').click(function () {
+       $('.hideMe').hide();
+       $('#RemoveUserEventSection').slideDown();
+       RemoveAction = 'userEvent';
+    });
+   
+
+    
+    $('#WarningYes, #WarningYesUserEvent').click(function () {   
+            deleteUserEvent();
+       });
+       
+       
+    $('#ApproveUserEvent').click(function () {   
+            ApproveUserEvent();
+       });
+
+  });
+  
+   function deleteUserEvent() {
+        $.ajax({
+            type: "delete",
+            url: "/delete_user_event/" + DeleteUserEventId,
+            dataType: "json",
+            success: function (resp) {
+                $('#calendar').fullCalendar('removeEvents', DeleteUserEventId);
+                  $('#calendar').fullCalendar('refetchEvents');
+                $('#createUserEventModal').modal('toggle');
+            }
+        });
+    }
+    
+    
+      
+   function ApproveUserEvent() {
+        $.ajax({
+            type: "put",
+            url: "/approve_user_event/" + DeleteUserEventId,
+            dataType: "json",
+            success: function (resp) {
+                //$('#calendar').fullCalendar('removeEvents', DeleteUserEventId);
+                 $('#calendar').fullCalendar('refetchEvents');
+                $('#EventEditFormSection').hide();
+            }
+        });
+    }
+
+</script> 

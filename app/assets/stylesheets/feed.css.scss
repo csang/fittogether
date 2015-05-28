@@ -299,7 +299,7 @@
 #left_side #account_info #feed_side_nav li img{
 	float: right;
 	height: 29px;
-	margin: -10px 10px;
+	margin: -15px 10px 0;
 }
 
 #left_side #account_info #feed_side_nav li:hover{
@@ -546,10 +546,12 @@
 .feed .post .top{
 	background-color: #343434;
 	padding: 12px;
+	position:relative;
 }
 
 .feed .post.left .top{
 	border-right: 7px solid #2f8352;
+	
 }
 
 .feed .post.left.challenges .top{

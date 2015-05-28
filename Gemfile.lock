@@ -41,8 +41,16 @@ GEM
     auth0 (2.1.1)
       httparty (~> 0.13)
       omniauth-oauth2 (~> 1.1)
+    backbone-on-rails (1.1.2.1)
+      eco
+      ejs
+      jquery-rails
+      railties
     bcrypt (3.1.9)
     builder (3.2.2)
+    ckeditor (4.1.1)
+      cocaine
+      orm_adapter (~> 0.5.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.5)
@@ -61,10 +69,18 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    eco (1.0.0)
+      coffee-script
+      eco-source
+      execjs
+    eco-source (1.1.0.rc.1)
+    ejs (1.1.1)
     erubis (2.7.0)
     execjs (2.2.1)
     faraday (0.9.0)
       multipart-post (>= 1.2, < 3)
+    fitgem (0.10.0)
+      oauth
     hashie (3.2.0)
     hike (1.2.3)
     httparty (0.13.1)
@@ -88,6 +104,7 @@ GEM
     multi_xml (0.5.5)
     multipart-post (2.0.0)
     mysql2 (0.3.16)
+    oauth (0.4.7)
     oauth2 (1.0.0)
       faraday (>= 0.8, < 0.10)
       jwt (~> 1.0)
@@ -172,8 +189,11 @@ PLATFORMS
 
 DEPENDENCIES
   auth0 (~> 2.1.1)
+  backbone-on-rails
+  ckeditor
   coffee-rails (~> 4.0.0)
   devise (= 3.4.1)
+  fitgem
   jbuilder (~> 2.0)
   jquery-rails
   mysql2
