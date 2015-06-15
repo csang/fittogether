@@ -12,7 +12,7 @@
 #content .comment_view_bg{
 	background-color: #d5d5d5;
 	position: fixed;
-	z-index: 300;
+	z-index: 50;
 }
 
 #content .comment_view h3{
@@ -295,7 +295,7 @@
 	color: #ffffff;
 	cursor: pointer;
 }
-#left_side #account_info #feed_side_nav li a{display:inline-block; width:100%; }
+#left_side #account_info #feed_side_nav li a{isplay:inline-block; width:100%; color:#fff; }
 #left_side #account_info #feed_side_nav li img{
 	float: right;
 	height: 29px;
@@ -437,7 +437,7 @@
 	height: 990px;
 	background-color: #343434;
 	position: absolute;
-	z-index: 89;
+	z-index:35;
 	margin: 50px 0 0 364px;
 }
 
@@ -534,7 +534,7 @@
 
 .feed .profile_picture .user{
 	position: absolute;
-	z-index: 90;
+	z-index: 40;
 }
 
 .feed .post{
@@ -1073,6 +1073,7 @@
 	padding: 8px;
 	clear: both;
 	min-height: 60px;
+        position:relative;
 }
 
 .feed .post .comments .comment .avatar{
@@ -1093,7 +1094,8 @@
 .feed .post .comments .comment p{
 	font-weight: normal;
 	font-size: 14px;
-	float: right;
+	display:inline-block;
+        vertical-align:top;
 	width: 235px;
 	margin: 0 0 10px 5px;
 }
@@ -1181,6 +1183,8 @@
 #content .comment_view #create_album button{width:103px;font-size: 11px;}
 #content .comment_view .post_options .share select, #content .comment_view .post_options .share .selection{padding:15px 65px 12px 10px; height:45px; border-bottom:none; border-top:none;}
 #updatealbum a.btn-default{float:right; margin:0 20px 0 0; padding:12px 20px; vertical-align:top;}
+.feed-comment-dlt{width:11px; height:13px; position:absolute; right:4px; bottom:5px; text-indent:-9999px; background:url(chat-delete.png) no-repeat;opacity:0.5;}
+.feed-comment-dlt:hover{opacity:1;}
 @media screen and (max-width: 1279px){
 	/*#content .comment_view{
 		width: 568px;

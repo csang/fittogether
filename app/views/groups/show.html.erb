@@ -1,0 +1,434 @@
+<%= render(:partial => 'feed/feed_aside') %>
+<div id="content">
+
+  <div class="group-top">
+    <%= image_tag(@group.group_image(:medium), :class =>'group_image') %>
+    <div class="group-detail">
+      <div class="group-left">
+        <h4><%=  @group.title %></h4>
+        <span class="gtype"><%=  @group.is_public ==true ? 'Public' : 'Private' %></span>
+      </div>
+      <div class="group-right">
+      
+        <% if @group.account_id == @account.id %>
+          <a href="javascript:void(0);" class="join" title="joined">Joined</a>
+           <a href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#groupEditForm" title="edit">Edit</a>    
+        <% elsif @member.present? && @member.status == true %>
+          <a href="javascript:void(0);" class="join jnew"  data-type="leave" title="leave group" data-id="<%=  Base64.encode64(@group.id.to_s) %>">Leave Group</a>
+        <% elsif @member.present? && @member.status == false %>
+          <a href="javascript:void(0);" class="join jnew"  data-type="leave" title="Click to Cancel" data-id="<%=  Base64.encode64(@group.id.to_s) %>">Pending</a>
+      <% else %>
+          <a href="javascript:void(0);" class="join jnew"  data-type="add" title="join" data-id="<%=  Base64.encode64(@group.id.to_s)   %>">Join</a>
+        <% end  %>
+
+      </div>
+
+    </div>
+  </div>
+  <%  if @group.account_id == @account.id || (@member.present? && @member.status ==true) %>
+    <div class="comment_view_bg grounp-bg">
+      <div class="comment_view">
+        <%= render(:partial => 'group_feed_share') %>
+      </div>
+    </div>
+  <% end %>
+  <div class="group-tab">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#sectionA">Posts</a></li>
+      <li><a data-toggle="tab" href="#sectionB">Members</a></li>
+      <li><a data-toggle="tab" href="#sectionC">Fitspots</a></li>
+    </ul>
+    <div class="tab-content">
+      <div id="sectionA" class="tab-pane fade in active">
+        <%  if @group.account_id == @account.id || ((@member.present? && @member.status ==true) || @group.is_public ==true) %>
+        <% @posts.each do |post| %>
+          <div class="posts" id="<%= post.id %>">
+
+            <%	
+            @name = post.account.first_name.capitalize + ' ' + post.account.last_name
+            @time = post.created_at %>
+
+
+            <% img =  useravatar(post.account) %>
+            <div class="posts-img">
+              <%= link_to(image_tag(img), "/#{ post.account.user_name}") %>
+            </div>
+            <div class="posts-content">
+              <h4><%=  @name %> <span class="time"> <%= time_ago_in_words(@time) %> ago</span></h4>
+              <% if @account.id == post.account_id || @account.id == @group.account_id %>
+              <a data-gid="<%=  Base64.encode64(@group.account_id.to_s) %>" data-id="<%=  Base64.encode64(post.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="post-dlt">DELETE</a>
+             <% end %>
+              <p><%= post.text %> </p>
+            </div>
+            <% if post.image.present? %>		
+              <div class="post-img">
+                <%= image_tag(post.image(:medium)) %>		
+              </div>
+
+            <% end %>
+            <% if post.video.present? %>		
+              <div class="data-img">
+
+                <video id='video'  controls width="300" height="300">
+                  <source src='<%= post.video %>' type='video/mp4'/>
+                  Your browser does not support the video .
+                </video>
+
+              </div>
+
+            <% end %>
+            <div class="sub-comments" id="cmt<%= post.id %>">
+
+              <% post.comment.each do |cm| %>
+                <div class="posts-sub-content" id="scont<%= cm.id %>">
+                  <% abc =  get_user_detail(cm.account_id) %>
+                  <% if abc.present? %>
+                    <div class="posts-img">
+                      <% img =  useravatar(abc) %>
+                      <%= image_tag(img) %>
+
+                    </div>
+                    <div class="posts-content">
+                      <h4>
+                        <a href="<%= abc.user_name %>" >
+                          <%= abc.first_name.capitalize %> <%= abc.last_name.present? ? abc.last_name : '' %>
+                        </a>
+                        <span class="time"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</span>
+                      </h4>
+                     <% if @account.id == cm.account_id || @account.id == @group.account_id %>
+                     <a data-gid="<%=  Base64.encode64(@group.account_id.to_s) %>" class="comment-delete" data-id="<%=  Base64.encode64(cm.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="">DELETE</a>
+                    <% end %>
+                    <% end %>
+
+                    <p> <%= cm.text %> </p>
+                  </div>
+                </div>
+              <% end %>
+            
+
+            </div>
+             <%  if @group.account_id == @account.id || (@member.present? && @member.status ==true) %>
+            <div class="bottom">
+              <a class="add_comment" href="javascript:void(0);">Comment</a>
+            </div>
+            <div style="display: none;" class="comment_box">
+              <textarea class="comment" data-gid="<%= @group.account_id %>" data-id="<%= post.id %>" style="resize: none"></textarea>
+            </div>
+            <% end %>
+          </div>
+        <%  end %>
+          <% end %>
+
+      </div>
+      <div id="sectionB" class="tab-pane fade">
+
+        <ul class="group-imgs">
+          <% img = useravatar(@group.account) %>
+          <li><%= link_to(image_tag(img), "/#{@group.account.user_name}", {:class => 'grop-img'}) %><%= link_to(@group.account.first_name.capitalize ,  "/#{@group.account.user_name}") %></li>
+          
+<% if @group.group_member.present? %>
+            <%  @group.group_member.each do |ac| %>
+            <% if ac.status == true %>
+              <% img = useravatar(ac.account) %>
+              <li><%= link_to(image_tag(img), "/#{ac.account.user_name}", {:class => 'grop-img'}) %><%= link_to(ac.account.first_name.capitalize,  "/#{ac.account.user_name}") %></li>
+           <% end %>
+  <% end %>
+          <% end %>
+        </ul>
+      </div>
+      
+         <div id="sectionC" class="tab-pane fade">
+            <% if @group.account_id == @account.id %>
+           <h3 class="event-title">Events <a  href="javascript:void(0)" data-toggle="modal" class="goal-btn creat-event" data-target="#fitspotForm"> Create FitSpot</a></h3>
+            <% end %>
+  <% @group.fitspot.each do |fs|   %>
+         <% img = useravatar(fs.account)    %>
+           <div class="posts">
+             <div class="posts-img">
+              <a href="javascript:void(0);" title="<%= fs.title %> "><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %></a>
+              </div>
+             <div class="posts-content">
+               <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>  <span class="time"> <%= fs.fitspot_date.strftime("%B %e ") %>  <%= fs.fitspot_time.present? ? 'at ' + fs.fitspot_time : '' %>   </span></h4>
+               <p><%= fs.description %></p>
+             </div>
+           </div>
+           <% end %>
+         </div>
+    </div>
+  </div>
+
+</div>
+<div class="modal fade" id="fitspotForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="z-index: 5456666666000;">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Fitspot for the Group: <%= @group.title  %></h4>
+      </div>
+      <div class="modal-body">
+       
+        
+ <%= render(:partial => 'fitspots/newfitspot') %>
+    
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="groupEditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="z-index: 5456666666000;">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Group</h4>
+      </div>
+      <div class="modal-body">
+       
+        
+ <%= render(:partial => 'groups/edit') %>
+    
+    </div>
+  </div>
+</div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    // add member
+    $('.jnew').on('click', function() {
+      var id = $(this).attr('data-id');
+      var type = $(this).attr('data-type');
+      var gtype = $('.group-left span').text();
+     
+      var that = this;
+      var mydata = {'id': id, 'type': type, 'gtype' : gtype };
+      $.ajax({
+        type: "POST",
+        url: '<%= add_del_member_path() %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          if (type == 'add') {
+            if (gtype == 'Private') {
+                $(that).attr('data-type', 'leave').attr('title', 'leave group').html('Pending');              
+              } else {
+               location.reload();
+                $(that).attr('data-type', 'leave');
+                $(that).attr('title', 'leave group');
+                $(that).html('Joined');
+            }
+          //  $('.flash-message').html('<div class="alert alert-success"> You Succesfully Joined the Group.</div>').show();
+          } else {
+            $(that).attr('data-type', 'add');
+            $(that).attr('title', 'joined');
+            $(that).html('Join');
+            $('.flash-message').html('<div class="alert alert-success"> You Succesfully Left the Group.</div>').show();
+          }
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    });
+
+
+    $(document).on("click", '.add_comment', function() {
+
+      if ($(this).parent().parent().find('.comment_box').is(':hidden')) {
+        $(this).parent().parent().find('.comment_box').show();
+      } else {
+        $(this).parent().parent().find('.comment_box').hide();
+      }
+    });
+
+
+
+
+    $(document).on('click', '.post-dlt',function() {
+      if (confirm("Do you want to delete post?")) {
+        var toid = $(this).attr('data-id');
+        var gid = $(this).attr('data-gid');
+       var mydata = {'postid': toid, 'gadminid': gid};
+        var that = this;
+        $.ajax({
+          type: "DELETE",
+          url: '/deletepost/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: mydata,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#' + data).fadeOut();
+
+            $('.flash-message').html('<div class="alert alert-success"> Post has been deleted successfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+    });
+    
+    
+    $(document).on('click', '.comment-delete', function() {
+      if (confirm("Do you want to delete comment?")) {
+        var toid = $(this).attr('data-id');
+        var gid = $(this).attr('data-gid');
+        var mydata = {'id': toid, 'gadminid': gid};  
+        var that = this;
+        $.ajax({
+          type: "DELETE",
+          url: '/deletecomment/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: mydata,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#scont' + data).fadeOut();
+
+            $('.flash-message').html('<div class="alert alert-success"> Post has been deleted successfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+    });
+
+
+    $(document).on('keydown', '.comment', function(e) {
+      if (e.keyCode == 13) {
+        var text = $(this).val();
+        if (text == '') {
+          return false;
+        }
+        var postid = $(this).attr('data-id');
+        var gid = $(this).attr('data-gid');
+        //var postid = 1; 
+        $.ajax({
+          type: "POST",
+          url: '/create_comment/', //sumbits it to the given url of the form
+          data: {text: text, post: postid, gid: gid},
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          }
+        }).success(function(data) {
+          $(".comment_box").hide();
+          $("#cmt" + postid).append(data);
+
+
+        });
+
+      }
+
+    });
+
+    var options = {
+      type: "POST",
+      url: '/create_group_post/', //sumbits it to the given url of the form
+      dataType: "HTML",
+      beforeSubmit: beforeSubmit,
+      success: function(data) {
+        $("#sectionA").prepend(data);
+        $("#photo").val('');
+        $("#video").val('');
+        $(".posttext").val('');
+
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        console.log(JSON.stringify(xhr, null, 4));
+        $('.flash-message').html('<div class="alert alert-danger"> Please Try again!').show();
+      }
+
+
+    };
+
+    $("#share_post").click(function(e) {
+      e.preventDefault();
+      $('#update_post').ajaxSubmit(options);
+    });
+
+
+
+
+
+
+  }); // end of document ready
+
+  function beforeSubmit() {
+
+    if ($('.posttext').val() == '') //check empty input filed
+    {
+      $('.flash-message').html('<div class="alert alert-danger"> Please Enter Text!').show();
+      return false;
+    }
+    //check whether browser fully supports all File API
+    if (window.File && window.FileReader && window.FileList && window.Blob)
+    {
+
+
+
+      if (!$('#photo').val()) //check empty input filed
+      {
+        return;
+      }
+
+
+
+      var fsize = $('#photo')[0].files[0].size; //get file size
+      var ftype = $('#photo')[0].files[0].type; // get file type
+
+
+      //allow only valid image file types
+      switch (ftype)
+      {
+        case 'image/png':
+        case 'image/gif':
+        case 'image/jpeg':
+        case 'image/pjpeg':
+          break;
+        default:
+          // $("#output").html("Only png, jpg, gif file formats are allowed.");
+          $('.flash-message').html('<div class="alert alert-danger">Only png, jpg, gif file formats are allowed.</div>').show();
+
+          return false
+      }
+
+      //Allowed file size is less than 1 MB (1048576)
+      if (fsize > 10485760)
+      {
+        $('.flash-message').html('<div class="alert alert-danger"> Too big Image file! Please reduce the size of your photo using an image editor.').show();
+
+        return false
+      }
+
+
+    }
+    else
+    {
+
+      $('.flash-message').html('<div class="alert alert-danger"> please upgrade your browser, because your current browser lacks some new features we need!').show();
+      return false;
+    }
+  }
+
+
+</script>

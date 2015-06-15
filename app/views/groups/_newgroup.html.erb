@@ -1,0 +1,68 @@
+ <%= form_for :group ,:url =>  groups_create_url ,   :html => {id: "group_form", onsubmit:  "return  validateImageWidth(event)"} do |f| %>
+	
+
+<div class="pop-row">
+ <%= f.label :text, 'Name' %>
+	<%= f.text_field :title, class: " form-control", maxlength: 50 %>
+  </div>
+
+<div class="pop-row">
+ <label>Image <span class="small">(ideal image size : 730 X 250)</span></label>
+	<%= f.file_field :group_image %>
+  <label for="group_img" generated="true" class="errors imgerror" style="display:none;">Image width must be greater than  730 pixels.</label>
+  </div>
+
+<div class="pop-row">
+	 <%= f.label :text, 'Type' %>
+         
+ 	<%= f.select :is_public, options_for_select({"Public" =>1, "Private" =>0}), :class => 'selectpicker' %>		
+		
+</div>
+  
+      <div class="modal-footer">
+       <%= f.submit  'Submit',  :name => 'submit', :class =>'btn btn-primary' %>
+      </div>
+
+<% end %> 
+<script>
+  window.imgVar = true;
+  $('#group_group_image').change(function() {
+   
+    var fr = new FileReader;
+    
+    fr.onload = function() {
+        var img = new Image;
+        
+        img.onload = function() {
+            if (img.width < 730 ) { 
+               $('.imgerror').show();
+              window.imgVar = false; 
+          } else {
+              window.imgVar = true; 
+               $('.imgerror').hide();
+          }
+        };
+        
+        img.src = fr.result;
+    };
+    
+    fr.readAsDataURL( this.files[0]);
+    });
+    
+    function validateImageWidth() {
+
+     if (!$('#group_group_image').val()) //check empty input filed
+      {
+        
+         $('.imgerror').hide();
+         return;
+      }
+    
+      if (window.imgVar == false) {       
+           $('.imgerror').show();
+          return  false;
+      }
+   
+    }
+  </script>  
+ 

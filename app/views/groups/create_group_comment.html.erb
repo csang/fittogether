@@ -1,0 +1,27 @@
+
+<% if @comment.present? %>
+  <% cm = @comment %>
+  <div class="posts-sub-content" id="scont<%= cm.id %>">
+    <% abc =  get_user_detail(cm.account_id) %>
+    <% if abc.present? %>
+      <div class="posts-img">
+        <% img =  useravatar(abc) %>
+        <%= image_tag(img) %>
+
+      </div>
+      <div class="posts-content">
+        <h4>
+          <a href="<%= abc.user_name %>" >
+            <%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %>
+          </a>
+          <span class="time"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</span>
+        </h4>
+
+      <% end %>
+      <% if @account.id == cm.account_id || @account.id == @group.account_id %>
+        <a data-gid="<%=  Base64.encode64(@groupadminid.to_s) %>" class="comment-delete" data-id="<%=  Base64.encode64(cm.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="">DELETE</a>
+      <% end %>
+      <p> <%= cm.text %> </p>
+    </div>
+  </div>
+<% end %>

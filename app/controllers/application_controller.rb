@@ -27,9 +27,20 @@ class ApplicationController < ActionController::Base
   	   # flash[:notice] = "Please Sign In to continue to FitTogether."
   	 	 redirect_to ('/login') and return
   	end 
+    get_group = Group.where(:account_id => @account.id).collect(&:id)
     
-  end
+    if get_group.present?
+        @cnt = GroupMember.where("group_id IN (?) && status = ? && seen =?  ", get_group, false, false ).count
+    end
+    
+     @cnt =  @cnt == 0 ? '' : @cnt
+     
+     @fitspot_cont = FitspotMember.where(:account_id => @account.id,:status => false, :seen => false ).count     
+     @fitspot_cont =  @fitspot_cont == 0 ? '' : @fitspot_cont
+    
   
+  end
+
   rescue_from ActiveRecord::RecordNotFound do |exception|
     render_error 404
   end

@@ -1,0 +1,85 @@
+
+
+ <%= form_for @fitspot ,:url =>  fitspots_edit_path ,   :html => {id: "fitspot_form" , onsubmit:  "return validateFitspotEditImageWidth()"} do |f| %>
+	
+
+<div class="pop-row">
+ <%= f.label :text, 'Name*' %> 
+	<%= f.text_field :title, class: " form-control", maxlength: 50 %>
+  </div>
+<div class="pop-row">
+ <%= f.label :text, 'Description' %>
+	<%= f.text_area :description, class: "boxtextarea form-control", maxlength: 150 %>
+  </div>
+
+<div class="pop-row">
+
+  <label>Image <span class="small">(ideal image size : 730 X 250)</span></label>
+	<%= f.file_field :fitspot_image , :id=>"fitspot_edit_image" %>
+  <label for="fitspot_img" generated="true" class="errors feimgerror" style="display:none;">Image width must be greater than  730 pixels.</label>
+ 
+  </div>
+<div class="pop-row">
+ <%= f.label :text, 'Location*' %>
+	<%= f.text_field :location, class: " form-control", maxlength: 150 %>
+  </div>
+<div class="pop-row">
+ <%= f.label :text, 'When*' %>
+	 <input class="form-control" type="text" readonly name="fitspot[fitspot_date]" id="datepicker" value="<%= @fitspot.fitspot_date.strftime("%d-%m-%Y")  %> ">
+          <input type="hidden" name="id" value="<%= Base64.encode64(@fitspot.id.to_s) %> ">
+  </div>
+<div class="pop-row">
+ <%= f.label :text, 'Time' %>
+	 <input class="form-control" type="text"  name="fitspot[fitspot_time]" id="timepickernew" value="<%= @fitspot.fitspot_time %>" >
+	 
+  </div>
+
+
+      <div class="modal-footer">
+       <%= f.submit  'Submit',  :name => 'submit', :class =>'btn btn-primary' %>
+      </div>
+
+<% end %> 
+
+<script>
+  window.imgVar3 = true;
+  $(' #fitspot_edit_image').change(function() {
+   
+    var fr = new FileReader;
+    
+    fr.onload = function() {
+        var img = new Image;
+        
+        img.onload = function() {
+            if (img.width < 730 ) { 
+               $('.feimgerror').show();
+              window.imgVar3 = false; 
+          } else {
+              window.imgVar3 = true; 
+               $('.feimgerror').hide();
+          }
+        };
+        
+        img.src = fr.result;
+    };
+    
+    fr.readAsDataURL( this.files[0]);
+    });
+    
+    function validateFitspotEditImageWidth() {
+
+     if (!$('#fitspot_edit_image').val()) //check empty input filed
+      {
+        
+         $('.feimgerror').hide();
+         return;
+      }
+    
+      if (window.imgVar3 == false) {    
+   
+           $('.feimgerror').show();
+          return  false;
+      }
+   
+    }
+  </script>  

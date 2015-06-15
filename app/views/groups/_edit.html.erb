@@ -1,0 +1,67 @@
+ <%= form_for @group , :url =>  groups_edit_url ,   :html => {id: "group_form", onsubmit:  "return validateImage()"} do |f| %>
+	
+
+<div class="pop-row">
+ <%= f.label :text, 'Name' %>
+	<%= f.text_field :title, class: " form-control", maxlength: 50 %>
+  </div>
+
+<div class="pop-row">
+ <label>Image <span class="small">(ideal image size : 730 X 250)</span></label>
+	<%= f.file_field :group_image,  :id=>"group_edit_image" %>
+  <label for="group_img" generated="true" class="errors imgerror1" style="display:none;">Image width must be greater than  730 pixels.</label>
+  </div>
+
+<div class="pop-row">
+	 <%= f.label :text, 'Type' %>
+        
+ 	<%= f.select :is_public, options_for_select({"Public" =>true, "Private" =>false},@group.is_public ), :class => 'selectpicker' %>		
+    <input type="hidden" name="id" value="<%= Base64.encode64(@group.id.to_s) %> ">
+		
+</div>
+  
+      <div class="modal-footer">
+       <%= f.submit  'Submit',  :name => 'submit', :class =>'btn btn-primary' %>
+      </div>
+
+<% end %> 
+<script>
+  window.imgVar1 = true;
+  $('#group_edit_image').change(function() {
+   
+    var fr = new FileReader;
+    
+    fr.onload = function() {
+        var img = new Image;
+        
+        img.onload = function() {
+            if (img.width < 730 ) { 
+               $('.imgerror1').show();
+              window.imgVar1 = false; 
+          } else {
+              window.imgVar1 = true; 
+               $('.imgerror1').hide();
+          }
+        };
+        
+        img.src = fr.result;
+    };
+    
+    fr.readAsDataURL( this.files[0]);
+    });
+    
+    function validateImage() {
+   
+     if (!$('#group_edit_image').val()) { //check empty input filed      {
+        
+         $('.imgerror1').hide();
+         return;
+      }
+    
+      if (window.imgVar1 == false) {       
+           $('.imgerror1').show();
+          return  false;
+      }
+   
+    }
+  </script>  

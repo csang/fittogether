@@ -1,11 +1,15 @@
 <script>
 function filldata(that){
- 
-   $('#tags').val($(that).attr('data-name'));
+ if ($(that).parent().attr('class')=='arport') {
+    $('#tags').val($(that).attr('data-name'));
     $('#rip').val($(that).attr('datacid'));
+    $('.arport').fadeOut('slow');
+ } else {
+    $('#tags2').val($(that).attr('data-name'));
+    $('#rip2').val($(that).attr('datacid'));
+    $('.arport2').fadeOut('slow');
    
-   
-   $('.arport').fadeOut('slow');
+ }
    }
  </script>  
 		<% if @user.present? %>

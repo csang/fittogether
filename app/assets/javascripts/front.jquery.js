@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+     $('#timepickernew').timepicker();
  	jQuery.validator.addMethod("require_from_group", function(value, element, options) {
     var numberRequired = options[0];
     var selector = options[1];
@@ -615,6 +615,60 @@ $(document).ready(function () {
       $('#type').on('change', function(){
        $(this).val()=='distance' ? $('.exten').show() :  $('.exten').hide() ;
       });
+      
+        $("#group_form").validate({
+        rules: {
+            'group[title]': {
+                required: true,
+              }
+        },
+        messages: {
+            'group[title]': {
+                required: 'Please enter name.',
+                
+            }
+        },
+	    highlight: function(element) {
+            $(element).removeClass("error");
+        }
+    });
+    
+        $("#fitspot_form").validate({
+        rules: {
+            'fitspot[title]': {
+                required: true,
+              },
+              
+            'fitspot[location]': {
+                required: true,
+              },
+              
+            'fitspot[fitspot_date]': {
+                required: true,
+              }
+        },
+        messages: {
+            'fitspot[title]': {
+                required: 'Please enter name.',
+                
+            },
+             'fitspot[location]': {
+                required: 'Please enter location.',
+                
+            },
+             'fitspot[fitspot_date]': {
+                required: 'Please select date.',
+                
+            }
+        },
+	    highlight: function(element) {
+            $(element).removeClass("error");
+        }
+    });
+    
+    
+    
+    
    
 }); // end of document dot ready
 

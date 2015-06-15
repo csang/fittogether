@@ -2,6 +2,7 @@ Rails.application.routes.draw do
 
  
  
+ 
   get 'challenges', to: 'challenges#index'
   #patch 'cupdate', to: 'challenges#update',:as => :challange_update
   match 'challenge/', :to=>'challenges#create',:via => [:post,:get] ,  :as => :challenge
@@ -10,7 +11,7 @@ Rails.application.routes.draw do
   match 'updaterewardpoints/(:cid)/(:account_id)', to: 'challenges#update_reward_points', :via => [:get, :post] , :as => :updaterewardpoints
   get "challenges/show" => "challenges#show_team_challenge" 
   match 'challenges/edit/(:id)', to: 'challenges#edit',:via => [:patch,:get], :as=>:challenges_edit
-  match 'search_user/:search/(:type)', to: 'challenges#search_user', :via => [:post] , :as=>:searchuser
+  match 'search_user/:search/(:type)/(:uid)', to: 'challenges#search_user', :via => [:post] , :as=>:searchuser
   
   get 'goals', to: 'goals#index'
   match 'goal/', :to=>'goals#create',:via => [:post,:get] ,  :as => :account_goals
@@ -31,7 +32,23 @@ Rails.application.routes.draw do
   match 'getconv', to: 'conversations#getconv', :via => [:get, :post] , :as => :getconv
   match 'deleteconv', to: 'conversations#del_conversation', :via => [:delete] , :as => :deleteconv
   match 'updatestatus/(:cid)', to: 'conversations#updatestatus', :via => [:get, :post] , :as => :updatestatus
+  match 'add_del_going', to: 'fitspots#add_del_going', :via => [:post,:delete] , :as => :add_del_going
+  match 'invite_for_fitspot', to: 'fitspots#invite_for_fitspot', :via => [:post,:delete] , :as => :invite_for_fitspot
+  match 'fitspots/edit/(:id)', to: 'fitspots#edit',:via => [:patch,:get], :as=>:fitspots_edit
+  get 'fitspots/index'
+  get 'fitspots/:id', to: 'fitspots#show'  
+  post 'fitspots/create'
 
+ 
+ 
+  match 'add_del_member', to: 'groups#add_del_member', :via => [:get,:post,:delete] , :as => :add_del_member
+  match 'create_group_post', to: 'groups#create_group_post', :via => [:post] , :as=>:create_group_post  
+  match 'group_request', to: 'groups#group_request', :via => [:put,:delete] , :as => :group_request
+  get 'groups/:id', to: 'groups#show'
+  post 'groups/create'
+  get 'groups/index'
+ match 'groups/edit/(:id)', to: 'groups#edit',:via => [:patch,:get], :as=>:groups_edit
+  
 
   get 'conversations/create'
   get 'conversations/show'
@@ -58,7 +75,8 @@ Rails.application.routes.draw do
   match 'acceptrequest', to: 'friendships#friend_request_accept', :via => [:put] , :as => :acceptrequest
   
   match 'deleteimage/(:imgid)', to: 'feed#delete_image', :via => [:delete] , :as => :deleteimage
-   match 'deletepost/(:postid)', to: 'feed#delete_post', :via => [:delete] , :as => :deletepost
+  match 'deletepost', to: 'feed#delete_post', :via => [:delete] , :as => :deletepost
+  match 'deletecomment/', to: 'feed#delete_comment', :via => [:delete] , :as => :deletecomment
   
   post 'createalbum', to:'feed#create_album', :as=>:createalbum  
   get 'showalbum/:id', to:'feed#show_album', :as=>:showalbum  
@@ -107,10 +125,10 @@ Rails.application.routes.draw do
   post 'update_about_gym', to:'settings#update_about_gym', :as=>:update_about_gym  
   
  
-        get '/get_user_appointment/:id/(:pid)' => 'appointments#get_user_appointment', :as =>:get_user_appointment
-        post '/save_user_appointment' => 'appointments#save_user_appointment', :as =>:save_user_appointment
-        delete '/delete_user_event/:id' => 'appointments#delete_user_event', :as =>:delete_user_event
-        put '/approve_user_event/:id' => 'appointments#approve_user_event', :as =>:approve_user_event
+  get '/get_user_appointment/:id/(:pid)' => 'appointments#get_user_appointment', :as =>:get_user_appointment
+  post '/save_user_appointment' => 'appointments#save_user_appointment', :as =>:save_user_appointment
+  delete '/delete_user_event/:id' => 'appointments#delete_user_event', :as =>:delete_user_event
+  put '/approve_user_event/:id' => 'appointments#approve_user_event', :as =>:approve_user_event
  
   resources :friendships do
 	  member do
@@ -128,7 +146,7 @@ Rails.application.routes.draw do
     get 'body_measurements', controller: 'body_measurements', action: 'show'
    
     resources :activities, only: [:index]
-   # resources :foods, only: [:index]
+    # resources :foods, only: [:index]
   end	
 
   # get 'landing/login'

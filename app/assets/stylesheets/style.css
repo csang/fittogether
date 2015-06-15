@@ -8,6 +8,7 @@
 .pop-row{margin-bottom:15px;}
 .pop-last{margin-bottom:0px;}
 .pop-row label{margin:0 0 8px; display:block;}
+.pop-row label .small{font-weight: normal;}
 .ui-widget-content{border:1px solid #ccc;}
 .ui-widget-header{background:#2f8352; border:none;}
 .arport, .arport2 {

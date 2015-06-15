@@ -1,9 +1,7 @@
 
 <div class="notification_menu">
   <div id="notifications_nav"><a class="goal-btn" href="<%= challenge_path() %>" >Challenges </a>
-    <% if @account.user_type == 2 %>
-    <span style="float:right;"><a style="width:auto; margin-right:10px;" class="goal-btn" href="<%=  challenges_show_path %> " >Manage Teammate Challenge</a></spa>
-   <% end %>
+ 
       <span style="float:right"><a style="width:auto;" class="goal-btn" href="javascript:void(0)" data-toggle="modal" data-target="#challengeForm">New Challenge</a></spa></div>
 
 </div>
@@ -98,9 +96,10 @@
         <h4 class="modal-title" id="myModalLabel">New Challenge</h4>
       </div>
       <div class="modal-body">
-        <div class="pop-row listing-hover">
-          <label>To:</label>
-          <input class="form-control" autocomplete="off" type="text" id="tags" value="" name="search" placeholder="search...">
+        <div class="pop-row listing-hover row">
+          
+  <label>To:</label>
+          <input class="form-control" type="text" id="tags" value="" name="search" placeholder="search...">
           
             <ul class="arport" style="display:none;">
             
@@ -161,22 +160,29 @@ $('.msg-btn').on("click", ".accept", function() {
 
  $(function() {
 
-$("#tags").keyup(function(){
- 
+$("#tags , #tags2").keyup(function(){
+  var id = this.id
   var keyword = $(this).val();
+  var uid = id == 'tags2' ? $('#rip').val() : $('#rip2').val() ;
   
 	if (keyword.length >= 2) {
 		$.ajax({
 			type: "POST",
-			url: '/search_user/'+ keyword, //sumbits it to the given url of the form
+			url: '/search_user/'+ keyword + '/ /' + uid, //sumbits it to the given url of the form
 			dataType: "HTML",
 			beforeSend: function(xhr) {
 					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
 					},
 		    success: function(data){
-			
-				$('.arport').fadeIn()
+			        if (id == 'tags2') {
+				$('.arport2').fadeIn().html(data)
+                                $('.arport').fadeOut()
+				
+                                } else {
+                                  $('.arport').fadeIn()
 				$('.arport').html(data)
+                                $('.arport2').fadeOut()
+                                }
 				},
 		    error:	function (xhr, ajaxOptions, thrownError) {
 				console.log(xhr.status)
@@ -190,6 +196,7 @@ $("#tags").keyup(function(){
 $('#challenge').on('click', function() {
 if ($('#challenge_form').valid()) {
 var rid = $('#rip').val();
+var rip2 = $('#rip2').val();
 if(rid==''){
   alert('Please select user');
   return false;
@@ -205,7 +212,7 @@ var valid_till = $('#datepicker').val();
 				type: "POST",
 				url: '<%= challenge_path %>', //sumbits it to the given url of the form
 				dataType: "HTML",
-				data: {to_id:rid, category_id:categoryid, text:bodytext, reward_points:rewardpoints,qty:qty,valid_till:valid_till},
+				data: {to_id:rid, category_id:categoryid, text:bodytext, reward_points:rewardpoints,qty:qty,valid_till:valid_till, rip2:rip2,},
 				beforeSend: function(xhr) {
 						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
 						},
