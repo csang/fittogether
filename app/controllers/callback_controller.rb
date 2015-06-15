@@ -76,13 +76,17 @@ class CallbackController < ApplicationController
           end
           @model['account_id'] = @account.id   
           @model.save
-         redirect_to('/feed') and return
+        if session[:account][:account_type].to_i == 3
+               redirect_to('/about') and return 
+            else 
+               redirect_to('/feed') and return
+            end
         else
           redirect_to('/login')  and return
         end
       else
         redirect_to('/feed') and return
-      end
+      end 
    end
     
   end

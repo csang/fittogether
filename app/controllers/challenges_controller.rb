@@ -2,11 +2,9 @@ class ChallengesController < ApplicationController
   before_filter :get_account
  
   def create
-  
-  
+   
     if request.xhr?  
       to_id = Base64.decode64(params[:to_id])
-        #abort(params[:valid_till].inspect)
       @challenge = Challenge.create(:category_id=> params[:category_id],
 		 		:account_id =>@account.id,:to_id=> to_id,:text=>params[:text],:reward_points => params[:reward_points],:qty=>params[:qty],:valid_till=>params[:valid_till])
 			
@@ -22,9 +20,8 @@ class ChallengesController < ApplicationController
   end	
 	
   def index
-
+    #get  challenge of logged in user
     @allchallenge = Challenge.involving(@account.id).order('id desc').paginate(:page => params[:page], :per_page =>15)	
-    
     chl = Challenge.where(to_id: @account.id) 
     if chl.present?
       chl.each do |ff|
@@ -35,8 +32,26 @@ class ChallengesController < ApplicationController
   end
   
   
-
-  def show
+  # method for trainers to show challenge to trainers of their teammates
+  def show_team_challenge
+    #no one can access this method except trainer
+   if @account.user_type != 2
+     redirect_to('controller'=>'challenges')
+   end 
+   teammate = [];
+   #to get teammates
+   @account.passive_friends.each do |afriend|
+       teammate.push(afriend.id)
+   end
+    #to get teammates
+   @account.active_friends.each do |pfriend|
+       teammate.push(pfriend.id)
+   end
+   #get challenges of teammantes
+   @allchallenge = Challenge.where("sender_status != ? AND (account_id IN  (?) OR to_id IN  (?))",false, teammate, teammate).order('id desc').paginate(:page => params[:page], :per_page =>10)	
+ 
+    chl = Challenge.where(to_id: @account.id) 
+   
   end
 
   
@@ -83,8 +98,6 @@ class ChallengesController < ApplicationController
 def edit
   cid = Base64.decode64(params[:id])		     
   @challenge = Challenge.where(:id => cid,:account_id =>@account.id).first
-  #abort(@challenge.inspect)
- # abort(params.inspect)
   if params[:challenge].present?
     if @challenge.update_attributes(chall_params)
      flash[:notice] = 'Challenge was successfully updated.'
@@ -97,11 +110,51 @@ def edit
   
 end
 
-def chall_params
-    params.require(:challenge).permit(:qty, :text, :valid_till, :category_id, :reward_points)
+#method update reward 
+  def update_reward_points
+    if request.xhr?  
+      cid = Base64.decode64(params[:cid])		     
+      @challenge = Challenge.find(cid)
+      if @challenge.present?  
+      
+       #abort(params[:account_id].inspect)
+      if  !@challenge.winner_id.present?
+       acc =   Account.find(@challenge.account_id)
+       acc1 =   Account.find(@challenge.to_id)
+       winrid = params[:account_id].to_i
+        if acc.id.to_i == winrid
+          # add reward points to winner and substract reward point from looser
+          acc.update_attributes(reward_points: acc.reward_points.to_i + @challenge.reward_points.to_i)
+           acc1.update_attributes(reward_points_lost: acc1.reward_points_lost.to_i + @challenge.reward_points)
+        else
+           acc.update_attributes(reward_points_lost: acc.reward_points_lost.to_i + @challenge.reward_points)
+           acc1.update_attributes(reward_points: acc1.reward_points.to_i + @challenge.reward_points.to_i)
+        end  
+      else
+         # add reward points to winner and substract reward point from looser
+        newlooser =   Account.find(@challenge.winner_id)  
+        newwinner =   Account.find(params[:account_id])  
+        
+          newlooser.update_attributes(reward_points: newlooser.reward_points.to_i - @challenge.reward_points.to_i, reward_points_lost: newlooser.reward_points_lost.to_i + @challenge.reward_points.to_i)
+          newwinner.update_attributes(reward_points: newwinner.reward_points.to_i + @challenge.reward_points.to_i, reward_points_lost: newwinner.reward_points_lost.to_i - @challenge.reward_points.to_i)
+         
+      
+      end    
+      #change status and add winner id into table
+        abc =  @challenge.update_attributes(status: 'completed', winner_id: params[:account_id])        
+       
+      end
+      
+      if abc         
+        render :json => cid  and return     
+      else
+        render :json => 0  and return     
+      end
+    end  
+    
   end
-
-
+  
+# method to search user and show in drop down on new challenge/goals dropdown
 	def search_user
 	 if request.xhr?   
 	  if !params[:type].present?	
@@ -116,5 +169,10 @@ def chall_params
     
 	 end
 	end 
+def chall_params
+    params.require(:challenge).permit(:qty, :text, :valid_till, :category_id, :reward_points)
+  end
+
+
 
 end

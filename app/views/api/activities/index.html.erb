@@ -1,13 +1,15 @@
 <%= render(:partial => 'feed/feed_aside') %>
-<div id="content">
+<div id="content" class="profile_content">
 	<div class="comment_view_bg">
-		
+	</div>
+		 <div class ="account_info">
           <div class="profile">
-            <div class ="account_info">
+           
 			<div class="profile_nav">
 				<ul>
 				<a class="selected" href="<%= api_activity_path %>"><li>FitBit Activities</li></a>
-				<!--<a href="<%=  api_body_measurements_path %>"><li>FitBit Goals</li></a>--->
+				<a href="<%=  api_fitness_tracking_path %>"><li>Fitness Tracking</li></a>
+				<a href="<%=  api_create_update_goal_path %>"><li>Create/Update Goal</li></a>
 					
 					
 				</ul>
@@ -17,16 +19,16 @@
 
 		
     <div class="about">                      
-  <ul class="about_me">
-    <li> Active Minutes:	<%=  @activities['goals']['activeMinutes'] %> </li>
-    <li> Calories:	<%=  @activities['summary']['caloriesOut'] %> out of <%=  @activities['goals']['caloriesOut'] %> 
-      <%  @perc = (@activities['summary']['caloriesOut'].to_f / @activities['goals']['caloriesOut'].to_f) * 100   %> 
-    (<%= number_to_percentage(@perc, precision: 2)  %>)
-    </li>
-    <li> Distance:	<%=  @activities['goals']['distance'] %>km </li>
-    <li> Steps:	<%=  @activities['goals']['steps'] %> </li>
-   
-  </ul>		
+	  <ul class="about_me">
+		<li> Active Minutes:	<%=  @activities['goals']['activeMinutes'] %> </li>
+		<li> Calories:	<%=  @activities['summary']['caloriesOut'] %> out of <%=  @activities['goals']['caloriesOut'] %> 
+		  <%  @perc = (@activities['summary']['caloriesOut'].to_f / @activities['goals']['caloriesOut'].to_f) * 100   %> 
+		(<%= number_to_percentage(@perc, precision: 2)  %>)
+		</li>
+		<li> Distance:	<%=  @activities['goals']['distance'] %> miles </li>
+		<li> Steps:	<%=  @activities['goals']['steps'] %> </li>
+	   
+	  </ul>		
       <div>
 	        
 

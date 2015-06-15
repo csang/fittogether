@@ -30,13 +30,14 @@
       <p><%= (@user.user_name.present?) ? @user.user_name : '-'   %></p>
     </div>
     <div class="show_content_row">
-      <label>Account Url:</label>
+      <label>Website Url:</label>
       <p><%= (@user.account_url.present?) ? @user.account_url : '-'    %></p>
     </div>
     <div class="show_content_row">
       <label>Mobile:</label>
       <p><%= (@user.mobile.present?) ? @user.mobile : '-' %></p>
     </div>
+    <% if @user.user_type.to_i != 3 %>
     <div class="show_content_row">
       <label>Birthday:</label>
       <p><%=  (@user.dob.present?) ? @user.dob.to_s(:myformat) : '' %></p>
@@ -54,17 +55,24 @@
       <p> <%= (@user.industry_id.present?) ?  get_field_value('Industry','name', @user.industry_id) : '-' %></p>
     </div>
      <div class="show_content_row">
-      <label>Gym:</label>
-      <p> 
-      <%= (@user.gym_id.present?) ?  get_field_value('Gym','name', @user.gym_id) : '-' %>
-  </p>
-    </div>
-     <div class="show_content_row">
       <label>Goals:</label>
       <p> 
           <%= (@user.goals.present?) ? @user.goals.map{|goal| get_goal_name(goal)}.join(" , ") : '-' %>
       </p>
     </div>
+    <% end  %>
+     <div class="show_content_row">
+      <label>Gym Name:</label>
+      <p> 
+     
+          <% if @user.user_type.to_i == 3 %>
+            <%= @user.account_gym.name.present? ? @user.account_gym.name : '-' %>
+          <% else %>
+         <%= (@user.gym_id.present?) ?  get_field_value('AccountGym','name', @user.gym_id) : '-' %>
+          <% end  %>
+  </p>
+    </div>
+    
    
   <div class="clear"</div>
 </section>

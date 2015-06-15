@@ -31,12 +31,47 @@ class Fitbit::Activity < Fitbit::Data
     end
     activity_objects
   end
+  
+    def self.fetch_weekly_goal(user)
+    goal_objects = []
+    if user.present? && user.oauth_token.present? && user.access_secret.present?
+   
+      goal = user.fitbit_data.weekly_goals()
+     # abort(activities.inspect)
+     # activity_objects = activities.map {|a| Fitbit::Activity.new(a, user.unit_measurement_mappings) }
+     goal_objects = goal
+    end
+    goal_objects
+  end
+  
+    def self.fetch_recent_activity(user)
+    recent_activities = []
+    if user.present? && user.oauth_token.present? && user.access_secret.present?
+   
+      goal = user.fitbit_data.recent_activities()
+     # abort(activities.inspect)
+     # activity_objects = activities.map {|a| Fitbit::Activity.new(a, user.unit_measurement_mappings) }
+     recent_activities = goal
+    end
+    recent_activities
+  end
 
   def self.log_activity(user, activity)
     if user.present? && user.linked?
       user.fitbit_data.log_activity(activity)
     end
   end
+  
+  
+  def self.update_weekly_goal(user, data)
+   # abort(data.inspect)
+    if user.present? && user.linked?
+      user.fitbit_data.create_or_update_weekly_goal(data)
+    end
+  end
+  
+  
+  
 end
 
 # Sample response from fitbit.com api

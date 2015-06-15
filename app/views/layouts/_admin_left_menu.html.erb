@@ -25,10 +25,15 @@
       <% className = (params[:controller]=='admin/accounts' && params[:action]=='listUsers' && params[:type] == 'gym' ) ? 'list-group-item active' : '' %>       
       <%= link_to "Gym Managers",   listUsers_admin_accounts_path(type: 'gym'),:class => className %></li>
     </ul>
-    </li>
+    <li>
   <%= ((params[:controller]=='admin/photos') || (params[:controller]=='admin/photos' && params[:action]=='listPhotos')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
     <% className = ((params[:controller]=='admin/photos') || (params[:controller]=='photos' && params[:action]=='listPhotos')) ? 'list-group-item active' : '' %>
     <%= link_to "Photos/Videos Management", listPhotos_admin_photos_path, :class => className %>
+    </li>
+       <li>
+  <%= ((params[:controller]=='admin/accounts') || (params[:controller]=='admin/accounts' && params[:action]=='gym_management')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+    <% className = ((params[:controller]=='admin/accounts') || (params[:controller]=='accounts' && params[:action]=='gym_management')) ? 'list-group-item active' : '' %>
+    <%= link_to "Gym Management",  gym_management_admin_accounts_path, :class => className %>
     </li>
     
   </ul>

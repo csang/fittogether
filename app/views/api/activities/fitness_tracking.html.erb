@@ -1,0 +1,43 @@
+<%= render(:partial => 'feed/feed_aside') %>
+<div id="content">
+	<div class="comment_view_bg">
+		</div>
+          <div class="profile">
+            <div class ="account_info">
+			<div class="profile_nav">
+				<ul>
+				<a  href="<%= api_activity_path %>"><li>FitBit Activities</li></a>
+				<a class="selected" href="<%=  api_fitness_tracking_path %>"><li>Fitness Tracking</li></a>
+                                 <a href="<%=  api_create_update_goal_path %>"><li>Create/Update Goal</li></a> 
+					
+				</ul>
+			</div>
+			
+			<div class="profile_data listing">
+
+		
+    <div class="about">   
+    
+  <ul class="about_me">
+     <li>Weekly Goal of Distance:	<%=  @activities['goals']['distance'] %> miles </li>
+     <li>Weekly Goal of  Steps:	<%=  @activities['goals']['steps'] %> </li>
+     <li>Recent Activity Name:	<%=  @recent_activities[0]['name'] %> </li>
+     <li>Recent Activity description:	<%=  @recent_activities[0]['description'] %> </li>
+     <li>Recent Activity calories	<%=  @recent_activities[0]['calories'] %> </li>
+     <li>Recent Activity distance	<%=  @recent_activities[0]['distance'] %> miles </li>
+     <li>Recent Activity duration	<%=  @recent_activities[0]['duration'] %> seconds </li>
+ 
+  </ul>		
+      <div>
+	        
+
+			</div> 
+			</div> 
+		</div>
+	</div>
+	
+	
+
+		
+</div>
+

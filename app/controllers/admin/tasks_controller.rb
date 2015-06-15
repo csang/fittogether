@@ -1,6 +1,7 @@
 class Admin::TasksController < ApplicationController
 
 	def update
+  
 	   model = params[:model]	   
 	   if !model.blank?
 		   action = params[:action_type] 

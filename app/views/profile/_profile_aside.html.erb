@@ -35,10 +35,16 @@
 							<% if !@friend.present? %>
 							 
 							      <% if @profileuser.user_type.to_i == 3 && @account.user_type.to_i == 3 %>
-							     <span></span>
+							     <p></p>
 							     <% else %>
 									  <button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" class="addfriend">
-									  <%=  @profileuser.user_type==3 ? 'Join' :'Add Friend'%>						  
+									  <%= if  @profileuser.user_type==3 
+                                                                            'Join' 
+                                                                          elsif @profileuser.user_type==2
+                                                                          'Add Personal Trainer'
+                                                                          else
+                                                                            'Add Friend'
+                                                                          end %>   
 									  </button>
 							<% end %>		  
 							

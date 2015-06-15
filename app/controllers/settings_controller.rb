@@ -228,5 +228,29 @@ class SettingsController < ApplicationController
       end
    redirect_to request.env['HTTP_REFERER'] and return
   end
+  
+  def get_gym_address
+   
+    
+     if request.xhr?
+     gyddata = AccountGym.select('address').where(:id =>params[:id]).first 
+      
+     if gyddata.present?
+        addres = '<option value="">Location</option>'
+        x = 1
+       gyddata.address.each { |y| 
+        addres += "<option value='#{x}'>#{y} </option>"
+        x += 1
+       }
+        	render :text =>  addres
+   
+      else
+        result = 'error'
+      end 
+		
+    end
+              
+    
+  end
 
 end

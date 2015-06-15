@@ -154,10 +154,11 @@
 							<h4><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></h4>
 						<% end %>	
 						</div>
-						<!--<div class="data">
-							<span class="miles">2.1 Miles</span>
-							<span class="check_ins">12 Check Ins</span>
-						</div> -->
+                                          <% if abc.account_user.present? && abc.account_user.trainer_contacts ==1  %>
+						<div class="requirement">
+							<span class="check_ins">Looking for trainer</span>
+						</div> 
+                                          <% end  %>
 					</div>
 				</div>
 			</div>

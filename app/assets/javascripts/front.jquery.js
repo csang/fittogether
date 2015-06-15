@@ -591,7 +591,30 @@ $(document).ready(function () {
 	  
     });   
     
+       $("#weekly_goal").validate({
+        rules: {
+            'value': {
+                required: true,
+                number:true,  
+                maxlength:10
+                
+            }
+        },
+        messages: {
+            'value': {
+                required: 'Please enter value.',
+                number: 'Please enter number.',
+               
+            }
+        },
+	highlight: function(element) {
+            $(element).removeClass("error");
+        }
+    });
     
+      $('#type').on('change', function(){
+       $(this).val()=='distance' ? $('.exten').show() :  $('.exten').hide() ;
+      });
    
 }); // end of document dot ready
 

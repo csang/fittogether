@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150413093913) do
+ActiveRecord::Schema.define(version: 20150504054825) do
 
   create_table "account_activities", force: true do |t|
     t.integer  "account_id"
@@ -169,6 +169,8 @@ ActiveRecord::Schema.define(version: 20150413093913) do
     t.string   "uid"
     t.string   "oauth_token"
     t.string   "access_secret"
+    t.integer  "reward_points"
+    t.integer  "reward_points_lost"
   end
 
   add_index "accounts", ["id"], name: "index_accounts_on_id", using: :btree
@@ -222,6 +224,19 @@ ActiveRecord::Schema.define(version: 20150413093913) do
     t.datetime "updated_at"
   end
 
+  create_table "appointments", force: true do |t|
+    t.string   "title"
+    t.string   "description"
+    t.string   "start_date"
+    t.string   "time"
+    t.integer  "account_id"
+    t.integer  "trainor_id"
+    t.integer  "status",      default: 1
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "end_date"
+  end
+
   create_table "authorizations", force: true do |t|
     t.string   "provider"
     t.string   "uid"
@@ -252,6 +267,7 @@ ActiveRecord::Schema.define(version: 20150413093913) do
     t.boolean  "sender_status",    default: true
     t.boolean  "recipient_status", default: true
     t.datetime "valid_till"
+    t.integer  "winner_id"
   end
 
   add_index "challenges", ["account_id"], name: "index_challenges_on_account_id", using: :btree
@@ -300,6 +316,7 @@ ActiveRecord::Schema.define(version: 20150413093913) do
     t.datetime "updated_at"
     t.integer  "account_id"
     t.integer  "distance"
+    t.integer  "summary_calories"
   end
 
   create_table "friendships", force: true do |t|
@@ -332,7 +349,7 @@ ActiveRecord::Schema.define(version: 20150413093913) do
 
   create_table "messages", force: true do |t|
     t.text     "body"
-    t.boolean  "is_read",          default: false
+    t.boolean  "is_read",          default: true
     t.boolean  "status",           default: true
     t.integer  "conversation_id"
     t.integer  "account_id"

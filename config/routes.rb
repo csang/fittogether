@@ -7,7 +7,8 @@ Rails.application.routes.draw do
   match 'challenge/', :to=>'challenges#create',:via => [:post,:get] ,  :as => :challenge
   match 'deletechallenge', to: 'challenges#del_challenge', :via => [:delete] , :as => :deletechallenge
   match 'changechallengestatus/:cid/:status', to: 'challenges#change_challenge_status', :via => [:get, :post] , :as => :changechallengestatus
-  get 'challenges/show' 
+  match 'updaterewardpoints/(:cid)/(:account_id)', to: 'challenges#update_reward_points', :via => [:get, :post] , :as => :updaterewardpoints
+  get "challenges/show" => "challenges#show_team_challenge" 
   match 'challenges/edit/(:id)', to: 'challenges#edit',:via => [:patch,:get], :as=>:challenges_edit
   match 'search_user/:search/(:type)', to: 'challenges#search_user', :via => [:post] , :as=>:searchuser
   
@@ -46,6 +47,7 @@ Rails.application.routes.draw do
   get 'callback/failure'
   
   match '/settings/check_user_data/', to: 'settings#check_user_data', :via => [:get,:post] 
+  match 'get_gym_address', to: 'settings#get_gym_address', :via => [:get,:post], :as => :get_address 
   match 'set_remember/(:message)', to: 'callback#set_remember', :via => [:get,:post] , :as=>:set_rememberme
   match 'create_comment', to: 'feed#create_comment', :via => [:post] , :as=>:create_comment
   match 'create_post', to: 'feed#create_post', :via => [:post] , :as=>:create_post
@@ -56,6 +58,7 @@ Rails.application.routes.draw do
   match 'acceptrequest', to: 'friendships#friend_request_accept', :via => [:put] , :as => :acceptrequest
   
   match 'deleteimage/(:imgid)', to: 'feed#delete_image', :via => [:delete] , :as => :deleteimage
+   match 'deletepost/(:postid)', to: 'feed#delete_post', :via => [:delete] , :as => :deletepost
   
   post 'createalbum', to:'feed#create_album', :as=>:createalbum  
   get 'showalbum/:id', to:'feed#show_album', :as=>:showalbum  
@@ -93,7 +96,7 @@ Rails.application.routes.draw do
   get ':id/members', to: 'profile#members'
   get ':id/notifications', to: 'profile#notifications'
   
- 
+  get 'getgymaddress', to: 'settings#get_gym_address/:id'
   post 'update_avatar', to:'settings#update_avatar'
   post 'update_profile', to:'settings#update_profile', :as=>:update_profile
   post 'update_privacy', to:'settings#update_privacy', :as=>:update_privacy
@@ -102,10 +105,12 @@ Rails.application.routes.draw do
   post 'update_social_settings', to:'settings#update_social_settings', :as=>:update_social_settings
   post 'update_trainers_details', to:'settings#update_trainers_details', :as=>:update_trainers_details  
   post 'update_about_gym', to:'settings#update_about_gym', :as=>:update_about_gym  
+  
  
         get '/get_user_appointment/:id/(:pid)' => 'appointments#get_user_appointment', :as =>:get_user_appointment
         post '/save_user_appointment' => 'appointments#save_user_appointment', :as =>:save_user_appointment
         delete '/delete_user_event/:id' => 'appointments#delete_user_event', :as =>:delete_user_event
+        put '/approve_user_event/:id' => 'appointments#approve_user_event', :as =>:approve_user_event
  
   resources :friendships do
 	  member do
@@ -118,6 +123,8 @@ Rails.application.routes.draw do
   # Routes for the api interfaces
   namespace :api do
     get 'activity', controller: 'activities', action: 'index'
+    get 'fitness_tracking', controller: 'activities', action: 'fitness_tracking'
+    match 'create_update_goal', controller: 'activities', action: 'create_update_goal',:via => [:get, :post]
     get 'body_measurements', controller: 'body_measurements', action: 'show'
    
     resources :activities, only: [:index]
@@ -195,14 +202,19 @@ Rails.application.routes.draw do
         match "delete_user"	, :via => :post
 				match "status"	,:via => :all	
         match "listUsers"	,:via => :get	
+        match "gym_management"	,:via => :get	
+        match "show_gym/(:id)", to:"accounts#show_gym"	,:via => [:get, :post]	,  :as =>:show_gym
+        match "edit_gym/(:id)", to:"accounts#edit_gym"	,:via => [:get, :put], :as =>:edit_gym
        
 			end
 		end
-		resources :tasks do
+		
+    resources :tasks do
 		  collection do
         get "bulk_actions"
 		  end
 		end	
+    
     resources :photos do
 		  collection do
         match "search"	, :via => :get

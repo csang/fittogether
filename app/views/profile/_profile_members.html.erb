@@ -5,6 +5,7 @@
 
 
 <% @profileuser.passive_friends.each do |member| %>
+ 
 <div class="row" id="<%= Base64.encode64(member.id.to_s)%>">
 	<% if member.account_privacy.present? %>
 						<% if member.account_privacy.account_id!=@account.id  %>
@@ -40,8 +41,8 @@
 			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend">Remove</button>
 			  <% end %>
            
-                
-         
+          <p class="profile-info">( <%=  member.user_type==2 ? 'Trainer' : 'user' %> ) </p>   
+          
 </div>
 <% end %>
 <% end %>
@@ -50,6 +51,7 @@
 
 <% @profileuser.active_friends.each do |member| %>
 <div class="row" id="<%= Base64.encode64(member.id.to_s)%>">
+
 	<% if member.account_privacy.present? %>
 						<% if member.account_privacy.account_id!=@account.id  %>
 							<% @privacy = member.account_privacy %>
@@ -83,7 +85,7 @@
 			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend">Remove</button>
 			  <% end %>
            
-                
+                         <p class="profile-info">( <%=  member.user_type==2 ? 'Trainer' : 'user' %> ) </p>   
          
 </div>
 <% end %>
@@ -98,6 +100,7 @@
 $(document).ready(function(){
 
 $('.rejectfriend').on('click', function() {
+ if (confirm("Do you want to remove?")) {  
 var toid = $(this).attr('data-id');
 var that = this;
 	$.ajax({
@@ -120,7 +123,7 @@ var that = this;
 				}	
 			
 			});
-	    
+ }
 	    });
 });
 </script>	        

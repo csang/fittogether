@@ -105,5 +105,23 @@ class Admin::AccountsController < ApplicationController
       @users =  Account.where(:id =>  @model.all.select(:account_id) ).order('first_name').paginate(page: params[:page], per_page: 10)
       render :index
   end
+  # show all gym list
+  def gym_management   
+      
+     @users = AccountGym.order('name').paginate(page: params[:page], per_page: 10)
+  end
+  
+   # Edit a user
+  def show_gym
+    @user = AccountGym.find(params[:id])
+    render 'show_gym'
+  end
+  
+   # Edit a user
+  def edit_gym
+    @user = AccountGym.find(params[:id])
+    render 'edit_gym'
+  end
+
  
 end

@@ -30,11 +30,15 @@ class FeedController < ApplicationController
    if request.xhr?   
   #abort(params[:feed][:share_with].inspect)
 	    @post =  Post.create(:account_id=>@account.id,:text=>params[:post],:image=>params[:photo],:video=>params[:video], :status=>1,:share_with=>params[:feed][:share_with])	        
-	#abort(@post.inspect)
-		  respond_to do |format|
-		  format.js 		  
-		 # format.html 		  
-		 end
+   respond_to do |format|
+      if @post.save!
+           format.js
+      else
+		   
+        render :json => @post.errors.full_messages  and return     
+      end 
+   end
+		  
 	end
   
   end
@@ -119,6 +123,26 @@ class FeedController < ApplicationController
       id = Base64.decode64(params[:imgid])
      
       @img =  AlbumImage.where(:id=>id).first
+   
+      img = @img.destroy
+	 
+       if img 
+		render :json => id  and return      
+	  else
+		render :json => 0  and return     
+	  end
+    
+    end
+  
+  end
+  
+  
+  def delete_post
+ 
+    if request.xhr?    
+      id = Base64.decode64(params[:postid])
+     
+      @img =  Post.where(:id=>id).first
    
       img = @img.destroy
 	 

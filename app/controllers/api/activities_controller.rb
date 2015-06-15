@@ -30,7 +30,7 @@ before_action :get_account
       redirect_to request.env['HTTP_REFERER'] and return
     end
     rescue
-         flash[:error] = "Error processing in API.Please try after sometime."
+         flash[:error] = "Error processing in API. Please try after sometime."
          redirect_to request.env['HTTP_REFERER'] and return
       end
    # abort(@activities.inspect)
@@ -53,4 +53,60 @@ before_action :get_account
         end
       end
 =end
-end
+  
+ def fitness_tracking
+  
+ begin
+    @activities = Fitbit::Activity.fetch_weekly_goal(@account)
+    @recent_activities = Fitbit::Activity.fetch_recent_activity(@account)
+  # abort( @activities.inspect)
+   if !@activities.present?
+     flash[:error] = "Error processing in api.Please try after sometime."
+      redirect_to request.env['HTTP_REFERER'] and return
+    elsif @activities['errors'].present?
+      flash[:error] = "Error processing in api.Please try after sometime."
+      redirect_to request.env['HTTP_REFERER'] and return
+ 
+    elsif @activities.present?
+     # do not do anything here
+    else
+      flash[:error] = "Error processing in api.Please try after sometime."
+      redirect_to request.env['HTTP_REFERER'] and return
+    end
+   rescue
+       flash[:error] = "Error processing in API.Please try after sometime."
+       redirect_to request.env['HTTP_REFERER'] and return
+    end
+    
+  
+  end
+  
+ 
+ def create_update_goal
+ 
+if params[:type].present?
+  
+@data = Hash.new
+@data[:type] =  params[:type]== 'steps' ? :steps : :distance
+@data[:value] = params[:value]
+
+ begin 
+ @wg = Fitbit::Activity.update_weekly_goal(@account, @data)
+ if @wg.present?
+   redirect_to api_fitness_tracking_path and return
+ else
+    flash[:error] = "Please Try Again."
+       redirect_to request.env['HTTP_REFERER'] and return
+ end
+ rescue
+       flash[:error] = "Error processing in API.Please try after sometime."
+       redirect_to request.env['HTTP_REFERER'] and return
+    end
+
+end     
+    end
+  
+  end
+
+
+
