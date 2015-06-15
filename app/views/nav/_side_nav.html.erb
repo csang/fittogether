@@ -23,17 +23,19 @@
 		<% if @account.linked? or session[:oauth_secret].present? %>
                 <% session.delete(:oauth_secret) %>
 			<a href="<%= api_activity_path %> ">FITBIT</a>
-			<a href="<%= un_sync_path %>" ><%= image_tag('global/unsynchs_with_fitbit.png'); %></a></li>
+			<a style="display:inline-block;" href="<%= un_sync_path %>" ><%= image_tag('global/unsynchs_with_fitbit.png'); %></a>
 		<% else %>
 		FITBIT
 	         
-		 <a href="#login-popup" target="_blank" title="fitibit" contype="fitbit" class='login-popup fitbit' ><%= image_tag('global/synchs_with_fitbit.png'); %></a></li>
+		 <a style="display:inline-block;" href="#login-popup" target="_blank" title="fitibit" contype="fitbit" class='login-popup fitbit' ><%= image_tag('global/synchs_with_fitbit.png'); %></a>
 		<% end  %>
 		<% end  %>
 	
-                <li>GYM</li>
-		<li>FITSPOTS</li>
-		<li>EVENTS</li>
+                </li>
+               
+		<li><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#groupForm"> CREATE GROUP</a></li>
+		<li><%= link_to 'FITSPOTS', fitspots_index_path %></li>
+		
 	</ul>
 </div>
 <div class="advertisement_switch">
@@ -54,6 +56,24 @@
 	<span>	<%= link_to image_tag("icons/settings.png"), logout_path %></span>
 		<h3>LOGOUT</h3>
 	</div>
+</div>
+
+<!--- -->
+<div class="modal fade" id="groupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="z-index: 5456666666000;">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Group</h4>
+      </div>
+      <div class="modal-body">
+       
+        
+ <%= render(:partial => 'groups/newgroup') %>
+    
+    </div>
+  </div>
+</div>
 </div>
 <script>
   // login with facebook

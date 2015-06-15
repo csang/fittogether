@@ -1,0 +1,20 @@
+
+<%= form_for @profile, :url=>{:action=>'create_post'}, :html=>{:name=>'sharepost',:id => "update_post", :enctype=>"multipart/form-data"} do |f| %>
+
+	<div class="post">
+		<textarea name="post" placeholder="What did you do today?" class="posttext"></textarea>
+	</div>
+	<div class="post_options">
+	
+		<div class="extra">
+			<input name="photo" id="photo" type="file" accept="image/*"><span><%= image_tag('icons/picture.png') %></span>
+			<input name="video" id="video" type="file" accept="video/*"><span><%= image_tag('icons/video.png') %></span>
+			
+			
+		</div>
+		<button id="share_post">Share</button>
+	</div>
+
+<input type="hidden" value="<%= Base64.encode64(@group.id.to_s) %>" name="group_id">
+	<% end %>
+

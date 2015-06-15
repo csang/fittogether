@@ -24,9 +24,9 @@
 			<% if @account.present? %>
 		<% @countreq = @account.requested_friendships_seen.present? ? @account.requested_friendships_seen.count : '' %> 
 		<% @countreqchallenge = @account.requested_challenges_seen.present? ? @account.requested_challenges_seen.count : '' %> 
+		<% @cnt = @countreq.to_i + @cnt.to_i + + @fitspot_cont.to_i %>
 		
-		
-				<span class="new"> <%= @countreq %> </span> <a class="nav_option" href="/<%=  @ahref %>" title="Friend Notifications"> <%= image_tag('icons/notification.png'); %></a>
+				<span class="new"> <%= @cnt == 0 ? '' : @cnt %> </span> <a class="nav_option" href="/<%=  @ahref %>" title="Friend Notifications"> <%= image_tag('icons/notification.png'); %></a>
 				<span class="new"><%= @countreqchallenge %></span><a class="nav_option" href="/challenges" title="Challenges"><%= image_tag('icons/trophy.png'); %></a>
 			   <span class="new" id="newmsg"><%= messagecount() %></span><a class="nav_option" title="Messages" href="/conversations" ><%= image_tag('icons/mail.png'); %></a>
 			<% end %>

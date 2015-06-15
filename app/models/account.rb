@@ -24,6 +24,8 @@ class Account < ActiveRecord::Base
   has_many :passive_challenge, :class_name => "Challenge", :foreign_key => "to_id"
   has_many :requested_challenges_seen, -> { where(challenges: { is_read: false}) }, :through => :passive_challenge, :source => :account 
   has_one :fitbit , :dependent => :delete 
+  has_many :group, :dependent =>:delete_all
+  has_many :group_member
   def friends
     active_friends | passive_friends
   end

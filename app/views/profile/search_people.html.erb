@@ -66,40 +66,11 @@
 					</div>
 				</div>
 			</div>
-			<div class="local_groups">
-				<div class="column_header">
-					<h3>LOCAL GROUPS</h3>
-				</div>
-				<div class="list">
-					<div class="place" style="display:none;">
-						<div class="logo">
-							<%= image_tag('activities/lacrosse.png'); %>
-						</div>
-						<div class="name">
-							<h4>ORLANDO, FL</h4>
-							<h4>LACROSSE</h4>
-						</div>
-						<div class="data">
-							<span class="check_ins">134 Active</span>
-						</div>
-					</div>
-					<div class="place">
-						<div class="logo">
-							<%= image_tag('activities/lacrosse.png'); %>
-						</div>
-						<div class="name">
-							<h4>WINTER PARK, FL</h4>
-							<h4>LACROSSE</h4>
-						</div>
-						<div class="data">
-							<span class="check_ins">189 Active</span>
-						</div>
-					</div>
-				</div>
-			</div>
+			
 		</div>
+  
 		<div class="people column">
-		<% if @user.present? %>
+		<% if @user.present?  %>
 			<h2>PEOPLE</h2>			
 			<%  @user.each do |abc| %>
 			<div class="trainers">
@@ -116,34 +87,8 @@
 				<div class="list">
 					<div class="person">
 						<div class="avatar">
-				 <% @privacy = nil %>
-				   <% if abc.account_privacy.present? %>
-						<% if abc.account_privacy.account_id!=@account.id  %>
-							<% @privacy = abc.account_privacy %>
-					   <% end %>
-				   <% end %>
-				   		
-					<%  if !@privacy.present? %>	
-						<% if !abc.avatar.blank? %>
-						  <%= image_tag abc.avatar %>
-						  <% elsif !abc.pic.blank? %>
-							<%= image_tag "https://" + abc.pic %>
-							<% else %>
-							<%= image_tag 'default.png' %>
-						  <% end %>
-				<% else %>						  
-				    <% if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  %>
-						<% if !abc.avatar.blank? %>
-							  <%= image_tag abc.avatar %>
-							  <% elsif !abc.pic.blank? %>
-								<%= image_tag "https://" + abc.pic %>
-								<% else %>
-								<%= image_tag 'default.png' %>
-							  <% end %>
-				<% else %>
-							  <%= image_tag('default.png') %>
-							<% end %>					  
-					<% end %>						  
+                                               <% img = useravatar(abc) %>
+				   		 <%= image_tag img %>				  
 				    
 				    		  
 						</div>
@@ -163,8 +108,8 @@
 				</div>
 			</div>
 	<% end %>	
-	<% else %>
-	<h2> No user found </h2>	
+	
+
 	<% end %>		
 		<div class="places column" style="display:none;">
 			<h2>PLACES</h2>
@@ -234,4 +179,70 @@
 				</div>
 			</div>
 		</div>
+          <% if @groups.present? %>
+        <div class="local_groups">
+         
+        <% @groups.each do |gp| %>
+           <% cnt = gp.group_member.count  %>
+				<div class="column_header">
+					<h3>GROUP</h3>
+                                           <%= link_to('MORE', "/groups//#{Base64.encode64(gp.id.to_s)}") %>
+				</div>
+				<div class="list">
+					<div class="person" style="display:block;">
+						<div class="avatar">
+							<%= image_tag gp.group_image %>
+						</div>
+						<div class="name">
+							<h4>
+                                                        <%= gp.title  %>
+                                                       
+                                                        </h4>
+							
+						</div>
+						<div class="requirement">
+							<span class="check_ins">
+							<%= cnt + 1 %>  Member(s)</span>
+						</div>
+					</div>
+				
+				</div>
+          <% end  %>
+			</div>
+          <% end  %>
+                           <% if @fitspot.present? %>
+        <div class="local_groups">
+         
+        <% @fitspot.each do |gp| %>
+           <% cnt = gp.fitspot_member.count  %>
+				<div class="column_header">
+					<h3>FITSPOTS</h3>
+                                           <%= link_to('MORE', "/fitspots//#{Base64.encode64(gp.id.to_s)}") %>
+				</div>
+				<div class="list">
+					<div class="person" style="display:block;">
+						<div class="avatar">
+							<%= image_tag gp.fitspot_image %>
+						</div>
+						<div class="name">
+							<h4>
+                                                        <%= gp.title  %>
+                                                       
+                                                        </h4>
+							
+						</div>
+						<div class="requirement">
+							<span class="check_ins">
+							<%= cnt + 1 %>  Member(s)</span>
+						</div>
+					</div>
+				
+				</div>
+          <% end  %>
+			</div>
+          <% end  %>
+                         <% if !@user.present? && !@groups.present? && !@fitspot.present? %>
+	<h2> No record found </h2>	
+        <% end %>
 	</div>
+ 

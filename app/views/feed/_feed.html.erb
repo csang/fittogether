@@ -1,279 +1,300 @@
 <script>
-$(document).ready(function(){
-$(document).on("click",'.add_comment', function(){
+  $(document).ready(function() {
+    $(document).on("click", '.add_comment', function() {
 
-	if($(this).parent().parent().find('.comment_box').is(':hidden')){
-			$(this).parent().parent().find('.comment_box').show();
-		}else{
-			$(this).parent().parent().find('.comment_box').hide();
-		}
-});		
-});		
+      if ($(this).parent().parent().find('.comment_box').is(':hidden')) {
+        $(this).parent().parent().find('.comment_box').show();
+      } else {
+        $(this).parent().parent().find('.comment_box').hide();
+      }
+    });
+  });
 </script>		
 <div class="feed" style="opacity: 1;" >
-<% if @posts.present? %>
-	<div class="vertical_line"></div>
-<% end %>	
-	
+  <% if @posts.present? %>
+    <div class="vertical_line"></div>
+  <% end %>	
 
-	<!--<div class="day">
-		<h3>Today</h3>
-	</div> -->
 
-	<!-- loop -->
-<div id="feeds">
-	
-	<% @posts.each do |post| %>
-	
-	<% if post.share_with != 'Private' || @account.id == post.account_id %>
-	
-	<% if (post.share_with == 'Friends' && check_if_friend(post.account.id,@account.id) || (post.share_with == 'Friends' && @account.id == post.account.id))  || post.share_with == 'Public' %>
-	  
-	 
-	<%	@image = post.account.avatar
-		@pic = post.account.pic
-		@name = post.account.first_name + ' ' + post.account.last_name
-		@time = post.created_at %>
-		
-		<div class="post" id="<%= post.id %>">
-			<div class="profile_picture">
-				<div class="user">	
-				<% if !@image.blank? %>
-          <%= image_tag @image %>
-          <% elsif !@pic.blank? %>
-            <%= image_tag 'https://' + @pic %>
-            <% else %>
-            <%= image_tag 'default.png' %>
-          <% end %>
+  <!--<div class="day">
+          <h3>Today</h3>
+  </div> -->
+
+  <!-- loop -->
+  <div id="feeds">
+
+    <% @posts.each do |post| %>
+
+      <% if post.share_with != 'Private' || @account.id == post.account_id %>
+
+        <% if (post.share_with == 'Friends' && check_if_friend(post.account.id,@account.id) || (post.share_with == 'Friends' && @account.id == post.account.id))  || post.share_with == 'Public' %>
+
+
+          <%	@name = post.account.first_name + ' ' + post.account.last_name
+          @time = post.created_at %>
+          <% img =  useravatar(post.account) %>
+          <div class="post" id="<%= post.id %>">
+            <div class="profile_picture">
+              <div class="user">				
+                <%= image_tag img %>
+
+              </div>
+            </div>
+            <div class="top green">
+              <h3 class='green'><%= @name %> </h3>
+              <h4><%= time_ago_in_words(@time) %> ago</h4>
+              <% if @account.id == post.account_id %>
+                <a class="post-delete" href="javascript:void(0);" title="Delete" data-id="<%= Base64.encode64(post.id.to_s)%>">DELETE</a>	
+              <% end %>
+              <span><%= image_tag('icons/green_arrow.png') %></span>
+            </div>
+            <div class="data">
+              <p><%= post.text %></p>
+            </div>
+            <% if post.image.present? %>		
+              <div class="data-img">
+                <%= image_tag(post.image(:medium)) %>		
+              </div>
+
+            <% end %>
+            <% if post.video.present? %>		
+              <div class="data-img">
+
+                <video id='video'  controls width="300" height="300">
+                  <source src='<%= post.video %>' type='video/mp4'/>
+                  Your browser does not support the video .
+                </video>
+
+              </div>
+
+            <% end %>
+
+            <div class="comments" id="cmt<%= post.id %>">
+
+              <% post.comment.each do |cm| %>
+                <div class="comment" id="scont<%= cm.id  %>">
+                  <% abc =  get_user_detail(cm.account_id) %>
+                  <% if abc.present? %>
+                    <div class="avatar">
+                      <% img =  useravatar(abc) %>
+                      <%= image_tag img %>
+                    </div>
+                    <h3>
+                      <a href="<%= abc.user_name %>" >
+                        <%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %>
+                      </a>
+                    </h3>
+
+                  <% end %>
+                  <span class="time"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</span>
+                  <% if @account.id == cm.account_id  %>     
+                    <a  class="feed-comment-dlt" data-id="<%=  Base64.encode64(cm.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="">DELETE</a>
+                  <% end %>
+                  <p> <%= cm.text %> </p>
+                </div>
+              <% end %>
+
+            </div>
+
+            <div class="comment_box">
+              <textarea class="comment" data-id="<%= post.id %>" style="resize: none"></textarea>
+            </div>
+            <div class="bottom">
+              <% link_to('Give Kudos!', '/') %>
+              <%= link_to('Comment', 'javascript:void(0);', html_options={:class => 'add_comment'}) %>
+            </div>
           </div>
-	</div>
-		<div class="top green">
-			<h3 class='green'><%= @name %> </h3>
-			<h4><%= time_ago_in_words(@time) %> ago</h4>
-			<% if @account.id == post.account_id %>
-						<a class="post-delete" href="javascript:void(0);" title="Delete" data-id="<%= Base64.encode64(post.id.to_s)%>">DELETE</a>	
-			<% end %>
-			<span><%= image_tag('icons/green_arrow.png') %></span>
-		</div>
-		<div class="data">
-		<p><%= post.text %></p>
-		</div>
-   <% if post.image.present? %>		
-	<div class="data-img">
-		<%= image_tag(post.image(:medium)) %>		
-	</div>
-		
-	<% end %>
-	<% if post.video.present? %>		
-	<div class="data-img">
-	
-	<video id='video'  controls width="300" height="300">
-  <source src='<%= post.video %>' type='video/mp4'/>
-  Your browser does not support the video .
-</video>
-
-	</div>
-		
-	<% end %>
-	
-	<div class="comments" id="cmt<%= post.id %>">
-		
-		<% post.comment.each do |cm| %>
-		<div class="comment">
-			 <% abc =  get_user_detail(cm.account_id) %>
-			 <% if abc.present? %>
-					<div class="avatar">
-						<% if abc.avatar.present? %>
-								<%= image_tag abc.avatar(:thumb) %>
-						<% elsif abc.pic.present? %>
-								<%= image_tag 'https://' + abc.pic %>
-						<% else %>
-								<%= image_tag 'default.png' %>
-						<% end %>
-					</div>
-					<h3>
-						<a href="<%= abc.user_name %>" >
-								<%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %>
-						</a>
-					</h3>
-					
-			  <% end %>
-				<span class="time"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</span>
-				<p> <%= cm.text %> </p>
-		 </div>
-	<% end %>
-	
-	</div>
-	
-		<div class="comment_box">
-			<textarea class="comment" data-id="<%= post.id %>" style="resize: none"></textarea>
-		</div>
-		<div class="bottom">
-			<% link_to('Give Kudos!', '/') %>
-			<%= link_to('Comment', 'javascript:void(0);', html_options={:class => 'add_comment'}) %>
-		</div>
-	</div>
-<% end %>
-<% end %>
-<% end %>
-	<!-- <div class="post ad">
-		<div class="ad">
-			<%#= image_tag('adds/add_5.png') %>
-			<p>ADVERTISEMENT</p>
-		</div>
-	</div> -->
+        <% end %>
+      <% end %>
+    <% end %>
+    <!-- <div class="post ad">
+            <div class="ad">
+<%#= image_tag('adds/add_5.png') %>
+                    <p>ADVERTISEMENT</p>
+            </div>
+    </div> -->
 
 
-</div>
+  </div>
 </div>
 
 <div id="feed_loader">
 </div>
 <script>
 //function to check file size before uploading.
-function beforeSubmit(){
+  function beforeSubmit() {
 
-    if( $('.posttext').val()=='') //check empty input filed
-        {
-			 $('.flash-message').html('<div class="alert alert-danger"> Please Enter Text!').show();
-            return false ;
-        }
-    //check whether browser fully supports all File API
-   if (window.File && window.FileReader && window.FileList && window.Blob)
+    if ($('.posttext').val() == '') //check empty input filed
     {
-    
-      
-       
-        if( !$('#photo').val()) //check empty input filed
-        {
-            return ;
-        }
-        
-        
-       
-        var fsize = $('#photo')[0].files[0].size; //get file size
-        var ftype = $('#photo')[0].files[0].type; // get file type
-       
+      $('.flash-message').html('<div class="alert alert-danger"> Please Enter Text!').show();
+      return false;
+    }
+    //check whether browser fully supports all File API
+    if (window.File && window.FileReader && window.FileList && window.Blob)
+    {
 
-        //allow only valid image file types
-        switch(ftype)
-        {
-            case 'image/png': case 'image/gif': case 'image/jpeg': case 'image/pjpeg':
-                break;
-            default:
-              // $("#output").html("Only png, jpg, gif file formats are allowed.");
-               $('.flash-message').html('<div class="alert alert-danger">Only png, jpg, gif file formats are allowed.</div>').show();
-          
-                return false
-        }
-       
-        //Allowed file size is less than 1 MB (1048576)
-        if(fsize>10485760)
-        {
-            $('.flash-message').html('<div class="alert alert-danger"> Too big Image file! Please reduce the size of your photo using an image editor.').show();
-            
-            return false
-        }
-               
-       
+
+
+      if (!$('#photo').val()) //check empty input filed
+      {
+        return;
+      }
+
+
+
+      var fsize = $('#photo')[0].files[0].size; //get file size
+      var ftype = $('#photo')[0].files[0].type; // get file type
+
+
+      //allow only valid image file types
+      switch (ftype)
+      {
+        case 'image/png':
+        case 'image/gif':
+        case 'image/jpeg':
+        case 'image/pjpeg':
+          break;
+        default:
+          // $("#output").html("Only png, jpg, gif file formats are allowed.");
+          $('.flash-message').html('<div class="alert alert-danger">Only png, jpg, gif file formats are allowed.</div>').show();
+
+          return false
+      }
+
+      //Allowed file size is less than 1 MB (1048576)
+      if (fsize > 10485760)
+      {
+        $('.flash-message').html('<div class="alert alert-danger"> Too big Image file! Please reduce the size of your photo using an image editor.').show();
+
+        return false
+      }
+
+
     }
     else
     {
-       
-       $('.flash-message').html('<div class="alert alert-danger"> please upgrade your browser, because your current browser lacks some new features we need!').show();
-        return false;
-    }
-} 
-                     
-   //onchange height
-    $(document).ready(function() { 
-		
-		
-		$('.post-delete').on('click', function() {
-                    if (confirm("Do you want to delete post")) {
-		var toid = $(this).attr('data-id');
 
-		var that = this;
-			$.ajax({
-						type: "DELETE",
-						url: '/deletepost/', //sumbits it to the given url of the form
-						dataType: "HTML",
-						data: {postid:toid},
-						beforeSend: function(xhr) {
-								xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-								},
-						success: function(data){				
-							$('#'+data).fadeOut();
-											
-							$('.flash-message').html('<div class="alert alert-success"> Post has been deleted successfully</div>').show();
-							},
-						error:	function (xhr, ajaxOptions, thrownError) {
-						$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
-							console.log(thrownError)
-							
-						}	
-					
-					});
-                    }
-				});
-				
-		
-		$(document).on('keydown', '.comment', function(e)   {
-			if(e.keyCode == 13){
-				var text = $(this).val();
-				if (text == '') {
-					return false;
-				}
-				var postid = $(this).attr('data-id'); 
-				//var postid = 1; 
-				$.ajax({
-				type: "POST",
-				url: '/create_comment/', //sumbits it to the given url of the form
-				data: { text : text, post : postid },
-				dataType: "HTML",
-				 beforeSend: function(xhr) {
-					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-					}
-					}).success(function(data){
-					  $(".comment_box").hide();
-					  $("#cmt"+postid).append(data);
-					   
-						 
-					});
-			
-			}
-		
-		});
-	   
-				var options = {
-				type: "POST",
-				url: '/create_post/', //sumbits it to the given url of the form
-				dataType: "HTML",
-				beforeSubmit: beforeSubmit,
-					success: function(data){					
-					    $("#feeds").prepend(data);					   
-					    $("#photo").val('');					   
-					    $("#video").val('');					   
-					    $(".posttext").val('');					   
-						 
-					},
-					 error: function (xhr, ajaxOptions, thrownError) {
-                       console.log(JSON.stringify(xhr, null, 4));
-                         $('.flash-message').html('<div class="alert alert-danger"> Please Try again!').show();
-					}
-					
-					
-					};
-					
-					$( "#share_post" ).click(function(e) {	
-				      e.preventDefault();
-				      $('#update_post').ajaxSubmit(options);
-				   });
-		
-			
-			
-		
-		
-		
-    }); // end of document ready
-                </script>
+      $('.flash-message').html('<div class="alert alert-danger"> please upgrade your browser, because your current browser lacks some new features we need!').show();
+      return false;
+    }
+  }
+
+  //onchange height
+  $(document).ready(function() {
+
+
+    $(document).on('click', '.post-delete', function() {
+      if (confirm("Do you want to delete post")) {
+        var toid = $(this).attr('data-id');
+
+        var that = this;
+        $.ajax({
+          type: "DELETE",
+          url: '/deletepost/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {postid: toid},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#' + data).fadeOut();
+
+            $('.flash-message').html('<div class="alert alert-success"> Post has been deleted successfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+    });
+
+
+    $(document).on('keydown', '.comment', function(e) {
+      if (e.keyCode == 13) {
+        var text = $(this).val();
+        if (text == '') {
+          return false;
+        }
+        var postid = $(this).attr('data-id');
+        //var postid = 1; 
+        $.ajax({
+          type: "POST",
+          url: '/create_comment/', //sumbits it to the given url of the form
+          data: {text: text, post: postid},
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          }
+        }).success(function(data) {
+          $(".comment_box").hide();
+          $("#cmt" + postid).append(data);
+
+
+        });
+
+      }
+
+    });
+
+    var options = {
+      type: "POST",
+      url: '/create_post/', //sumbits it to the given url of the form
+      dataType: "HTML",
+      beforeSubmit: beforeSubmit,
+      success: function(data) {
+        $("#feeds").prepend(data);
+        $("#photo").val('');
+        $("#video").val('');
+        $(".posttext").val('');
+
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        console.log(JSON.stringify(xhr, null, 4));
+        $('.flash-message').html('<div class="alert alert-danger"> Please Try again!').show();
+      }
+
+
+    };
+
+    $("#share_post").click(function(e) {
+      e.preventDefault();
+      $('#update_post').ajaxSubmit(options);
+    });
+
+
+    $(document).on('click','.feed-comment-dlt', function() {
+      if (confirm("Do you want to delete comment?")) {
+        var toid = $(this).attr('data-id');
+
+        var mydata = {'id': toid};
+        var that = this;
+        $.ajax({
+          type: "DELETE",
+          url: '/deletecomment/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: mydata,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#scont' + data).fadeOut();
+
+            $('.flash-message').html('<div class="alert alert-success"> Post has been deleted successfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+    });
+
+
+
+  }); // end of document ready
+</script>

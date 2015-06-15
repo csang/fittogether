@@ -193,7 +193,7 @@ Window = {
 Nav = {
 
 	change_placeholder: function(e){
-		$('#nav_container .search input').attr('placeholder','People, zipcode and city');
+		$('#nav_container .search input').attr('placeholder','People, groups, zipcode and city');
 		$('#nav_container .search').css('background-color', '#4ca571');
 	},
 

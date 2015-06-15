@@ -1,24 +1,22 @@
 <% if @post.present? %>
-<%	@image = @post.account.avatar
-    @pic = @post.account.pic
+<%	
     @name = @post.account.first_name + ' ' + @post.account.last_name
     @time = @post.created_at %>
     
 <div class="post right " id="<%= @post.id %>" style="margin: 75px 10px 10px; float: right;">
 		<div class="profile_picture">
 			<div class="user">	
-			<% if !@image.blank? %>
-          <%= image_tag @image %>
-          <% elsif !@pic.blank? %>
-            <%= image_tag 'https://' + @pic %>
-            <% else %>
-            <%= image_tag 'default.png' %>
-          <% end %>
+			<% img = useravatar(@post.account) %>
+          <%= image_tag img %>
+    
           </div>
 	</div>
 		<div class="top green">
 			<h3 class='green'><%= @name %> </h3>
 			<h4><%= @time.present? ? time_ago_in_words(@time) : 'less than a minute' %> ago</h4>
+                        <% if @account.id == @post.account_id %>
+						<a class="post-delete" href="javascript:void(0);" title="Delete" data-id="<%= Base64.encode64(@post.id.to_s)%>">DELETE</a>	
+			<% end %>
 			<span><%= image_tag('icons/green_arrow.png') %></span>
 		</div>
 		<div class="data">

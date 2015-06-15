@@ -444,8 +444,8 @@ x:-o-prefocus, #nav_container .search span{
 	height: 100%;
 	margin: 0 auto;
 	clear: both;
-	overflow: scroll;
-	overflow-y:hidden;
+	overflow-x: hidden;
+	overflow-y:scroll;
 }
 
 .search_results .column{
@@ -1221,7 +1221,7 @@ textarea{background-color: #f1f1f1;border: 1px solid #050506; padding:10px; resi
 .ctrol-row{display:inline-block; vertical-align: top;}
 .ctrol-row label.error{margin-left:124px;}
 .addfriend, .cancelfriend{background:#2f8352; border:none; display:inline-block; vertical-align:top; font-size:13px; padding:2px 10px; margin:2px 0 0 10px; border-radius:5px; -moz-border-radius:5px;-webkit-border-radius:5px;}
-.acceptfriend, .rejectfriend{background:#2f8352; 
+.acceptfriend, .rejectfriend, .grouprequest{background:#2f8352; 
 border:none;font-size:13px; padding:8px 15px;border-radius:5px; -moz-border-radius:5px;-webkit-border-radius:5px; color:#fff; margin:25px 4px 0;
 float:right;}
 #content .photo-album .comment_view{border:none; height:auto;}
@@ -1312,6 +1312,25 @@ span.ver{padding:15px 3px 0;display:inline-block; vertical-align:top;}
 .location-input{max-width:850px; text-align:right;}
 .location-input #gym{margin-bottom:10px;}
 .location-input select#location{max-width:100%;}
+.jointext{padding:10px 0px;}
+.jointext span{color:#2f8352;}
+ul.group-dtail{margin:0px; padding:0px 0 15px; display:inline-block; width:100%;}
+ul.group-dtail li{padding:8px 0px; font-size:15px; border-bottom:1px solid #ccc;font-weight: normal;}
+ul.group-dtail li span{font-weight: bold; width:150px; display:inline-block; font-weight: normal;}
+.group-detail-hding{font-size:16px; font-weight: bold; padding:5px 0px; color:#2f8352;}
+ul.group-imgs-invite{margin:0px; padding:0px; display:inline-block; width:100%;}
+ul.group-imgs-invite li{border-bottom: 1px solid #ccc;}
+ul.group-imgs-invite li .imgside{display: inline-block;height: 80px;margin: 5px; overflow: hidden; vertical-align: top;
+    width: 80px;}
+ul.group-imgs-invite p.notification-msg{margin:0px; font-weight: normal; font-size:15px;}
+.event-title{font-size:20px;}
+.event-title a.creat-event{background:#2f8352; border-radius: 3px; color: #fff;display: inline-block; padding:8px 10px; font-size:15px; margin:-4px 0 0; float:right;}
+.errors {
+    color: #ff0000;
+    font-size: 12px !important;
+    font-weight: normal;
+}
+.bro-name{display:inline-block; vertical-align:top; margin:38px 0 0 10px;}
 /* =============== increase the width of right content  css end 
 #content{width:1000px!important;}
 .account_info .profile_nav, .account_info .profile_data{width:970px;}

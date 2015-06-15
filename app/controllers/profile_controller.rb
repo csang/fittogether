@@ -111,6 +111,10 @@ class ProfileController < ApplicationController
 		cityid = City.select(:id).where("name Like ?", "%#{params[:search]}%").collect(&:id)
    
 		@user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ? OR zipcode LIKE ? OR city_id IN (?))", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%", "%#{params[:search]}%",cityid)
+    
+    @groups = Group.where("lower(title) LIKE ? " , "%#{params[:search]}%")
+    
+    @fitspot = Fitspot.where("lower(title) LIKE ? " , "%#{params[:search]}%")
 		
 		 respond_to do |format|
       format.js       
@@ -130,11 +134,28 @@ class ProfileController < ApplicationController
 		redirect_to('/feed')	
 	 else
 	friendable = Friendship.where(friend_id: @account.id) 
-	if friendable.present?
+  if friendable.present?
 		friendable.each do |ff|
 			ff.update_attributes(seen: true)
 		end
 	end	
+  get_group = Group.where(:account_id => @account.id).collect(&:id) 
+  if get_group.present?
+       @joining_request = GroupMember.where("group_id IN (?) && status = ?  ", get_group, false )
+   end
+    if @joining_request.present?
+		@joining_request.each do |ff|
+			ff.update_attributes(seen: true)
+		end
+	end	
+  
+   @fitspot = FitspotMember.where(:account_id => @account.id,:status => false)
+   if @fitspot.present?
+   	@fitspot.each do |fs|
+			fs.update_attributes(seen: true)
+		end
+   end   
+  
 	 @profile = 'profile_notifications'
 	 render 'index'
 	 end	

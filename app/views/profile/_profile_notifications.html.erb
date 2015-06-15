@@ -22,9 +22,50 @@
          
 </div>
 <% end %>
-<% else %>
+<% end %>
+
+</div>
+<div class="settings_activities member-data">
+
+<% if @joining_request.present? %>
+
+
+<% @joining_request.each do |member| %>
+  
+<div class="row" id="<%= Base64.encode64(member.account.id.to_s)%>">
+  <p class="jointext"> Join request for your group :  <%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group.id.to_s)}") %></p>
+  <% img = useravatar(member.account) %>
+  <%= link_to(image_tag(img), "/#{member.account['user_name']}") %>
+           <%= link_to(member.account.first_name, "/#{member.account['user_name']}") %>
+			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="reject">Reject</button>
+             <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="accept">Allow</button>
+                
+         
+</div>
+<% end %>
+  <% end %>
+  
+ <%  if @fitspot.present? %>
+  
+  <% @fitspot.each do |ft| %>
+  
+  <div class="row">
+ 
+  <% img = useravatar(ft.fitspot.account) %>
+  <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %>
+    <%= ft.fitspot.account.first_name.capitalize %>       Invited you to Fitspot event <%= link_to(ft.fitspot.title, "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %>
+			               
+         
+</div>
+  
+  <% end  %>
+  
+  <% end %>
+  
+<% if !@account.requested_friendships.present? && !@joining_request.present?  && !@fitspot.present?  %>
 <h2 class="notification-msg"> No new notification found. </h2>
 <% end %>
+
 </div>
 
 <script type="text/javascript">
@@ -44,7 +85,7 @@ var that = this;
 				success: function(data){				
 					$(that).parent('.row').fadeOut();
 									
-					$('.flash-message').html('<div class="alert alert-success"> Request Removed Succesfully</div>').show();
+					$('.flash-message').html('<div class="alert alert-success"> Request was successfully removed.</div>').show();
 					},
 				error:	function (xhr, ajaxOptions, thrownError) {
 				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
@@ -70,7 +111,7 @@ var that = this;
 				success: function(data){				
 					$(that).closest('.row').fadeOut();
 									
-					$('.flash-message').html('<div class="alert alert-success"> Request Approved Succesfully</div>').show();
+					$('.flash-message').html('<div class="alert alert-success"> Request was successfully approved.</div>').show();
 					},
 				error:	function (xhr, ajaxOptions, thrownError) {
 				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
@@ -81,6 +122,43 @@ var that = this;
 			});
 	    
 	    });
+            
+ $('.grouprequest').on('click', function() {
+var toid = $(this).attr('data-id');
+var type = $(this).attr('type');
+if (type == 'reject') {  
+
+  if (!confirm('Are you sure you want to reject request?')) {
+    return false;
+  }
+  
+}
+var mydata = {'id': toid, 'type' : type};
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '<%= group_request_path()  %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: mydata,
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$(that).parent('.row').fadeOut();
+                                        var text = type == 'reject' ? 'Request was successfully removed.' :'Request was successfully approved.'
+					$('.flash-message').html('<div class="alert alert-success"> '+ text +'</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+	    
+          
 	    
 	    }); // end of document ready
 </script>	    

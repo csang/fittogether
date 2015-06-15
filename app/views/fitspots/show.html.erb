@@ -1,0 +1,224 @@
+<%= render(:partial => 'feed/feed_aside') %>
+<div id="content">
+
+  <div class="group-top">
+    <%= image_tag(@fitspot.fitspot_image(:medium), :class =>'group_image') %>
+    <div class="group-detail">
+      <div class="group-left">
+        <h4><%=  @fitspot.fitspot_date.strftime("%b %d") %></h4>
+        <h4><%=  @fitspot.title.capitalize %></h4>
+
+      </div>
+      <div class="group-right">
+
+        <% if @fitspot.account_id == @account.id %>
+          <a href="javascript:void(0);" class="join" title="going">Going</a>    
+          <a href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#fitspotEditForm" title="edit">Edit</a>    
+
+        <% elsif @going.present?  %>
+          <a href="javascript:void(0);" class="join jnew"  data-type="cancel" title="Cancel Going" data-id="<%=  Base64.encode64(@fitspot.id.to_s) %>">Cancel</a>
+        <% else %>
+          <a href="javascript:void(0);" class="join jnew"  data-type="add" title="join" data-id="<%=  Base64.encode64(@fitspot.id.to_s)   %>">Join</a>
+        <% end  %>
+
+      </div>
+
+    </div>
+  </div>
+
+  <div class="group-tab">
+    <ul class="nav nav-tabs">
+      <li class="active"><a data-toggle="tab" href="#sectionA">Detail</a></li>
+      <% if @going.present? ||  @fitspot.account_id == @account.id %>
+        <li><a data-toggle="tab" href="#sectionB">Invite</a></li>
+      <% end %>
+
+    </ul>
+    <div class="tab-content">
+      <div id="sectionA" class="tab-pane fade in active">
+        <ul class="group-dtail">
+          <li><span>Created for group :</span><%= @fitspot.group.title %> </li>
+          <li><span>Date :</span> <%= @fitspot.fitspot_date.strftime("%d %b %Y ") %> </li>
+          <li><span>Time :</span> <%= @fitspot.fitspot_time.present? ? @fitspot.fitspot_time : 'N/A' %> </li>
+          <li><span>Location :</span> <%= @fitspot.location %> </li>       
+          <li><span>Description :</span> <%= @fitspot.description.present? ? @fitspot.description : 'N/A'  %> </li>
+        </ul>
+        <h3 class="group-detail-hding">Going</h3>
+        <ul class="group-imgs">
+          <% img = useravatar(@fitspot.account) %>
+          <li><%= link_to(image_tag(img), "/#{@fitspot.account.user_name}", {:class => 'grop-img'}) %>
+            <%= link_to(@fitspot.account.first_name.capitalize,  "/#{@fitspot.account.user_name}") %>
+          </li>
+          <% @fitspot.fitspot_member.each do |fm|  %>
+            <% if fm.status == true %>
+              <% img = useravatar(fm.account) %>
+              <li><%= link_to(image_tag(img), "/#{fm.account.user_name}", {:class => 'grop-img'}) %>
+                <%= link_to(fm.account.first_name.capitalize,  "/#{fm.account.user_name}") %>
+              </li>
+            <% end %> 
+          <% end %> 
+        </ul>
+
+      </div>
+      <div id="sectionB" class="tab-pane fade">
+        <ul class="group-imgs-invite">
+          <% if @inviteable.present? %>
+
+            <% @inviteable.each do |fmc|  %>
+              <% if fmc.account_id != @account.id  %>
+
+                <% img = useravatar(fmc.account) %>
+                <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.account.user_name}") %></div>
+                  <button data-id="<%= Base64.encode64(fmc.account.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
+                  <%= link_to(fmc.account.first_name.capitalize,  "/#{fmc.account.user_name}", {:class => 'bro-name'}) %>
+                </li>
+              <% end %> 
+            <% end %> 
+          <% end %> 
+          <% if  @account.active_friends.present? %>
+            <% @account.active_friends.each do |fmc|  %>
+
+              <%  if   @fitspot.account_id.to_i != fmc.id.to_i  %>
+                <%  if  !@goings.include? fmc.id   %>
+
+
+                  <% img = useravatar(fmc) %>
+                  <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.user_name}") %></div>
+                    <button data-id="<%= Base64.encode64(fmc.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
+                    <%= link_to(fmc.first_name.capitalize,  "/#{fmc.user_name}" , {:class => 'bro-name'}) %>
+                  </li>
+
+                <% end %> 
+              <% end %> 
+            <% end %> 
+          <% end %> 
+
+          <% if  @account.passive_friends.present? %>
+            <% @account.passive_friends.each do |fmc|  %>
+              <%  if   @fitspot.account_id.to_i != fmc.id.to_i  %>
+                <%  if  !@goings.include? fmc.id  %>
+
+                  <% img = useravatar(fmc) %>
+                  <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.user_name}") %></div>
+                    <button data-id="<%= Base64.encode64(fmc.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
+                    <%= link_to(fmc.first_name.capitalize,  "/#{fmc.user_name}" , {:class => 'bro-name'}) %>
+                  </li>
+
+                <% end %> 
+              <% end %> 
+            <% end %> 
+          <% end %> 
+
+
+
+
+
+
+          <% if !@inviteable.present? && !@account.passive_friends.present? && !@account.active_friends.present? %>
+            <li><p class="notification-msg">No more members to invite.</p></li>
+          <% end %> 
+        </ul>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="modal fade" id="fitspotEditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="z-index: 5456666666000;">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit FitSpot </h4>
+      </div>
+      <div class="modal-body">
+
+
+        <%= render(:partial => 'fitspots/edit') %>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    // add member
+    $('.jnew').on('click', function() {
+      var id = $(this).attr('data-id');
+      var type = $(this).attr('data-type');
+
+      var that = this;
+      var mydata = {'id': id, 'type': type};
+      $.ajax({
+        type: "POST",
+        url: '<%= add_del_going_path() %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          if (type == 'add') {
+
+            $(that).attr('data-type', 'cancel');
+            $(that).attr('title', 'Cancel');
+            $(that).html('Cancel');
+            location.reload();
+            //  $('.flash-message').html('<div class="alert alert-success"> You Succesfully Joined the Group.</div>').show();
+          } else {
+            $(that).attr('data-type', 'add');
+            $(that).attr('title', 'join');
+            $(that).html('Join');
+            $('.flash-message').html('<div class="alert alert-success"> You Succesfully Canceled Going.</div>').show();
+          }
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    });
+
+    // invite friend
+
+    $('.invite').on('click', function() {
+      var id = $(this).attr('data-id');
+      var fid = $(this).attr('data-fid');
+
+      var that = this;
+      var mydata = {'account_id': id, 'fitspot_id': fid};
+      $.ajax({
+        type: "POST",
+        url: '<%= invite_for_fitspot_path() %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          $(that).parent('li').slideUp('slow');
+           $('.flash-message').html('<div class="alert alert-success"> Invitation sent succesfully.</div>').show();
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    });
+
+  });
+</script>
+

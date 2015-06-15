@@ -1,0 +1,46 @@
+  <% if  @post.present? %>
+<%  post = @post %> 
+           <div class="posts" id="<%= post.id %>">
+            
+             <%	
+		@name = post.account.first_name + ' ' + post.account.last_name
+		@time = post.created_at %>
+           
+           
+               <% img =  useravatar(post.account) %>
+                <div class="posts-img">
+                 <%= link_to(image_tag(img), "/#{ post.account.user_name}") %>
+                </div>
+                <div class="posts-content">
+                 <h4><%=  @name %> <span class="time"> <%= time_ago_in_words(@time) %> ago</span></h4>
+                      <% if @account.id == post.account_id || @account.id == @group.account_id %>
+              <a data-gid="<%=  Base64.encode64(@groupadmin.account_id.to_s) %>" data-id="<%=  Base64.encode64(post.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="post-dlt">DELETE</a>
+             <% end %>
+                 <p><%= post.text %> </p>
+                </div>
+                <% if post.image.present? %>		
+	<div class="post-img">
+		<%= image_tag(post.image(:medium)) %>		
+	</div>
+		
+	<% end %>
+	<% if post.video.present? %>		
+	<div class="data-img">
+	
+	<video id='video'  controls width="300" height="300">
+  <source src='<%= post.video %>' type='video/mp4'/>
+  Your browser does not support the video .
+</video>
+
+	</div>
+		
+	<% end %>
+      
+                <div class="bottom">
+                 <a class="add_comment" href="javascript:void(0);">Comment</a>
+                </div>
+                <div style="display: none;" class="comment_box">
+                 <textarea class="comment" data-id="35" style="resize: none"></textarea>
+                </div>
+                </div>
+             <%  end %>

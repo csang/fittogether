@@ -5,9 +5,15 @@ class ChallengesController < ApplicationController
    
     if request.xhr?  
       to_id = Base64.decode64(params[:to_id])
+      account_id = params[:rip2].present? ? Base64.decode64(params[:rip2]) : ''
+      if account_id.present?
       @challenge = Challenge.create(:category_id=> params[:category_id],
-		 		:account_id =>@account.id,:to_id=> to_id,:text=>params[:text],:reward_points => params[:reward_points],:qty=>params[:qty],:valid_till=>params[:valid_till])
-			
+		 		:account_id =>account_id,:to_id=> to_id, :creater_id=> @account.id, :text=>params[:text],:reward_points => params[:reward_points],:qty=>params[:qty],:valid_till=>params[:valid_till])
+      else
+         @challenge = Challenge.create(:category_id=> params[:category_id],
+		 		:account_id =>@account.id,:to_id=> to_id,  :text=>params[:text],:reward_points => params[:reward_points],:qty=>params[:qty],:valid_till=>params[:valid_till])
+     
+      end  
 		
       if @challenge.save
         render :json => 1  and return     
@@ -21,6 +27,9 @@ class ChallengesController < ApplicationController
 	
   def index
     #get  challenge of logged in user
+    if @account.user_type != 1 
+     redirect_to('controller'=>'challenges','action' => 'show_team_challenge')
+   end 
     @allchallenge = Challenge.involving(@account.id).order('id desc').paginate(:page => params[:page], :per_page =>15)	
     chl = Challenge.where(to_id: @account.id) 
     if chl.present?
@@ -35,7 +44,7 @@ class ChallengesController < ApplicationController
   # method for trainers to show challenge to trainers of their teammates
   def show_team_challenge
     #no one can access this method except trainer
-   if @account.user_type != 2
+   if @account.user_type == 1 
      redirect_to('controller'=>'challenges')
    end 
    teammate = [];
@@ -48,10 +57,10 @@ class ChallengesController < ApplicationController
        teammate.push(pfriend.id)
    end
    #get challenges of teammantes
-   @allchallenge = Challenge.where("sender_status != ? AND (account_id IN  (?) OR to_id IN  (?))",false, teammate, teammate).order('id desc').paginate(:page => params[:page], :per_page =>10)	
  
-    chl = Challenge.where(to_id: @account.id) 
-   
+   @allchallenge = Challenge.where("sender_status != ? AND (account_id IN  (?) OR to_id IN  (?) OR creater_id = ?)",false, teammate, teammate, @account.id).order('id desc').paginate(:page => params[:page], :per_page =>10)	
+   chl = Challenge.where(to_id: @account.id) 
+  
   end
 
   
@@ -157,8 +166,10 @@ end
 # method to search user and show in drop down on new challenge/goals dropdown
 	def search_user
 	 if request.xhr?   
+   
+     uid = params[:uid].present? ? Base64.decode64(params[:uid]) : 0
 	  if !params[:type].present?	
-        @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%")
+        @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND accounts.id != #{uid} AND accounts.user_type NOT IN (2,3)  AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%")
         
     else
         @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND  (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%")  
