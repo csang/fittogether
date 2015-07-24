@@ -1,0 +1,19 @@
+ 
+ <%= form_for @admin_location, :url=>{:action => 'add_city'}, :html => {:id  => "location_form"} do |f| %>
+
+	 <% gspecial = State.all.map{|x| [x.name] + [x.state_code]} %>
+<div class="pop-row ">
+  <label>Select State</label>
+ 
+	 <%= f.select  :state_code, options_for_select(gspecial), {},{ :class => 'form-control' } %>
+ </div>
+
+<div class="pop-row">
+	 <%= f.label :name, 'City' %>
+  <%= f.text_field :name, class: " form-control" , maxlength: 150 %>
+</div>
+ <div class="modal-footer">
+      <%= f.submit :class=>'btn btn-primary'  %>
+      </div>
+
+<% end %> 

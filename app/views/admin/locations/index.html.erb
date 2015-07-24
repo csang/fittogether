@@ -1,0 +1,107 @@
+
+<script>
+  $(function() {
+    // initial sort set using data-sortlist attribute (see HTML below)
+    $(".tablesorter").tablesorter({
+      headers: {
+        '.sort-disabled': {
+          sorter: false
+        }
+      }
+    });
+    $(".tablesorter")
+            .find('.tablesorter-header-inner input#checkall')
+            .click(function() {
+      $(".check").prop("checked", this.checked);
+    });
+
+ 
+ 
+  });
+
+</script>
+<section class="admin_maincontent">
+
+  <div class="page-header">
+    <div class="col-sm-9 PaddingLeft">
+     
+     <h1 class="marginNone">Location Database</h1>
+
+    </div>
+    <div class="col-sm-3 marginNone PaddingRight">
+      <%= form_tag search_admin_locations_path, :method => 'get', :class=>'form-search' do %>
+        <div class="input-append">
+          <input type="text" name="search" class="span2 search-query form-control" placeholder="Search">
+          <button type="submit" name="btnGo" class="btn btn-primary">Go</button>
+        </div>
+      <%  end %>
+    </div>
+    <div class="clear"></div>
+  </div>   
+  <%= form_tag bulk_actions_admin_tasks_path, :method => 'post', :class=>'bulk-form' do %>  
+    <input type ="hidden" name ='model' value ="State">
+    <div class="top-selection" style="display:none;">
+      <%= render "admin/tasks" %>
+    </div>
+    <div class="show_back_right">
+          <%= link_to 'Add New City', new_admin_location_path , :class => 'btn btn-primary' %>
+      </div>
+  
+    <div class="table-responsive left width100">
+      <table class="table table-bordered table-hover tablesorter"  id="myTable">
+        <thead>
+          <tr>
+            <th class="sort-disabled check-all " ><%= check_box_tag "checkall" %></th>
+            <th><span></span><%=  "Name" %></th>
+            <th><span></span><%=  "State Code" %></th>
+            <th><span></span><%= "Created At" %></th>  
+            <th><span></span><%= "Modified At" %></th>  
+        
+            <th class="action sort-disabled">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <% if(!@admin_locations.blank?) %>
+            <% @admin_locations.each do |loc| %>
+         
+              <tr id="row-<%= loc.id %>">
+                <td><%= check_box_tag "task_ids[]", loc.id , false , :class =>'check' %></td>
+                <td><%= loc.name %></td>
+                <td><%= loc.state_code %></td>
+            
+                <td>
+                  <% if(!loc.created_at.blank?)%>
+                    <%= loc.created_at.strftime("%d %b, %Y") %>
+                  <%else%>N-A<%end%>
+                </td>
+                 <td>
+                  <% if(!loc.updated_at.blank?)%>
+                    <%= loc.updated_at.strftime("%d %b, %Y") %>
+                  <%else%>N-A<%end%>
+                </td>
+
+
+          
+                <td class="action">
+                  <%= link_to 'show'.html_safe, admin_location_path(loc), {:class=>'show-icon', :title=>'Show'} %>
+                  <%= link_to 'edit'.html_safe, edit_admin_location_path(loc), {:class=>'edit-icon', :title=>'Edit'} %>
+                  <%#= link_to 'Delete'.html_safe, admin_location_path(loc), :data => {:confirm => 'Are you sure?', :method => 'delete' ,  :title=>'delete' }, :class=>'delete-icon' %>
+               </td>
+                </td>
+
+              </tr>
+            <% end %>
+          <%else%>
+            <tr><td colspan="6" align="center">No records found</td></tr>
+          <%end%>
+
+        </tbody>
+      </table>  
+
+      <%= will_paginate @admin_locations, :renderer => BootstrapPagination::Rails %>
+      <div class="clear"></div></div>
+    <div class="clear"></div>
+  </section>
+<% end %>
+

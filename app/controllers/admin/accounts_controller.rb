@@ -44,6 +44,7 @@ class Admin::AccountsController < ApplicationController
     @id = params[:id].to_i
     @model = params[:model].to_s
     @status = params[:status].to_i
+  
     if !@id.blank?
       status_method(@id, @model, @status)  #method define in app controller
       #render :json => '1' and return 

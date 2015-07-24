@@ -1335,9 +1335,21 @@ ul.group-imgs-invite p.notification-msg{margin:0px; font-weight: normal; font-si
 #content{width:1000px!important;}
 .account_info .profile_nav, .account_info .profile_data{width:970px;}
 .account_info .profile_nav a{font-size:18px;margin: 0px 15px;} ============*/
-
-
-
+.rating-box{padding:7px 15px; color:#fff; background:#292929;}
+.rating-box p{float:left; margin:0 5px 0 0; width:110px;}
+.rating-inner{display:inline-block; vertical-align: top; width:100%; margin:0 0 5px;}
+.rating-inner.last{margin:0px;}
+.invite-section{padding:20px 0 0; display: inline-block; width: 100%;}
+.invite-top{color:#2f8352; padding-bottom:10px;}
+ul.review-wpr{display:inline-block; vertical-align: top; width:100%; margin:0px; padding:0px; background:#fff;}
+ul.review-wpr li{display:inline-block; vertical-align: top; width:100%;border-bottom: 1px solid #d1d1d1;padding:8px;}
+ul.review-wpr li .review-dis{padding:0px 0 0 100px;}
+ul.review-wpr li h2{color:#2f8352; font-size:18px;}
+ul.review-wpr li .chat-time{float:right; color:#8c8c8c; font-weight: normal; font-size:13px; padding:3px 0 0;}
+ul.review-wpr li p{padding:0px 0 5px; color:#4a4a4a; font-size:16px; font-weight: normal;min-height: 50px;}
+ul.review-wpr .imageRound {height:70px;width:70px;float: left;overflow: hidden;}
+ul.review-wpr .imageRound img {height: 100%; width: 100%;}
+ul.review-wpr .user-name{padding: 0 0 0 80px;}
 /* ================================== new  css end ========================================================================================*/
 @media screen and (max-width: 1279px){
 	/*#container{

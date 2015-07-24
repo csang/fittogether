@@ -60,7 +60,8 @@ class ApplicationController < ActionController::Base
 		else
 			 @data[:status] = 0
 		end
-		if @data.update_attributes(:status => @data[:status].to_i)
+  
+		if @data.update_attributes(:status => status)
 			render :json=>'1' and return
 		else
 			render :json=>'0' and return	
@@ -81,6 +82,20 @@ def current_user
  
   #@current_user = 'sandeep'
 end
+
+def get_profile_user
+  
+   @profileuser = Account.where(:status =>1,:user_name =>params[:id]).first
+     if !@profileuser.present?
+			redirect_to('/feed')
+     else
+     @rating = Rating.where(trainer_id: @profileuser.id, account_id: @account.id).first 
+    unless @rating 
+      @rating = Rating.create(trainer_id: @profileuser.id, account_id: @account.id, score: 0) 
+    end
+     end
+   
+end  
 
   
 

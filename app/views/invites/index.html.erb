@@ -1,0 +1,93 @@
+<style>
+  #invity_emails-tokenfield{ padding:0px 0px 50px 0px;}
+  .tokenfield .token-input{height:auto;}
+  </style>
+<%= render(:partial => 'feed/feed_aside') %>
+<div id="content">
+<div class="profile-txt" style="overflow: hidden;" tabindex="0"> 
+    <div id="content">
+      <div class="invite-section">
+        
+            <div class="col-md-12 text-center invite-top"> <span class="invite-text">Write The Email's  Or Import From</span>
+               <!-- <a href="/contacts/gmail" class="gmail-contact">Gmail</a>
+                <a href="/contacts/yahoo" class="yahoo-contact">Yahoo</a>
+                <a href="/contacts/hotmail" class="hotmail-contact">Hotmail</a> -->
+               <a href="javascript:void(0)" class="gmail-contact">Gmail</a>
+                <a href="javascript:void(0)" class="yahoo-contact">Yahoo</a>
+                <a href="javascript:void(0)" class="hotmail-contact">Hotmail</a>
+            </div>
+       
+            <div class="form-group col-md-12">
+                <% emails = '' %>            
+                <% if @contacts.present? and !@contacts.blank? %>
+                  <% @contacts.each do |c|%>
+                    <% emails = "#{emails}#{c[:email]}," %>
+                  <%end%>
+                <%end%>
+                <%= text_area_tag "invity_emails",emails, class:'xyz form-control', :id => 'invity_emails' %>
+              </div>
+        
+              <div class="form-group col-md-12">
+                  <%= button_tag "Send Invitation",:type => 'button',:class => "btn btn-primary",:id => 'invite_user_btn' %>
+              </div>
+    </div>
+      </div>
+  </div>
+  <script type="text/javascript">
+    $('.gmail-contact, .yahoo-contact, .hotmail-contact').on('click', function(){
+      alert('This feature will work only on actual domain not on IP. Please wait untill site goes live.')
+    });
+    function createToken() {
+        $('textarea.xyz').tokenfield().on('tokenfield:createdtoken', function (e) {
+            // simplistic e-mail validation
+            
+            var existingTokens = $(this).tokenfield('getTokens');
+            $.each(existingTokens, function (i, token) {
+                if (token.value === e.attrs.value)
+                    e.preventDefault();
+            });
+            var re = /\S+@\S+\.\S+/
+            var valid = re.test(e.attrs.value);
+            if (!valid) {
+                $(e.relatedTarget).addClass('invalid');
+                e.preventDefault();
+            }
+            
+        });
+    }
+    $(document).ready(function () {
+        createToken();
+        
+        $(".form-group").on('click', '#invite_user_btn', function () {
+        var tVal = $("#invity_emails-tokenfield").val() 
+        var contacts = $("#invity_emails").tokenfield('getTokens');
+        if (contacts.length == 0 && tVal=='') {
+           
+            $('.flash-message').html('<div class="alert alert-danger"> Please add contact email.</div>').show();
+            return false;
+        }
+        if (contacts.length == 0 && tVal!='') {
+           $("#invity_emails-tokenfield").val('') 
+            $('#invity_emails').tokenfield('createToken', tVal);
+             var contacts = $("textarea.xyz").tokenfield('getTokens');
+        }
+       
+        $.each(contacts, function (i, v) {
+            contacts[i] = v.value;
+        });
+        $("#fade-dashboard").fadeIn();
+        $.post("/send_invitations", {contacts: contacts}, function (d) {
+            $("#fade-dashboard").fadeOut();
+            if (!d.error) {
+                $('#invity_emails').tokenfield('destroy').val("");
+                createToken();
+                $('.flash-message').html('<div class="alert alert-success"> Invitations successfully sent.</div>').show();
+            } else {
+                 $('.flash-message').html('<div class="alert alert-danger">' + d.msg + '</div>').show();
+            }
+        });
+    });
+    });
+  </script>
+
+</div>

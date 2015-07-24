@@ -633,6 +633,23 @@ $(document).ready(function () {
         }
     });
     
+           $("#review_form").validate({
+        rules: {
+            'review[review]': {
+                required: true,
+              }
+        },
+        messages: {
+            'review[review]': {
+                required: 'Please enter review.',
+                
+            }
+        },
+	    highlight: function(element) {
+            $(element).removeClass("error");
+        }
+    });
+    
         $("#fitspot_form").validate({
         rules: {
             'fitspot[title]': {
@@ -658,6 +675,24 @@ $(document).ready(function () {
             },
              'fitspot[fitspot_date]': {
                 required: 'Please select date.',
+                
+            }
+        },
+	    highlight: function(element) {
+            $(element).removeClass("error");
+        }
+    });
+    
+            $("#feedback_form").validate({
+        rules: {
+            'admin_feedback[feedback]': {
+                required: true,
+              },
+              
+        },
+        messages: {
+            'admin_feedback[feedback]': {
+                required: 'Please enter feedback.',
                 
             }
         },

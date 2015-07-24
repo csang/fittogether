@@ -3,7 +3,7 @@
     @name = @post.account.first_name + ' ' + @post.account.last_name
     @time = @post.created_at %>
     
-<div class="post right " id="<%= @post.id %>" style="margin: 75px 10px 10px; float: right;">
+<div class="post right " id="<%= @post.id %>" style="margin: 75px 10px 10px; float: right; ">
 		<div class="profile_picture">
 			<div class="user">	
 			<% img = useravatar(@post.account) %>
@@ -19,8 +19,16 @@
 			<% end %>
 			<span><%= image_tag('icons/green_arrow.png') %></span>
 		</div>
-		<div class="data">
-		<p><%= @post.text %></p>
+		<div class="data" style="min-height: 50px;">
+		<p><% @post.text.split.select {|w| %>
+       <% if  w[0] == "#" %>
+      <%=raw tag_links(w)%>
+          <% elsif w[0] == "@" %>    
+     <%=raw user_links(w)%>      
+      <% else %>    
+        <%= w %>    
+      <% end %>      
+      <%  } %></p>
 		</div>
    <% if @post.image.present? %>		
 	<div class="data-img">

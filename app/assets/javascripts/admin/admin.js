@@ -201,8 +201,63 @@ $(document).ready(function() {
 	// hide alert message 
    setTimeout(function(){
     $('.alert').fadeOut('slow');
-  }, 5000);		
+  }, 5000);	
+  
+  
+  /*below block of code is used to validate page form while adding and updating */
+	$("#new_cms_page, .edit_cms_page").validate({
+		rules		:{
+					'cms_page[name]'		:	{
+						required	:	true
+					},
+					'cms_page[meta_title]'	:	{
+						required	:	true
+					},
+					'cms_page[seo_url]'	:	{
+						required	:	true,
+						url	:	true
+					},
+					'cms_page[meta_desc]'	:	{
+						required	:	true
+					},
+					'cms_page[meta_keyword]'	:	{
+						required	:	true
+					}
+		},
+		messages	:{
+					'cms_page[name]'	:	{
+						required	:	'Please enter name.'
+					},
+					'cms_page[meta_title]'	:	{
+						required	:	'Please enter meta title.'
+					},
+					'cms_page[seo_url]'	:	{
+						required	:	'Please enter seo url.',
+						url	:	'Invalid url.'
+					},
+					'cms_page[meta_desc]'	:	{
+						required	:	'Please enter meta description.'
+					},
+					'cms_page[meta_keyword]'	:	{
+						required	:	'Please enter meta keyword.'
+					}
+		}
+	});
 
+
+          /*below block of code is used to validate page form while adding and updating */
+	$("#location_form").validate({
+		rules		:{
+					'location[name]'		:	{
+						required	:	true
+					}
+		},
+		messages	:{
+					'location[name]'	:	{
+						required	:	'Please enter city name.'
+					}
+		}
+	});  
 }); //end of document dot ready
 
 function validatemultipleaction() {
@@ -233,8 +288,8 @@ function validatemultipleaction() {
     }
     
    else if (PageOptions == 'Delete' && confirm('Are you sure you want to delete' + appmessage)) {
-	
-       var Data = {}; 
+ 
+        var Data = {}; 
        Data.client_id = clientid;
        Data.client_secret = secertid;
        Data.grant_type = "client_credentials";
@@ -251,7 +306,9 @@ function validatemultipleaction() {
 		{
 		aprovider = $(this).attr('dataprovider');		
 		adataId = $(this).attr('dataid');
+               
 		userid = aprovider +'|' + adataId;    
+             
                           
                              $.ajax({
                                url: 'https://fittogetherzap.auth0.com/api/users/'+userid,

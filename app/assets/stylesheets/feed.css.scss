@@ -388,7 +388,7 @@
 	position: fixed;
 	bottom: 92px;
 	width: 275px;
-	padding: 20px;
+	padding:10px 20px;
 	background-color: #343434;
 }
 
@@ -1185,6 +1185,12 @@
 #updatealbum a.btn-default{float:right; margin:0 20px 0 0; padding:12px 20px; vertical-align:top;}
 .feed-comment-dlt{width:11px; height:13px; position:absolute; right:4px; bottom:5px; text-indent:-9999px; background:url(chat-delete.png) no-repeat;opacity:0.5;}
 .feed-comment-dlt:hover{opacity:1;}
+.search-comment{position:relative;}
+.search-comment .column_header .imageRound img{width:100%; height:100%;}
+.search-comment ul{background:#f2f2f2;}
+.sync-info{float:right; width:auto;}
+#left_side #account_info #feed_side_nav li .sync-info img{margin: -22px 10px 0;}
+
 @media screen and (max-width: 1279px){
 	/*#content .comment_view{
 		width: 568px;

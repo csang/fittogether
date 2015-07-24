@@ -1,0 +1,70 @@
+<%= form_for(  [:admin,@cms_page]) do |f| %>
+
+ <div class="control-group">
+    <%= f.label :name %>
+    <div class="controls">
+      <%= f.text_field :name,  :class=>'form-control', :maxlength => 150 %>
+    </div>
+     <div class="clear"></div>
+  </div>
+
+ <div class="control-group">
+    <%= f.label :content %>
+    <div class="controls">
+      <%= f.cktext_area :content, :ckeditor => { :customConfig => '/assets/javascript/ckeditor-admin-config.js' }, :class=>' bodyboxtextarea form-control' %>
+      
+    </div>
+     <div class="clear"></div>
+  </div>
+
+ <div class="control-group">
+    <%= f.label :meta_title %>
+    <div class="controls">
+      <%= f.text_field :meta_title,  :class=>'form-control', :maxlength => 150 %>
+    </div>
+     <div class="clear"></div>
+  </div>
+
+<div class="control-group">
+    <%= f.label :seo_url %>
+    <div class="controls">
+      <%= f.text_field :seo_url,  :class=>'form-control', :maxlength => 150 %>
+    </div>
+     <div class="clear"></div>
+  </div>
+<div class="control-group">
+    <%= f.label :meta_description %>
+    <div class="controls">
+      <%= f.text_area :meta_desc,  :class=>'bodyboxtextarea form-control', :maxlength => 250 %>
+    </div>
+     <div class="clear"></div>
+  </div>
+<div class="control-group">
+    <%= f.label :meta_keyword %>
+    <div class="controls">
+      <%= f.text_area :meta_keyword,  :class=>'bodyboxtextarea form-control' , :maxlength => 150 %>
+    </div>
+     <div class="clear"></div>
+  </div>
+ <div class="control-group">
+      <%= f.label :status %>
+       <div class="controls">
+    <%= f.select :status, [["Select Status",""], ["Active", 1], ["Inactive", 0]] %>
+	</div>
+   <div class="control-group">
+      <%= f.label :show_in_footer %>
+       <div class="controls">
+    <%= f.check_box :show_in_footer %>
+	</div>
+
+
+
+
+
+ <div class="control-group actions">
+      <div class="controls contro">   <%= f.submit :class=>'btn btn-primary'  %>
+      <a class="btn btn-default bck" onclick='window.history.go(-1)' href="javascript:void(0);" title="Cancel">Cancel</a></div>
+      <div class="clear"></div>
+    </div>
+<% end %>
+ 

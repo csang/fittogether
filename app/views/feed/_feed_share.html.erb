@@ -1,52 +1,90 @@
 <%= form_for @profile, :url=>{:action=>'create_post'}, :html=>{:name=>'sharepost',:id => "update_post", :enctype=>"multipart/form-data"} do |f| %>
 
-	<div class="post">
-		<textarea name="post" placeholder="What did you do today?" class="posttext"></textarea>
-	</div>
-	<div class="post_options">
-		<div class="share" title="Who do you want to share this with?">
-			<h3>Share with:</h3>
-			<%= f.select :share_with, options_for_select(["Public", "Private","Friends"]), :class => 'genForm_dropBox' %>		
-			<div class="arrows" style="display:none;">
-				<span><%= image_tag('icons/up.png') %></span>
-				<span><%= image_tag('icons/down.png') %></span>						
-			</div>
-		</div>
-		<div class="extra">
-			<input name="photo" id="photo" type="file" accept="image/*"><span><%= image_tag('icons/picture.png') %></span>
-			<input name="video" id="video" type="file" accept="video/*"><span><%= image_tag('icons/video.png') %></span>
-			
-			
-		</div>
-		<button id="share_post">Share</button>
-	</div>
-	<% end %>
+  <div class="post search-comment">
+    <textarea name="post" placeholder="What did you do today?" class="posttext" ></textarea> 
+    
+    <input type="hidden" name="posttextnew" id="posttext">
+    <ul class="arport" style="display:none;">
+
+
+    </ul>
+  </div>
+  <div class="post_options">
+    <div class="share" title="Who do you want to share this with?">
+      <h3>Share with:</h3>
+      <%= f.select :share_with, options_for_select(["Public", "Private","Friends"]), :class => 'genForm_dropBox' %>		
+      <div class="arrows" style="display:none;">
+        <span><%= image_tag('icons/up.png') %></span>
+        <span><%= image_tag('icons/down.png') %></span>						
+      </div>
+    </div>
+    <div class="extra">
+      <input name="photo" id="photo" type="file" accept="image/*"><span><%= image_tag('icons/picture.png') %></span>
+      <input name="video" id="video" type="file" accept="video/*"><span><%= image_tag('icons/video.png') %></span>
+
+
+    </div>
+    <button id="share_post">Share</button>
+  </div>
+<% end %>
 <%= form_for @profile, :url=>{:action=>'create_album'}, :html=>{:name=>'createalbum',:id => "create_album", :enctype=>"multipart/form-data"} do |f| %>
-<input style="display:none;" name="album" id="album" type="file" accept="image/* , video/mp4"><span id="create_album"></span>
-<button id="share_album" title="You can create album of videos and images">Create Album</button>
+  <input style="display:none;" name="album" id="album" type="file" accept="image/* , video/mp4"><span id="create_album"></span>
+  <button id="share_album" title="You can create album of videos and images">Create Album</button>
 <% end %>
 
 <script>
-document.getElementById('share_album').onclick = function() {
-document.getElementById("create_album").reset();
-$('#album').click();
-			if( !$('#album').val()) //check empty input filed
-				{
-					return false;
-				}
-			
+  $('.postext').val('');
+  document.getElementById('share_album').onclick = function() {
+    document.getElementById("create_album").reset();
+    $('#album').click();
+    if (!$('#album').val()) //check empty input filed
+    {
+      return false;
+    }
 
-};
-$('#album').on('change',function(e) {
- if( !$('#album').val()) //check empty input filed
-		{
-			return false;
-		}
- else {		
-			
-		    e.preventDefault();		    
-    		$('#create_album').submit();	 
-		    return false;
-}		    
-	});
+
+  };
+  $('#album').on('change', function(e) {
+    if (!$('#album').val()) //check empty input filed
+    {
+      return false;
+    }
+    else {
+
+      e.preventDefault();
+      $('#create_album').submit();
+      return false;
+    }
+  });
+
+  $(".posttext").keyup(function(e) {
+ 
+    if ($(this).val().indexOf("@") != -1) {
+      var ind = $(this).val().indexOf("@");
+      var keywords = $(this).val().substr(ind + 1);
+      if (keywords != '') {
+
+        $.ajax({
+          type: "POST",
+          url: '/search_user/' + keywords + '/ / /' + 'post', //sumbits it to the given url of the form
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+
+            $('.arport').fadeIn()
+            $('.arport').html(data)
+
+
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status)
+
+          }
+
+        });
+      }
+    }
+  });
 </script>

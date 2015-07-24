@@ -1,16 +1,4 @@
-<% if request.host_with_port =='202.164.44.244:3021' %>
-  <% @clientid =  'ISEtMwyHO4vh0DZ7xOXqps2nUFfjTa4e' %>
-  <% secertid = 'Q7YPaUqlADfYlDQkOhD-mqJPyc8hCzdJew95OarzqFZsPohQrEmx6EoVo07Sf6x7' %>
-  <% @callback = 'http://202.164.44.244:3021/auth/auth0/callback' %>
-<% elsif request.host_with_port =='202.164.44.244:3020' %>
-  <% @clientid = 'r9Sl2O6H91d6YYsNM9PY7ncwzGJP0r1T' %>
-  <% secertid = 'orlOgRVhRzLH-DbmqVcmbdJACUYsA97gKIMZMvi-b_BeaD6Mbo3vmCLovW_erlyg' %>
-  <% @callback = 'http://202.164.44.244:3020/auth/auth0/callback' %>
-<% else %>
-  <% @clientid = 'USZ78oRzwIFx7e4gOjrpYA1VZIDBZo8u' %>
-  <% secertid = 'bwswf2HLFIskZiBv07EP--8Bd_nQNtgRwlosEC2tHSK4lMCD6dqYFV616_GJNWCu' %>
-  <% @callback = 'http://127.0.0.1:3000/auth/auth0/callback' %>
-<% end %>
+
 <script>
 
 
@@ -31,15 +19,16 @@
 
 
 
-    $('.delete_user').on('click', function() {
+   $('.delete_user').on('click', function() {
       if (confirm('Are you sure you want to delete ?')) {
         var dataId = $(this).attr('data-id');
         var rowId = $(this).attr('data-row-id');
+        var provider = $(this).attr('data-provider');
         var cData = {};
-        cData.client_id = '<%= @clientid %>';
-        cData.client_secret = '<%= secertid %>';
+        cData.client_id = clientid ;
+        cData.client_secret = secertid  ;
         cData.grant_type = 'client_credentials';
-        userid = 'auth0|' + dataId;
+        userid = provider +'|' + dataId;
              $.ajax({
                   data: {'dataId': dataId},
                   dataType: "json",
@@ -60,6 +49,7 @@
                            data: JSON.stringify(cData),
                            success: function(xhr, status) {
                              newtoken = 'Bearer ' + xhr.access_token;
+                             
                              $.ajax({
                                url: 'https://fittogetherzap.auth0.com/api/users/'+userid,
                                type: 'DELETE',

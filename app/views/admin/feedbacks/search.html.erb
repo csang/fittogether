@@ -1,0 +1,106 @@
+
+<script>
+  $(function() {
+    // initial sort set using data-sortlist attribute (see HTML below)
+    $(".tablesorter").tablesorter({
+      headers: {
+        '.sort-disabled': {
+          sorter: false
+        }
+      }
+    });
+    $(".tablesorter")
+            .find('.tablesorter-header-inner input#checkall')
+            .click(function() {
+      $(".check").prop("checked", this.checked);
+    });
+
+ 
+ 
+  });
+
+</script>
+<section class="admin_maincontent">
+
+  <div class="page-header">
+    <div class="col-sm-9 PaddingLeft">
+     
+     <h1 class="marginNone">Feedbacks</h1>
+
+    </div>
+    <div class="col-sm-3 marginNone PaddingRight">
+      <%= form_tag search_admin_feedbacks_path, :method => 'post', :class=>'form-search' do %>
+        <div class="input-append">
+          <input type="text" name="search" class="span2 search-query form-control" placeholder="Search">
+          <button type="submit" name="btnGo" class="btn btn-primary">Go</button>
+        </div>
+      <%  end %>
+    </div>
+    <div class="clear"></div>
+  </div>   
+  <%= form_tag bulk_actions_admin_tasks_path, :method => 'post', :class=>'bulk-form' do %>  
+    <input type ="hidden" name ='model' value ="Admin::Feedback">
+    <div class="top-selection">
+      <%= render "admin/tasks" %>
+    </div>
+  
+    <div class="table-responsive left width100">
+      <table class="table table-bordered table-hover tablesorter"  id="myTable">
+        <thead>
+          <tr>
+            <th class="sort-disabled check-all " ><%= check_box_tag "checkall" %></th>
+            <th><span></span><%=  "Category" %></th>
+            <th><span></span><%=  "Sender" %></th>
+            <th><span></span><%=  "Message" %></th>
+                      <th><span></span><%= "Created At" %></th>  
+            <th class="sort-disabled"><%= "Status" %></th>
+            <th class="action sort-disabled">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <% if(!@admin_feedbacks.blank?) %>
+          <% @admin_feedbacks.each do |fd| %>
+         
+              <tr id="row-<%= fd.id %>">
+                <td><%= check_box_tag "task_ids[]", fd.id , false , :class =>'check' %></td>
+                <td><%= fd.category.name %></td>
+                <td><%= link_to fd.account.first_name.capitalize , '/admin/accounts/' + fd.account.id.to_s %></td>
+               
+                <td><%= fd.feedback.html_safe %></td>
+
+                <td>
+                  <% if(!fd.created_at.blank?)%>
+                    <%= fd.created_at.strftime("%d %b, %Y") %>
+                  <%else%>N-A<%end%>
+                </td>
+
+
+                <td>
+                  <%= form_for([fd]) do |f| %>
+                    <%= f.select :status,[["Select Status",""], ["Active", 1], ["Inactive", 0]], {:selected => fd.status == true ? 1 : 0}, :class=>'change_status', :data=>{'id' =>fd.id , 'model' => 'Admin::Feedback'}  %>			
+                  <% end %>
+                  
+                </td>
+                <td class="action">
+                  <%= link_to 'show'.html_safe, admin_feedback_path(fd), {:class=>'show-icon', :title=>'Show'} %>
+                  
+                  <%= link_to 'Delete'.html_safe, admin_feedback_path(fd), :data => {:confirm => 'Are you sure you want to delete this record?', :method => 'delete' ,  :title=>'delete' }, :class=>'delete-icon' %>
+               </td>
+                </td>
+
+              </tr>
+            <% end %>
+          <%else%>
+            <tr><td colspan="6" align="center">No records found</td></tr>
+          <%end%>
+
+        </tbody>
+      </table>  
+
+      <%= will_paginate @admin_feedbacks, :renderer => BootstrapPagination::Rails %>
+      <div class="clear"></div></div>
+    <div class="clear"></div>
+  </section>
+<% end %>
+

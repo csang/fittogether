@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    </head>
+    <body>
+        
+        <section style="float:left;width:600px;border:1px solid #ccc;">
+            <div style="float:left;width:93.6%;background:#2f8352;height:44px;border-radius:0px 0px 6px 6px;padding:16px 20px;">
+                <a href="<%= @request.base_url %>" style="float:left;width:192px;text-decoration:none;height:65px;"><img alt="logo-image" src="<%= @request.base_url+'/ft_logo.png' %>" title="FitTogther" /> </a></div>
+          <h1> <%=   @current_user.first_name.capitalize %> review you on FitTogether </h1> 
+          <div style="float:left; padding: 30px; width: 540px">
+                <em style="float:left;width:100%;font-style:normal;">Hello <%=   @name.capitalize %> ,</em>
+                <p style="float:left;line-height:20px;margin-top:30px;">
+                   <%=   @current_user.first_name.capitalize %> wrote:  <%=   @review %> 
+                  <br/> Click&nbsp; <a title="fitTogether" href="<%= @request.base_url %>/feed">here</a> to view 
+                </p>
+                <div style="float:left;width:100%;">
+                    <br />
+                    <div style="float:left;width:100%;">
+                        <span style="float:left;width:100%;line-height:20px;">Regards,</span> <strong style="float:left;width:100%;line-height:20px;">FitTogether Team</strong></div>
+                </div>
+            </div>
+        </section>
+        <p>&nbsp;</p>
+
+    </body>
+</html>

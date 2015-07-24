@@ -1,0 +1,49 @@
+ <%= form_for( Admin::Feedback.new, :remote => true, :html => {id: "feedback_form"}) do |f| %>
+	 <% gspecial = Category.where(:ctype =>'feedback').map{|x| [x.name] + [x.id]} %>
+<div class="pop-row">
+  <label>Category:</label>
+	 <%= select_tag(:category_id, options_for_select(gspecial)) %>
+ </div>
+
+<div class="pop-row">
+	 <%= f.label :feedback, 'Feedback:' %>
+  <%= f.text_area :feedback, class: "boxtextarea form-control" %>
+  
+</div>
+ <div class="modal-footer">
+       <button type="button" id="sendfeedback" class="btn btn-primary" >Send</button>
+      </div>
+
+<% end %> 
+<script type="text/javascript">
+$(document).ready(function(){
+$('#sendfeedback').on('click', function() {
+  
+ if ($('#feedback_form').valid()) {
+var bodytext =$('#admin_feedback_feedback').val();
+var cid =$('#category_id').val();
+
+	$.ajax({
+				type: "POST",
+				url: '<%= send_feedback_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {category_id:cid, feedback:bodytext},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#reportForm').modal('hide')							
+					$('.flash-message').html('<div class="alert alert-success"> Feedback Send Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	     }
+	    });
+           
+	    });
+            </script>

@@ -175,7 +175,11 @@ end
         @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND  (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%")  
     end
 		 respond_to do |format|
-      format.js       
+       if params[:request_page] == 'post'
+         format.js { render :partial => "/challenges/search_friend" }
+       else
+         format.js
+       end
      end
     
 	 end
