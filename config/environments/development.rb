@@ -35,5 +35,18 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   # config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.action_mailer.default_url_options = { host: 'localhost:3000' }
+ # config.action_mailer.default_url_options = { host: 'localhost:3000' }
+   config.action_mailer.default_url_options = { :host => '127.0.0.1:3000' }
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  ActionMailer::Base.smtp_settings = {
+ :address               => "smtp.gmail.com",
+ :domain                => "gmail.com",
+ :authentication        => "plain",
+ #:user_name             => "varunjeet.zap@gmail.com",
+ :user_name             => "fittogether.team@gmail.com",
+ :password              => "zap@1234%"
+}
+
 end

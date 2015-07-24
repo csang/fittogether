@@ -1,0 +1,20 @@
+
+<% title "Edit Location" %>
+<section class="admin_maincontent">
+  <div class="page-header">
+    <div class="col-sm-9 PaddingLeft">
+      <h1 class="NoMargin">Edit Cities</h1>
+    </div>
+    <div class="col-sm-3 PaddingRight">
+      <div class="show_back_right">
+      <%= link_to 'Show', admin_location_path(@admin_location) , :class => 'btn btn-primary' %>
+      <%= link_to 'Back', admin_location_path, :class => 'btn btn-default' %>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="table-responsive left width100">
+    <%= render 'editform' %>
+  </div>
+  <div class="clear"</div>
+</section>

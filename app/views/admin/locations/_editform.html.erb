@@ -1,0 +1,90 @@
+ 
+ <%= form_for @admin_location, :url=>{:action => 'add_city'}, :html => {:id  => "location_form"} do |f| %>
+
+	
+<div class="pop-row">
+  <label>Cities of State :</label>
+ 
+	 <%= @admin_location.name %>
+ </div>
+
+<div class="pop-row">
+
+ <%  abc = City.where(:state_code => @admin_location.state_code )   %>
+        
+ <% abc.each do |xy| %>
+  <div class="control-group row-new" id="iv-<%= xy.id %>">
+         <%= f.text_field 'city_' + xy.id.to_s, class: " form-control" , maxlength: 150, value: xy.name %>
+   <%= link_to 'edit'.html_safe, 'javascript:void(0)', {:class=>'edit-icon save-city', :title=>'Save', :dataid => xy.id } %>
+   <%= link_to 'Delete'.html_safe, 'javascript:void(0)', {:dataid => xy.id,  :class=>'delete-icon'} %>
+  </div>
+       <% end %>
+</div>
+ <div class="modal-footer">
+     
+      </div>
+
+<% end %> 
+<script type="text/javascript">
+$(document).ready(function(){
+$('.delete-icon').on('click', function() {
+var id =$(this).attr('dataid');
+if (confirm('Are you sure you want to delete city?')) {
+	$.ajax({
+				type: "DELETE",
+				url: '<%= delete_city_admin_locations_path  %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:id},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){	
+                  
+                                       $('#iv-'+ id).hide();
+				       adminFlashMsgs('City Deleted Succesfully', 'alert alert-success alert-dismissable');					
+					
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				 adminFlashMsgs('Please try again', 'alert alert-warning alert-dismissable');	
+					console.log(thrownError)
+					
+				}	
+			
+			});
+                        }
+	 
+	    });
+            
+// delete end
+$('.save-city').on('click', function() {
+var id =$(this).attr('dataid');
+var name =$('#state_city_' + id).val();
+if (name == "") {
+ adminFlashMsgs('Please enter name.', 'alert alert-warning alert-dismissable');
+  return false;
+}
+
+	$.ajax({
+				type: "POST",
+				url: '<%= update_city_admin_locations_path  %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:id, name:name},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+				       adminFlashMsgs('City Updated Succesfully', 'alert alert-success alert-dismissable');					
+					
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				 adminFlashMsgs('Please try again', 'alert alert-warning alert-dismissable');	
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	 
+	    });
+           
+	    });
+            </script>

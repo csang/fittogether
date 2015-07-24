@@ -3,6 +3,14 @@ Rails.application.routes.draw do
  
  
  
+  get 'reviews/index'
+  get 'reviews/new' 
+  post 'reviews/creat' 
+
+  namespace :admin do
+    resources :feedbacks
+  end
+
   get 'challenges', to: 'challenges#index'
   #patch 'cupdate', to: 'challenges#update',:as => :challange_update
   match 'challenge/', :to=>'challenges#create',:via => [:post,:get] ,  :as => :challenge
@@ -11,7 +19,7 @@ Rails.application.routes.draw do
   match 'updaterewardpoints/(:cid)/(:account_id)', to: 'challenges#update_reward_points', :via => [:get, :post] , :as => :updaterewardpoints
   get "challenges/show" => "challenges#show_team_challenge" 
   match 'challenges/edit/(:id)', to: 'challenges#edit',:via => [:patch,:get], :as=>:challenges_edit
-  match 'search_user/:search/(:type)/(:uid)', to: 'challenges#search_user', :via => [:post] , :as=>:searchuser
+  match 'search_user/:search/(:type)/(:uid)/(:request_page)', to: 'challenges#search_user', :via => [:post] , :as=>:searchuser
   
   get 'goals', to: 'goals#index'
   match 'goal/', :to=>'goals#create',:via => [:post,:get] ,  :as => :account_goals
@@ -62,6 +70,11 @@ Rails.application.routes.draw do
   
   get 'callback/store'
   get 'callback/failure'
+ 
+  get "/invites/:provider/contact_callback" => "invites#index"
+	get "/contacts/failure" => "invites#failure"
+  match 'send_invitations', to: 'invites#send_invitations', :via => [:post] , :as => :send_nvitations
+
   
   match '/settings/check_user_data/', to: 'settings#check_user_data', :via => [:get,:post] 
   match 'get_gym_address', to: 'settings#get_gym_address', :via => [:get,:post], :as => :get_address 
@@ -82,6 +95,7 @@ Rails.application.routes.draw do
   get 'showalbum/:id', to:'feed#show_album', :as=>:showalbum  
   post 'update_album', to:'feed#update_album', :as=>:update_album  
   get 'un_sync', to:'feed#un_sync', :as=>:un_sync  
+  match 'send_feedback', to: 'feed#send_feedback', :via => [:post] , :as => :send_feedback
   
   
   
@@ -91,6 +105,8 @@ Rails.application.routes.draw do
 
   get 'feed/index'
   get 'feed', to: 'feed#index'
+  get 'tags/:tag', to: 'feed#index', as: "tag"
+
   #post 'update_post', to: 'feed#update_post',:as=>:update_post
   
 
@@ -104,11 +120,12 @@ Rails.application.routes.draw do
   get 'support', to: 'settings#support'
   
   get 'admin' , to: "admin/dashboard#index", :via => :get
-  get ':id' , to: 'profile#index'
+  get ':id' , to: 'profile#index', :as=>:profile  
   get ':id/about', to: 'profile#about'
   get ':id/photos', to: 'profile#photos'
   get ':id/videos', to: 'profile#videos'
   get ':id/appointments', to: 'profile#appointments'
+  get ':id/reviews', to: 'profile#reviews'
   get ':id/friends', to: 'profile#friends'
   get ':id/activities', to: 'profile#activities'
   get ':id/members', to: 'profile#members'
@@ -129,6 +146,8 @@ Rails.application.routes.draw do
   post '/save_user_appointment' => 'appointments#save_user_appointment', :as =>:save_user_appointment
   delete '/delete_user_event/:id' => 'appointments#delete_user_event', :as =>:delete_user_event
   put '/approve_user_event/:id' => 'appointments#approve_user_event', :as =>:approve_user_event
+  
+  resources :ratings, only: :update
  
   resources :friendships do
 	  member do
@@ -213,7 +232,26 @@ Rails.application.routes.draw do
 	get "admins", to: "admin/users#new", :via => :get ,:as => :admin_sign_in
 	
 	namespace :admin do
-		resources :dashboard	 
+		resources :dashboard	
+      resources :feedbacks	 do
+      	collection do
+				match "search" 	, :via => :post
+    end
+    end
+		resources :cms_pages	 do
+      	collection do
+				match "search"	, :via => :get
+    end
+    end
+    	resources :locations	 do
+      	collection do
+				match "search"	, :via => :get
+         post 'add_city', to:'locations#add_city', :as=>:add_city
+         match 'update_city', to:'locations#update_city',:via => [:get ,:post], :as=>:update_city
+         match 'delete_city', to:'locations#delete_city',:via => [:delete], :as=>:delete_city
+    end
+    end
+  
 		resources :accounts do
 			collection do
 				match "search"	, :via => :get

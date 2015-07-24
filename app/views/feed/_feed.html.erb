@@ -9,7 +9,13 @@
       }
     });
   });
-</script>		
+</script>
+<style>
+  .feed .post .data{
+    min-height: 40px;
+  }
+  
+</style>
 <div class="feed" style="opacity: 1;" >
   <% if @posts.present? %>
     <div class="vertical_line"></div>
@@ -49,7 +55,15 @@
               <span><%= image_tag('icons/green_arrow.png') %></span>
             </div>
             <div class="data">
-              <p><%= post.text %></p>
+              <p>  <% post.text.split.select {|w| %>
+       <% if  w[0] == "#" %>
+      <%=raw tag_links(w)%>
+         <% elsif w[0] == "@" %>    
+                <%=raw user_links(w)%>                
+      <% else %>    
+        <%= w %>    
+      <% end %>      
+      <%  } %></p>
             </div>
             <% if post.image.present? %>		
               <div class="data-img">
@@ -90,14 +104,27 @@
                   <% if @account.id == cm.account_id  %>     
                     <a  class="feed-comment-dlt" data-id="<%=  Base64.encode64(cm.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="">DELETE</a>
                   <% end %>
-                  <p> <%= cm.text %> </p>
+                  <p> <% cm.text.split.select {|w| %>
+       <% if  w[0] == "#" %>
+      <%=raw tag_links(w)%>
+       <% elsif w[0] == "@" %>    
+                <%=raw user_links(w)%>      
+      <% else %>    
+        <%= w %>    
+      <% end %>      
+      <%  } %> </p>
                 </div>
               <% end %>
 
             </div>
 
-            <div class="comment_box">
+            <div class="comment_box search-comment">
               <textarea class="comment" data-id="<%= post.id %>" style="resize: none"></textarea>
+                <ul class="arport2" style="display:none;">
+
+
+    </ul>
+               <input type="hidden" name="commentnew" id="commentnew">
             </div>
             <div class="bottom">
               <% link_to('Give Kudos!', '/') %>
@@ -181,7 +208,8 @@
 
   //onchange height
   $(document).ready(function() {
-
+   window.globalVariable = [];
+   window.globalVariableforComment = [];
 
     $(document).on('click', '.post-delete', function() {
       if (confirm("Do you want to delete post")) {
@@ -214,7 +242,20 @@
 
     $(document).on('keydown', '.comment', function(e) {
       if (e.keyCode == 13) {
-        var text = $(this).val();
+       console.log(globalVariableforComment);
+      var textnew = $(this).val(); 
+      var textold = $(this).val();
+      if (globalVariableforComment.length > 0 ) {
+       $.each(globalVariableforComment, function( key, valu ) {
+   
+         textnew  =    textnew.replace(valu.key, valu.value);
+         console.log(textnew);
+       });  
+     
+      }
+         
+     //$('#posttext').val(posttextnew!='' ? posttextnew : postextold) 
+        var text = textnew!='' ? textnew : textold
         if (text == '') {
           return false;
         }
@@ -260,7 +301,21 @@
     };
 
     $("#share_post").click(function(e) {
+     console.log(globalVariable);
+      var posttextnew = $('.posttext').val(); 
+      var postextold = $('.posttext').val();
+      if (globalVariable.length > 0 ) {
+       $.each(globalVariable, function( key, valu ) {
+   
+         posttextnew  =    posttextnew.replace(valu.key, valu.value);
+         console.log(posttextnew);
+       });  
+     
+      }
+         
+     $('#posttext').val(posttextnew!='' ? posttextnew : postextold) 
       e.preventDefault();
+     
       $('#update_post').ajaxSubmit(options);
     });
 
@@ -282,7 +337,7 @@
           success: function(data) {
             $('#scont' + data).fadeOut();
 
-            $('.flash-message').html('<div class="alert alert-success"> Post has been deleted successfully</div>').show();
+            $('.flash-message').html('<div class="alert alert-success"> Comment has been deleted successfully</div>').show();
           },
           error: function(xhr, ajaxOptions, thrownError) {
             $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
@@ -294,7 +349,37 @@
       }
     });
 
+ $(".comment").keyup(function(e) {
+  var that = this
+    if ($(this).val().indexOf("@") != -1) {
+      var ind = $(this).val().indexOf("@");
+      var keywords = $(this).val().substr(ind + 1);
+     
+      if (keywords != '') {
 
+        $.ajax({
+          type: "POST",
+          url: '/search_user/' + keywords + '/ / /' + 'post', //sumbits it to the given url of the form
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+         
+            $(that).siblings('.arport2').show()
+            $(that).siblings('.arport2').html(data)
+
+
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status)
+
+          }
+
+        });
+      }
+    }
+  });
 
   }); // end of document ready
 </script>

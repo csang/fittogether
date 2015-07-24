@@ -19,3 +19,5 @@ Rails.application.config.assets.precompile += %w( admin/jquery.tablesorter.js )
 Rails.application.config.assets.precompile += %w( admin/dashboard.js )
 Rails.application.config.assets.precompile += %w( auth0-4.2.min.js )
 Rails.application.config.assets.precompile += %w( ckeditor/* )
+
+

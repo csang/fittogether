@@ -1,0 +1,20 @@
+  <div class="about">
+<ul class="review-wpr">
+  
+      <%  @reviews.each do |review| %>
+  <li>
+    <div class="imageRound">
+      <% avt = useravatar(review.account) %>
+      <%= image_tag(avt) %>
+    </div>
+    <div class="user-name">
+      <p><%=  review.review %></p>
+    <span class="chat-time"><time><%=   review.created_at.strftime("%d %b %Y at %I:%M%p") %></time>
+    </span><h2> <%= link_to("<h3>#{review.account.first_name} </h3>".html_safe, "/#{review.account.user_name}") %>
+ 
+    </div> </li>
+      <%  end %>
+  
+      
+    </ul>
+  </div>

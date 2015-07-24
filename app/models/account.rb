@@ -26,6 +26,15 @@ class Account < ActiveRecord::Base
   has_one :fitbit , :dependent => :delete 
   has_many :group, :dependent =>:delete_all
   has_many :group_member
+ 
+  has_many :raty, :class_name => "Rating", :foreign_key => "trainer_id"
+  has_many :rator, :class_name => "Rating", :foreign_key => "account_id"
+  has_many :review, :dependent => :delete_all
+  
+  def average_rating
+        raty.sum(:score) / raty.count
+  end
+
   def friends
     active_friends | passive_friends
   end

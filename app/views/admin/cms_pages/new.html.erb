@@ -1,0 +1,20 @@
+
+<% title "New Cms" %>
+<section class="admin_maincontent">
+  <div class="page-header">
+    <div class="col-sm-9 PaddingLeft">
+      <h1 class="NoMargin">New Page</h1>
+    </div>
+    <div class="col-sm-3 PaddingRight">
+      <div class="show_back_right">
+     
+      <%= link_to 'Back', admin_cms_pages_path ,:class => 'btn btn-default' %>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="table-responsive left width100">
+    <%= render 'form' %>
+  </div>
+  <div class="clear"</div>
+</section>

@@ -47,5 +47,7 @@ gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
 gem 'fitgem'
 gem 'backbone-on-rails'
 gem 'ckeditor'
+# gem to import contact form gmail , yahoo and hotmail
 
+gem "omnicontacts"
 

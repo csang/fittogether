@@ -21,7 +21,13 @@
       <% if @account.id == cm.account_id || @account.id == @group.account_id %>
         <a data-gid="<%=  Base64.encode64(@groupadminid.to_s) %>" class="comment-delete" data-id="<%=  Base64.encode64(cm.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="">DELETE</a>
       <% end %>
-      <p> <%= cm.text %> </p>
+      <p> <% cm.text.split.select {|w| %>
+       <% if  w[0] == "#" %>
+      <%=raw tag_links(w)%>
+      <% else %>    
+        <%= w %>    
+      <% end %>      
+      <%  } %> </p>
     </div>
   </div>
 <% end %>

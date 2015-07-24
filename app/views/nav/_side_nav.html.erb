@@ -10,7 +10,7 @@
                            
                   
                   
-                  <a href="/feed">ALL POSTS</a></li>
+                  <%= link_to 'ALL POSTS', feed_path %>
 		<li> <%= link_to 'CHALLENGES', challenge_path %></li>
 		<li> <%= link_to 'GOAL', account_goals_path %></li>
                     <% if !@profileuser.present? %>
@@ -23,11 +23,11 @@
 		<% if @account.linked? or session[:oauth_secret].present? %>
                 <% session.delete(:oauth_secret) %>
 			<a href="<%= api_activity_path %> ">FITBIT</a>
-			<a style="display:inline-block;" href="<%= un_sync_path %>" ><%= image_tag('global/unsynchs_with_fitbit.png'); %></a>
+			<a class="sync-info" style="display:inline-block;" href="<%= un_sync_path %>" ><%= image_tag('global/unsynchs_with_fitbit.png'); %></a>
 		<% else %>
 		FITBIT
 	         
-		 <a style="display:inline-block;" href="#login-popup" target="_blank" title="fitibit" contype="fitbit" class='login-popup fitbit' ><%= image_tag('global/synchs_with_fitbit.png'); %></a>
+		 <a style="display:inline-block;" href="#login-popup" target="_blank" title="fitibit" contype="fitbit" class='login-popup fitbit sync-info' ><%= image_tag('global/synchs_with_fitbit.png'); %></a>
 		<% end  %>
 		<% end  %>
 	
@@ -35,7 +35,15 @@
                
 		<li><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#groupForm"> CREATE GROUP</a></li>
 		<li><%= link_to 'FITSPOTS', fitspots_index_path %></li>
+		<li><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#reportForm"> REPORT A PROBLEM</a></li>
 		
+                <li><%= link_to 'INVITE', '/invites/index' %></li>
+                <% if false %> 
+                <% if @profileuser.present? && @profileuser.user_type == 3 && @profileuser.id != @account.id%>
+		<li><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#reviewForm"> REVIEW</a></li>
+                <% end %>
+                <% end %>
+               
 	</ul>
 </div>
 <div class="advertisement_switch">
@@ -58,7 +66,7 @@
 	</div>
 </div>
 
-<!--- -->
+<!--- Group -->
 <div class="modal fade" id="groupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="z-index: 5456666666000;">
     <div class="modal-content" >
@@ -75,7 +83,46 @@
   </div>
 </div>
 </div>
-<script>
+
+<!---Feedback -->
+<div class="modal fade" id="reportForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="z-index: 5456666666000;">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Feedback Form</h4>
+      </div>
+      <div class="modal-body">
+       
+        
+ <%= render(:partial => 'admin/feedbacks/form') %>
+    
+    </div>
+  </div>
+</div>
+</div>
+
+<!--- -->
+  <% if @profileuser.present? && @profileuser.user_type == 3 %>
+<div class="modal fade" id="reviewForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="z-index: 5456666666000;">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Review</h4>
+      </div>
+      <div class="modal-body">
+       
+        
+ <%= render(:partial => 'reviews/newreview') %>
+    
+    </div>
+  </div>
+</div>
+</div>
+<% end  %>
+<script type="text/javascript">
+
   // login with facebook
   $('.login-popup').click(function(e) {
     var connectionType = $(this).attr('contype');
@@ -89,5 +136,7 @@
       }
     });
   });
+  
  
   </script>
+ 

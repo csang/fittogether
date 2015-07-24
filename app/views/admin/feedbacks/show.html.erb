@@ -1,0 +1,31 @@
+<% title "Show Feedback" %>
+<section class="admin_maincontent">
+  <div class="page-header">
+    <div class="col-sm-9 PaddingLeft">
+      <h1 class="NoMargin">Show User</h1>
+    </div>
+    <div class="col-sm-3 PaddingRight">
+      <div class="show_back_right">
+      
+        <%= link_to 'Back', '/admin/feedbacks' , :class => 'btn btn-default' %>
+      </div></div>
+    <div class="clear"></div>
+  </div>
+  <p id="notice"><%= notice %></p>
+  <div class="show_content">
+    <div class="show_content_row">
+      <label>Category</label>
+      <p> <%= @admin_feedback.category.name %></p>
+    </div>
+    <div class="show_content_row">
+      <label>Feedback</label>
+      <p> <%= @admin_feedback.feedback.html_safe %></p>
+    </div>
+     <div class="show_content_row">
+      <label>Sender</label>
+      <p> <%= link_to @admin_feedback.account.first_name.capitalize , '/admin/accounts/' + @admin_feedback.account.id.to_s %></p>
+    </div>
+       
+   
+  <div class="clear"</div>
+</section>

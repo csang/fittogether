@@ -36,6 +36,23 @@
     <%= link_to "Gym Management",  gym_management_admin_accounts_path, :class => className %>
     </li>
     
+    <li>
+  <%= ((params[:controller]=='admin/cms_pages') || (params[:controller]=='admin/cms_pages' && params[:action]=='index')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+    <% className = ((params[:controller]=='admin/cms_pages') || (params[:controller]=='cms_pages' && params[:action]=='index')) ? 'list-group-item active' : '' %>
+    <%= link_to "Content Management System",  admin_cms_pages_path , :class => className %>
+    </li>
+    <li>
+  <%= ((params[:controller]=='admin/feedback') || (params[:controller]=='admin/feedback' && params[:action]=='index')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+    <% className = ((params[:controller]=='admin/feedback') || (params[:controller]=='cms_pages' && params[:action]=='index')) ? 'list-group-item active' : '' %>
+    <%= link_to "Feedbacks",  admin_feedbacks_path , :class => className %>
+    </li>
+    
+        <li>
+  <%= ((params[:controller]=='admin/locations') || (params[:controller]=='admin/locations' && params[:action]=='index')) ? '<li class="selected">'.html_safe : '<li>'.html_safe %>
+    <% className = ((params[:controller]=='admin/locations') || (params[:controller]=='locations' && params[:action]=='index')) ? 'list-group-item active' : '' %>
+    <%= link_to "Locations",  admin_locations_path , :class => className %>
+    </li>
+    
   </ul>
 </div>
 <style>

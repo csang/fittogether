@@ -58,7 +58,7 @@ Feed = {
 		$('#left_side #account_info #feed_side_nav li').removeClass('selected');
 		$('#left_side #account_info #feed_side_nav li:contains("'+ uppercased_category +'")').addClass('selected');
 
-		$('.feed .post').remove()
+		//$('.feed .post').remove()
 
 		if(category == 'all posts'){
 			$('.feed').append(all_posts);
@@ -132,7 +132,7 @@ Feed = {
 	},
 
 	check_categories_height: function(e){
-		$('#left_side #account_info #feed_side_nav').height(window.innerHeight - 526);
+		$('#left_side #account_info #feed_side_nav').height(window.innerHeight - 500);
 	},
 
 	ad_switch: function(e){
