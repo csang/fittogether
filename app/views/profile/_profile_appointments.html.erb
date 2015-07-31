@@ -110,6 +110,7 @@
 <script>
   $(function() {
    var accountid = '<%= @account.id %>';
+ 
     $('#calendar').fullCalendar({
       header: {
         left: 'prev,next today',
@@ -161,7 +162,9 @@
      
        if (accountid == calEvent.trainer_id && accountid !=calEvent.account_id && calEvent.status==1) {
           $('#ApproveUserEvent').show();
-       }  
+       } else {
+          $('#ApproveUserEvent').hide();
+       } 
        }}
       }        
     });
@@ -243,6 +246,10 @@
                 $('#calendar').fullCalendar('removeEvents', DeleteUserEventId);
                   $('#calendar').fullCalendar('refetchEvents');
                 $('#createUserEventModal').modal('toggle');
+                  $('.flash-message').html('<div class="alert alert-success"> Event removed succesfully.</div>').show();
+              //  setTimeout(function(){location.reload()}, 1000);
+               
+            
             }
         });
     }
@@ -256,9 +263,12 @@
             dataType: "json",
             success: function (resp) {
                 //$('#calendar').fullCalendar('removeEvents', DeleteUserEventId);
+                $('#createUserEventModal').modal('hide');
+                $('.flash-message').html('<div class="alert alert-success"> Appointment approved succesfully.</div>').show();
+            
                  $('#calendar').fullCalendar('refetchEvents');
-                $('#EventEditFormSection').hide();
-            }
+               //  setTimeout(function(){location.reload()}, 1000);
+                }
         });
     }
 

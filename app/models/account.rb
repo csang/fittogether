@@ -30,6 +30,7 @@ class Account < ActiveRecord::Base
   has_many :raty, :class_name => "Rating", :foreign_key => "trainer_id"
   has_many :rator, :class_name => "Rating", :foreign_key => "account_id"
   has_many :review, :dependent => :delete_all
+  has_many :appointment, :dependent => :delete_all
   
   def average_rating
         raty.sum(:score) / raty.count

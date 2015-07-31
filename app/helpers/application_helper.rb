@@ -14,7 +14,7 @@ module ApplicationHelper
   end
 
 
-def error_messages(curr_resource)
+  def error_messages(curr_resource)
 		return "" if curr_resource.errors.empty?
 		messages = curr_resource.errors.full_messages.map { |msg| content_tag(:li, msg) }.join
 		sentence = I18n.t("errors.messages.not_saved",
@@ -47,7 +47,7 @@ def error_messages(curr_resource)
     end
   end
   
-   def flash_class(level)
+  def flash_class(level)
     case level
     when :notice then "alert alert-success"
     when :success then "alert alert-success"
@@ -56,122 +56,124 @@ def error_messages(curr_resource)
     end
   end
   
-   def get_activity_name(id)
-     activityName = Activity.where(:id => id).first
-     return (activityName.present?) ?  activityName['name'] : false ; 
-   end
+  def get_activity_name(id)
+    activityName = Activity.where(:id => id).first
+    return (activityName.present?) ?  activityName['name'] : false ; 
+  end
    
-   def get_gym_name(id)
-     gymName = AccountGym.where(:id => id).first
-     return (gymName.present?) ?  gymName['name'] : 'N/A' ; 
-   end
+  def get_gym_name(id)
+    gymName = AccountGym.where(:id => id).first
+    return (gymName.present?) ?  gymName['name'] : 'N/A' ; 
+  end
    
-   def get_city_name(id)
-     cityName = City.where(:id => id).first
-     return (cityName.present?) ?  cityName['name'] : false ; 
-   end
+  def get_city_name(id)
+    cityName = City.where(:id => id).first
+    return (cityName.present?) ?  cityName['name'] : false ; 
+  end
    
-   def get_state_name(code)
-     stateName = State.where(:state_code => code).first
-     return (stateName.present?) ?  stateName['name'] : false ; 
-   end
+  def get_state_name(code)
+    stateName = State.where(:state_code => code).first
+    return (stateName.present?) ?  stateName['name'] : false ; 
+  end
    
-   def get_goal_name(id)
-     goalName = Goal.where(:id => id).first
-     return (goalName.present?) ?  goalName['name'] : false ; 
-   end
-   def get_relationship_name(id)
-     relName = Relationship.where(:id => id).first
-     return (relName.present?) ?  relName['name'] : false ; 
-   end
+  def get_goal_name(id)
+    goalName = Goal.where(:id => id).first
+    return (goalName.present?) ?  goalName['name'] : false ; 
+  end
+  def get_relationship_name(id)
+    relName = Relationship.where(:id => id).first
+    return (relName.present?) ?  relName['name'] : false ; 
+  end
    
-   def get_field_value(model,column, value)
-     result = model.constantize.where(:id => value).first
-     return (result.present?) ?  result[column] : false ;
-   end
+  def get_field_value(model,column, value)
+    result = model.constantize.where(:id => value).first
+    return (result.present?) ?  result[column] : false ;
+  end
    
-    def get_specialty_name(id)
-     speName = Specialty.where(:id => id).first
-     return (speName.present?) ?  speName['name'] : false ; 
-   end
+  def get_specialty_name(id)
+    speName = Specialty.where(:id => id).first
+    return (speName.present?) ?  speName['name'] : false ; 
+  end
    
-    def get_amenity_name(id)
-     ameName = Amenity.where(:id => id).first
-     return (ameName.present?) ?  ameName['name'] : false ; 
-   end
+  def get_amenity_name(id)
+    ameName = Amenity.where(:id => id).first
+    return (ameName.present?) ?  ameName['name'] : false ; 
+  end
    
-    def get_user_name(id)
-     gymName = AccountGym.where(:id => id).first
+  def get_user_name(id)
+    gymName = AccountGym.where(:id => id).first
   
-     if gymName.present?
-       uName = Account.select('user_name').where(:id => gymName['account_id']).first
-      end 
-      return (uName.present?) ?  uName['user_name'] : 'N/A' ; 
-   end
+    if gymName.present?
+      uName = Account.select('user_name').where(:id => gymName['account_id']).first
+    end 
+    return (uName.present?) ?  uName['user_name'] : 'N/A' ; 
+  end
    
-   def get_user_detail(id)
+  def get_user_detail(id)
    
-     userdetails =  Account.where(:id => id).first
+    userdetails =  Account.where(:id => id).first
       
-      return userdetails;
+    return userdetails;
 	
-   end 
+  end 
    
-   def check_if_friend(postuserid, loginuserid)
+  def check_if_friend(postuserid, loginuserid)
     
     @friend = Friendship.where(:account_id => postuserid , :friend_id =>loginuserid, :approved => true).first 
-	if !@friend.present?
-		@friend = Friendship.where(:account_id => loginuserid  , :friend_id =>loginuserid, :approved => true).first 
-	end	
-     return (@friend.present?) ?  true : false ; 
+    if !@friend.present?
+      @friend = Friendship.where(:account_id => loginuserid  , :friend_id =>loginuserid, :approved => true).first 
+    end	
+    return (@friend.present?) ?  true : false ; 
    
-   end
+  end
    
-   def useravatar(profileuser)
-     #abort(profileuser.inspect)
+  def useravatar(profileuser)
+    #abort(profileuser.inspect)
     @privacy = nil 
     @profileuser = profileuser 
    
-	if @profileuser.account_privacy.present? 
+    if @profileuser.account_privacy.present? 
 	 
       if @profileuser.account_privacy.account_id!=@account.id  
-		 @privacy = @profileuser.account_privacy 
+        @privacy = @profileuser.account_privacy 
       end 
-   end 
+    end 
 		
-	if !@privacy.present? 
+    if !@privacy.present? 
 			if @profileuser.avatar.present? 
-					@img = @profileuser.avatar(:thumb)
+        @img = @profileuser.avatar(:thumb)
       elsif   @profileuser.pic.present?  
-          @img = 'https://' + @profileuser.pic
+        @img = 'https://' + @profileuser.pic
 			else  
-			     @img = 'default.png'
+        @img = 'default.png'
 		  end 
-	else 						  
-    if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  
-      if @profileuser.avatar.present? 
-       @img = @profileuser.avatar(:thumb)
-       elsif   @profileuser.pic.present?  
+    else 						  
+      if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  
+        if @profileuser.avatar.present? 
+          @img = @profileuser.avatar(:thumb)
+        elsif   @profileuser.pic.present?  
           @img = 'https://' + @profileuser.pic
+        else 
+          @img = 'default.png'
+        end 
       else 
-      @img = 'default.png'
-      end 
-	 else 
-	 @img = 'default.png'
-	 end 				  
- end 					 
-   return @img
- end
+        @img = 'default.png'
+      end 				  
+    end 					 
+    return @img
+  end
    
-   def messagecount
-	@conversation =	Conversation.involving(@account.id).order("id DESC")
-	conv = []
-	@conversation.each do |abc|
-    conv.push(abc.id)
+  def messagecount
+    @conversation =	Conversation.involving(@account.id).order("id DESC")
+    conv = []
+    @conversation.each do |abc|
+      conv.push(abc.id)
     end
     
-	cont = Message.where("account_id != ? && is_read = ? && conversation_id IN (?)" , @account.id, 0, conv).count
-	return cont > 0 ? cont : ''
-   end
+    cont = Message.where("account_id != ? && is_read = ? && conversation_id IN (?)" , @account.id, 0, conv).count
+    return cont > 0 ? cont : ''
+  end
+  
+
      
 end

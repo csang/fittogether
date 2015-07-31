@@ -118,6 +118,7 @@ Rails.application.routes.draw do
   get 'social_settings', to: 'settings#social_settings'
   get 'fitbit', to: 'settings#fitbit'
   get 'support', to: 'settings#support'
+  get 'email_notification_settings', to: 'settings#email_notification_settings'
   
   get 'admin' , to: "admin/dashboard#index", :via => :get
   get ':id' , to: 'profile#index', :as=>:profile  
@@ -140,6 +141,7 @@ Rails.application.routes.draw do
   post 'update_social_settings', to:'settings#update_social_settings', :as=>:update_social_settings
   post 'update_trainers_details', to:'settings#update_trainers_details', :as=>:update_trainers_details  
   post 'update_about_gym', to:'settings#update_about_gym', :as=>:update_about_gym  
+  post 'update_email_settings', to:'settings#update_email_settings', :as=>:update_email_settings
   
  
   get '/get_user_appointment/:id/(:pid)' => 'appointments#get_user_appointment', :as =>:get_user_appointment

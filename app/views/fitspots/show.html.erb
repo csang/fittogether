@@ -69,8 +69,10 @@
 
                 <% img = useravatar(fmc.account) %>
                 <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.account.user_name}") %></div>
+                
                   <button data-id="<%= Base64.encode64(fmc.account.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
-                  <%= link_to(fmc.account.first_name.capitalize,  "/#{fmc.account.user_name}", {:class => 'bro-name'}) %>
+              
+                <%= link_to(fmc.account.first_name.capitalize,  "/#{fmc.account.user_name}", {:class => 'bro-name'}) %>
                 </li>
               <% end %> 
             <% end %> 
@@ -84,8 +86,10 @@
 
                   <% img = useravatar(fmc) %>
                   <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.user_name}") %></div>
+                      
                     <button data-id="<%= Base64.encode64(fmc.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
-                    <%= link_to(fmc.first_name.capitalize,  "/#{fmc.user_name}" , {:class => 'bro-name'}) %>
+                
+                  <%= link_to(fmc.first_name.capitalize,  "/#{fmc.user_name}" , {:class => 'bro-name'}) %>
                   </li>
 
                 <% end %> 
@@ -100,8 +104,10 @@
 
                   <% img = useravatar(fmc) %>
                   <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.user_name}") %></div>
+                
                     <button data-id="<%= Base64.encode64(fmc.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
-                    <%= link_to(fmc.first_name.capitalize,  "/#{fmc.user_name}" , {:class => 'bro-name'}) %>
+             
+                  <%= link_to(fmc.first_name.capitalize,  "/#{fmc.user_name}" , {:class => 'bro-name'}) %>
                   </li>
 
                 <% end %> 

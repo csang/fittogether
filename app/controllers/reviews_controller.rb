@@ -13,7 +13,10 @@ class ReviewsController < ApplicationController
       if review.save
          flash[:notice] = 'Review saved succesfully'
           @user = Account.find(id)
+        met = email_settings(id, 'new_review')
+        if met.present? || met == 123 
          UserMailer.new_review(@user.email,request, @account, @user.first_name, params[:review][:review]).deliver
+        end
          u_name = Account.select(:user_name).where(:id => id).first
       
 				redirect_to  :controller => 'profile', :action => "reviews", :id => u_name.user_name
