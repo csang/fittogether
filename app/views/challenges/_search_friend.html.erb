@@ -3,7 +3,7 @@ function filldata(that){
  var abc ='';
  if ($(that).parent().attr('class')=='arport') {
     var abc = $('.posttext').val().replace(/(@\S+)/gi,'');    
-    $('.posttext').val( abc + $(that).attr('data-name')); 
+    $('.posttext').val( abc +' '+ $(that).attr('data-name')); 
       globalVariable.push({
           key:   $(that).attr('data-name'),
           value: $(that).attr('data-username')

@@ -8,12 +8,12 @@
         <section style="float:left;width:600px;border:1px solid #ccc;">
             <div style="float:left;width:100%;height:44px;padding:0px;text-align: center;">
                 <a href="<%= @request.base_url %>" style="width:150px;text-decoration:none;height:150px;display: inline-block;"><img alt="logo-image" src="<%= @request.base_url+'/ft_logo.png' %>" title="FitTogther" /> </a></div>
-          <h1 style="text-align: center;padding: 15px 0 0 0 ;"> <%=   @current_user.first_name.capitalize %> rated you on FitTogether </h1> 
-          <div style="float:left; padding: 30px 30px 0 100px; width: 540px; font-size:16px;">
+          <h1 style="text-align: center;padding: 15px 0 0 0 ;"><%=   @current_user.first_name.capitalize %> comment on your post </h1> 
+          <div style="float:left;  padding: 30px 30px 0 100px; width: 540px; font-size:16px;">
                 <em style="float:left;width:100%;font-style:normal;font-size:16px;">Hello <%=   @name.capitalize %> ,</em>
                 <p style="float:left;line-height:20px;margin-top:30px;font-size:16px;">
-                   <%=   @current_user.first_name.capitalize %> rated you on fittogether. Your rating score is : <%=   @score %> 
-                  <br/> Click&nbsp; <a title="fitTogether" href="<%= @request.base_url %>/feed">here</a> to view 
+                   <%=   @current_user.first_name.capitalize %> wrote : <%=   @msg %> 
+                  <br/> Click&nbsp; <a title="fitTogether" href="<%= @request.base_url %>/feed">here</a> to view the comment
                 </p>
                 <div style="float:left;width:100%;">
                     <br />

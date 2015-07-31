@@ -5,7 +5,8 @@
 
 <div class="pop-row">
  <%= f.label :text, 'Review' %>
-	<%= f.text_area :review, class: "boxtextarea form-control", maxlength: 50 %>
+	<%= f.text_area :review, class: "boxtextarea form-control", maxlength: 500 %>
+  <label> <span class="small">(maximum 500 character )</span></label>
   </div>
 
 <%=  f.hidden_field :gym_id,  :value => Base64.encode64(@profileuser.id.to_s) %>

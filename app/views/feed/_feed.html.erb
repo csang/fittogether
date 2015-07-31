@@ -14,12 +14,13 @@
   .feed .post .data{
     min-height: 40px;
   }
+ .vertical-hide{display:none!important;} 
   
 </style>
 <div class="feed" style="opacity: 1;" >
-  <% if @posts.present? %>
+
     <div class="vertical_line"></div>
-  <% end %>	
+  	
 
 
   <!--<div class="day">
@@ -36,7 +37,8 @@
         <% if (post.share_with == 'Friends' && check_if_friend(post.account.id,@account.id) || (post.share_with == 'Friends' && @account.id == post.account.id))  || post.share_with == 'Public' %>
 
 
-          <%	@name = post.account.first_name + ' ' + post.account.last_name
+          <% last = post.account.last_name.present? ? post.account.last_name : ''; 	
+          @name = post.account.first_name + ' ' + last
           @time = post.created_at %>
           <% img =  useravatar(post.account) %>
           <div class="post" id="<%= post.id %>">
@@ -134,12 +136,7 @@
         <% end %>
       <% end %>
     <% end %>
-    <!-- <div class="post ad">
-            <div class="ad">
-<%#= image_tag('adds/add_5.png') %>
-                    <p>ADVERTISEMENT</p>
-            </div>
-    </div> -->
+  
 
 
   </div>
@@ -147,6 +144,12 @@
 
 <div id="feed_loader">
 </div>
+  <!-- <div class="post ad">
+            <div class="ad">
+<%#= image_tag('adds/add_5.png') %>
+                    <p>ADVERTISEMENT</p>
+            </div>
+    </div> -->
 <script>
 //function to check file size before uploading.
   function beforeSubmit() {
@@ -241,6 +244,7 @@
 
 
     $(document).on('keydown', '.comment', function(e) {
+    
       if (e.keyCode == 13) {
        console.log(globalVariableforComment);
       var textnew = $(this).val(); 
@@ -349,7 +353,7 @@
       }
     });
 
- $(".comment").keyup(function(e) {
+ $("#content").on('keyup', '.comment',function(e) {
   var that = this
     if ($(this).val().indexOf("@") != -1) {
       var ind = $(this).val().indexOf("@");
@@ -359,7 +363,7 @@
 
         $.ajax({
           type: "POST",
-          url: '/search_user/' + keywords + '/ / /' + 'post', //sumbits it to the given url of the form
+          url: '/search_user/' + keywords + '/type/ /' + 'post', //sumbits it to the given url of the form
           dataType: "HTML",
           beforeSend: function(xhr) {
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
@@ -378,8 +382,14 @@
 
         });
       }
+    }else {
+    $(that).siblings('.arport2').hide()
     }
   });
+  
+  if( !$.trim( $('#feeds').html() ).length )  {
+  $('.vertical_line').addClass('vertical-hide');
+  }
 
   }); // end of document ready
 </script>

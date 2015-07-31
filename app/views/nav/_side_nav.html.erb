@@ -38,11 +38,11 @@
 		<li><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#reportForm"> REPORT A PROBLEM</a></li>
 		
                 <li><%= link_to 'INVITE', '/invites/index' %></li>
-                <% if false %> 
+           
                 <% if @profileuser.present? && @profileuser.user_type == 3 && @profileuser.id != @account.id%>
 		<li><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#reviewForm"> REVIEW</a></li>
                 <% end %>
-                <% end %>
+               
                
 	</ul>
 </div>

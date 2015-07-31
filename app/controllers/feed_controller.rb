@@ -2,7 +2,7 @@ class FeedController < ApplicationController
 
   before_action :get_account  # will return @account
   respond_to :html, :js, :json
-   include FeedHelper
+  include FeedHelper
  
 
   def index
@@ -41,17 +41,20 @@ class FeedController < ApplicationController
       respond_to do |format|
         if @posts.save!
           params[:posttextnew].split.select {|w|         
-           if  w[0] == "@" 
-             wrd = full_name(w)
-             id = Base64.decode64(w)
-             params[:posttextnew][w] = wrd
-             if is_number?(id)
-              @user = Account.find(id)
-              UserMailer.mentioned_in(@user.email,request, @account,'Post', params[:posttextnew], @user.first_name ).deliver
-             end
-           end 
+            if  w[0] == "@" 
+              wrd = full_name(w)
+              id = Base64.decode64(w)
+              params[:posttextnew][w] = wrd
+              if is_number?(id)
+                @user = Account.find(id)
+                 met = email_settings(id, 'mentioned_in')
+                  if met.present? || met == 123 
+                UserMailer.mentioned_in(@user.email,request, @account,'Post', params[:posttextnew], @user.first_name ).deliver
+                  end
+                end
+            end 
           }
-        @post = Post.find(@posts.id)
+          @post = Post.find(@posts.id)
           format.js
         else
 		   
@@ -69,26 +72,33 @@ class FeedController < ApplicationController
  
     if request.xhr?    
    
-      @comments =  Comment.create(:account_id=>@account.id,:text=>params[:text],:post_id=>params[:post],:status=>1)	
-       
+      @comments =  Comment.create(:account_id=>@account.id,:text=>params[:text],:post_id=>params[:post],:status=>1)
       if @comments.save!
-        respond_to do |format|
+        post = Post.find(params[:post])
+        set = email_settings(post.account.id, 'comment_on_post')
+        if set.present? || set == 123 
+        UserMailer.comment_on_post(post.account.email,request, @account, params[:text] ,post.account.first_name ).deliver
+        end
+          respond_to do |format|
           if params[:gid].present? 
             @groupadminid = params[:gid]
             format.js {  render 'groups/create_group_comment' }
           else
-           params[:text].split.select {|w|         
-           if  w[0] == "@" 
-             wrd = full_name(w)
-             id = Base64.decode64(w)
-             params[:text][w] = wrd
-             if is_number?(id)
-              @user = Account.find(id)
-              UserMailer.mentioned_in(@user.email,request, @account,'Comment', params[:text] ,@user.first_name ).deliver
-             end
-           end 
-          }
-           @comment =  Comment.find(@comments.id)
+            params[:text].split.select {|w|         
+              if  w[0] == "@" 
+                wrd = full_name(w)
+                id = Base64.decode64(w)
+                params[:text][w] = wrd
+                if is_number?(id)
+                  @user = Account.find(id)
+                  met = email_settings(id, 'mentioned_in')
+                  if met.present? || met == 123 
+                  UserMailer.mentioned_in(@user.email,request, @account,'Comment', params[:text] ,@user.first_name ).deliver
+                  end
+                  end
+              end 
+            }
+            @comment =  Comment.find(@comments.id)
             format.js {  render 'create_comment' }
           end
         end
@@ -185,7 +195,7 @@ class FeedController < ApplicationController
  
     if request.xhr?    
       id = Base64.decode64(params[:postid])
-     if params[:gadminid].present?
+      if params[:gadminid].present?
         groupadminid = Base64.decode64(params[:gadminid])
         
         if  groupadminid.to_i == @account.id.to_i
@@ -218,13 +228,13 @@ class FeedController < ApplicationController
         
         if  groupadminid.to_i == @account.id.to_i
           
-        @cmt = Comment.where(:id=>id).first
+          @cmt = Comment.where(:id=>id).first
          
         else
           @cmt = Comment.where(:id=>id, :account_id => @account.id).first
         end
       else     
-      @cmt = Comment.where(:id=>id, :account_id => @account.id).first
+        @cmt = Comment.where(:id=>id, :account_id => @account.id).first
       end
       if @cmt.destroy 
         render :json => id  and return      
@@ -273,14 +283,14 @@ class FeedController < ApplicationController
   end  
   
   
-   def send_feedback
-   if request.xhr?  
-		@feedback = Admin::Feedback.create(feedback_params.merge(account_id: @account.id))	
-		if @feedback.save!  
-         	render :json => 1  and return     
-		else
+  def send_feedback
+    if request.xhr?  
+      @feedback = Admin::Feedback.create(feedback_params.merge(account_id: @account.id))	
+      if @feedback.save!  
+        render :json => 1  and return     
+      else
 		    render :json => 0  and return   
-		end 	
+      end 	
 		 
 		
 		end
@@ -288,10 +298,10 @@ class FeedController < ApplicationController
   end
   
    
-   private
-    def feedback_params
-      params.permit(:category_id, :feedback)
-    end
+  private
+  def feedback_params
+    params.permit(:category_id, :feedback)
+  end
     
     
 end # end of class

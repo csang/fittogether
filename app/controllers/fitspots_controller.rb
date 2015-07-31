@@ -122,6 +122,10 @@ end
      aid = Base64.decode64(params[:account_id])   
      
        @member = FitspotMember.create(:fitspot_id=> fid,:account_id =>aid)		
+       met = email_settings(aid, 'group_invitation')
+           if met.present? || met == 123 
+            UserMailer.fitspot_invitation(@member.account.email,request, @account, @member).deliver
+           end
             if @member.save
               render :json => 1  and return     
             else

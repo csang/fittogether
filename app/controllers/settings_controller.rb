@@ -2,6 +2,7 @@ class SettingsController < ApplicationController
     
 	before_action :get_account
 	helper_method :isprivate
+	helper_method :is_email, :is_visible
 	
   def index    
     @page = 'settings_basic'
@@ -66,6 +67,13 @@ class SettingsController < ApplicationController
 
 	def support
 		@page = 'settings_support'
+		render 'index'
+	end
+  
+  def email_notification_settings
+     @email_settings = EmailSetting.all()
+  
+		@page = 'settings_email'
 		render 'index'
 	end
 	
@@ -251,6 +259,56 @@ class SettingsController < ApplicationController
     end
               
     
+  end
+  
+    def is_email(slug)
+    pre = AccountEmailSetting.where(:account_id=>@account.id)
+    if !pre.present?
+     return 123 
+    else
+		ip = AccountEmailSetting.where(:account_id=>@account.id).select(slug).first
+		if ip.present? 
+		  return ip[slug]
+		  else 
+		  return false
+		  end	
+	end	  
+      
+  end
+  
+    def is_visible(slug)
+      
+      if slug == 'new_rating' && @account.user_type!=2
+        return 'invisible'
+      elsif slug == 'new_appointment_request' && @account.user_type!=2
+        return 'invisible'  
+       elsif slug == 'new_review' && @account.user_type!=3
+        return 'invisible'    
+      end
+      
+      end
+    
+  
+    
+  def update_email_settings
+	
+    @exist = AccountEmailSetting.where(:account_id=>@account.id).first
+    if @exist.present?
+      @ap = AccountEmailSetting.find(@exist.id)	
+      @ap.update_attributes(email_setting_param)	
+    else
+      AccountEmailSetting.create(email_setting_param.merge(:account_id=>@account.id))	
+    end
+    flash[:notice] = "Email settings has been updated successfully."
+    redirect_to request.env['HTTP_REFERER'] and return
+  end
+  
+  
+  private
+  
+  def email_setting_param
+    
+     params.permit(:new_rating, :new_appointment_request, :new_review, :appointment_approve, :group_invitation, :mentioned_in,:comment_on_post)
   end
 
 end

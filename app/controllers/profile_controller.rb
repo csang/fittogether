@@ -178,7 +178,7 @@ class ProfileController < ApplicationController
   
   def reviews
 	   
-    @reviews = Review.where(:gym_id => @profileuser.id)    
+    @reviews = Review.where(:gym_id => @profileuser.id).order("id DESC")	    
 		@profile = 'profile_reviews'
 		render 'index'
 	end

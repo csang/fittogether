@@ -640,3 +640,14 @@ Category.create([
 
 ]);
 
+EmailSetting.create([
+{ name: 'New Rating',slug: 'new_rating'}, 
+{ name: 'New Appointment Request' ,slug: 'new_appointment_request'}, 
+{ name: 'New Review',slug: 'new_review'}, 
+{ name: 'Appointment Approve',slug: 'appointment_approve'},
+{ name: 'Fitspot Invitation',slug: 'group_invitation'},
+{ name: 'Mentioned In Post/Comment',slug: 'mentioned_in'},
+{ name: 'Comment on Post',slug: 'comment_on_post'},
+]);
+
+
