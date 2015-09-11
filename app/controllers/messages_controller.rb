@@ -30,7 +30,17 @@ class MessagesController < ApplicationController
 	def send_message
  
 	 if request.xhr?  
-		cid = Base64.decode64(params[:conversation_id])			 
+    if !params[:conversation_id].present? 
+       recipient_id = Base64.decode64(params[:mtype])
+       if Conversation.between(@account.id,recipient_id).present?
+          conversation = Conversation.between(@account.id,recipient_id).first
+       else
+          conversation = Conversation.create!(:sender_id => @account.id, :recipient_id => recipient_id)
+       end
+       cid = conversation.id
+    else
+      cid = Base64.decode64(params[:conversation_id])		
+    end
     mtype = params[:mtype]=='group' ? 1 : 0
 		@message = Message.create(:body =>params[:body], :account_id =>@account.id, :conversation_id => cid, :message_type => mtype)	
 	respond_to do |format|
@@ -99,11 +109,11 @@ class MessagesController < ApplicationController
     sse = SimpleApp::SSE.new(response.stream)
     begin
       20.times do
-        @conversation =	Conversation.involving(@account.id).order("id DESC")	
-        conv = []
-        @conversation.each do |abc|
-          conv.push(abc.id)
-        end
+       # @conversation =	Conversation.involving(@account.id).order("id DESC")	
+       # conv = []
+        #@conversation.each do |abc|
+       #   conv.push(abc.id)
+       # end
         messages = Message.where("account_id != ? && created_at > ?", @account.id, 3.seconds.ago)
       #  messages = Message.where("account_id != ? && conversation_id IN (?) && created_at > ? " , @account.id,  conv, 3.seconds.ago).first
       
@@ -143,18 +153,7 @@ def get_last_five_msg
   
 end  
 
-def autocomplete
-  if request.xhr?   
-  params[:search] = params[:term]
-     @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND  (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%")  
-    respond_to do |format|
-      format.html
-      format.json { 
-        render json: @user.map(&:first_name)
-      }
-    end
-    end
-  end
+
   
  
 private
