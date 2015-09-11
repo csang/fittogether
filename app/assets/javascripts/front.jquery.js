@@ -733,12 +733,17 @@ function sse() {
         }
         source = new EventSource("checkmsgcount");
         source.onmessage = function (event) {  //detect message receipt
+              if (!event) {
+       source.close();
+   } else {
+   
             var output = JSON.parse(event.data);
             //console.log(output.totalMsg);
             if (0 != output.totalMsg) {
                 $('#newmsg').html(output.totalMsg).fadeIn();
 
             }
+   }
         };
     } else {
         alert("Whoops! Your browser doesn't  receive server-sent events.");

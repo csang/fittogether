@@ -147,6 +147,7 @@
  //   var chattemplate='<div class="chat user-chat"><div class="box"><div class="header"><h4>{NAME}</h4><span class="close_chat">X</span><span class="minimize_chat">_</span></div><div class="conversation"><div class="received"><h4>Roy Hibbert</h4><span class="timestamp">11:33PM</span><p>I’ll be better next year I promise Ill hit the boards for more rebounds. Ill practice all summer long. Just me another chance.</p></div><div class="sent"><h4>Andrew Luck</h4><span class="timestamp">11:36PM</span><p>Nah... bro you sucked. Indiana doesn’t want to hear your excuses!</p></div><div class="received"><h4>Roy Hibbert</h4><span class="timestamp">11:37PM</span><p>Youll regret it!</p></div></div><div class="textbox"><textarea style="resize: none;" placeholder="Type a message..."></textarea></div></div><div class="user"><span class="status"></span><h4>Roy Hibbert</h4>					</div></div>';
  var chattemplate='<div class="chat user-chat user-chat-avialble" data-aid="{AID}" data-cid="{CID}"><div class="box available-chat"><div class="header"><h4 class="chat-h-four" title="{NAME}">{NAME}</h4><span class="close_chat">X</span><span class="minimize_chat">-</span><span class="add-chat"></span></div><div style="display:none;" class="add-chat-box"><input type="text" class="search_chat" placeholder="Search" /><button class="btn btn-sm btn-primary done" type="button">Done</button><div class="tkns"></div><ul style="" class="arport arports"></ul></div><div class="conversation" id="cov_{NCID}">{MSGS}</div><div class="textbox"><textarea style="resize: none;" placeholder="Type a message..." class="sendmsg"></textarea></div></div><div class="user"><span class="status"></span><h4>{NAME}</h4></div></div>';
      var arr = [];
+     var arraid = [];
     $('.chat-user li').on('click',function(){
         var name = $(this).find('h6').text();
         var cid = $(this).attr('data-cid');
@@ -159,11 +160,9 @@
          
         }
 });
-
-        
-         
-        if(arr.indexOf(cid) == -1) {
-          
+ 
+        if(arr.indexOf(cid) == -1 && ncid.length != 0) {
+       
                        $.ajax({
                     type: "POST",
                     url: '<%= get_last_five_msg_path %>',
@@ -185,6 +184,21 @@
           }
                 })
     
+        } 
+        if(ncid.length == 0) { 
+             if( $( this ).attr('data-cid')== aid ) {
+               arraid.push($( this ).attr('data-aid'));     
+         
+            }
+            if(arr.indexOf(cid) == -1) {
+            var temp = chattemplate.replace(/{NAME}/g, name);
+            var temp = temp.replace(/{CID}/g, cid);
+            var temp = temp.replace('{NCID}', ncid);       
+            var temp = temp.replace('{AID}', aid);       
+            var temp = temp.replace('{MSGS}', '');
+            $('.chats .list').append(temp);  
+            return false;
+            }
         }
     });
    	
@@ -203,8 +217,11 @@ function chatmsg() {
   source2 = new EventSource('/check');
  
   source2.addEventListener("refresh", function(e) {
-  
+     if (!e) {
+       source2.close();
+     } else {
       addMessages($.parseJSON(e.data).messages);
+     }
   });
   }
 }
