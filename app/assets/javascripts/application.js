@@ -37,7 +37,7 @@ Main_List = {
 	on_start: function(e){
 	
 		$('.chat_bar .chats').width(window.innerWidth - 306);
-		$('.chat_bar .chats .list').width(276 * $('.chat_bar .chats .list .chat').length);
+		//$('.chat_bar .chats .list').width(276 * $('.chat_bar .chats .list .chat').length);
 		
 		if($(window).width() <= 980 && $(window).width() >= 710){
 			$('nav .logo').show();
@@ -291,18 +291,22 @@ Nav = {
 Chat = {
 
 	close_chat: function(e){
+          
 		$(this).parent().parent().parent().remove();
 	},
 
 	minimize_chat: function(e){
+   
 		$(this).parent().parent().hide().next().find('span').show();
 	},
 
 	show_chat: function(e){
+
 		$(this).find('span').hide().parent().prev().show();
 	},
 
 	toggle_chat: function(e){
+   
 		if(!$('.chat_bar .power .on').is(':hidden')){
 			$(this).find('.on').hide().next().show().parent().prev().hide();
 		}else{		
@@ -329,10 +333,10 @@ Chat = {
 
 	init: function() {
 
-		$('.close_chat').click(this.close_chat);
-		$('.minimize_chat').click(this.minimize_chat);
-		$('.chat_bar .chat .user').click(this.show_chat);
-		$('.chat_bar .power').click(this.toggle_chat);
+		$(document).on('click', 'span.close_chat', this.close_chat);
+		$(document).on('click','span.minimize_chat',this.minimize_chat);
+		$(document).on('click','.chat_bar .chat .user',this.show_chat);
+		$('.chat_bar .power ').unbind().click(this.toggle_chat);
 		$('.chat_bar .contacts').click(this.show_contacts);
 		$('#container #right_side .chat .users .user').click(this.open_new_chat);
 
@@ -409,5 +413,6 @@ $(document).ready(function(){
             return this.optional(element) || /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(value);
         }, 'Please enter valid email');
     });	
-   	
-});
+    
+    
+ });

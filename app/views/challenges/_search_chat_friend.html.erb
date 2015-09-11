@@ -1,0 +1,60 @@
+
+<script>
+function fillField(that){
+  
+  var name = $(that).attr('data-name');
+  var id = $(that).attr('datacid');
+  $(that).parent().siblings('div.tkns').show();
+  var contacts = [];
+    $(that).parent().siblings('div.tkns').find('div').each(function(){ 
+      contacts.push(this.id.trim()); 
+    });
+   if(contacts.indexOf(id.trim()) != -1) {
+
+     return false;
+   }else {
+  var tes = '<div class="ftoken" id="'+ id +'"><span class="ftoken-label" style="max-width: 219px;">'+ name +'</span><a tabindex="-1" class="fclose" href="#">×</a></div>';
+ 
+ $(that).parent().siblings('div.tkns').append(tes);
+   }
+ $(that).parent().parent().children('.search_chat').val('');
+ $(that).parent('ul.arports').fadeOut()
+}
+
+</script>  
+		<% if @user.present? %>
+		
+			<%  @user.each do |abc| %>
+			<li class="trainers" onclick="javascript:fillField(this)"  datacid="<%= Base64.encode64(abc.id.to_s) %>" data-name="<%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %>" data-username="<%= '@' + Base64.encode64(abc.id.to_s) %>">
+				<div class="column_header">
+				<div class="imageRound">
+				 <% img = useravatar(abc) %>
+				  <%= image_tag(img) %>	  			    
+					  
+				</div>
+				<div class="name">
+                                </h3><% if abc.user_type == 2 %>
+				Trainer
+				<% elsif abc.user_type == 3 %>	
+				Gym
+				<% else %>
+				User
+				<% end %>
+				 <%=  abc.id == @account.id ? '(me)' : '' %></h3>
+				
+				<% if abc.user_type == 3 %>
+					<h4> <%= abc.account_gym.name.present? ? abc.account_gym.name : abc.first_name  %></h4>
+				<% else %>
+					<h4><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></h4>
+				<% end %>	
+                                       
+                                       
+				</div>
+				<div class="clear"></div>
+				</div>
+			</li>
+	<% end %>	
+	<% else %>
+	<h2> No user found </h2>	
+	<% end %>		
+		

@@ -136,7 +136,7 @@ Feed = {
 	},
 
 	ad_switch: function(e){
-		if($('#left_side .advertisement_switch .switch .on').css('opacity') == '0'){
+    		if($('#left_side .advertisement_switch .switch .on').css('opacity') == '0'){
 
 			$('#left_side .advertisement_switch .switch .on').animate({
 				'opacity': '1',

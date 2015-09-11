@@ -1,100 +1,333 @@
 <footer>
-	<div class="chat_bar">
-	<section class="copywrite">
-                Copyright &copy; 
+  <div class="chat_bar">
+    <section class="copywrite">
+      Copyright &copy; 
 
-<%= Time.now.strftime("%Y") %>
+      <%= Time.now.strftime("%Y") %>
 
-  .  All Rights Reserved.
-            </section>
-	<!--	<div class="chats">
-			<div class="list">
-				<div class="chat">
-					<div class="box" style="display: none;">
-						<div class="header">
-							<span class="status"><?= Asset::img('icons/online_white.png'); ?></span><h4>Roy Hibbert</h4>
-							<span class="close_chat">X</span>
-							<span class="minimize_chat">_</span>
-						</div>
-						<div class="conversation">
-							<div class="received">
-								<h4>Roy Hibbert</h4><span class="timestamp">11:33PM</span>
-								<p>I’ll be better next year I promise I’ll hit the boards for more rebounds. I’ll practice all summer long. Just me another chance.</p>
-							</div>
-							<div class="sent">
-								<h4>Andrew Luck</h4><span class="timestamp">11:36PM</span>
-								<p>Nah... bro you sucked. Indiana doesn’t want to hear your excuses!</p>
-							</div>
-							<div class="received">
-								<h4>Roy Hibbert</h4><span class="timestamp">11:37PM</span>
-								<p>You'll regret it!</p>
-							</div>
-						</div>
-						<div class="textbox">
-							<textarea placeholder="Type a message..." style="resize: none;"></textarea>
-						</div>
-					</div>
-					<div class="user">
-						<span class="status"><?= Asset::img('icons/online_white.png'); ?></span><h4>Roy Hibbert</h4>
-						
-					</div>
-				</div>
-				<div class="chat">
-					<div class="box" style="display: none;">
-						<div class="header">
-							<span class="status"><?= Asset::img('icons/online_white.png'); ?></span><h4>Peyton Manning</h4>
-							<span class="close_chat">X</span>
-							<span class="minimize_chat">_</span>
-						</div>
-						<div class="conversation">
-							
-						</div>
-						<div class="textbox">
-							<textarea placeholder="Type a message..." style="resize: none;"></textarea>
-						</div>
-					</div>
-					<div class="user">
-						<span class="status"><?= Asset::img('icons/online_white.png'); ?></span><h4>Peyton Manning</h4>
-						<span class="notifications">3</span>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="power">
-			<h3 class="on">CHAT ON</h3>
-			<h3 class="off" style="display: none;">CHAT OFF</h3>
-		</div>
-		<div class="my_status">
-			<div class="status_list">
-				
-			</div>
-			<div class="current_status">
-				<h3>AVAILABLE</h3><span><?= Asset::img('icons/online_white.png'); ?></span>
-			</div>
-		</div>
-		<div class="contacts">
-			<h3>CONTACTS</h3>
-		</div> -->
-	</div>	
+      .  All Rights Reserved.
+    </section>
+    <div class="chats">
+      <div class="list">
+
+
+      </div>
+    </div>
+    <% if @account.present? %>
+      <div class="power">
+        <h3 class="on">CHAT ON</h3>
+        <h3 class="off" style="display: none;">CHAT OFF</h3>
+      </div>
+      <div class="my_status">
+        <div class="status_list">
+          <div class="chat-list">
+            <div style="display:none;" class="box-list">
+              <div class="header">
+                <span class="status"><!--?= Asset::img('icons/online_white.png'); ?--></span><h4>Chat</h4>
+
+                <span class="minimize_chat">-</span>
+              </div>
+              <div class="conversation">
+                <ul class="chat-user">
+
+                  <% frnds =  @account.passive_friends + @account.active_friends   %>
+                  <% if frnds.present? %>
+                  <% frnds.each do |frnd| %>
+                
+                  <li data-id="<%= Base64.encode64(frnd.id.to_s)%>" data-cid="<%= get_conversation_id(frnd.id)%>" data-ncid="<%=get_simp_conv_id(frnd.id) %>">
+                      <div class="chat-user-img"> <% img = useravatar(frnd) %>
+                        <%= image_tag(img) %>	  </div>
+                      <h6><%= frnd.first_name.capitalize  %> </h6>
+                    </li>
+                  <% end %>
+                    <% else %>
+                    <li> Please add some friends!</li>
+                  <% end %>
+                    <span class="chat-sub-hding">Group Conversations</span>
+                    
+<% if @account.conversation_member.present?  %>
+<% @account.conversation_member.each do |conv_mem| %>   
+                  <li data-id="group" data-cid="<%= Base64.encode64(conv_mem.conversation_id.to_s)%>" data-ncid="<%=  conv_mem.conversation_id %>">
+                      <div class="chat-user-img"> <%# img = useravatar(@account) %>
+                        <%= image_tag('group.jpg') %>	  </div>
+                      <h6><%= get_firstname_of_members(conv_mem.conversation_id)  %> </h6>
+                    </li>
+                    <% end %>
+                        <% else %>
+                    <li> No group conversations yet!</li>
+                    <% end %>
+                </ul>
+
+              </div>
+
+            </div>
+
+            <!--div class="user">
+                    <span class="status" style="display: none;"><?= Asset::img('icons/online_white.png'); ?></span><h4>Chat</h4>
+                  
+            </div-->
+          </div>
+        </div>
+        <div class="current_status chat-list-btn">
+          <h3>AVAILABLE</h3><span><?= Asset::img('icons/online_white.png'); ?></span>
+        </div>
+      </div>
+    <% end %>
+    <div class="contacts">
+      <h3>CONTACTS</h3>
+    </div> 
+  </div>	
 </footer>
 <script type="text/javascript">
-	var first_name = "dips",
-		last_name = "khosla",
-		start_password = false,
-		valid_password = false;
-	$(document).ready(function() {
-		$('.notifications_view #profile_info input').focusin(Settings.change_info);
-		$('.notifications_view input[name="fname"]').keyup(Settings.update_info);
-		$('.notifications_view input[name="lname"]').keyup(Settings.update_info);
-		$('.notifications_view input[name="mobile[]"]').keydown(Settings.update_phone);
-		$('.notifications_view input[name="mobile[]"]').keyup(Settings.check_phone);
-		$('.notifications_view .profile_info #save_changes').click(Settings.save_changes);
-		$('.notifications_view .profile_info #change_password').click(Settings.change_password);
-		$('.notifications_view .profile_info #save_password').click(Settings.save_password);
-		$('.notifications_view .profile_info #cancel_password').click(Settings.cancel_password);
-		$('.notifications_view .check_data').focusout(Settings.check_user_data);
-		//$('.notifications_view input[name="current_password"]').focusout(Settings.check_password);
-		//$('.notifications_view input[name="new_password"]').keyup(Settings.valid_password);
-		//$('.notifications_view input[name="verify_password"]').keyup(Settings.confirm_password);
-	});
+  var first_name = "dips",
+          last_name = "khosla",
+          start_password = false,
+          valid_password = false;
+  $(document).ready(function() {
+    $('.notifications_view #profile_info input').focusin(Settings.change_info);
+    $('.notifications_view input[name="fname"]').keyup(Settings.update_info);
+    $('.notifications_view input[name="lname"]').keyup(Settings.update_info);
+    $('.notifications_view input[name="mobile[]"]').keydown(Settings.update_phone);
+    $('.notifications_view input[name="mobile[]"]').keyup(Settings.check_phone);
+    $('.notifications_view .profile_info #save_changes').click(Settings.save_changes);
+    $('.notifications_view .profile_info #change_password').click(Settings.change_password);
+    $('.notifications_view .profile_info #save_password').click(Settings.save_password);
+    $('.notifications_view .profile_info #cancel_password').click(Settings.cancel_password);
+    $('.notifications_view .check_data').focusout(Settings.check_user_data);
+    //$('.notifications_view input[name="current_password"]').focusout(Settings.check_password);
+    //$('.notifications_view input[name="new_password"]').keyup(Settings.valid_password);
+    //$('.notifications_view input[name="verify_password"]').keyup(Settings.confirm_password);
+  });
 </script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(document).on('keydown', '.sendmsg', function(e) {
+   
+    if (e.keyCode == 13) {
+        var that = this;
+        var cid = $(that).parent().parent().parent().attr('data-cid');
+        var aid = $(that).parent().parent().parent().attr('data-aid');
+        var ncid = $(that).parent().parent().children('div.conversation').attr('id');
+
+        var bodytext = $(that).val();
+
+        $.ajax({
+          type: "POST",
+          url: '<%= sendmessage_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {conversation_id: cid, body: bodytext, msg: "msg", mtype: aid},
+          global: false,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#'+ ncid).append(data);
+           var $chat = $('#'+ ncid);
+            $chat.scrollTop($chat.height());
+            $(that).val("");
+
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+
+    });
+  });
+  
+  
+     $('.current_status h3').click(function(){
+       $('.box-list').slideToggle(); 
+    });
+ //   var chattemplate='<div class="chat user-chat"><div class="box"><div class="header"><h4>{NAME}</h4><span class="close_chat">X</span><span class="minimize_chat">_</span></div><div class="conversation"><div class="received"><h4>Roy Hibbert</h4><span class="timestamp">11:33PM</span><p>I’ll be better next year I promise Ill hit the boards for more rebounds. Ill practice all summer long. Just me another chance.</p></div><div class="sent"><h4>Andrew Luck</h4><span class="timestamp">11:36PM</span><p>Nah... bro you sucked. Indiana doesn’t want to hear your excuses!</p></div><div class="received"><h4>Roy Hibbert</h4><span class="timestamp">11:37PM</span><p>Youll regret it!</p></div></div><div class="textbox"><textarea style="resize: none;" placeholder="Type a message..."></textarea></div></div><div class="user"><span class="status"></span><h4>Roy Hibbert</h4>					</div></div>';
+ var chattemplate='<div class="chat user-chat user-chat-avialble" data-aid="{AID}" data-cid="{CID}"><div class="box available-chat"><div class="header"><h4 class="chat-h-four" title="{NAME}">{NAME}</h4><span class="close_chat">X</span><span class="minimize_chat">-</span><span class="add-chat"></span></div><div style="display:none;" class="add-chat-box"><input type="text" class="search_chat" placeholder="Search" /><button class="btn btn-sm btn-primary done" type="button">Done</button><div class="tkns"></div><ul style="" class="arport arports"></ul></div><div class="conversation" id="cov_{NCID}">{MSGS}</div><div class="textbox"><textarea style="resize: none;" placeholder="Type a message..." class="sendmsg"></textarea></div></div><div class="user"><span class="status"></span><h4>{NAME}</h4></div></div>';
+     var arr = [];
+    $('.chat-user li').on('click',function(){
+        var name = $(this).find('h6').text();
+        var cid = $(this).attr('data-cid');
+        var ncid = $(this).attr('data-ncid');
+        var aid = $(this).attr('data-id');
+       
+      $( ".user-chat-avialble" ).each(function( e ) {       // to check if chat window already exist
+        if( $( this ).attr('data-cid')== cid ) {
+         arr.push($( this ).attr('data-cid'));     
+         
+        }
+});
+
+        
+         
+        if(arr.indexOf(cid) == -1) {
+          
+                       $.ajax({
+                    type: "POST",
+                    url: '<%= get_last_five_msg_path %>',
+                    dataType: "HTML",
+                    global: false,
+                    data: {conversation_id: ncid},
+                       success: function(data) {
+                      var temp = chattemplate.replace(/{NAME}/g, name);
+                        var temp = temp.replace(/{CID}/g, cid);
+                        var temp = temp.replace('{NCID}', ncid);       
+                        var temp = temp.replace('{AID}', aid);       
+                        var temp = temp.replace('{MSGS}', data);
+                           $('.chats .list').append(temp);
+                        
+                       },
+          error: function(xhr, ajaxOptions, thrownError) {
+        console.log(thrownError)
+
+          }
+                })
+    
+        }
+    });
+   	
+  
+setTimeout(function () {
+  chatmsg();
+
+}, 100);
+
+function chatmsg() {
+  var source2;
+  if (typeof (EventSource) !== "undefined") { //check for browser support
+        if (typeof source2 != "undefined") {
+            source2.close();
+        }
+  source2 = new EventSource('/check');
+ 
+  source2.addEventListener("refresh", function(e) {
+  
+      addMessages($.parseJSON(e.data).messages);
+  });
+  }
+}
+
+
+function addMessages(messages){
+var li = '<div class="received"><h4>{NAME}</h4><span class="timestamp">{TIME}</span><p>{MESSAGE}</p></div>';
+
+ // for(var i=0; i<messages.length; i++){
+  
+   //  var output = messages[i];
+     var output = messages;
+    //alert(output.conversation_id)
+     //console.log(output.totalMsg);
+            if (0 != output) {
+                  var n = li.replace("{MESSAGE}", output.body);
+                  n = n.replace("{TIME}", output.tym);
+                  n = n.replace("{NAME}", output.name);
+                  if ($('#cov_' + output.conversation_id).length != 0) {
+                  var $chat = $('#cov_' + output.conversation_id);
+                  $chat.scrollTop($chat.height());
+                  $('#cov_' + output.conversation_id).append(n)               
+                          $.ajax({
+                       type: "POST",
+                       url: "updatestatus/" + output.mid,
+                       dataType: "json",
+                        global: false,
+                   })
+                 }
+
+            }
+ // }
+}
+///
+
+    
+      $(document).on('click','.add-chat', function(){
+        $(this).parent().siblings('div.add-chat-box').slideToggle();
+      });
+    /*    
+       $(document).on('keyup',".search_chat",function(){
+         var keyword = $(this).val();
+  
+	if (keyword.length >= 2) {
+      $(this).tokenfield({
+  autocomplete: {
+     source: 'messages/autocomplete.json/',
+    delay: 100
+  },
+  showAutocompleteOnFocus: true
+})
+        }
+})
+    
+  */
+    $(document).on('keyup',".search_chat , .token-input",function(e){
+      var that = $(this);
+      var keyword = $(this).val();
+  
+      var uid = $(this).closest('.user-chat-avialble').attr('data-aid');
+      //var uid = $(this).parent().parent().parent().attr('data-aid');
+      //var cid = $(this).parent().parent().parent().attr('data-cid');
+      var cid = $(this).closest('.user-chat-avialble').attr('data-cid');
+      
+    	if (keyword.length >= 2) {
+      
+		$.ajax({
+			type: "POST",
+			url: '/search_user/'+ keyword + '/ /'+ uid +' /chat/' + cid, //sumbits it to the given url of the form
+			dataType: "HTML",
+			beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+					},
+		    success: function(data){
+			        $(that).siblings('ul.arports').fadeIn()
+				$(that).siblings('ul.arports').html(data)
+                             },
+		    error:	function (xhr, ajaxOptions, thrownError) {
+				console.log(xhr.status)
+				
+			}	
+		
+	    });
+		}
+});
+
+  $(document).on('click','.done', function(e) {
+   
+    //var contacts = $(this).parent('div').children().children('.search_chat').tokenfield('getTokens');
+    var contacts = [];
+    $(this).siblings('div.tkns').find('div').each(function(){ 
+      contacts.push(this.id.trim()); 
+    });
+   
+    var receiver = $(this).parent().parent().parent().attr('data-aid');
+    var conversation_id = $(this).parent().parent().parent().attr('data-cid');
+ 
+    if (contacts.length != 0) {
+ 
+          $.post("/create_group_conv", {contacts: contacts, receiver_id: receiver, conversation_id: conversation_id}, function (d) {
+             if (!d.error) {
+                 $('.add-chat-box').hide();
+                  if (receiver!='group') {
+                  var temp = chattemplate.replace(/{NAME}/g, d.name);
+                  var temp = temp.replace(/{CID}/g, d.cid);   
+                  var temp = temp.replace('{NCID}', d.id);       
+                  var temp = temp.replace('{AID}', 'group');     
+                  var temp = temp.replace('{MSGS}', ' ');
+                  $('.chats .list').append(temp);
+                  }
+            } else {
+                 $('.flash-message').html('<div class="alert alert-danger">' + d.msg + '</div>').show();
+            }
+        });
+    } else{ 
+       // $('.flash-message').html('<div class="alert alert-danger">Please select user to add to chat.</div>').show(); 
+       return false;
+    }
+  });
+  
+  $(document).on('click', '.fclose', function() {
+  $(this).parent('div').remove();
+  });
+    </script>
+
+    

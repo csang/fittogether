@@ -51,3 +51,5 @@ gem 'ckeditor'
 
 gem "omnicontacts"
 
+gem 'puma'
+

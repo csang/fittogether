@@ -19,7 +19,7 @@ Rails.application.routes.draw do
   match 'updaterewardpoints/(:cid)/(:account_id)', to: 'challenges#update_reward_points', :via => [:get, :post] , :as => :updaterewardpoints
   get "challenges/show" => "challenges#show_team_challenge" 
   match 'challenges/edit/(:id)', to: 'challenges#edit',:via => [:patch,:get], :as=>:challenges_edit
-  match 'search_user/:search/(:type)/(:uid)/(:request_page)', to: 'challenges#search_user', :via => [:post] , :as=>:searchuser
+  match 'search_user/:search/(:type)/(:uid)/(:request_page)/(:conv_id)', to: 'challenges#search_user', :via => [:post] , :as=>:searchuser
   
   get 'goals', to: 'goals#index'
   match 'goal/', :to=>'goals#create',:via => [:post,:get] ,  :as => :account_goals
@@ -35,11 +35,16 @@ Rails.application.routes.draw do
   get 'messages/create'
   match '/messages/(:sender_id)/(:recipient_id)/(:body)', :to => 'messages#create', :via => [:post,:get] , :as => :messages
   match 'sendmessage', to: 'messages#send_message', :via => [:post] , :as => :sendmessage
+  match 'get_last_five_msg', to: 'messages#get_last_five_msg', :via => [:get,:post] , :as => :get_last_five_msg
   match 'checkmsgcount', to: 'messages#checkmsgcount', :via => [:get, :post] , :as => :checkmsgcount
   match 'deletemessage', to: 'messages#del_message', :via => [:delete] , :as => :deletemessage
+  match 'autocomplete', to: 'messages#autocomplete', :via => [:get, :post] , :as => :autocomplete
+  get '/check', to: 'messages#check'
+   
   match 'getconv', to: 'conversations#getconv', :via => [:get, :post] , :as => :getconv
   match 'deleteconv', to: 'conversations#del_conversation', :via => [:delete] , :as => :deleteconv
   match 'updatestatus/(:cid)', to: 'conversations#updatestatus', :via => [:get, :post] , :as => :updatestatus
+  match 'create_group_conv', to: 'conversations#create_group_conv', :via => [:get, :post] , :as => :create_group_conv
   match 'add_del_going', to: 'fitspots#add_del_going', :via => [:post,:delete] , :as => :add_del_going
   match 'invite_for_fitspot', to: 'fitspots#invite_for_fitspot', :via => [:post,:delete] , :as => :invite_for_fitspot
   match 'fitspots/edit/(:id)', to: 'fitspots#edit',:via => [:patch,:get], :as=>:fitspots_edit
@@ -148,6 +153,7 @@ Rails.application.routes.draw do
   post '/save_user_appointment' => 'appointments#save_user_appointment', :as =>:save_user_appointment
   delete '/delete_user_event/:id' => 'appointments#delete_user_event', :as =>:delete_user_event
   put '/approve_user_event/:id' => 'appointments#approve_user_event', :as =>:approve_user_event
+ 
   
   resources :ratings, only: :update
  
