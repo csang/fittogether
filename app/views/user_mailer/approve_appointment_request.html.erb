@@ -13,7 +13,7 @@
                 <em style="float:left;width:100%;font-style:normal;font-size:16px;">Hello <%=   @user_event.account.first_name.capitalize %> ,</em>
                 <p style="float:left;line-height:20px;margin-top:30px;font-size:16px;">
                    <%=   @current_user.first_name.capitalize %> approved your appointment request for the date: <%=   @user_event.start_date %> 
-                  <br/> Click&nbsp; <a title="fitTogether" href="<%= @request.base_url %>/feed">here</a> to view 
+                  <br/> Click&nbsp; <a title="fitTogether" href="<%= @request.base_url %>/<%= @user_event.account.user_name %> /appointments">here</a> to view 
                 </p>
                 <div style="float:left;width:100%;">
                     <br />

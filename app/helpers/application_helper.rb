@@ -174,6 +174,35 @@ module ApplicationHelper
     return cont > 0 ? cont : ''
   end
   
+  def get_conversation_id(frnd_id)
+    
+      @conversation = Conversation.between(@account.id,frnd_id).first
+    if !@conversation.present?
+    return
+    end  
+    return  @conversation.id.present? ? Base64.encode64(@conversation.id.to_s) : '';
+    
+  end
+  
+  def get_simp_conv_id(frnd_id)
+    
+     @conversation = Conversation.between(@account.id,frnd_id).first
+    if !@conversation.present?
+    return
+    end  
+    return  @conversation.id.present? ? @conversation.id : '';
+    
+  end
+  
+  def get_firstname_of_members(id)
+    
+    cm = ConversationMember.where(:conversation_id => id)
+    account_ids = cm.map(&:account_id)
+    acc_name = Account.select(:first_name).where(:id =>account_ids)
+    return acc_name.map(&:first_name).join(', ')
+  end
+    
+  end
+  
 
      
-end

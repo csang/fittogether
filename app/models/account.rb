@@ -18,6 +18,7 @@ class Account < ActiveRecord::Base
   has_many :requested_friendships_seen, -> { where(friendships: { approved: false, seen: false}) }, :through => :passive_friendships, :source => :account 
     
   has_many :conversations, :foreign_key => :sender_id, :dependent =>:delete_all
+  has_many :conversation_member
     
   has_many :challenges, :dependent =>:delete_all
   has_many :account_goals, :dependent =>:delete_all
@@ -31,6 +32,7 @@ class Account < ActiveRecord::Base
   has_many :rator, :class_name => "Rating", :foreign_key => "account_id"
   has_many :review, :dependent => :delete_all
   has_many :appointment, :dependent => :delete_all
+  
   
   def average_rating
         raty.sum(:score) / raty.count

@@ -711,11 +711,19 @@ $(document).ready(function () {
 	
 	
 var source;
+var source2;
+
 //sse();  
 setTimeout(function () {
   sse();
 
-}, 12000);
+}, 15000);
+
+
+
+
+
+
 
 
 function sse() {
@@ -736,6 +744,8 @@ function sse() {
         alert("Whoops! Your browser doesn't  receive server-sent events.");
     }
 }
+
+
 
 
 

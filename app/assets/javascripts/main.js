@@ -262,10 +262,15 @@ Chat = {
 	},
 
 	toggle_chat: function(e){
+       
 		if(!$('.chat_bar .power .on').is(':hidden')){
-			$(this).find('.on').hide().next().show().parent().prev().hide();
-		}else{		
-			$(this).find('.off').hide().prev().show().parent().prev().show();
+                   
+			$(this).find('.on').hide();
+			$(this).find('.off').show();
+		}else{	
+               ;
+			$(this).find('.off').hide();
+			$(this).find('.on').show();
 		}
 	},
 
@@ -290,7 +295,7 @@ Chat = {
 		$('.close_chat').click(this.close_chat);
 		$('.minimize_chat').click(this.minimize_chat);
 		$('.chat_bar .chat .user').click(this.show_chat);
-		$('.chat_bar .power').click(this.toggle_chat);
+		//$('.chat_bar .power').click(this.toggle_chat);
 		$('.chat_bar .contacts').click(this.show_contacts);
 		$('#container #right_side .chat .users .user').click(this.open_new_chat);
 	}
