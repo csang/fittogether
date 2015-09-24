@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   match '/messages/(:sender_id)/(:recipient_id)/(:body)', :to => 'messages#create', :via => [:post,:get] , :as => :messages
   match 'sendmessage', to: 'messages#send_message', :via => [:post] , :as => :sendmessage
   match 'get_last_five_msg', to: 'messages#get_last_five_msg', :via => [:get,:post] , :as => :get_last_five_msg
+  match 'get_chat_box_values', to: 'messages#get_chat_box_values', :via => [:get,:post] , :as => :get_chat_box_values
   match 'checkmsgcount', to: 'messages#checkmsgcount', :via => [:get, :post] , :as => :checkmsgcount
   match 'deletemessage', to: 'messages#del_message', :via => [:delete] , :as => :deletemessage
   match 'autocomplete', to: 'messages#autocomplete', :via => [:get, :post] , :as => :autocomplete

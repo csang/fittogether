@@ -1,5 +1,5 @@
 <%  @messages.each do |message| %>
 <div class="sent"><h4><%= message.account.first_name %></h4><span class="timestamp"><%=  message.created_at.strftime("%H:%M %p") %>  </span>
-<p><%= message.body.html_safe %>
+<p><%= sanitize message.body.html_safe %>
 </p></div>
 <% end %>
