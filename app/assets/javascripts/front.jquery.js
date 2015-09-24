@@ -715,9 +715,9 @@ var source2;
 
 //sse();  
 setTimeout(function () {
-  sse();
+  //sse();
 
-}, 15000);
+}, 60000);
 
 
 

@@ -195,7 +195,7 @@ module ApplicationHelper
   end
   
   def get_firstname_of_members(id)
-    
+
     cm = ConversationMember.where(:conversation_id => id)
     account_ids = cm.map(&:account_id)
     acc_name = Account.select(:first_name).where(:id =>account_ids)

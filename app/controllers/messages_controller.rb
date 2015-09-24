@@ -42,8 +42,10 @@ class MessagesController < ApplicationController
       cid = Base64.decode64(params[:conversation_id])		
     end
     mtype = params[:mtype]=='group' ? 1 : 0
-		@message = Message.create(:body =>params[:body], :account_id =>@account.id, :conversation_id => cid, :message_type => mtype)	
-	respond_to do |format|
+		#@message = Message.create(:body =>params[:body], :account_id =>@account.id, :conversation_id => cid, :message_type => mtype)	
+		@message = Message.create(message_params.merge(:account_id => @account.id, :conversation_id => cid, :message_type => mtype))	
+	
+    respond_to do |format|
     
     if params[:msg].present?
             
@@ -109,12 +111,8 @@ class MessagesController < ApplicationController
     sse = SimpleApp::SSE.new(response.stream)
     begin
       20.times do
-       # @conversation =	Conversation.involving(@account.id).order("id DESC")	
-       # conv = []
-        #@conversation.each do |abc|
-       #   conv.push(abc.id)
-       # end
-        messages = Message.where("account_id != ? && created_at > ?", @account.id, 3.seconds.ago)
+    
+        messages = Message.where("account_id != ? && created_at > ?", @account.id, 4.seconds.ago)
       #  messages = Message.where("account_id != ? && conversation_id IN (?) && created_at > ? " , @account.id,  conv, 3.seconds.ago).first
       
         unless messages.empty?
@@ -152,6 +150,32 @@ def get_last_five_msg
    end
   
 end  
+
+def get_chat_box_values
+  
+  if request.xhr?  
+      conv = Conversation.find(params[:conversation_id]);
+      mess = {}
+      mess['cid'] = Base64.encode64(params[:conversation_id])
+    
+      if conv.conversation_type == 1 
+        mess['aid'] = 'group'
+        mess['names'] = get_firstname_of_members(params[:conversation_id])   
+      else 
+        id = conv.sender.id == @account.id ? conv.recipient_id : conv.sender.id
+        mess['aid'] = Base64.encode64(id.to_s)
+        acc_name = Account.select(:first_name).find(id)
+        mess['names'] = acc_name.first_name.capitalize
+      end
+      
+      respond_to do |format|
+       render :json => mess  
+      end
+    
+  end
+  
+  
+end
 
 
   

@@ -291,9 +291,30 @@ Nav = {
 Chat = {
 
 	close_chat: function(e){
-          
+               
 		$(this).parent().parent().parent().remove();
-	},
+                var cid = $(this).parent().siblings('div.conversation').attr('id');
+                var id = cid.split('_');
+                var chat_window = getCookie('mychat');
+                if (null != chat_window || chat_window.length > 0) {
+                var b = chat_window.split(',').map(function(item) {
+                        return parseInt(item, 10);
+                });
+                console.log(id[1])
+                for (var i = b.length - 1; i >= 0; i--) {
+                    if (parseInt(b[i]) === parseInt(id[1])) {
+                        b.splice(i, 1);
+                    }
+                }
+                
+                    var date = new Date();
+                    date.setTime(date.getTime() + (1 * 24 * 60 * 60 * 1000));
+                    var expires = "; expires=" + date.toGMTString();
+              
+                var name = 'mychat'
+                document.cookie = name + "=" + b + expires + "; path=/";
+                }
+            },
 
 	minimize_chat: function(e){
    
@@ -332,8 +353,9 @@ Chat = {
 	},
 
 	init: function() {
-
+            
 		$(document).on('click', 'span.close_chat', this.close_chat);
+		
 		$(document).on('click','span.minimize_chat',this.minimize_chat);
 		$(document).on('click','.chat_bar .chat .user',this.show_chat);
 		$('.chat_bar .power ').unbind().click(this.toggle_chat);
