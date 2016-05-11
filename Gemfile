@@ -52,4 +52,6 @@ gem 'ckeditor'
 gem "omnicontacts"
 
 gem 'puma'
+gem 'geocoder'
+gem 'nokogiri'
 
