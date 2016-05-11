@@ -38,7 +38,9 @@ class FeedController < ApplicationController
     if request.xhr?   
        share = params[:feed].present? ? params[:feed][:share_with] : params[:profile_fit_feed][:share_with] 
        post_type = (params[:video].present? || params[:image].present? ) ? 'video' : 'text' 
+       if post_type == 'text'
        post_type = params[:post_type].present? ? params[:post_type] : 'text' 
+       end
        @posts =  Post.create(:account_id=>@account.id,:text=>params[:posttextnew],:image=>params[:image],:video=>params[:video], :status=>1,:share_with=> share, :post_type => post_type )	        
        respond_to do |format|
         if @posts.save!

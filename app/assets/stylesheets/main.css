@@ -9,7 +9,7 @@ rgb(47,131,82);
 }
 html{
 	height: 100%;
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 html, body{
