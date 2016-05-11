@@ -1,0 +1,247 @@
+<% train = get_gym_trainors(@profileuser) %>
+  <% arr = train.map{|x| [x.first_name] + [x.id]} %>
+<div id="appointments">
+	<div class="header">
+		<% total = 0 %>
+		<% @appointments.count.values.each do |tt| %>
+		<% total += tt %>
+		<% end %>
+		<h3><%= total  %> Appintments</h3>
+		<button data-target="#appointForm" data-toggle="modal">New Appointment</button>
+	</div>
+	<div id="appointments_container">
+		<div class="time_container">
+			<div class="header">
+				<p>Trainer <span><%= @appointments.length %></span></p>
+			</div>
+			<div class="list">
+				<% if @appointments.present? %>
+				<% i = 0  %>
+				<% @appointments.each do |app|  %>
+				<% img = useravatar(app.trainer)  %>
+				<div class="option <%= i==0 ? 'selected' : '' %>">
+					<div class="avatar"><%= link_to(image_tag(img) , app.trainer.user_name) %></div>
+                    <div class="details">
+                        <div class="name"><p><%= app.trainer.first_name %> <%= app.trainer.last_name.present? ? app.trainer.last_name : '' %></p></div>
+                        <div class="time">
+							<% if app.morning_start_time.present? %>
+							<p><%= app.morning_start_time %> -<%= app.morning_end_time %></p>
+							<% elsif app.afternoon_start_time.present? %>
+							<p><%= app.afternoon_start_time %> -<%= app.afternoon_end_time %></p>
+							<% else app.evening_start_time.present? %>
+							<p><%= app.evening_start_time %> -<%= app.evening_end_time %></p>
+							<% end %>
+							</div>
+                        <div class="timeslots" id="<%= Base64.encode64(app.trainer.id.to_s) %>"><p>3 Timeslots Available</p></div>
+                    </div>
+				</div>
+				<% i += 1 %>
+				<% end %>
+				<% end %>
+			</div>
+		</div>
+		<div class="data_container">
+			<div class="header">
+				<div class="week">
+					<div class="selector">
+						<div class="previous"></div>
+						<p><span class="highlight">This Week</span> <span class="start" data-date="">December 7</span> - <span class="end" data-date="">December 13</span></p>
+						<div class="next"></div>
+					</div>
+					<div class="icon calendar">
+					</div>
+				</div>
+			</div>
+			<div class="body" id="weeklydiv">
+				<% if @weekly_appointments.present? %>
+				<% @weekly_appointments.each do |wa| %>
+				<div class="appointment today">
+					<div>
+						<h2><%= wa.appointment_date.strftime("%a, %b %d") %></h2>
+					</div>
+					<div class="stat">
+						<div class="spots">
+							<div class="morning appointment_select">
+								<h3>Morning</h3>
+								<% if wa.morning_start_time.present? %>
+								<p><%= wa.total_slot %> Available</p>
+								<% else %>
+									<p>Not Available</p>
+								<% end %>
+							</div>
+							<div class="afternoon appointment_select">
+								<h3>Afternoon</h3>
+								<% if wa.afternoon_start_time.present? %>
+								<p><%= wa.total_slot %> Available</p>
+								<% else %>
+									<p>Not Available</p>
+								<% end %>
+							</div>
+							<div class="evening appointment_select">
+								<h3>Evening</h3>
+									<% if wa.evening_start_time.present? %>
+								<p><%= wa.total_slot %> Available</p>
+								<% else %>
+									<p>Not Available</p>
+								<% end %>
+							</div>
+						</div>
+					</div>
+					<div class="roster">
+					
+						
+					</div>
+				</div>
+				<% end %>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+ var weekly_app = function (trainers,week_start, week_end) {
+		  $.ajax({
+         type: "GET",
+          url: '<%= get_weekly_appointment_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {trainer_id: trainers, week_start: week_start, week_end: week_end},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+       		$('#weeklydiv').html('');
+       		$('#weeklydiv').html(data);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+      
+      });
+  }	
+$(function() {
+	$( "#datepicker" ).datepicker({
+		dateFormat: "M d, yy",
+	});
+	$('#appointments .appointment .roster .view').click(Gym_admin.view_roster);
+	$('#appointments #appointments_container .time_container .list > div').click(Gym_admin.trainer);
+
+	$('#appointments #appointments_container .data_container .header .selector .next').click(Gym_admin.next_week);
+	$('#appointments #appointments_container .data_container .header .selector .previous').click(Gym_admin.previous_week);
+
+	Gym_admin.get_this_week();	
+	// time picker for morning
+	 $('.timepickerMorning').timepicker({
+		'minTime': '5:00am',
+		'maxTime': '11:50am',
+		'step': 30
+	});
+	// time picker for afternoon
+	 $('.timepickerAfternoon').timepicker({
+		'minTime': '12:00pm',
+		'maxTime': '5:00pm',
+		'step': 30
+	});
+	// time picker for evenings
+	 $('.timepickerEvening').timepicker({
+		'minTime': '5:00pm',
+		'maxTime': '11:00pm',
+		'step': 30
+	});
+	 
+	   $("#gym_trainers_form").on("ajax:success", function(e, data, status, xhr)  {	
+		if(data == 0) {		
+		$('.flash-message').html('<div class="alert alert-success"> You already created appointment for this day.</div>').show();
+		}else {
+		$('.flash-message').html('<div class="alert alert-success"> Appointment created succesfully.</div>').show();	
+		$('#appointForm').modal('hide');
+		}  
+     });
+ $("#gym_trainers_form").on("ajax:error", function(e, data, status, xhr)  {
+	console.log(data);
+    $('.flash-message').html('<div class="alert alert-danger"> Please Try again.</div>').show();
+     });
+     
+      // get appointment detail 
+     $('.timeslots').on('click', function(){
+      var trainers = $(this).attr('id');
+      $('.list').children('div').removeClass('selected');
+      $(this).parent().parent('div').addClass('selected');
+      weekly_app(trainers,'','')
+           });
+    
+
+    
+});
+</script>
+
+<!---classs -->
+<div class="modal fade" id="appointForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Appointment Form</h4>
+      </div>
+      <div class="modal-body">      
+        
+		 <%= form_for( @gta , url: gym_trainer_appointments_create_path , :remote => true, :html => {id: "gym_trainers_form"}) do |f| %>
+			
+		<div class="pop-row">
+		  <label>Trainer</label>
+			 <%= select_tag(:trainer_id, options_for_select(arr), :class=>'form-control') %>
+		 </div>
+		<div class="pop-row">
+		 <label>Morning From:</label>
+		  <input class="form-control timepickerMorning" type="text"  name="morning_start_time">
+		  </div>
+		  
+		  <div class="pop-row">
+		 <label>Morning To:</label>
+		  <input class="form-control timepickerMorning" type="text"  name="morning_end_time">
+		  </div>
+		  
+		  <div class="pop-row">
+		 <label>After-Noon From:</label>
+		  <input class="form-control timepickerAfternoon" type="text"  name="afternoon_start_time">
+		  </div>
+		  
+		  <div class="pop-row">
+		 <label>After-Noon To:</label>
+		  <input class="form-control timepickerAfternoon" type="text"  name="afternoon_end_time">
+		  </div>
+					
+					
+			<div class="pop-row">
+		 <label>Evening From:</label>
+		  <input class="form-control timepickerEvening" type="text"  name="evening_start_time" >
+		  </div>
+		  
+		  <div class="pop-row">
+		 <label>Evening To:</label>
+		  <input class="form-control timepickerEvening" type="text"  name="evening_end_time" >
+		  </div>
+							
+							
+		<div class="pop-row">
+		  <label>Date:</label>
+		  <input class="form-control" type="text" readonly name="appointment_date" id="datepickers">
+		  </div>
+		  
+		<div class="pop-row">
+		 <%= f.label :total_slot, 'Total Slot:' %>
+			<%= select_tag(:total_slot, options_for_select((10..200).step(10)), :class=>'form-control') %>
+		</div>
+		
+		 <div class="modal-footer">
+       <button type="send" id="sendfeedback" class="btn btn-primary" >Send</button>
+      </div>
+
+		<% end %> 
+    
+    </div>
+  </div>
+</div>
+</div>

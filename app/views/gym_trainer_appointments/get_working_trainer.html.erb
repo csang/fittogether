@@ -1,0 +1,24 @@
+	<% if @Gym_trainer.present? %>
+			<%  @Gym_trainer.each do |gt| %>
+			<% img = useravatar(gt.trainer) %>
+            <div class="trainer">
+                <div class="avatar"><%= link_to(image_tag(img), "/#{gt.trainer.user_name}") %></div>
+                <div class="details">
+                    <div class="name"><p>  <%= link_to(gt.trainer.first_name, "/#{gt.trainer.user_name}") %></p></div>
+                    <div class="time">
+					<% if gt.morning_start_time.present? %>
+							<p><%= gt.morning_start_time %> -<%= gt.morning_end_time %></p>
+							<% elsif gt.afternoon_start_time.present? %>
+							<p><%= gt.afternoon_start_time %> -<%= gt.afternoon_end_time %></p>
+							<% else gt.evening_start_time.present? %>
+							<p><%= gt.evening_start_time %> -<%= gt.evening_end_time %></p>
+							<% end %>
+						</div>
+                    <div class="timeslots"><p>3 Timeslots Available</p></div>
+                </div>
+            </div>
+           <% end %>
+         
+           <% else %>
+              <div class="timeslots"><p>No Trainer Working.</p></div>
+           <% end %>

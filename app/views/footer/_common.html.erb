@@ -1,0 +1,96 @@
+           <!--- Group -->
+<div class="modal fade" id="groupForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display:none;">
+  <div class="modal-dialog" style="">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Group</h4>
+      </div>
+      <div class="modal-body">
+       
+        
+ <%= render(:partial => 'groups/newgroup') %>
+    
+    </div>
+  </div>
+</div>
+</div>
+
+<!---Feedback -->
+<div class="modal fade" id="reportForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  style="display:none;">
+  <div class="modal-dialog">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Feedback Form</h4>
+      </div>
+      <div class="modal-body">
+       
+        
+ <%= render(:partial => 'admin/feedbacks/form') %>
+    
+    </div>
+  </div>
+</div>
+</div>
+
+
+     <!---edit post -->
+<div class="modal fade" id="postEditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"  style="display:none;">
+  <div class="modal-dialog">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Post</h4>
+      </div>
+      <div class="modal-body">
+      
+       <textarea class="form-control" name="editPostText"  id="editPostText"> </textarea>
+       <input type="hidden" name="postid" id="editPost" value="">   
+            
+    </div>
+    <div class="modal-footer create">
+		<button class="btn btn-primary" type ="submit" id="submitEditPostText">Submit</button>
+		</div>
+  </div>
+</div>
+</div>  
+
+<script>
+$(document).on('click','.edit', function () {
+	var product = $(this).attr('data-id');
+    var txt = $(this).parent().siblings("div .content").text().replace(/\s+/g, " ");
+	$('#editPostText').val(txt);	
+	$('#editPost').val(product);
+	
+	})
+	
+$('#submitEditPostText').on('click', function () {
+	var txt = $('#editPostText').val();
+	var id = $('#editPost').val();
+	   
+        var that = this;
+        $.ajax({
+          type: "PUT",
+          url: '/editpost/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {id: id, text:txt},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#postEditForm').modal('hide');
+            $('.flash-message').html('<div class="alert alert-success"> Post has been edit successfully</div>').show();
+            location.reload(); 
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+   
+}) 	
+</script>
+

@@ -1,12 +1,12 @@
-<div id="left_side">
-	<div id="left_side_fixed">
-		<?= isset($left_side) ? $left_side : null ?>
+<nav id="side_nav">
+	<div class="side_nav_inner">
+		<div class="home_icon"></div>
+		<div class="trophies_icon"></div>
+		<div class="statistics_icon"></div>
+		<div class="friends_icon"></div>
+		<div class="nearby_icon"></div>
+		<div class="gym_icon"></div>
+		<div class="settings_icon"></div>
+		<div class="log_icon"></div>
 	</div>
-</div>
-
-<script type="text/javascript">
-$(document).ready(function() {
-	$('#left_side').height($(window).height());
-	$('#left_side_fixed').height($(window).height());
-});
-</script>
+</nav>

@@ -1,31 +1,42 @@
 
-
-<div class="settings_activities">
 	<!--<h2>Please select minimum of 4 activities</h2>-->
 <% if @account.linked? %>
+ <div id="about">
 	<%= form_tag api_create_update_goal_path, :class => 'goal-setting about_form', :id => 'weekly_goal' do %>
-	<div class="position row">
-		<h2>Select Goal Type</h2>
-		<div class="input">
-			<%=  select_tag "type", options_for_select([ "steps", "distance" ]) %> 
-		</div>
+	<div class="input_container">
+		<label>Select Goal Type</label>	
+			<%=  select_tag "type", options_for_select([ "steps", "distance" ]) %> 		
 		<div class="clear"></div>
 	</div>
-	<div class="position row">
-		<h2>Value</h2>
-		<div class="input">
+	<div class="input_container">
+		<label>Value</label>	
 			<%= text_field_tag "value", nil, :class => 'form-control' %>
                     <h6 class="exten" style="display:none;">In miles</h6>
-		</div>
+	
 		<div class="clear"></div>
 	</div>
-	<div class="row">
+	<div class="submit_container">
 		 <button id="save_changes" type="submit" >Update</button>
 		<div class="clear"></div>
 	</div>
 <% end %>
- <% else %>         
-          <div class="row"><h4 class="noti-heading"> You have not sync with fitbit account yet. Please go to <a href="/feed"> feed</a> page and click on "sync with fitbit" link.</h4> </div> 
+</div>
+ <% else %>  
+ <div id="fitbit">
+ <form>       
+        <div class="input_container">
+          <p class="notice">You have not synced with your Fitbit account yet.</p>
+        </div>  
+        	<div class="input_container">
+            <label>Sync with Fitbit:</label>
+     
+            <div class="button">
+            <a href="#sync_with_fitbit">Sync</a>
+             </div>
+           
+        </div>
+</form>        
+ </div> 
  <% end  %> 
 </div>
 

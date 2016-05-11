@@ -1,24 +1,120 @@
-<div id="right_side">
-	<div id="right_side_fixed">
-		<?= isset($right_side) ? $right_side : null ?>
-	</div>
-</div>
-
-<script type="text/javascript">
-$(document).ready(function() {
-	// $('#right_side').height() > $(window).height() ? $('#right_side').height($('#right_side').height() + 10) : $('#right_side').height($(window).height());
-	// $('#right_side_fixed').height() > $(window).height() ? $('#right_side_fixed').height($('#right_side_fixed').height() + 10) : $('#right_side_fixed').height($(window).height());
-	// $(window).scroll(function(event) {
-	// 	if($(window).scrollTop() > $('#right_side_fixed').height() - $(window).height() + $('nav').height()){
-	// 		$('#right_side_fixed').css({
-	// 			position: 'fixed',
-	// 			bottom: 0,
-	// 		});
-	// 	}else{
-	// 		$('#right_side_fixed').css({
-	// 			position: 'none',
-	// 		});
-	// 	}
-	// });
-});
-</script>
+    <!-- Start: Side Info -->
+                <div id="side_info">
+                    <div class="fitbit_activity">
+                        <div class="header">
+                            <h2>This Week</h2>
+                            <div class="fitbit_logo"></div>
+                        </div>
+                        <div class="data">
+                            <div class="calories">
+                                <h1>18K</h1>
+                                <h3>Calories</h3>
+                            </div>
+                            <div class="miles">
+                                <h1>50M</h1>
+                                <h3>Miles</h3>
+                            </div>
+                            <div class="steps">
+                                <h1>30K</h1>
+                                <h3>Steps</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="appointments">
+                        <div class="header">
+                            <h2>Appointments</h2>
+                        </div>
+                        <div class="list">
+                            <div>
+                                <div class="avatar"><h3>16</h3></div>
+                                <div class="description">
+                                    <p class="date">November 16 @ 9:00am</p><br>
+                                    <p class="event">Training Session</p><br>
+                                    <p class="with">JJ Watt</p><br>
+                                    <a href="">Change</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="events">
+                        <div class="header">
+                            <h2>Events</h2>
+                            <a href="" class="amount">5 Invitations</a>
+                        </div>
+                        <div class="list">
+                            <div>
+                                <div class="avatar"><h3>13</h3></div>
+                                <div class="description">
+                                    <p class="date">November 13</p><br>
+                                    <p class="event">5K Run at Iron Mountain Trail</p><br>
+                                    <p class="location">San Diego, CA</p><br>
+                                    <p class="actions"><button>Attending</button><span>|</span><button>Not Attending</button></p>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="avatar"><h3>15</h3></div>
+                                <div class="description">
+                                    <p class="date">November 15</p><br>
+                                    <p class="event">Ride 4 Ronald</p><br>
+                                    <p class="location">San Diego, CA</p><br>
+                                    <p class="actions"><button>Attending</button><span>|</span><button>Not Attending</button></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="see_all">
+                            <a href="">See All Events</a>
+                        </div>
+                    </div>
+                    <div class="suggested_trainers">
+                        <div class="header">
+                            <h2>Suggested Trainers</h2>
+                        </div>
+                        <div class="list">
+                            <div>
+                                <div class="avatar"><a href="trainer.html"><img src="../public/img/profile/richardsimmons_avatar.png" title="Richard Simmons" alt="RS"></a></div>
+                                <div class="description">
+                                    <p class="name">Richard Simmons</p><br>
+                                    <p class="location">Beverly Hills, CA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="suggested_fitspots">
+                        <div class="header">
+                            <h2>Suggested Fitspots</h2>
+                        </div>
+                        <div class="list">
+                            <div>
+                                <div class="avatar"><iframe width="100%" height="100%" frameborder="0" style="border:0"
+    src="https://www.google.com/maps/embed/v1/place?q=blue%20springs%20state%20park&amp;key=AIzaSyBOJh_YHCV_JJkthZNR99xZG9sB6jdo7bI" allowfullscreen></iframe></div>
+                                <div class="description">
+                                    <p class="fitspot">Blue Springs State Park</p><br>
+                                    <p class="location">Orange City, FL</p><br>
+                                    <p class="checkins">12 Check ins</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="avatar"><iframe width="100%" height="100%" frameborder="0" style="border:0"
+    src="https://www.google.com/maps/embed/v1/place?q=everglades%20national%20park&amp;key=AIzaSyBOJh_YHCV_JJkthZNR99xZG9sB6jdo7bI" allowfullscreen></iframe></div>
+                                <div class="description">
+                                    <p class="fitspot">Everglades National Park</p><br>
+                                    <p class="location">South Florida</p><br>
+                                    <p class="checkins">8 Check ins</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="avatar"><iframe width="100%" height="100%" frameborder="0" style="border:0"
+    src="https://www.google.com/maps/embed/v1/place?q=cross%20seminole%20trail&amp;key=AIzaSyBOJh_YHCV_JJkthZNR99xZG9sB6jdo7bI" allowfullscreen></iframe></div>
+                                <div class="description">
+                                    <p class="fitspot">Cross Seminole Trail</p><br>
+                                    <p class="location">South Florida</p><br>
+                                    <p class="checkins">5 Check ins</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="see_all">
+                            <a href="">See All Fitspots</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- End: Side Info -->

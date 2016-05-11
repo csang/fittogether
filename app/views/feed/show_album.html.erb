@@ -1,18 +1,18 @@
-<%= render(:partial => 'feed_aside') %>
-<div id="content">
+<%#= render(:partial => 'feed_aside') %>
+<div id="basic">
 	<div class="profile photo-album">
 		<div class="comment_view">
 	<%= form_for @profile, :url=>{:action=>'update_album'}, :html=>{:name=>'updatealbum',:id => "updatealbum", :enctype=>"multipart/form-data"} do |f| %>	
 	<div class="collection">
 	
 	       <% @album.album_images.each do |ac| %>			
-	<div class="photo-new" id="photo_<%= ac.id %>">		
+	<div class="photo-new <%= ac.image_content_type =='video/mp4' ? 'video-wpr' : "" %>" id="photo_<%= ac.id %>">		
 	<a class="album-delete" href="javascript:void(0);" title="Delete" data-id="<%= Base64.encode64(ac.id.to_s)%>"></a>		
 			
          <% if ac.image_content_type!='video/mp4' %>  
                               <%= image_tag(ac.image,  height: '300', width: '300' ) %>  
                         <% else %>
-                              <video id='video'  controls width="190" height="190">
+                              <video id='video'  controls width="280" height="190">
                               <source src='<%= ac.image %>' type='video/mp4'/>
                               Your browser does not support the video .
                             </video>                          
@@ -48,7 +48,7 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-$('.album-delete').on('click', function() {
+$(document).on('click','.album-delete', function() {
 var toid = $(this).attr('data-id');
 
 var that = this;

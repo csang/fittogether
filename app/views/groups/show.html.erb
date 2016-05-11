@@ -1,5 +1,5 @@
-<%= render(:partial => 'feed/feed_aside') %>
-<div id="content">
+<%#= render(:partial => 'feed/feed_aside') %>
+<div id="seed">
 
   <div class="group-top">
     <%= image_tag(@group.group_image(:medium), :class =>'group_image') %>
@@ -151,7 +151,7 @@
       
          <div id="sectionC" class="tab-pane fade">
             <% if @group.account_id == @account.id %>
-           <h3 class="event-title">Events <a  href="javascript:void(0)" data-toggle="modal" class="goal-btn creat-event" data-target="#fitspotForm"> Create FitSpot</a></h3>
+           <h3 class="event-title"><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn creat-event" data-target="#fitspotForm"> Create FitSpot</a> Events</h3>
             <% end %>
   <% @group.fitspot.each do |fs|   %>
          <% img = useravatar(fs.account)    %>
@@ -171,34 +171,28 @@
 
 </div>
 <div class="modal fade" id="fitspotForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="z-index: 5456666666000;">
+  <div class="modal-dialog" >
     <div class="modal-content" >
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">New Fitspot for the Group: <%= @group.title  %></h4>
       </div>
       <div class="modal-body">
-       
-        
- <%= render(:partial => 'fitspots/newfitspot') %>
-    
+		<%= render(:partial => 'fitspots/newfitspot') %>
     </div>
   </div>
 </div>
 </div>
 
 <div class="modal fade" id="groupEditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" style="z-index: 5456666666000;">
+  <div class="modal-dialog">
     <div class="modal-content" >
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Edit Group</h4>
       </div>
       <div class="modal-body">
-       
-        
- <%= render(:partial => 'groups/edit') %>
-    
+		<%= render(:partial => 'groups/edit') %>
     </div>
   </div>
 </div>

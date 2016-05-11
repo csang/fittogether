@@ -34,7 +34,10 @@
 	padding-bottom: 15px;
 	background-color: #ffffff;
 	border-radius: 3px;
-	box-shadow: 2px 2px 5px #888888;
+	box-shadow: 0px 2px 5px #888888;
+	-moz-box-shadow: 0px 2px 5px #888888;
+	-webkit-box-shadow: 0px 2px 5px #888888;
+	-o-box-shadow: 0px 2px 5px #888888;
 }
 
 #account_container #login_view h1,
@@ -42,11 +45,12 @@
 #account_container #register_view h1{
 	text-align: center;
 	font-size:17px;
-	padding: 10px 0;
+	padding: 10px 0 12px;
 	background-color: #2f8352;
 	color:#ffffff;
 	border-radius: 3px 3px 0 0;
 	margin-bottom: 20px;
+	font-family: 'helvetica Neue';
 }
 
 #account_container #login_view input,
@@ -60,9 +64,10 @@
 	border-radius: 3px!important; -moz-border-radius: 3px!important; -webkit-border-radius: 3px!important; -o-border-radius: 3px!important;
 	border: 1px solid #2f8352;
 	margin: 0 auto 0px;
-	font-size: 16px;
+	font-size: 15px;
 	padding:0 5px;
 	color:#606060;
+	line-height:1;
 }
 #account_container #register_view ul{padding:0px; height:34px;}
 #account_container #register_view ul li{
@@ -73,6 +78,7 @@
 	color: #A9A9A9;
 	cursor: pointer;
 	border-left: 1px solid #2f8352;
+	list-style:none;
 }
 
 #account_container #register_view ul .select{
@@ -103,26 +109,26 @@
 #account_container #login_view input::-webkit-input-placeholder,
 #account_container #forgot_view input::-webkit-input-placeholder,
 #account_container #register_view input::-webkit-input-placeholder {
-   color: #000;
+   color: #303030; opacity:1;
 }
 
 #account_container #login_view input:-moz-placeholder,
 #account_container #forgot_view input:-moz-placeholder,
 #account_container #register_view input:-moz-placeholder { /* Firefox 18- */
-   color: #000;  
+   color: #303030;   opacity:1;
 }
 
 #account_container #login_view input::-moz-placeholder,
 #account_container #forgot_view input::-moz-placeholder,
 #account_container #register_view input:-moz-placeholder {  /* Firefox 19+ */
-   color: #000;  
+   color: #303030;   opacity:1;
 }
 
 #account_container #login_viewinput:-ms-input-placeholder,
-#account_container #register_view input:-moz-placeholder {  
-   color: #000;  
+#account_container #register_view input:-ms-placeholder {  
+   color: #303030;   opacity:1;
 }
-h2.soc-heading{text-align:center; padding:10px 0px;font-weight: normal;}
+h2.soc-heading{text-align:center; padding:10px 0px;font-weight: normal; font-size:16px;}
 ul.social-connect{text-align:center; margin: 0;padding:2px 0 0px;}
 ul.social-connect li{display:inline-block; margin: 0 5px 0 0;}
 .fb, .twit, .linkdin{display:inline-block; width:97px; height:33px; background:url(/assets/sprite.png) no-repeat; text-indent:-9999px;}

@@ -1,18 +1,21 @@
  <%= form_for( Admin::Feedback.new, :remote => true, :html => {id: "feedback_form"}) do |f| %>
 	 <% gspecial = Category.where(:ctype =>'feedback').map{|x| [x.name] + [x.id]} %>
-<div class="pop-row">
+<div class="pop-row row">
+	<div class="col-xs-12">
   <label>Category:</label>
-	 <%= select_tag(:category_id, options_for_select(gspecial)) %>
+	 <%= select_tag(:category_id, options_for_select(gspecial), :class=>'form-control') %>
+	 </div>
  </div>
 
-<div class="pop-row">
+<div class="pop-row row">
+	<div class="col-xs-12">
 	 <%= f.label :feedback, 'Feedback:' %>
   <%= f.text_area :feedback, class: "boxtextarea form-control" %>
-  
+  </div>
 </div>
  <div class="modal-footer">
-       <button type="button" id="sendfeedback" class="btn btn-primary" >Send</button>
-      </div>
+   <button type="button" id="sendfeedback" class="btn btn-primary" >Send</button>
+  </div>
 
 <% end %> 
 <script type="text/javascript">

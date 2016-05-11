@@ -15,6 +15,9 @@
 // require turbolinks
 //= require ckeditor/init
 //= require_tree .
+//= stub admin/jquery-1.2.6.min
+//= stub profile
+//= stub gym
 
 var chat = true;
 Main_List_Url = {
@@ -212,12 +215,12 @@ Nav = {
 	
 		e.preventDefault();
 		if (e.keyCode == 27) {
-			$('.search_results_section').hide('slow');
+			$('.search_results_section').slideUp('slow');
 			return false;
 		}	
 	    var keyword = $(this).val();
 	    if (keyword.length < 1) {
-			$('.search_results_section').hide('slow');
+			$('.search_results_section').slideUp('slow');
 			return false;
 		}	
 		if (keyword.length >= 2) {
@@ -232,7 +235,7 @@ Nav = {
 			
 				$('.search_results_section').html(data);
 				
-				$('.search_results_section').show('slow');
+				$('.search_results_section').slideDown('slow');
 				
 				},
 		    error:	function (xhr, ajaxOptions, thrownError) {
@@ -282,7 +285,8 @@ Nav = {
 		$('#nav_container .search').click(this.focus_search);
 		$('#nav_container .search input').focus(this.change_placeholder);
 		$('#nav_container .search input').focusout(this.reset_placeholder);
-		$('#nav_container .search input').keyup(this.show_results);
+		//$('#nav_container .search input').keyup(this.show_results);
+		$('.nav_search input').keyup(this.show_results);
 		$('#nav_container .nav .nav_options').click(this.display_previews);
 		$('#container').hover(this.reset_placeholder);
 	}
@@ -354,14 +358,12 @@ Chat = {
 
 	init: function() {
             
-		$(document).on('click', 'span.close_chat', this.close_chat);
-		
+		$(document).on('click', 'span.close_chat', this.close_chat);		
 		$(document).on('click','span.minimize_chat',this.minimize_chat);
 		$(document).on('click','.chat_bar .chat .user',this.show_chat);
 		$('.chat_bar .power ').unbind().click(this.toggle_chat);
 		$('.chat_bar .contacts').click(this.show_contacts);
 		$('#container #right_side .chat .users .user').click(this.open_new_chat);
-
 		$('#left_side').height($(window).height());
 		$('#left_side_fixed').height($(window).height());
 	}

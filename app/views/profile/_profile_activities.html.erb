@@ -1,20 +1,51 @@
-  <div class="about">
-<ul class="activities">
-  
+
+<div id="activities">  
       <% @profileuser.account_activity.each do |activity| %>
       <% if activity.activity_id.present?   %>
           <% activity.activity_id.each do |act| %>
-            <li style="float:left; margin-left:10px; width:100px;">
-              <% @value =  get_activity_name(act) %>
-             <% @value1 = (@value == 'Weight Lifting' ) ? 'weight_lifting' : @value %>
-              <%= image_tag('activities/'+@value1.downcase+'_icon.png') %>
-              <span style="float:right; width:100px;"><%= @value %></span>
-            </li>
+           <% value =  get_activity_name(act) %>
+          <div class="input_container activity_list">
+	    <% if value == "boot_camp" %>
+		  <div class="avatar activity boot_camp"></div>
+        <label>Boot Camp</label>
+		<% elsif value =='cardio_circuit' %>
+		 <div class="avatar activity cardio_circuit"></div>
+            <label>Cardio Circuit</label>
+        	<% elsif value =='pilates' %>
+		 <div class="avatar activity pilates"></div>
+            <label>Pilates</label>    
+		<% elsif value =='running' %>
+         <div class="avatar activity running"></div>
+        <label>Running</label>
+		<% elsif value =='spinning' %>
+		 <div class="avatar activity spinning"></div>
+            <label>Spinning</label>
+         	<% elsif value =='swimming' %>   
+         <div class="avatar activity swimming"></div>
+            <label>Swimming</label> 
+            <% elsif value =='tennis' %>  
+                <div class="avatar activity tennis"></div>
+            <label>Tennis</label>  
+            <% elsif value =='yoga' %>  
+            <div class="avatar activity yoga"></div>
+            <label>Yoga</label>
+		
+		<% end %>
+		</div>
           <% end %>
            <% else %>    
           <h2 class="notification-msg">No Activity found. </h2>
         <% end %>   
-      <% end %>
-      
-    </ul>
-  </div>
+      <% end %>      
+    </div>
+<style>    
+#main_container #activities .avatar {
+  background-color: #2F8352;
+  border-radius: 50px;
+  display: inline-block;
+  height: 50px;
+  overflow: hidden;
+  vertical-align: middle;
+  width: 50px;
+}
+</style>   

@@ -2,6 +2,7 @@ class Group < ActiveRecord::Base
   
   belongs_to :account
   has_many :group_member, :dependent =>:delete_all
+  has_many :post, :dependent =>:delete_all
    has_many :fitspot
   
   validates_presence_of :title

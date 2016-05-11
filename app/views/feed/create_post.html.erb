@@ -1,3 +1,4 @@
+<% if false %>
 <% if @post.present? %>
 <%	
     @name = @post.account.first_name + ' ' + @post.account.last_name
@@ -55,4 +56,107 @@
 			<% link_to('Give Kudos!', '/') %>
 			<%= link_to('Comment', 'javascript:void(0);', html_options={:class => 'add_comment'}) %>
 		</div>
+<% end %>
+<% end %>
+<% if @post.present? %>
+   <% last = @post.account.last_name.present? ? @post.account.last_name : ''; 	
+						    name = @post.account.first_name + ' ' + last
+						    time = @post.created_at %>
+						  <% img =  useravatar(@post.account) %>
+                        <div class="post <%= @post.post_type!='text' ? @post.post_type : '' %> <%= @post.account.user_type ==3 ? 'gym' :'' %>" id="<%= @post.id %>">
+                            <div class="header">
+                                <div class="user">
+                                    <div class="avatar"><a href="profile.html">
+                                 <%= link_to(image_tag(img), "/#{@post.account.user_name}" ,html_options={:title => 'Maria Sharapova', :alt => 'MS'}); %>   
+                                      </a>
+                                    </div>
+                                    <div class="data">
+                                        <a href="profile.html"><h3 class="name"><%= name %></h3></a>
+                                        <p class="date"> <%= time_ago_in_words(time) %> ago</p>
+                                    </div>
+                                </div>
+                                <button class="close post-delete" data-id="<%= Base64.encode64(@post.id.to_s)%>"></button>
+                            </div>
+                            <div class="content"> 
+								 <% if @post.post_type =='fitbit' %>
+                             
+                                <div class="segment">
+                                    <div class="box calories">
+                                    <% fitbit = get_fitbit(@post.account_id) %>
+                                        <h1><%=  fitbit.present? ? fitbit.calories : "N/A"  %> </h1>
+                                        <h2>Calories</h2>
+                                    </div>
+                                </div>
+                                <div class="segment">
+                                    <div class="box miles">
+                                        <h1><%=  fitbit.present? ? fitbit.distance : "N/A"  %></h1>
+                                        <h2>Miles</h2>
+                                    </div>
+                                </div>
+                                <div class="segment">
+                                    <div class="box steps">
+                                        <h1><%=  fitbit.present? ? number_to_human( fitbit.steps, :format => '%n%u', :units => { :thousand => 'K' }) : "N/A"  %></h1>
+                                        <h2>Steps</h2>
+                                    </div>
+                                </div>
+                            <% elsif @post.post_type =='link' %>    
+							<%=  @post.text.html_safe %>
+                            <% else %>
+								<p>
+                               <% if @post.text.present? %>
+                                <% @post.text.split.select {|w| %>
+								   <% if  w[0] == "#" %>
+								  <%=raw tag_links(w)%>
+									 <% elsif w[0] == "@" %>    
+											<%=raw user_links(w)%>                
+								  <% else %>    
+									<%= w %>    
+								  <% end %>      
+								  <%  } %>
+								   <% end %>  
+                           </p> 
+                           <% end %>	
+                           	<!-- video section -->
+							<% if @post.video.present? %>		
+							  <div class="video">
+
+								<video id='video'  controls width="375" height="193">
+								  <source src='<%= @post.video %>' type='video/mp4'/>
+								  Your browser does not support the video .
+								</video>
+							  </div>
+							<% end %>  
+							<!-- image section -->
+							<% if @post.image.present? %>		
+							  <div class="background">
+								<%= image_tag(@post.image(:medium)) %>		
+							  </div>
+							<% end %>
+							</div>
+				<div class="comment_section"  id="cmt<%= @post.id %>">
+                                <div class="comment_container"> </div>				
+				 <div class="add_comment">
+                                    <textarea maxlength="255" placeholder="Start commenting here..." data-id="<%= @post.id %>" ></textarea>
+                                    <button class="post_comment" type="button" data-id="<%= @post.id %>">Post Comment</button>
+                                    <ul class="arport2" style="display:none;"> </ul>
+									<input type="hidden" name="commentnew" id="commentnew">
+                                </div>
+                            </div>
+                            <div class="footer">
+                                <div class="kudos" data-id="<%= Base64.encode64(@post.id.to_s) %>">
+                                    <div class="icon"></div>
+                                    <h3>Give Kudos</h3>
+                                </div>
+                                <div class="comment show_comment">
+                                    <div class="icon"></div>
+                                    <h3>Comment</h3>
+                                </div>
+                                <!-- if( post belongs to user ){ -->
+ <div class="edit" data-toggle="modal" data-target="#postEditForm" data-id="<%= @post.id %>" >
+                                    <div class="icon"></div>
+                                    <h3>Edit</h3>
+                                </div>
+                                <!-- } //end if -->
+                            </div>
+                        </div>
 <% end %>

@@ -3,6 +3,31 @@ Rails.application.routes.draw do
  
  
  
+  get 'gym_trainer_appointments/new'
+
+  post 'gym_trainer_appointments/create'
+
+  get 'gym_trainer_appointments/update'
+
+  get 'gym_trainer_appointments/delete'
+
+  get 'gym_classes/new'
+
+  get 'gym_classes/create'
+
+  get 'gym_classes/update'
+
+  get 'gym_classes/delete'
+  match 'get_counts/', :to=>'gym_classes#classes_count_for_date',:via => [:get] ,  :as => :get_counts
+  match 'get_classes/', :to=>'gym_classes#get_classes',:via => [:get] ,  :as => :get_classes
+  match 'show_classes_details/', :to=>'gym_classes#show_classes_details',:via => [:get] ,  :as => :show_classes_details
+  match 'get_class_slot/', :to=>'gym_classes#get_class_slot',:via => [:get] ,  :as => :get_class_slot
+  match 'attend_class/', :to=>'gym_classes#attend_class',:via => [:post] ,  :as => :attend_class
+  match 'get_weekly_appointment/', :to=>'gym_trainer_appointments#get_weekly_appointment',:via => [:get] 
+  match 'get_working_trainer/', :to=>'gym_trainer_appointments#get_working_trainer',:via => [:get] ,  :as => :get_working_trainer
+  
+  match 'get_appointment_count/', :to=>'gym_trainer_appointments#get_appointment_count',:via => [:get] ,  :as => :get_appointment_count
+
   get 'reviews/index'
   get 'reviews/new' 
   post 'reviews/creat' 
@@ -10,10 +35,11 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :feedbacks
   end
-
+  #resources :gym_classes
   get 'challenges', to: 'challenges#index'
   #patch 'cupdate', to: 'challenges#update',:as => :challange_update
   match 'challenge/', :to=>'challenges#create',:via => [:post,:get] ,  :as => :challenge
+  match 'gym_class/', :to=>'gym_classes#create',:via => [:post,:get] ,  :as => :gym_classes
   match 'deletechallenge', to: 'challenges#del_challenge', :via => [:delete] , :as => :deletechallenge
   match 'changechallengestatus/:cid/:status', to: 'challenges#change_challenge_status', :via => [:get, :post] , :as => :changechallengestatus
   match 'updaterewardpoints/(:cid)/(:account_id)', to: 'challenges#update_reward_points', :via => [:get, :post] , :as => :updaterewardpoints
@@ -86,6 +112,7 @@ Rails.application.routes.draw do
   match 'get_gym_address', to: 'settings#get_gym_address', :via => [:get,:post], :as => :get_address 
   match 'set_remember/(:message)', to: 'callback#set_remember', :via => [:get,:post] , :as=>:set_rememberme
   match 'create_comment', to: 'feed#create_comment', :via => [:post] , :as=>:create_comment
+  match 'give_kudos', to: 'feed#give_kudos', :via => [:post] , :as=>:create_kudos
   match 'create_post', to: 'feed#create_post', :via => [:post] , :as=>:create_post
   match 'search_people/:search', to: 'profile#search_people', :via => [:post] , :as=>:searchpeople
   match 'addfriend', to: 'friendships#friend_request', :via => [:post] , :as => :addfriend
@@ -95,6 +122,7 @@ Rails.application.routes.draw do
   
   match 'deleteimage/(:imgid)', to: 'feed#delete_image', :via => [:delete] , :as => :deleteimage
   match 'deletepost', to: 'feed#delete_post', :via => [:delete] , :as => :deletepost
+  match 'editpost', to: 'feed#edit_post', :via => [:put] , :as => :editpost
   match 'deletecomment/', to: 'feed#delete_comment', :via => [:delete] , :as => :deletecomment
   
   post 'createalbum', to:'feed#create_album', :as=>:createalbum  
@@ -102,6 +130,8 @@ Rails.application.routes.draw do
   post 'update_album', to:'feed#update_album', :as=>:update_album  
   get 'un_sync', to:'feed#un_sync', :as=>:un_sync  
   match 'send_feedback', to: 'feed#send_feedback', :via => [:post] , :as => :send_feedback
+  match 'check_in', to: 'feed#check_in', :via => [:post] , :as => :check_in
+  match 'scrap_link', to: 'feed#scrap_link', :via => [:post] , :as => :scrap_link
   
   
   
@@ -118,6 +148,7 @@ Rails.application.routes.draw do
 
   get 'settings/index'
   get 'settings', to: 'settings#index'
+  get 'crop', to: 'settings#crop'
   get 'about', to: 'settings#about'
   get 'activities', to: 'settings#activities'
   get 'privacy', to: 'settings#privacy'
@@ -125,7 +156,11 @@ Rails.application.routes.draw do
   get 'fitbit', to: 'settings#fitbit'
   get 'support', to: 'settings#support'
   get 'email_notification_settings', to: 'settings#email_notification_settings'
-  
+   get 'dashboard', to: 'profile#dashboard'
+   get 'classes', to: 'profile#classes'
+   get 'appointments', to: 'profile#gym_admin_appointments'
+   get 'trainors', to: 'profile#gym_trainors'
+   get 'members', to: 'profile#gym_members'
   get 'admin' , to: "admin/dashboard#index", :via => :get
   get ':id' , to: 'profile#index', :as=>:profile  
   get ':id/about', to: 'profile#about'
@@ -133,13 +168,21 @@ Rails.application.routes.draw do
   get ':id/videos', to: 'profile#videos'
   get ':id/appointments', to: 'profile#appointments'
   get ':id/reviews', to: 'profile#reviews'
+  get ':id/classes', to: 'profile#show_classes'
   get ':id/friends', to: 'profile#friends'
   get ':id/activities', to: 'profile#activities'
   get ':id/members', to: 'profile#members'
+  get ':id/trainers', to: 'profile#trainers'
   get ':id/notifications', to: 'profile#notifications'
+ 
+  match 'profile/new_friends_and_members', to: 'profile#new_friends_and_members',:via => [:get], :defaults => { :format => 'json' }
+  match 'get_check_in_count', to: 'profile#get_check_in_count',:via => [:get, :post], :defaults => { :format => 'json' }, :as=>:get_check
+  match 'get_most_active_members', to: 'profile#get_most_active_members',:via => [:get, :post], :defaults => { :format => 'json' }, :as=>:get_most_active_members
   
   get 'getgymaddress', to: 'settings#get_gym_address/:id'
   post 'update_avatar', to:'settings#update_avatar'
+  patch 'update_crop', to:'settings#update_crop', :as=>:update_crop
+  post 'update_cover', to:'profile#update_cover'
   post 'update_profile', to:'settings#update_profile', :as=>:update_profile
   post 'update_privacy', to:'settings#update_privacy', :as=>:update_privacy
   post 'update_activity', to:'settings#update_activity', :as=>:update_activity
@@ -171,14 +214,116 @@ Rails.application.routes.draw do
     get 'activity', controller: 'activities', action: 'index'
     get 'fitness_tracking', controller: 'activities', action: 'fitness_tracking'
     match 'create_update_goal', controller: 'activities', action: 'create_update_goal',:via => [:get, :post]
-    get 'body_measurements', controller: 'body_measurements', action: 'show'
-   
+    get 'body_measurements', controller: 'body_measurements', action: 'show'   
     resources :activities, only: [:index]
     # resources :foods, only: [:index]
+   
+     namespace :v1   do 
+		  resources :accounts, :defaults => { :format => 'json' }   
+		  resources :feeds, :defaults => { :format => 'json' }  
+	      get 'feeds/get_posts/:account_id', controller: 'feeds', action: 'get_posts',:defaults => { :format => 'json' }  
+	      post 'feeds/create_post', controller: 'feeds', action: 'create_post',:defaults => { :format => 'json' }  
+	      post 'feeds/destroy_post', controller: 'feeds', action: 'destroy_post',:defaults => { :format => 'json' }
+	      post 'feeds/create_album', controller: 'feeds', action: 'create_album',:defaults => { :format => 'json' }
+	      get 'feeds/show_album/:id/:account_id', controller: 'feeds', action: 'show_album',:defaults => { :format => 'json' }
+	      post 'feeds/delete_record', controller: 'feeds', action: 'delete_record',:defaults => { :format => 'json' }
+	      post 'feeds/update_album', controller: 'feeds', action: 'update_album',:defaults => { :format => 'json' }
+	      post 'feeds/create_comment', controller: 'feeds', action: 'create_comment',:defaults => { :format => 'json' }
+	      post 'feeds/delete_comment', controller: 'feeds', action: 'delete_comment',:defaults => { :format => 'json' }
+	      post 'feeds/send_feedback', controller: 'feeds', action: 'send_feedback',:defaults => { :format => 'json' }
+	      # settings controller api methods 
+	      get 'settings/privacy', controller: 'settings', action: 'privacy',:defaults => { :format => 'json' }
+	      post 'settings/update_privacy', controller: 'settings', action: 'update_privacy',:defaults => { :format => 'json' }
+	      match 'settings/update_social_settings', to: 'settings#update_social_settings', :via => [:post, :get] ,:defaults => { :format => 'json' }
+	      post 'settings/update_about_settings', to: 'settings#update_about_settings', :defaults => { :format => 'json' }
+	      get 'settings/show_about_settings', controller: 'settings', action: 'show_about_settings',:defaults => { :format => 'json' }
+	      post 'settings/update_about_gym', controller: 'settings', action: 'update_about_gym',:defaults => { :format => 'json' }
+	      post 'settings/update_about_trainers', controller: 'settings', action: 'update_about_trainers',:defaults => { :format => 'json' }
+	      post 'settings/update_avatar', controller: 'settings', action: 'update_avatar',:defaults => { :format => 'json' }
+	      post 'settings/update_profile', controller: 'settings', action: 'update_profile',:defaults => { :format => 'json' }
+	      
+	      match 'settings/get_update_activity', controller: 'settings', action: 'get_update_activity', :via =>[:get, :post] , :defaults =>  { :format => 'json' }
+	      post 'settings/update_email_settings', controller: 'settings', action: 'update_email_settings',  :defaults =>  { :format => 'json' }
+	      get 'settings/email_notification_settings', controller: 'settings', action: 'email_notification_settings',  :defaults =>  { :format => 'json' }
+	      get 'settings/check_user_data', controller: 'settings', action: 'check_user_data',  :defaults =>  { :format => 'json' }
+	      # profile routings
+	      get 'profiles/index', controller: 'profiles', action: 'index',:defaults => { :format => 'json' }
+	      get 'profiles/about', controller: 'profiles', action: 'about',:defaults => { :format => 'json' }
+	      get 'profiles/photos', controller: 'profiles', action: 'photos',:defaults => { :format => 'json' }
+	      get 'profiles/activities', controller: 'profiles', action: 'activities',:defaults => { :format => 'json' }
+	      get 'profiles/members', controller: 'profiles', action: 'members',:defaults => { :format => 'json' }
+	      get 'profiles/search_all', controller: 'profiles', action: 'search_all',:defaults => { :format => 'json' }
+	      get 'profiles/notifications', controller: 'profiles', action: 'notifications',:defaults => { :format => 'json' }
+	      get 'profiles/reviews', controller: 'profiles', action: 'reviews',:defaults => { :format => 'json' }
+	      # create review
+	      post 'reviews/create/', controller: 'reviews', action: 'create_review',:defaults => { :format => 'json' }
+	      # friendship friendrequest method routs
+	      post 'friendships/friend_request', controller: 'friendships', action: 'friend_request',:defaults => { :format => 'json' }
+	      post 'friendships/friend_request_cancel', controller: 'friendships', action: 'friend_request_cancel',:defaults => { :format => 'json' }
+	      post 'friendships/friend_request_reject', controller: 'friendships', action: 'friend_request_reject',:defaults => { :format => 'json' }
+	      put 'friendships/friend_request_accept', controller: 'friendships', action: 'friend_request_accept',:defaults => { :format => 'json' }
+	      # group 	
+	      post 'groups/create', controller: 'groups', action: 'create',:defaults => { :format => 'json' }
+	      put 'groups/edit', controller: 'groups', action: 'edit',:defaults => { :format => 'json' }
+	      get 'groups/show', controller: 'groups', action: 'show',:defaults => { :format => 'json' }
+	      post 'groups/add_del_member', controller: 'groups', action: 'add_del_member',:defaults => { :format => 'json' }
+	      post 'groups/create_group_post', controller: 'groups', action: 'create_group_post',:defaults => { :format => 'json' }
+	      post 'groups/group_request', controller: 'groups', action: 'group_request',:defaults => { :format => 'json' }
+	      
+	      # fitspot 
+	      get 'fitspots/index', controller: 'fitspots', action: 'index',:defaults => { :format => 'json' }	
+	      post 'fitspots/create', controller: 'fitspots', action: 'create',:defaults => { :format => 'json' }	
+	      put 'fitspots/edit', controller: 'fitspots', action: 'edit',:defaults => { :format => 'json' }	
+	      get 'fitspots/show', controller: 'fitspots', action: 'show',:defaults => { :format => 'json' }	
+	      post 'fitspots/add_del_going', controller: 'fitspots', action: 'add_del_going',:defaults => { :format => 'json' }	
+	      post 'fitspots/invite_for_fitspot', controller: 'fitspots', action: 'invite_for_fitspot',:defaults => { :format => 'json' }	
+	        # chellege 
+	      post 'challenges/create', controller: 'challenges', action: 'create',:defaults => { :format => 'json' }	
+	      get 'challenges/show_team_challenge', controller: 'challenges', action: 'show_team_challenge',:defaults => { :format => 'json' }	
+	      put 'challenges/del_challenge', controller: 'challenges', action: 'del_challenge',:defaults => { :format => 'json' }	
+	      put 'challenges/change_challenge_status', controller: 'challenges', action: 'change_challenge_status',:defaults => { :format => 'json' }	
+	      put 'challenges/update_reward_points', controller: 'challenges', action: 'update_reward_points',:defaults => { :format => 'json' }	
+	      get 'challenges/search_user', controller: 'challenges', action: 'search_user',:defaults => { :format => 'json' }	
+	      # goals 
+	      post 'goals/create', controller: 'goals', action: 'create',:defaults => { :format => 'json' }	
+	      get 'goals/index', controller: 'goals', action: 'index',:defaults => { :format => 'json' }	
+	      delete 'goals/delete_goal', controller: 'goals', action: 'delete_goal',:defaults => { :format => 'json' }	
+	      put 'goals/change_goal_status', controller: 'goals', action: 'change_goal_status',:defaults => { :format => 'json' }	
+	      match 'goals/edit', controller: 'goals', action: 'edit',:via => [:post, :get] ,:defaults => { :format => 'json' }		      
+	      # Appointment routings
+	      get 'appointments/get_user_appointment', controller: 'appointments', action: 'get_user_appointment',:defaults => { :format => 'json' }
+	      post 'appointments/save_user_appointment', controller: 'appointments', action: 'save_user_appointment',:defaults => { :format => 'json' }
+	      delete 'appointments/delete_user_event', controller: 'appointments', action: 'delete_user_event',:defaults => { :format => 'json' }
+	      post 'appointments/approve_user_event', controller: 'appointments', action: 'approve_user_event',:defaults => { :format => 'json' }
+	       # Rating routings
+	      post 'raitings/update', controller: 'raitings', action: 'update',:defaults => { :format => 'json' }
+	       # Conversation routings
+	      get 'conversations/index', controller: 'conversations', action: 'index',:defaults => { :format => 'json' }
+	      get 'conversations/show', controller: 'conversations', action: 'show',:defaults => { :format => 'json' }
+	      post 'conversations/create', controller: 'conversations', action: 'create',:defaults => { :format => 'json' }
+	      post 'conversations/updatestatus', controller: 'conversations', action: 'updatestatus',:defaults => { :format => 'json' }
+	      delete 'conversations/del_conversation', controller: 'conversations', action: 'del_conversation',:defaults => { :format => 'json' }
+	      post 'conversations/create_group_conv', controller: 'conversations', action: 'create_group_conv',:defaults => { :format => 'json' }
+	      
+	       # Messages routings
+	       post 'messages/create', controller: 'messages', action: 'create',:defaults => { :format => 'json' }
+	       post 'messages/send_message', controller: 'messages', action: 'send_message',:defaults => { :format => 'json' }
+	       get 'messages/checkmsgcount', controller: 'messages', action: 'checkmsgcount',:defaults => { :format => 'json' }
+	       delete 'messages/del_message', controller: 'messages', action: 'del_message',:defaults => { :format => 'json' }
+	       get 'messages/get_last_five_msg', controller: 'messages', action: 'get_last_five_msg',:defaults => { :format => 'json' }
+	       get 'messages/get_chat_box_values', controller: 'messages', action: 'get_chat_box_values',:defaults => { :format => 'json' }
+	     
+	      
+	      
+	      
+		 
+	 end
+	
+	
   end	
 
   # get 'landing/login'
-
+	     	     
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

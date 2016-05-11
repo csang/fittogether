@@ -54,10 +54,14 @@ Reason.create([
 ]);
 
 Activity.create([
-{ name: 'Lacrosse'}, 
-{ name: 'Football'}, 
-{ name: 'Running'}, 
-{ name: 'Weight Lifting'}
+{ name: 'boot_camp'}, 
+{ name: 'cardio_circuit'}, 
+{ name: 'pilates'},
+{ name: 'running'}, 
+{ name: 'spinning'}, 
+{ name: 'swimming'}, 
+{ name: 'yoga'}, 
+{ name: 'tennis'}
 ]);
 Privacy.create([
 { name: 'Profile Picture',slug: 'profile_pic'}, 
@@ -208,7 +212,7 @@ City.create([
  { name:'Big Creek', state_code:  'CA'},
  { name:'Big Creek', state_code:  'KY'},
  { name:'Big Creek', state_code:  'MS'},
- { name:'Big Creek', state_code:  'WV'},Group
+ { name:'Big Creek', state_code:  'WV'},
  { name:'Big Falls', state_code:  'MN'},
  { name:'Big Falls', state_code:  'WI'},
  { name:'Big Flat', state_code:  'AR'},
@@ -622,20 +626,19 @@ Amenity.create([
 Category.create([
 { name: 'Steps to Walk', ctype: 'challenge'}, 
 { name: 'Calories to Burn', ctype: 'challenge'}, 
-{ name: 'Weight to Lift', ctype: 'challenge'} 
-
-{ name: 'General Feedback', ctype: 'feedback'} 
-{ name: 'Something Wrong', ctype: 'feedback'} 
-{ name: 'Photos', ctype: 'feedback'} 
-{ name: 'Messages', ctype: 'feedback'} 
-{ name: 'Posts', ctype: 'feedback'} 
-{ name: 'Events', ctype: 'feedback'} 
-{ name: 'Groups', ctype: 'feedback'} 
-{ name: 'Login', ctype: 'feedback'} 
-{ name: 'Chellenges', ctype: 'feedback'} 
-{ name: 'Goals', ctype: 'feedback'} 
-{ name: 'Notifications', ctype: 'feedback'} 
-{ name: 'Profile', ctype: 'feedback'} 
+{ name: 'Weight to Lift', ctype: 'challenge'}, 
+{ name: 'General Feedback', ctype: 'feedback'}, 
+{ name: 'Something Wrong', ctype: 'feedback'},
+{ name: 'Photos', ctype: 'feedback'}, 
+{ name: 'Messages', ctype: 'feedback'}, 
+{ name: 'Posts', ctype: 'feedback'}, 
+{ name: 'Events', ctype: 'feedback'}, 
+{ name: 'Groups', ctype: 'feedback'},
+{ name: 'Login', ctype: 'feedback'}, 
+{ name: 'Chellenges', ctype: 'feedback'}, 
+{ name: 'Goals', ctype: 'feedback'}, 
+{ name: 'Notifications', ctype: 'feedback'}, 
+{ name: 'Profile', ctype: 'feedback'}, 
 { name: 'Location', ctype: 'feedback'} 
 
 ]);
@@ -647,7 +650,7 @@ EmailSetting.create([
 { name: 'Appointment Approve',slug: 'appointment_approve'},
 { name: 'Fitspot Invitation',slug: 'group_invitation'},
 { name: 'Mentioned In Post/Comment',slug: 'mentioned_in'},
-{ name: 'Comment on Post',slug: 'comment_on_post'},
+{ name: 'Comment on Post',slug: 'comment_on_post'}
 ]);
 
 

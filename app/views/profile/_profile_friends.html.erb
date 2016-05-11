@@ -6,7 +6,9 @@
 
 <% @profileuser.passive_friends.each do |member| %>
 <div class="row" id="<%= Base64.encode64(member.id.to_s)%>">
-
+			<% if @profileuser.id == @account.id %>
+			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend">Remove</button>
+			 <% end %>
 				<% if member.account_privacy.present? %>
 						<% if member.account_privacy.account_id!=@account.id  %>
 							<% @privacy = member.account_privacy %>
@@ -37,9 +39,6 @@
 							<% end %>	
           
            <%= link_to(member.first_name, "/#{member['user_name']}") %>
-           <% if @profileuser.id == @account.id %>
-			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend">Remove</button>
-			 <% end %>
            
                 
            <p class="profile-info">( <%= if member.user_type==2 

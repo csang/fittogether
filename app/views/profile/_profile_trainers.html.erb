@@ -1,0 +1,45 @@
+<div class="header" style="top: inherit; position: absolute;">
+    <div class="title">
+        <h2>Trainers</h2>
+    </div>
+
+</div>
+<div class="trainers">
+	
+<% if @trainers.present? %>
+<% @trainers.each do |member| %>
+
+	<div class="trainer">
+		<div class="personal_data">
+			<div class="avatar">
+			<% img = useravatar(member) %>
+			  <%= link_to(image_tag(img), "/#{member['user_name']}") %>
+			</div>
+			<div class="data">
+				<div class="header">
+					<div class="name">
+						<h2><%= link_to(member.first_name, "/#{member['user_name']}") %></h2>
+					</div>
+					<div class="actions">
+						  <button class="msgt" data-id="<%= Base64.encode64(member.id.to_s)%>" data-toggle="modal" data-target="#messageForm">Message</button>
+						 <%= link_to('<button>Make Appt</button>'.html_safe, "/#{member['user_name']}/appointments" ) %>
+					</div>
+				</div>
+				<div class="body">
+					<p>Specialties: <span> <%= member.account_trainer.fitness_discpline.present? ? member.account_trainer.fitness_discpline.capitalize : 'N/a' %></span></p>
+					<p>Classes: <span> <%= get_trainer_class(member.id) %></span></p>
+					<!--<p>Schedule: MWF 1PM-9PM</p> -->
+				</div>
+			</div>
+		</div>		
+	</div>
+<% end %>
+<% end %>	
+</div>
+<script>
+$(document).on("click", ".msgt", function () {
+     var id = $(this).attr('data-id');
+     $(".modal-footer #sendmessage").attr( "data-rip" ) = id;
+   
+});
+</script>

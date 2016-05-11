@@ -3,17 +3,18 @@ class FeedController < ApplicationController
   before_action :get_account  # will return @account
   respond_to :html, :js, :json
   include FeedHelper
+  require 'open-uri'
  
 
   def index
     @data = (session[:account].present?) ? session[:account] : nil;
     @profile = 'feed'
-    
+     frnds = get_frineds_ids(@account.id)
     if params[:tag]
-      @posts = Post.tagged_with(params[:tag])
-      
+      @posts = Post.tagged_with(params[:tag]).paginate(:page => params[:page],:per_page => 10)        
     else
-      @posts = Post.where(:status=>1, :group_id => nil).order("id DESC")
+      #@posts = Post.where(:status=>1, :group_id => nil).order("id DESC")
+       @posts = Post.where("status = ? AND account_id = ? OR (account_id IN (?) AND share_with = ? ) OR share_with = ?   ",1 , @account.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 10)
     end  
     #abort(session[:oauth_token].inspect)
     if  session[:oauth_token].present?
@@ -22,6 +23,7 @@ class FeedController < ApplicationController
       if @acc.present?
         if @acc.update_attributes(:uid =>session[:uid],:oauth_token =>  session[:oauth_token], :access_secret =>session[:oauth_secret])
           flash[:notice] = "User connected with fitbit ."
+          set_fitbit() # add data to table
           session.delete(:oauth_token)
         else 
           flash[:error] = "Please try again."
@@ -29,16 +31,16 @@ class FeedController < ApplicationController
       end	
 	
     end
-
-  end
+ end
   
   def create_post
     #abort(params.inspect)
     if request.xhr?   
-      #abort(params[:feed][:share_with].inspect)
-	    @posts =  Post.create(:account_id=>@account.id,:text=>params[:posttextnew],:image=>params[:photo],:video=>params[:video], :status=>1,:share_with=>params[:feed][:share_with])	        
-      
-      respond_to do |format|
+       share = params[:feed].present? ? params[:feed][:share_with] : params[:profile_fit_feed][:share_with] 
+       post_type = (params[:video].present? || params[:image].present? ) ? 'video' : 'text' 
+       post_type = params[:post_type].present? ? params[:post_type] : 'text' 
+       @posts =  Post.create(:account_id=>@account.id,:text=>params[:posttextnew],:image=>params[:image],:video=>params[:video], :status=>1,:share_with=> share, :post_type => post_type )	        
+       respond_to do |format|
         if @posts.save!
           params[:posttextnew].split.select {|w|         
             if  w[0] == "@" 
@@ -113,20 +115,20 @@ class FeedController < ApplicationController
   
   
   def create_album
-    album =  Album.create(:account_id => @account.id, :title =>'untitled')
-    if album
-      @image =  AlbumImage.create(:album_id=>album.id, :image=> params[:album])
-	  		
-			if @image.id.present?
-				redirect_to :action => "show_album", :id => album.id
-      else
+   
+      album =  Album.create(:account_id => @account.id, :title =>'untitled')
+      if album
+      @image =  AlbumImage.create(:album_id=>album.id, :image=> params[:album] )
+	  	if @image.id.present?
+		   redirect_to :action => "show_album", :id => album.id
+       else
         flash[:error] = @image.errors.messages[:image].to_sentence  
-			  redirect_to request.env['HTTP_REFERER'] and return
-			end 
-		else
+		redirect_to request.env['HTTP_REFERER'] and return
+	   end 
+	  else
       flash[:error] = @image.errors.full_messages.first
       redirect_to request.env['HTTP_REFERER'] and return
-    end 	        
+	 end 	        
 	
 	end
   
@@ -194,22 +196,20 @@ class FeedController < ApplicationController
   def delete_post
  
     if request.xhr?    
+   
       id = Base64.decode64(params[:postid])
       if params[:gadminid].present?
-        groupadminid = Base64.decode64(params[:gadminid])
-        
-        if  groupadminid.to_i == @account.id.to_i
-          
-          @post =  Post.where(:id=>id).first 
-         
+        groupadminid = Base64.decode64(params[:gadminid])        
+        if  groupadminid.to_i == @account.id.to_i          
+          @post =  Post.where(:id=>id).first          
         else
           @post =  Post.where(:id=>id, :account_id => @account.id).first  
         end
       else     
         @post =  Post.where(:id=>id, :account_id => @account.id).first
-      end
+       end
       
-      if @post.destroy 
+      if @post.delete 
         render :json => id  and return      
       else
         render :json => 0  and return     
@@ -245,6 +245,23 @@ class FeedController < ApplicationController
     end
     
   end
+  
+  def edit_post
+ 
+    if request.xhr?    
+      post =  Post.where(:id=>params[:id], :account_id => @account.id).first
+      if post.present?
+		  if post.update_attribute(:text, params[:text])
+			 render :json => 1  and return        
+		  end
+	  else 
+            render :json => 0  and return     
+      end
+    
+    end
+  
+  end
+  
   
   def delete_album
     #render :layout => false
@@ -297,11 +314,71 @@ class FeedController < ApplicationController
     
   end
   
+    def give_kudos # add delete kudos
+		if request.xhr?    
+		  post_id = Base64.decode64(params[:post_id])     
+		  kudos =  Kudos.where(:post_id=>post_id, :account_id=> @account.id).first   
+		  if kudos.present? && kudos.destroy 
+			  render :json => 1  and return    
+		  else
+			  kudos = Kudos.create(:post_id=>post_id, :account_id=> @account.id)
+			  if kudos 
+			  	 render :json => 1  and return    
+			  else
+			      flash[:error] = kudos.errors.full_messages.first
+			  end  
+		  end
+		
+		end
+  
+  end
+  
+  def check_in
+      
+     
+	  check_in = Checkin.create(checkin_params.merge(account_id: @account.id))	
+      if check_in.save!  
+        render :json => 1  and return     
+      else
+		render :json => 0  and return   
+      end 	
+  
+  end
+  
+  
+  def scrap_link
+
+   doc = Nokogiri::HTML(open(params[:lnk]))   
+   @title = doc.css('title').text
+   contents = doc.search("meta[name='description']").map { |n| 
+	  n['content'] 
+	}
+	@contents = contents.join(" ")
+	@author = doc.search("author")
+	@img = doc.at_xpath("//img[@width > 50 ]/@src ")
+	if @img.present?	
+		@image =  @img	
+		unless @img[/\Ahttp:\/\//] || @img[/\Ahttps:\/\//]
+			@image = params[:lnk] + '/' + @img
+		end
+    end
+    respond_to do |format|
+		format.js
+    end 
+
+
+
+  
+  end
+  
    
   private
   def feedback_params
     params.permit(:category_id, :feedback)
   end
-    
+  
+   def checkin_params
+    params.permit(:location, :account_gym_id)
+  end  
     
 end # end of class

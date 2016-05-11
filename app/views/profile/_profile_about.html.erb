@@ -1,7 +1,7 @@
 <div class="profile_about_view">
-  <div class="profile_data">
+  <div class="profile_data profile_new">
     <div class="profile_about">
-      <div class="head_box">
+      <div class="head_box header">
         <h2>About</h2>
       </div>
       <div class="about">
@@ -110,6 +110,8 @@
         </ul> -->
       </div>
     </div>
+	</div>
+</div>
  <% if @profileuser.user_type ==1 || @profileuser.user_type ==2 %>   
  <div class="profile_analytics">
       <div class="fitpoints">
@@ -119,15 +121,15 @@
         <div class="data">
           <div>
             <h4>Total</h4>
-            <h1><%= @profileuser.reward_points.present?  ? @profileuser.reward_points - (@profileuser.reward_points_lost.present? ? @profileuser.reward_points_lost : 0 ): @profileuser.reward_points_lost.present? ? ' -' + @profileuser.reward_points_lost.to_s : 0   %></h1>
+            <h2><%= @profileuser.reward_points.present?  ? @profileuser.reward_points - (@profileuser.reward_points_lost.present? ? @profileuser.reward_points_lost : 0 ): @profileuser.reward_points_lost.present? ? ' -' + @profileuser.reward_points_lost.to_s : 0   %></h2>
           </div>
           <div>
             <h4>Earned</h4>
-            <h1><%= @profileuser.reward_points.present? ? @profileuser.reward_points : '0' %></h1>
+            <h2><%= @profileuser.reward_points.present? ? @profileuser.reward_points : '0' %></h2>
           </div>
           <div>
             <h4>Lost</h4>
-            <h1><%= @profileuser.reward_points_lost.present? ? @profileuser.reward_points_lost : '0' %></h1>
+            <h2><%= @profileuser.reward_points_lost.present? ? @profileuser.reward_points_lost : '0' %></h2>
           </div>
         </div>
       </div>
@@ -139,15 +141,15 @@
         <div class="data">
           <div>
             <h4>Total</h4>
-            <h1><%= @allchalenge.present? ? @allchalenge : '' %></h1>
+            <h2><%= @allchalenge.present? ? @allchalenge : '' %></h2>
           </div>
           <div>
             <h4>Expire</h4>
-            <h1><%= @chal.present? ? @chal : ''  %> </h1>
+            <h2><%= @chal.present? ? @chal : ''  %> </h2>
           </div>
           <div>
             <h4>Active</h4>
-            <h1><%=  @allchalenge.present? ? @allchalenge - @chal : '' %></h1>
+            <h2><%=  @allchalenge.present? ? @allchalenge - @chal : '' %></h2>
           </div>
         </div>
       </div>
@@ -159,15 +161,15 @@
         <div class="data">
           <div>
             <h4>Steps</h4>
-            <h1><%= @profileuser.fitbit.present? ? number_to_human(@profileuser.fitbit.steps , :format => '%n%u', :units => { :thousand => 'K' }) : '0'  %> </h1>
+            <h2><%= @profileuser.fitbit.present? ? number_to_human(@profileuser.fitbit.steps , :format => '%n%u', :units => { :thousand => 'K' }) : '0'  %> </h2>
           </div>
           <div>
             <h4>Calories</h4>
-            <h1><%= @profileuser.fitbit.present? ? number_to_human(@profileuser.fitbit.summary_calories , :format => '%n%u', :units => { :thousand => 'K' }) : '0'  %></h1>
+            <h2><%= @profileuser.fitbit.present? ? number_to_human(@profileuser.fitbit.summary_calories , :format => '%n%u', :units => { :thousand => 'K' }) : '0'  %></h2>
           </div>
           <div>
             <h4>Distance</h4>
-            <h1><%= @profileuser.fitbit.present? ? @profileuser.fitbit.distance : '0'  %><span>M</span></h1>
+            <h2><%= @profileuser.fitbit.present? ? @profileuser.fitbit.distance : '0'  %><span>M</span></h2>
           </div>
         </div>
       </div>

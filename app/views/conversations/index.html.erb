@@ -1,8 +1,9 @@
 
-<div class="events">
+<div class="events convers-main">
   <div class="ad-btn">
   </div>	
   <div class="conver-area">
+	  <div class="convers-row">
     <div class="conver-left" id="conver">
       <div class="" id="tblData">
         <% if @conversation.present? %>
@@ -44,11 +45,12 @@
         </ul>
       </div>
     </div>
-    <div class="conver-right">
+    <div class="conver-right conver-md">
       <%= render(:partial => 'conversations/conversations', :message => @messages) %>
     </div>
+    </div>
     <% if !@messages.present? %>
-      <div style="display:inline-block; width:100%;">
+      <div class="convers-row">
         <h2 class="noti-heading">  No Message found</h2>
         <div class="conver-btn text-center"><button class="newmsf btn btn-primary" data-toggle="modal" data-target="#messageForm" >New Message</button></div>
       </div>

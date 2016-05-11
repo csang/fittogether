@@ -1,0 +1,41 @@
+	<% if @weekly_appointments.present? %>
+				<% @weekly_appointments.each do |wa| %>
+				<div class="appointment today">
+					<div>
+						<h2><%= wa.appointment_date.strftime("%a, %b %d") %></h2>
+					</div>
+					<div class="stat">
+						<div class="spots">
+							<div class="morning appointment_select">
+								<h3>Morning</h3>
+								<% if wa.morning_start_time.present? %>
+								<p><%= wa.total_slot %> Available</p>
+								<% else %>
+									<p>Not Available</p>
+								<% end %>
+							</div>
+							<div class="afternoon appointment_select">
+								<h3>Afternoon</h3>
+								<% if wa.afternoon_start_time.present? %>
+								<p><%= wa.total_slot %> Available</p>
+								<% else %>
+									<p>Not Available</p>
+								<% end %>
+							</div>
+							<div class="evening appointment_select">
+								<h3>Evening</h3>
+									<% if wa.evening_start_time.present? %>
+								<p><%= wa.total_slot %> Available</p>
+								<% else %>
+									<p>Not Available</p>
+								<% end %>
+							</div>
+						</div>
+					</div>
+					<div class="roster">
+					
+						
+					</div>
+				</div>
+				<% end %>
+				<% end %>

@@ -700,9 +700,302 @@ $(document).ready(function () {
             $(element).removeClass("error");
         }
     });
+    // start of feed page js
     
+
+   window.globalVariable = [];
+   window.globalVariableforComment = [];
+
+    $(document).on('click', '.post-delete', function() {
+      if (confirm("Do you want to delete post ?")) {
+        var toid = $(this).attr('data-id');
+
+        var that = this;
+        $.ajax({
+          type: "DELETE",
+          url: '/deletepost/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {postid: toid},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+          // $('#' + data).fadeOut();
+            $(that).parent().parent('div').fadeOut();
+
+            $('.flash-message').html('<div class="alert alert-success"> Post has been deleted successfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+    });
+
+
+    $(document).on('click', '.post_comment', function(e) {
+      var that = $(this);
+      console.log(globalVariableforComment);
+      var textnew = $(this).siblings('textarea').val(); 
+      var textold = $(this).siblings('textarea').val();
+      if (globalVariableforComment.length > 0 ) {
+       $.each(globalVariableforComment, function( key, valu ) {   
+         textnew  =    textnew.replace(valu.key, valu.value);
+         console.log(textnew);
+       });  
+     
+      }
+        var text = textnew!='' ? textnew : textold
+        if (text == '') {
+		  $(this).siblings('textarea').attr('placeholder',"Don't forget to type your comment");	
+          return false;
+        }
+        var postid = $(this).attr('data-id');
+ 
+        $.ajax({
+          type: "POST",
+          url: '/create_comment/', //sumbits it to the given url of the form
+          data: {text: text, post: postid},
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          }
+        }).success(function(data) {
+          $("#cmt" + postid + " .comment_container").append(data);
+         that.siblings('textarea').val('');
+         	var height = that.parent().parent().find('.comment_container').height() + that.parent().parent().find('.add_comment').height() + 37;
+			that.parent().parent().css('height',height).find('.add_comment textarea').attr('placeholder',"Start commenting here...").val('').focus();
+
+
+        });
+
+     
+
+    });
+
+    var options = {
+      type: "POST",
+      url: '/create_post/', //sumbits it to the given url of the form
+      dataType: "HTML",
+      beforeSubmit: beforeSubmit,
+      success: function(data) {
+        $("#feed").prepend(data);
+        $("#photo").val('');
+        $("#video").val('');
+        $(".posttext").val('');
+        $('.post_type').remove();
+        $('.lnk').html('')
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        console.log(JSON.stringify(xhr, null, 4));
+        $('.flash-message').html('<div class="alert alert-danger"> Please Try again!').show();
+      }
+
+
+    };
+
+    $("#share_post").click(function(e) {
+     console.log(globalVariable);
+      var posttextnew = $('.posttext').val(); 
+      var postextold = $('.posttext').val();
+      if (globalVariable.length > 0 ) {
+       $.each(globalVariable, function( key, valu ) {   
+         posttextnew  =    posttextnew.replace(valu.key, valu.value);
+         console.log(posttextnew);
+       });       
+      }         
+     $('#posttext').val(posttextnew!='' ? posttextnew : postextold) 
+     if ($('.post_type').val() == 'link') {
+		 $('#posttext').val($('.lnk').html());
+	 }	 
+      e.preventDefault();     
+      $('#update_post').ajaxSubmit(options);
+    });
+
+
+    $(document).on('click','.comment-delete', function() {
+      if (confirm("Do you want to delete comment?")) {
+        var toid = $(this).attr('data-id');
+
+        var mydata = {'id': toid};
+        var that = this;
+        $.ajax({
+          type: "DELETE",
+          url: '/deletecomment/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: mydata,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#scont' + data).fadeOut();
+            $('.flash-message').html('<div class="alert alert-success"> Comment has been deleted successfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+    });
+
+ $(".search-comment").on('keyup', '.comment',function(e) {
+  var that = this
+    if ($(this).val().indexOf("@") != -1) {
+      var ind = $(this).val().indexOf("@");
+      var keywords = $(this).val().substr(ind + 1);
+     
+      if (keywords != '') {
+
+        $.ajax({
+          type: "POST",
+          url: '/search_user/' + keywords + '/type/ /' + 'post', //sumbits it to the given url of the form
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+         
+            $(that).siblings('.arport2').show()
+            $(that).siblings('.arport2').html(data)
+
+
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status)
+
+          }
+
+        });
+      }
+    }else {
+    $(that).siblings('.arport2').hide()
+    }
+  });
+  
+  $(document).on('click', '.kudos', function(e) {
+	  
+          var postid = $(this).attr('data-id');
+          var classs = $(this).children('div').attr('class');
+          var that = $(this);
+	      $.ajax({
+          type: "POST",
+          url: '/give_kudos/', //sumbits it to the given url of the form
+          data: {post_id: postid},
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          }
+          }).success(function(data) {
+			  if (data == 1) {
+			    	$(that).children('div').toggleClass('icon icon-liked');			
+			  }	
+        });
+
+    });
+
+  
+    $(document).on("click", '.show_comment', function() {
+      if ($(this).parent().siblings('.comment_box').is(':hidden')) {
+        $(this).parent().siblings('.comment_box').slideDown();
+        $(this).parent().siblings('.comment_box').children('.add_cmnt').val('');
+      } else {
+        $(this).parent().siblings('.comment_box').slideUp();
+      }
+    });
     
+// pagination code
+	  if ($('.pagination').length) {
+		$(window).scroll(function() {
+		  var url = $('.pagination .next_page').attr('href');
+		  if (url && $(window).scrollTop() > $(document).height() - $(window).height() - 50) {			
+			$('.pagination').text("Please Wait...");
+			return $.getScript(url);
+		  }
+		});
+		return $(window).scroll();
+	  }
+	  
+	     $("#gym_class_form").validate({
+        rules: {
+            'specialty_id': {
+                required: true,
+              },
+              'trainer_id':{
+             required: true,
+                 
+              },
+              'class_time' :{
+                required: true,
+              },
+              'duration' :{
+                required: true,
+              },
+              'class_date' :{
+                required: true,
+              },
+              'total_slot' :{
+                required: true,
+              }
+        },
+        messages: {
+            'specialty_id': {
+                required: 'Please enter text.',
+                
+            },
+              'trainer_id':{
+                required: 'Please select trainer.',
+               
+              },
+              'class_time' :{
+                required: 'Please select class time.',
+              },
+              'duration' :{
+                required: 'Please select duration.',
+              },
+              'class_date' :{
+                required: 'Please select class date.',
+              },
+              'total_slot' :{
+                required: 'Please select total slot.',
+              }
+        },
+	  
+    }); 
     
+         $("#gym_trainers_form").validate({
+        rules: {
+            'trainer_id':{
+             required: true,
+                 
+              },
+              'appointment_date' :{
+                required: true,
+              },
+              'total_slot' :{
+                required: true,
+              }
+        },
+        messages: {
+             'trainer_id':{
+                required: 'Please select trainer.',
+               
+              },
+              'appointment_date' :{
+                required: 'Please select date.',
+              },
+              'total_slot' :{
+                required: 'Please select total slot.',
+              }
+        },
+	  
+    }); 
+
     
    
 }); // end of document dot ready
@@ -749,6 +1042,64 @@ function sse() {
         alert("Whoops! Your browser doesn't  receive server-sent events.");
     }
 }
+
+//function to check file size before uploading.
+  function beforeSubmit() {
+
+    if ($('.posttext').val() == '') //check empty input filed
+    {
+      $('.flash-message').html('<div class="alert alert-danger"> Please Enter Text!').show();
+      return false;
+    }
+    //check whether browser fully supports all File API
+    if (window.File && window.FileReader && window.FileList && window.Blob)
+    {
+
+
+
+      if (!$('#photo').val()) //check empty input filed
+      {
+        return;
+      }
+
+
+
+      var fsize = $('#photo')[0].files[0].size; //get file size
+      var ftype = $('#photo')[0].files[0].type; // get file type
+
+
+      //allow only valid image file types
+      switch (ftype)
+      {
+        case 'image/png':
+        case 'image/gif':
+        case 'image/jpeg':
+        case 'image/pjpeg':
+          break;
+        default:
+          // $("#output").html("Only png, jpg, gif file formats are allowed.");
+          $('.flash-message').html('<div class="alert alert-danger">Only png, jpg, gif file formats are allowed.</div>').show();
+
+          return false
+      }
+
+      //Allowed file size is less than 1 MB (1048576)
+      if (fsize > 10485760)
+      {
+        $('.flash-message').html('<div class="alert alert-danger"> Too big Image file! Please reduce the size of your photo using an image editor.').show();
+
+        return false
+      }
+
+
+    }
+    else
+    {
+
+      $('.flash-message').html('<div class="alert alert-danger"> please upgrade your browser, because your current browser lacks some new features we need!').show();
+      return false;
+    }
+  }
 
 
 

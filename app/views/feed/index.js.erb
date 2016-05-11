@@ -1,0 +1,12 @@
+$('#feed').append('<%= j render(:partial => 'feed') %>');
+<% if @posts.next_page %>
+  $('.pagination').replaceWith('<%= j will_paginate @posts %>');
+  $('.loading-image').css("display", "inline-block");
+<% else %>
+  $(window).off('scroll');
+  $('.pagination').remove();
+  $('.loading-image').css("display", "none");
+<% end %>	 
+
+
+

@@ -1,43 +1,51 @@
-<div class='privacy_settings'>
+<div id="privacy">
 	<%= form_for @page, :url=>{:action=>'update_privacy'}, :html=>{:class=>'about_form'} do |f| %>
 	
-	<table style="width:100%">
-
-	<tr>
-	  <td></td>
-	  <td style="width:50px">Show</td> 
-	  <td style="width:50px">Hide</td>
-	  <td style="width:20px"></td>
-	</tr>
+	  
     
 	<% @privacies.each do|privacy| %>
-	<tr>
-	  <td><%= privacy.name %></td>
+	<div class="input_container">
+	  <label><%= privacy.name %></label>
 	  <% is_private = isprivate(privacy.slug) %>
 	 
 	  <%# is_private = @account.is_private(privacy.id); %>
 	  <% if is_private == 123 %>
 	
-	  <td><input type='radio' name='<%= privacy.slug; %>' value='1' checked ><div class="radio"><div class="checked"></div></div></td> 
-	  <td><input type='radio' name='<%= privacy.slug; %>' value='0' ><div class="radio"><div class="checked"></div></div></td>
+	    <div class="radio_button">
+                <div class="radio checked">
+                    <p>Show</p>
+                    <input type='radio' name='<%= privacy.slug; %>' value='1' checked >
+                    </div>
+	            <div class="radio">
+                    <p>Hide</p>
+                    <input type='radio' name='<%= privacy.slug; %>' value='0' >
+                    </div>
+              </div>
+        </div>      
 	  <% else %>
-	  <td><input type='radio' name='<%= privacy.slug; %>' value='1' <%= is_private ? 'checked' : nil %>><div class="radio"><div class="checked"></div></div></td> 
-	  <td><input type='radio' name='<%= privacy.slug; %>' value='0' <%= is_private ? nil : 'checked' %>><div class="radio"><div class="checked"></div></div></td>
+	   <div class="radio_button">
+                <div class="radio <%= is_private ? 'checked' : nil %>">
+                    <p>Show</p>
+                    <input type='radio' name='<%= privacy.slug; %>' value='1' <%= is_private ? 'checked' : nil %>>
+                 </div>
+	           <div class="radio <%= is_private ? nil : 'checked' %>">
+                    <p>Hide</p>
+                    <input type='radio' name='<%= privacy.slug; %>' value='0' <%= is_private ? nil : 'checked' %>>
+                    </div>
+                </div>
+        </div>       
 	  <% end %>
-	  <td></td>
-	</tr>
+	
 	<% end %>
-
-	</table>
-	<div class="button-row">
-	<button id="save_changes" type="submit" disabled>Save Changes</button>
+	<div class="submit_container">
+	<button id="save_changes" type="submit">Save Changes</button>
 	</div>
 <% end %>
 </div>
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		// var inputs = $('input:radio');
-		$('.privacy_settings input:radio').change(Settings.validate_privacy);
+		 $('div.radio input[type="radio"]').click(Settings.check_radio);
+		//$('.privacy_settings input:radio').change(Settings.validate_privacy);
 	});
 </script>

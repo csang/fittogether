@@ -1,4 +1,4 @@
-
+<div id="social">
 <%= form_for @page,:url=>{:action=>'update_social_settings'},:html=>{:id => "social_settings_form",:class=>'about_form'} do |f| %>
   <%=  render 'settings_about_account', {'account_details' => @account_details}  %>
   <% if @account_type.to_i == 2 %>
@@ -7,8 +7,9 @@
   <%  else %>
   
   <% end %>
-
-  <input class="btn btn-primary" type="submit" value="save">
-  <a class="btn btn-default bck" onclick='window.history.go(-2)' href="javascript:void(0);" title="Cancel">Cancel</a>
-
+   <div class="submit_container">
+  <button class=" submit btn btn-primary" type="submit"> Save</button>
+  <a class="submit btn btn-default bck" onclick='window.history.go(-2)' href="javascript:void(0);" title="Cancel">Cancel</a>
+ </div>
   <% end %>
+  </div>

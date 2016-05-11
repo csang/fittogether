@@ -1,0 +1,56 @@
+<% if @gym_class.present? %>
+			<% @gym_class.each do |gc| %>
+				<div class="class">
+					<div>
+						<div><div class="avatar activity spinning"><h3></h3></div></div>
+						<div>
+							<h2><%= gc.specialty.name %> @ <%= gc.class_time %> <span><%= gc.duration %> Min</span></h2><br>
+							<p>With <a href=""><%= gc.trainer.first_name.capitalize %> <%= gc.trainer.last_name.present? ? gc.trainer.last_name.capitalize : '' %></a></p>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="spots">
+							<div class="radial-progress" data-progress="50"> <!-- For data-progress, (occupied spots)/max)*100  -->
+								<div class="circle">
+									<div class="mask full">
+										<div class="fill"></div>
+									</div>
+									<div class="mask half">
+										<div class="fill"></div>
+										<div class="fill fix"></div>
+									</div>
+									<div class="shadow"></div>
+								</div>
+								<div class="inset">
+									<div class="percentage">
+										<div class="numbers"><p><span class="count" data-count="5"></span><span class="max" data-count="10"><%= gc.total_slot %></span></p></div>
+									</div>
+								</div>
+							</div>
+							<p class="label">Spots</p>
+						</div>
+						<!--<div class="action"><button class="add">+</button></div>-->
+					</div>
+					<div class="roster">
+						<div class="list">
+							<div>
+								<div class="gymnast">
+									<div class="position"><p>1.</p></div>
+				                    <div class="avatar"><img src="" title="Michael Jordan" alt="MJ"></div>
+				                    <div class="name"><p>Michael Jordan</p></div>
+								</div>
+								<div class="actions">
+									<button class="remove">Remove</button>
+									<button class="change">Change</button>
+								</div>
+							</div>
+							
+						</div>
+						<div class="view"><p></p></div>
+					</div>
+					
+				</div>
+				<% end %>
+				<% else %>
+				<h4 class="noti-heading">No class available.</h4>
+				<% end %>

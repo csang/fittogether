@@ -1,8 +1,8 @@
 <%= render(:partial => '/nav/classvar') %>
-<div id="form">	
-  <div class="profile_pic">
+<div id="basic">
     <form novalidate="novalidate" method="post" enctype="multipart/form-data" action="update_avatar" accept-charset="UTF-8">
-    <span class="image"> 
+    <div class="input_container avatar_input">
+                            <div class="avatar image">
        <% if !@account.avatar.blank? %>
           <%= image_tag @account.avatar(:thumb) %>
           <% elsif !@account.pic.blank? %>
@@ -10,46 +10,43 @@
             <% else %>
             <%= image_tag 'default.png' %>
           <% end %>
-    </span>
-    <span class="upload">Upload Profile Picture</span>
-    <input type="file" name="avatar" onchange="this.form.submit()" accept="image/*">
-  </div>
+    </div>
+     
+    <input type="file" name="avatar" onchange="this.form.submit()" accept="image/*"> 
+   
+     <p>Upload Profile Picture</p>
+        </div>
   </form>
-  <div class="profile_info">
-    <%= form_for @page, :url=>{:action=>'update_profile'} , :html=>{ :id=>'updateprofile'} do |f| %>
-    
-    <div id="profile_info">
-      <div class="name row">
-        <h2>NAME</h2>
-        <div class="input">
-			<div class="ctrol-row">
-				<label for="fname">FIRST*</label>
-				<input type="text" name="fname" maxlength="50" value="<%= @account['first_name'] %>">
-			</div>
-			<div class="ctrol-row">
-				<label for="lname">LAST*</label>
-				<input type="text" name="lname" maxlength="50" value="<%= @account['last_name'] %>">
-			</div>
-        </div>
-      </div>
 
-      <div class="username row">
-        <h2>USERNAME*</h2>
-        <div class="input">
-          <input type="text" class="check_data" name="username" maxlength="50" value="<%= @account['user_name'] %>"> &nbsp;
+    <%= form_for @page, :url=>{:action=>'update_profile'} , :html=>{ :id=>'updateprofile',:class=>'setting_error'} do |f| %>
+    
+ 
+      <div class="input_container">
+        <label for="fname">First Name:*</label>
+        <input type="text" name="fname" maxlength="50" value="<%= @account['first_name'] %>">
         </div>
+        
+        
+      <div class="input_container">
+        <label for="lname">Last Name:*</label>
+        <input type="text" name="lname" maxlength="50" value="<%= @account['last_name'] %>">
+        </div>
+        
+       <div class="input_container">
+        <label> Username:*  </label>
+        
+          <input type="text" class="check_data" name="username" maxlength="50" value="<%= @account['user_name'] %>">
+        
       </div>
-      <div class="url row">
-        <h2>WEBSITE URL</h2>
-        <div class="input">
+      <div class="input_container">
+        <label>Website Url:</label>
           <input type="text" class="" name="url" value="<%= @account['account_url'] %>">
-        </div>
       </div>
-      <div class="mobile row">
-        <h2>MOBILE</h2>
-        <div class="input">
+      <div class="input_container mobile">
+        <label>Mobile:</label>
+      
           <input type="text" name="mobile[]" maxlength="3" value="<%= @account.mobile.to_s[0..2] %>"><input type="text" name="mobile[]" maxlength="3" value="<%= @account.mobile.to_s[3..5] %>"><input type="text" name="mobile[]" maxlength="4" value="<%= @account.mobile.to_s[6..9] %>" data-index="last">
-        </div>
+      
       </div>
        <% provider =  'auth0' %>
           
@@ -59,43 +56,45 @@
 				
 				
     
-      <div class="password row">
-        <button id="save_changes" type="submit">Save Changes</button>  <% if provider == 'auth0' %>      
-        <span id="change_password">Change Password</span>
-        <% end %>
+      <div class="submit_container">
+        <button id="save_changes" type="submit">Save</button> 
+         <%# if provider == 'auth0' %>      
+            <button id="change_password" type="button">Change Password</button>   
+         <%# end %>
       </div>
       
-    </div>
+    
     <% end %>
-  <%= form_for @page, :url=>{:action=>'#'}, :html=>{:class=>'about_form', :id=>'updatepassword'} do |f| %>
+  <%= form_for @page, :url=>{:action=>'#'}, :html=>{:class=>'about_form setting_error', :id=>'updatepassword'} do |f| %>
     <!-- array('action' => 'update_password') -->
     <div  id="password_info" style="display:none;">
-    <!--  <div class="change row">
+  
+    <!--  <div class="input_container">
         <h2>Current Password:</h2>
         <div class="input">
           <input type="password" name="current_password">
         </div>
       </div>-->
-      <div class="change row">
-        <h2>New Password:</h2>
-        <div class="input">
-          <input type="password" name="new_password" id="new_password">
+      
+      <div class="input_container">
+        <label>New Password:</label>
+           <input type="password" name="new_password" id="new_password">
         </div>
-      </div>
-      <div class="change row">
-        <h2>Verify New Password:</h2>
-        <div class="input">
-          <input type="password" name="verify_password">
-        </div>
-      </div>
-      <div class="change row">
-        <button id="save_password" type="button" >Save Password</button><span id="cancel_password">Cancel</span>
+      <div class="input_container">
+        <label>Verify New Password:</label>
+             <input type="password" name="verify_password">
+       </div>
+      <div class="submit_container">
+        <button id="save_password" type="button" >Save Password</button>
+        <button id="cancel_password" type="button">Cancel</button>
       
       </div>
     </div>
   </div>
 </div>
+</div>
 <% end %>
+</div>
 <script>
   
   
@@ -154,6 +153,22 @@
         
     
     }
+    });
+    
+       function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#cropbox').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#imgInp").change(function(){
+        readURL(this);
     });
     
     	

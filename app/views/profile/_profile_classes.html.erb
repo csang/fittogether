@@ -1,0 +1,153 @@
+<div class="header">
+    <div class="title">
+        <h2>Upcoming Classes</h2>
+    </div>
+    <div class="actions">
+    	<select name="classes_when"  class="classes_when">
+    		<option selected value="<%= Date.today %>">Today</option>
+    		<option value="<%= Date.tomorrow %>">Tomorrow</option>
+    		<option value="1">Calendar</option>
+    	</select>
+    </div>
+</div>
+<div class="upcoming_classes">
+		<% if @gym_class.present? %>
+			<% @gym_class.each do |gc| %>
+	<div class="class">
+		<div>
+			<div><div class="avatar activity cardio_circuit"><h3></h3></div></div>
+			<div>
+				<h2><%= gc.specialty.name %> @ <%= gc.class_time %> <span><%= gc.duration %> Min</span></h2><br>
+				<p>With <a href=""><%= gc.trainer.first_name.capitalize %> <%= gc.trainer.last_name.present? ? gc.trainer.last_name.capitalize : '' %></a></p>
+			</div>
+		</div>
+		<div>
+			<div class="spots">
+				<div class="radial-progress" data-progress="0">
+					<div class="circle">
+						<div class="mask full">
+							<div class="fill"></div>
+						</div>
+						<div class="mask half">
+							<div class="fill"></div>
+							<div class="fill fix"></div>
+						</div>
+						<div class="shadow"></div>
+					</div>
+					<div class="inset">
+						<div class="percentage">
+							<div class="numbers"><p>
+								<span class="count" data-count="<%= get_booked_class_count(gc.id) %>"><%= get_booked_class_count(gc.id) %></span>
+								<span class="max" data-count="<%= gc.total_slot %>">/<%= gc.total_slot %></span></p></div>
+						</div>
+					</div>
+				</div>
+				<p class="label">Spots</p>
+			</div>
+			<% if @account.user_type != 3 %>
+				<% prsnt = check_class_attendance(gc.id) %>
+				
+				<% if prsnt == nil %>
+					 <div class="action" id="<%= Base64.encode64(gc.id.to_s) %>"><button class="add">+</button></div>			
+				<% else %>
+				<div class="action" id="<%= Base64.encode64(gc.id.to_s) %>"><button class="remove">-</button></div>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+	<% end %>
+	<% else %>
+	<h4 class="noti-heading"> No Class Found</h4>
+	<% end %>
+	
+</div>
+
+<script  type="text/javascript">
+$(function() {
+	if(typeof Trainer !== 'undefined'){
+    	$('#feed_container .upcoming_classes .class > div .action button').click(Trainer.add_or_remove_spot);
+	}else if(typeof Gym !== 'undefined'){
+    	$('#feed_container .upcoming_classes .class > div .action button').click(Gym.add_or_remove_spot);
+	}
+	
+	// attend or not attend class
+	 $(document).on('click','.action', function(){
+      var class_id = $(this).attr('id');
+      $.ajax({
+       type: "POST",
+          url: '<%= attend_class_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {gym_class_id: class_id},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+			   $('.flash-message').html('<div class="alert alert-success"> success</div>').show();
+       		console.log(data);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+      
+      });
+     });
+     
+     function showDatepicker()
+	{
+    // Don't  show more then 1
+    if($("#datpicker").length) return;
+  
+    $(this).after("<div id='datpicker' style='position:absolute; right:0px;'></div>");
+    var _tmp = $("#datpicker").datepicker({
+		 minDate: 1,
+		 dateFormat: 'yy-mm-dd',
+		 onSelect: function(date) {
+				 show_classes($(this).val());
+				 $('#datpicker').hide();
+			 },
+    });
+	}
+     
+             // get gym class detail 
+     $('.classes_when').on('change', function(){
+      var tareek = $(this).val();
+    
+       if (tareek == 1) {
+		  showDatepicker.call(this);
+        }   
+        else
+        {
+             $("#datpicker").remove();  
+              show_classes(tareek)
+        } 
+         });
+         
+       
+          
+    var show_classes = function(tareek){
+		  var id = '<%=  @profileuser.present? ? @profileuser.id : '' %>';
+		  $.ajax({
+         type: "GET",
+          url: '<%= show_classes_details_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {tareek: tareek, account_id: id},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+       		$('.upcoming_classes').html(data);
+       	
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+      
+      });
+      }
+    
+});
+</script>

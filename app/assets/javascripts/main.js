@@ -1,3 +1,4 @@
+
 var chat = true;
 Main_List_Url = {
 
@@ -9,6 +10,7 @@ Main_List_Url = {
 		
 	},
 };
+
 
 Model_Main_List = {
 
@@ -298,12 +300,205 @@ Chat = {
 		//$('.chat_bar .power').click(this.toggle_chat);
 		$('.chat_bar .contacts').click(this.show_contacts);
 		$('#container #right_side .chat .users .user').click(this.open_new_chat);
+		// new
+		
 	}
 }
+Html_template = {
+	list_of_friends: '<div id="list_of_friends" class="over_cover">'+
+	'<div class="header"><p>Searching for Friends...</p></div>'+
+	'<div class="search" id="search_friend"><input type="text" placeholder="Type Friend\'s Name..."></div> '+
+	'<div class="list"><div class="searching"><p>Searching...</p></div></div>'+
+	'</div>',
+	list_of_groups: '<div id="list_of_groups" class="over_cover">'+
+	'<div class="header"><button type="button" class="create_group" data-toggle="modal" title="Create Group" data-target="#groupForm" >Create Group</button><p>Searching for Groups...</p></div>'+
+	'<div class="search" id="search_hide"><input type="text" placeholder="Type Group\'s Name..."></div>'+
+	'<div class="list"><div class="searching"><p>Searching...</p></div></div>'+
+	'</div>',
+	create_challenge: '<div id="create_challenge" class="over_cover">'+
+	'<div class="header"><p>Create Challenge</p></div>'+
+	'<div class="description"><p>Challenge your friends to see who can generate the most steps, run/walk the most miles<br>or burn the most calories within the timeframe you define. Challenges start upon acceptance.</p></div>'+
+	'<div class="inputs">'+
+		'<div class="type"><label>What type of Challenge?</label><select name="challenge_type"><option selected disabled>Select Challenge Type</option><option>Most Steps</option><option>Most Miles</option><option>Most Calories</option></select></div>'+
+		'<div class="who"><label>Who do you want to Challenge?</label><input type="text" name="friend" placeholder="Select Friend"></div>'+
+		'<div class="time"><label>Challenge Duration:</label><select name="challenge_duration"><option selected disabled>Select Duration</option><option>1 Week</option><option>2 Weeks</option><option>1 Month</option></select></div>'+
+	'</div>'+
+	'<div class="preview">'+
+	'</div>'+
+	'<div class="create"><button>Create Challenge</button></div>'+
+	'</div>'
+}
+
+
+Fit = {
+	
+	  redirect_to_settings: function(e){
+		window.location = Main_List_Url.url('settings');
+	},
+	redirect_home: function(e){
+		window.location = Main_List_Url.url('feed');
+	},
+	write_post: function(e){
+		console.log('write post');
+		$('body').scrollTop(0);
+		$('#feed_container .post_input .container textarea').focus();
+	},
+	show_friends: function(e){
+		Fit.show_dark_cover();
+		var left_offset = $('#side_nav .friends_icon').offset().left + 77 + 'px';
+		$('body').append(Html_template.list_of_friends).find('#list_of_friends').css({'left':left_offset});
+
+		var count = 180;
+		$('#list_of_friends .header p').text(friends.length+' Friends');
+		
+		/* var friends = [{'full_name':'Maria Sharapova','initials':'MS','avatar':'../public/img/profile/mariasharapova_avatar.png'},
+		{'full_name':'Venus Williams','initials':'VW','avatar':'../public/img/profile/venuswilliams_avatar.png'},
+		{'full_name':'Aaron Rodgers','initials':'AR','avatar':'../public/img/profile/aaronrodgers_avatar.png'},
+		{'full_name':'Andrew Luck','initials':'AL','avatar':'../public/img/profile/andrewluck_avatar.png'},
+		{'full_name':'Drew Brees','initials':'DB','avatar':'../public/img/profile/drewbrees_avatar.png'},
+		{'full_name':'Paul George','initials':'PG','avatar':'../public/img/profile/paulgeorge_avatar.png'},
+		{'full_name':'Peyton Manning','initials':'PM','avatar':'../public/img/profile/peytonmanning_avatar.png'},
+		{'full_name':'Richard Simmons','initials':'RS','avatar':'../public/img/profile/richardsimmons_avatar.png'},
+		{'full_name':'Maria Sharapova','initials':'MS','avatar':'../public/img/profile/mariasharapova_avatar.png'},
+		{'full_name':'Venus Williams','initials':'VW','avatar':'../public/img/profile/venuswilliams_avatar.png'},
+		{'full_name':'Aaron Rodgers','initials':'AR','avatar':'../public/img/profile/aaronrodgers_avatar.png'},
+		{'full_name':'Andrew Luck','initials':'AL','avatar':'../public/img/profile/andrewluck_avatar.png'},
+		{'full_name':'Drew Brees','initials':'DB','avatar':'../public/img/profile/drewbrees_avatar.png'},
+		{'full_name':'Paul George','initials':'PG','avatar':'../public/img/profile/paulgeorge_avatar.png'},
+		{'full_name':'Peyton Manning','initials':'PM','avatar':'../public/img/profile/peytonmanning_avatar.png'},
+		{'full_name':'Richard Simmons','initials':'RS','avatar':'../public/img/profile/richardsimmons_avatar.png'}] */
+		$('#list_of_friends .list').empty();
+        $.each(friends,function( index , val) {	
+		  var html = '<a href="/' + val.user_name +'" ><div class="friend"><div class="avatar"><img src="'+val.avatar+'" alt="'+val.initials+'" title="'+val.full_name+'"></div><p>'+val.full_name+'</p></a></div>';
+			$('#list_of_friends .list').append(html);
+		
+		});
+	},
+	show_groups: function(e){
+		Fit.show_dark_cover();
+		var left_offset = $('#side_nav .groups_icon').offset().left + 77 + 'px';
+		$('body').append(Html_template.list_of_groups).find('#list_of_groups').css({'left':left_offset});
+
+		var count = groups.length;
+		$('#list_of_groups .header p').text(count+' Groups');
+
+		/*var groups = [{'full_name':'Sorba','initials':'S','avatar':'../public/img/group/sorba.png'},
+		{'full_name':'Central Florida Divers and Adventurers Clubs','initials':'CF','avatar':'../public/img/group/central_florida_divers_and_adveturers_clubs.png'},
+		{'full_name':'Florida Trail Association Highlanders Hiking Group','initials':'FT','avatar':'../public/img/group/florida_trail_association_highlanders_hiking_group.png'}]
+		*/
+		$('#list_of_groups .list').empty();
+		if (count > 0) {
+			for (var i = groups.length - 1; i >= 0; i--) {
+				var html = '<div class="group"><a href="/groups/'+ btoa(groups[i].id) +'" ><div class="avatar"><img src="'+groups[i].avatar+'" alt="'+groups[i].initials+'" title="'+groups[i].full_name+'"></div><p data="'+groups[i].full_name.toLowerCase() +'">'+groups[i].full_name+'</p></div>';
+				$('#list_of_groups .list').append(html);
+			};
+		} else {
+			   var html = '<div class="group"><p> No group found</p></div>';
+			   $('#search_hide').hide();
+				$('#list_of_groups .list').append(html);
+		}		
+	},
+	show_fitbit: function(e){
+		var self = $(this);
+		if(self.hasClass('selected')){
+			self.removeClass('selected');
+			$('#feed .post').show();
+		}else{
+			self.parent().find('div').removeClass('selected');
+			self.addClass('selected')
+			$('#feed .post:not(.fitbit)').hide();
+			$('#feed .post.fitbit').show();
+		}
+	},
+	show_gym: function(e){
+		var self = $(this);
+		if(self.hasClass('selected')){
+			self.removeClass('selected');
+			$('#feed .post').show();
+		}else{
+			self.parent().find('div').removeClass('selected');
+			self.addClass('selected')
+			$('#feed .post:not(.gym)').hide();
+			$('#feed .post.gym').show();
+		}
+	},
+
+		show_dark_cover: function(e){
+		$('body').append('<div id="dark_cover"></div>').find('> #dark_cover').click(Fit.remove_dark_cover);
+	},
+
+	remove_dark_cover: function(e){
+		$(this).remove();
+		$('.over_cover').remove();
+	},
+		toggle_profile_list: function(e){
+		var profile = $('header #top_nav .profile_icon .profile_list, header #top_nav .profile_icon #dark_cover');
+		if(profile.css('display') == "none"){
+			profile.css('display','block');
+		}else{
+			profile.css('display','none');
+		}
+	},
+	
+	toggle_comments: function(e){
+		console.log('boo');
+		var self = $(this);
+		if(self.parent().prev().css('height') == '0px'){
+			var height = self.parent().prev().find('.comment_container').height() + self.parent().prev().find('.add_comment').height() + 37;
+			self.parent().prev().css('height',height).find('.add_comment textarea').focus();
+			self.parent().prev().find('.comment_container').scrollTop(self.parent().prev().find('.comment_container')[0].scrollHeight);
+		}else{
+			self.parent().prev().css('height','0px');
+		}
+	},
+
+		init: function(){
+	
+		$('#side_nav .home_icon').click(Fit.redirect_home);
+		$('#side_nav .friends_icon').click(Fit.show_friends);
+		$('#side_nav .groups_icon').click(Fit.show_groups);
+		$('#side_nav .trophies_icon').click(Fit.show_challenges);
+		$('#side_nav .statistics_icon').click(Fit.show_fitbit);
+		$('#side_nav .nearby_icon').click(Fit.show_fitspot);
+		$('#side_nav .settings_icon').click(Fit.redirect_to_settings);
+		$('#side_nav .gym_icon').click(Fit.show_gym);
+		$('#feed_container .header .actions button.write_post').click(Fit.write_post);
+		$('#feed_container .header .actions button.challenge').click(Fit.challenge);
+		//$('#feed_container #feed .post .footer > div.comment').click(Fit.toggle_comments);
+		$(document).on('click','#feed_container #feed .post .footer > div.comment',Fit.toggle_comments);
+		
+		$('header #top_nav .profile_icon').click(Fit.toggle_profile_list);
+		
+	}
+
+
+}	
+		$(document).on('click', '.create_group', function(){
+			$(this).parent().parent('div').siblings('#dark_cover').hide();
+			$('.over_cover').remove();		
+			});
+			
+	     $(document).on('keyup','.search input', function() {	
+			// console.log($('.group p[data]:contains("' + $(this).val().toLowerCase() + '")'))		
+			   found_div = $('.group p:contains("' + $(this).val().charAt(0).toUpperCase() + $(this).val().slice(1) + '")');			   
+			   $('.group').hide();
+			   found_div.parent().parent('div').show();
+			    
+			 })	
+			 
+			 $(document).on('keyup','#search_friend input', function() {	
+			   found_div = $('.friend p:contains("' + $(this).val().charAt(0).toUpperCase() + $(this).val().slice(1) + '")');			   
+			   $('.friend').hide();
+			   found_div.parent().parent('div').show();
+			    
+			 })		
 
 $(document).ready(function(){
 	Main_List.init();
 	Window.init();
 	Nav.init();
 	Chat.init();
-});
+	Fit.init();
+	
+
+	});

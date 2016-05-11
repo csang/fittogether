@@ -1,34 +1,55 @@
+<div id="activities">
 <%= form_for @page, :url=>{:action=>'update_activity'}, :html=>{:class=>'about_form'} do |f| %>
 
-<div class="settings_activities">
+
 	<!--<h2>Please select minimum of 4 activities</h2>-->
 <%  @activities.each do |activity| %>
 <% check = '' %>
-	<div class="row">
-	    <% if activity.name.to_s == "Lacrosse" %>
-		<%= image_tag('activities/lacrosse_icon.png') %>
-		<% elsif activity.name =='Football' %>
-		<%= image_tag('activities/football_icon.png') %>
-		<% elsif activity.name =='Running' %>
-		<%= image_tag('activities/running_icon.png') %>
-		<% elsif activity.name =='Weight Lifting' %>
-		<%= image_tag('activities/weight_lifting_icon.png') %>
+	<div class="input_container">
+	    <% if activity.name.to_s == "boot_camp" %>
+		  <div class="avatar activity boot_camp"></div>
+        <label>Boot Camp</label>
+		<% elsif activity.name =='cardio_circuit' %>
+		 <div class="avatar activity cardio_circuit"></div>
+            <label>Cardio Circuit</label>
+        	<% elsif activity.name =='pilates' %>
+		 <div class="avatar activity pilates"></div>
+            <label>Pilates</label>    
+		<% elsif activity.name =='running' %>
+         <div class="avatar activity running"></div>
+        <label>Running</label>
+		<% elsif activity.name =='spinning' %>
+		 <div class="avatar activity spinning"></div>
+            <label>Spinning</label>
+         	<% elsif activity.name =='swimming' %>   
+         <div class="avatar activity swimming"></div>
+            <label>Swimming</label> 
+            <% elsif activity.name =='tennis' %>  
+                <div class="avatar activity tennis"></div>
+            <label>Tennis</label>  
+            <% elsif activity.name =='yoga' %>  
+            <div class="avatar activity yoga"></div>
+            <label>Yoga</label>
 		<% end %>
-		
-		<h2><%=activity.name %></h2>
-		<div class="input">
-		<% if @accactivity.present? %>
+		  	<% if @accactivity.present? %>
 		<% if @accactivity['activity_id'].include? activity.id.to_s %>
-		<% check = 'Checked' %> 
+		<% check = 'checked' %> 
 		<% end %>
 		<% end %>
+	
+		  <div class="checkbox <%= check %>">	
 		<input type='checkbox' name=activity[]  value=<%= activity.id %> <%= check %>>
 		</div>
 	</div>
 <% end %>	
-	<div class="row">
-		<h3>*REQUIRED</h3>
-		<button id="save_changes" type="submit" >Save Changes</button>
+	<div class="submit_container">
+			<button id="save_changes" type="submit" >Save Changes</button>
 	</div>
-</div>
+
 <% end %>
+</div>
+<script>
+$(function() {
+    $('div.checkbox input[type="checkbox"]').change(Settings.check_checkbox);
+});
+</script>
