@@ -38,7 +38,7 @@ module FeedHelper
   end
   
   def check_kudos(id)
-      kudos =  Kudos.where(:account_id => @account.id, :post_id =>id).first 
+      kudos =  Kudo.where(:account_id => @account.id, :post_id =>id).first 
       if kudos.present?
         return 'icon-liked'
       else

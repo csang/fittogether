@@ -319,11 +319,11 @@ class FeedController < ApplicationController
     def give_kudos # add delete kudos
 		if request.xhr?    
 		  post_id = Base64.decode64(params[:post_id])     
-		  kudos =  Kudos.where(:post_id=>post_id, :account_id=> @account.id).first   
+		  kudos =  Kudo.where(:post_id=>post_id, :account_id=> @account.id).first   
 		  if kudos.present? && kudos.destroy 
 			  render :json => 1  and return    
 		  else
-			  kudos = Kudos.create(:post_id=>post_id, :account_id=> @account.id)
+			  kudos = Kudo.create(:post_id=>post_id, :account_id=> @account.id)
 			  if kudos 
 			  	 render :json => 1  and return    
 			  else

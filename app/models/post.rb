@@ -3,7 +3,7 @@ class Post < ActiveRecord::Base
 belongs_to :account
 belongs_to :group
 has_many :comment,  :dependent =>:delete_all
-has_many :kudos,  :dependent =>:delete_all
+has_many :kudo,  :dependent =>:delete_all
 
 =begin
 has_many :taggings
