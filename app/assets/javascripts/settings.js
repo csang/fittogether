@@ -50,6 +50,21 @@ Model_Settings = {
 };
 
 Settings = {
+	
+	check_radio: function(e){
+		var self = $(this);
+		self.parent().parent().find('div.radio').removeClass('checked');
+		self.parent().addClass('checked');
+	},
+
+	check_checkbox: function(e){
+		var self = $(this).parent();
+		if(self.hasClass('checked')){
+			self.removeClass('checked');
+		}else{
+			self.addClass('checked');
+		}
+	},
 
 	check_user_data: function(){
 		var that = $(this);
@@ -58,12 +73,12 @@ Settings = {
 			username:that.val(),
 			check_type:that.attr('name'),
 			success: function(data) {
-					if(data.data =='success'){
+				if(data.data =='success'){
 				//	that.next().html('&#9813;');
-					$('.notifications_view .profile_info #save_changes').attr('disabled','disabled');
+					$('.submit_container #save_changes').attr('disabled','disabled');
 				}else{
 				//	that.next().html('&#9819;');
-					$('.notifications_view .profile_info #save_changes').removeAttr('disabled');
+					$('.submit_container #save_changes').removeAttr('disabled');
 				} 
 			}
 		});
@@ -140,17 +155,17 @@ Settings = {
 	},
 
 	check_phone: function(e){
-		var first = $($('.notifications_view input[name="mobile[]"]')[0]),
-			second = $($('.notifications_view input[name="mobile[]"]')[1]),
-			third = $($('.notifications_view input[name="mobile[]"]')[2]),
+		var first = $($('#basic input[name="mobile[]"]')[0]),
+			second = $($('#basic input[name="mobile[]"]')[1]),
+			third = $($('#basic input[name="mobile[]"]')[2]),
 			one = first.val().length,
 			two = second.val().length,
 			three = third.val().length;
 
 		if(one + two + three == 10){
-			$('.notifications_view .profile_info #save_changes').removeAttr('disabled');
+			$('#basic #save_changes').removeAttr('disabled');
 		}else{
-			$('.notifications_view #save_changes').attr('disabled','disabled');
+			$('#basic #save_changes').attr('disabled','disabled');
 		}
 
 		if(one == 3 && 
@@ -176,26 +191,26 @@ Settings = {
 			e.keyCode != 37 && 
 			e.keyCode != 39 &&
 			third.is(':focus')){
-			$('.notifications_view #save_changes').focus();
+			$('#basic #save_changes').focus();
 		}
 	},
 
 	change_info: function(e){
-		$('.notifications_view #change_password').show();
-		$('.notifications_view #password_info').hide();
+		$('#basic #change_password').show();
+		$('#basic #password_info').hide();
 	},
 
 	change_password: function(e){
-		$('.notifications_view #password_info').show();
-		$('.notifications_view #change_password').hide();
-		$('.notifications_view #save_changes').attr('disabled','disabled');
-		// $('.notifications_view input[name="current_password"]').focus();
-		return false;
+
+		$('#password_info').show();
+		$('#basic #change_password').hide();
+		$('#basic #save_changes').attr('disabled','disabled');
+	    return false;
 	},
 
 	cancel_password: function(e){
-		$('.notifications_view #password_info').hide();
-		$('.notifications_view #change_password').show();
+		$('#basic #password_info').hide();
+		$('#basic #change_password').show();
 	},
 
 	validate_privacy:function(inputs){
@@ -233,7 +248,12 @@ Settings = {
 		$('.notifications_view .trainer_details_info').hide();
 		$('.notifications_view .trainer_info').show();
                 $('.notifications_view #save_changes').removeAttr('disabled');
-	},        
+	}, 
+	add_class: function(e){
+		alert('asdf');
+		$('.header .settings_nav nav a').removeClass('selected');
+		$(this).addClass('selected');
+	},       
                 
 	init: function() {
 		$('.notification_menu #settings li').click(this.settings_views);
@@ -244,9 +264,16 @@ Settings = {
                 $('.trainer_info').click(this.trainer_info);
                 $('.cancel_trainer_info').click(this.cancel_trainer_info);
                  $('.add_address').click(this.add_address);
+                 $('.header .settings_nav nav a').click(this.add_class);
 	}
 };
 
 $(document).ready(function(){
 	Settings.init();
+	$(window).on("load resize",function(e){
+		var win_hight = $(this).height();
+		var tis_height = win_hight - 170;
+		$('#side_nav').css("height", tis_height);
+	});
+	
 });

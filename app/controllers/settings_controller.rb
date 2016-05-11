@@ -77,13 +77,35 @@ class SettingsController < ApplicationController
 		render 'index'
 	end
 	
-	def update_avatar
+ def update_avatar
     #abort(@account.inspect)
     @acc = Account.find(@account.id)
-    @acc.update_attribute(:avatar, params[:avatar])	
+    if  @acc.update_attribute(:avatar, params[:avatar])	
+		redirect_to  action: "crop" and return
+	else
+
     flash[:notice] = "Avatar has been updated successfully."
     redirect_to request.env['HTTP_REFERER'] and return
+    end
+    
+  end  
+  
+   def crop    
+  
+   end  
+  
+  def update_crop 
+
+	 if @account.update_attributes(crop_params)
+	   @account.reprocess_avatar
+		 flash[:notice] = "Avatar has been updated successfully."
+		redirect_to settings_url
+	else
+		 flash[:alert] = "Please try again."
+		 redirect_to request.env['HTTP_REFERER'] and return
+	end
   end
+  
   
   def update_profile	
     @acc = Account.find(@account.id)	
@@ -309,6 +331,10 @@ class SettingsController < ApplicationController
   def email_setting_param
     
      params.permit(:new_rating, :new_appointment_request, :new_review, :appointment_approve, :group_invitation, :mentioned_in,:comment_on_post)
+  end
+  
+   def crop_params
+    params.require(:account).permit(:crop_x, :crop_y, :crop_w, :crop_h)
   end
 
 end

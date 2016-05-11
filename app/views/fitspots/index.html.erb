@@ -1,5 +1,5 @@
-<%= render(:partial => 'feed/feed_aside') %>
-<div id="content">
+<%#= render(:partial => 'feed/feed_aside') %>
+<div id="seed">
   <% if  @fitspots.present? %>
   <% @fitspots.each do |fs| %>
    <% img = fs.fitspot_image    %>
@@ -8,9 +8,10 @@
               <a href="javascript:void(0);" title="<%= fs.title %> "><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %></a>
               </div>
              <div class="posts-content">
-               <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>  <span class="time"> <%= fs.fitspot_date.strftime("%B %e ") %>  <%= fs.fitspot_time.present? ? 'at ' + fs.fitspot_time : '' %>   </span></h4>
+               <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> <span class="time"> <%= fs.fitspot_date.strftime("%B %e ") %>  <%= fs.fitspot_time.present? ? 'at ' + fs.fitspot_time : '' %>   </span></h4>
                <p><%= fs.description %></p>
              </div>
+             <div class="clear"></div>
            </div>
            <% end %>
            <% else %>

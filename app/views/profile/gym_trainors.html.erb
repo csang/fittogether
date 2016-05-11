@@ -1,0 +1,79 @@
+<div class="settings_activities member-data">
+
+<% if @trainers.present? %>
+
+
+<% @trainers.each do |member| %>
+ 
+<div class="row" id="<%= Base64.encode64(member.id.to_s)%>">
+	<% if member.account_privacy.present? %>
+						<% if member.account_privacy.account_id!=@account.id  %>
+							<% @privacy = member.account_privacy %>
+					   <% end %>
+				   <% end %>
+				   <%  if !@privacy.present? %>
+								<% if !member.avatar.blank? %>
+								  <%= link_to(image_tag(member.avatar(:thumb)), "/#{member.user_name}") %>
+								   
+								  <% elsif !member.pic.blank? %>
+								  <%= link_to(image_tag('https://' + member.pic), "/#{member['user_name']}") %>
+								  <% else %>
+								   <%= link_to(image_tag('default.png'), "/#{member['user_name']}") %>
+								  <% end %>
+                  <% else %>						  
+				    <% if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  %>  
+				       <% if !member.avatar.blank? %>
+								  <%= link_to(image_tag(member.avatar(:thumb)), "/#{member.user_name}") %>
+								   
+								  <% elsif !member.pic.blank? %>
+								  <%= link_to(image_tag('https://' + member.pic), "/#{member['user_name']}") %>
+								  <% else %>
+								   <%= link_to(image_tag('default.png'), "/#{member['user_name']}") %>
+								  <% end %>
+								  <% else %>
+							  <%= link_to(image_tag('default.png'), "/#{member['user_name']}") %>
+							<% end %>	
+							<% end %>	
+          
+           <%= link_to(member.first_name, "/#{member['user_name']}") %>
+        
+			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend">Remove</button>
+		   
+         
+          
+</div>
+<% end %>
+<% end %>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+
+$('.rejectfriend').on('click', function() {
+ if (confirm("Do you want to remove?")) {  
+var toid = $(this).attr('data-id');
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '/rejectrequest/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$(that).closest('.row').fadeOut();
+									
+					$('.flash-message').html('<div class="alert alert-success"> Request Removed Succesfully</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+ }
+	    });
+});
+</script>

@@ -1,0 +1,51 @@
+<script type="text/javascript" charset="utf-8">
+   $(document).ready(function() {
+      $("#cropbox").Jcrop({
+        onChange: update_crop,
+        onSelect: update_crop,
+        setSelect: [0, 0, 1000, 1000],
+        aspectRatio: 1
+      });
+
+  function update_crop(coords) {
+      var rx = 130/coords.w;
+	  var ry = 130/coords.h;
+   $('#preview').css({
+    width: Math.round(rx * <%= @account.avatar_geometry(:large).width %>) + 'px',
+    height: Math.round(ry * <%= @account.avatar_geometry(:large).height %>) + 'px',
+    marginLeft: '-' + Math.round(rx * coords.x) + 'px',
+    marginTop: '-' + Math.round(ry * coords.y) + 'px'
+  });
+
+  var ratio = <%= @account.avatar_geometry(:original).width %> / <%= @account.avatar_geometry(:large).width %>; 
+  $('#crop_x').val(Math.floor(coords.x * ratio));
+  $('#crop_y').val(Math.floor(coords.y * ratio));
+  $('#crop_w').val(Math.floor(coords.w * ratio));
+  $('#crop_h').val(Math.floor(coords.h * ratio)); 
+   
+  }
+  });
+</script>
+
+<div class="crop-img">
+
+  <%= image_tag @account.avatar.url(:large), :id => "cropbox" %>
+</div>
+<div class="crop-preview">
+
+
+
+  <div style="width:130px; height:130px; overflow:hidden">
+    <%= image_tag @account.avatar.url(:large), :id => "preview" %>
+  </div>  
+
+
+<%= form_for @account , :url => {:action => "update_crop"} do |f| %>
+  <% for attribute in [:crop_x, :crop_y, :crop_w, :crop_h] %>
+    <%= f.hidden_field attribute, :id => attribute %>
+  <% end %>
+  <%= f.button "Submit", :class=>'btn btn-primary' %>
+<% end %>
+</div>
+
+

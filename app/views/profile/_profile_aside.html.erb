@@ -1,4 +1,4 @@
-
+<% if false %>
 <div id="left_side">
 
   <div id="left_side_fixed">
@@ -8,7 +8,7 @@
       </div>
       <div class="user">
         <div class="mask">
-          <% img =  useravatar(@profileuser)  %>
+          <% img =  useravatar(@account)  %>
           <%= image_tag(img) %>			  
         </div>
         <% if @profileuser.last_name.present? %>
@@ -50,10 +50,15 @@
 
               <button data-id="" class="cancelfriend" style="display:none;">Cancel Request</button>	
             <% elsif @friend.approved== true %>
-
-              <div class="reqsent">
+			  <% if  @profileuser.user_type==3 %>
+			   <div class="reqsent">
+                <span>Joined</span>							     
+              </div>
+              <% else %>
+                <div class="reqsent">
                 <span>Friend</span>							     
               </div>	
+              <% end %>
             <% else %>
 
               <div class="reqsent">
@@ -69,9 +74,10 @@
       </div>
       <% if @account.id != @profileuser.id %>
         <div class="profile_actions">			
-          <button class="message" data-toggle="modal" data-target="#messageForm">Message</button
-          ><button class="message" data-toggle="modal" data-target="#challengeForm">Challenge</button
-          >
+          <button class="message" data-toggle="modal" data-target="#messageForm">Message</button>
+          <% if @profileuser.user_type !=3 %>
+          <button class="message" data-toggle="modal" data-target="#challengeForm">Challenge</button>
+          <% end %>
         </div>
       <% end %>
       <% if @profileuser.user_type.to_i == 2 %> 
@@ -92,39 +98,130 @@
     </div>
   </div>
 </div>
-<div class="modal fade" id="messageForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">New Message</h4>
-      </div>
-      <div class="modal-body">
-        <%= render(:partial => 'messages/message') %>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="sendmessage" class="btn btn-primary"  data-sid ="<%= Base64.encode64(@account.id.to_s) %>", data-rip =" <%=  Base64.encode64(@profileuser.id.to_s) %>" >Send</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Challenge -->
-<div class="modal fade" id="challengeForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">New Challenge</h4>
-      </div>
-      <div class="modal-body">
-        <%= render(:partial => 'challenges/challenge') %>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="challenge" class="btn btn-primary"   data-rip =" <%=  Base64.encode64(@profileuser.id.to_s) %>" >Send</button>
-      </div>
-    </div>
-  </div>
-</div>
+<% end %>
+<!--- New --->
+ <form novalidate="novalidate" method="post" enctype="multipart/form-data" action="<%= update_cover_url %>" accept-charset="UTF-8">
+                    <div class="collage">
+                        <div class="cover_photo">
+														<%= image_tag(@profileuser.cover) %>
+							  <% if @account.id == @profileuser.id %>							
+							<div class="photo_upload">
+								<input type="file" value="Change cover" onchange="this.form.submit()" accept="image/*" name="cover" title="(ideal image size : 730 X 250)" />
+								<span>Change cover</span>
+							</div>
+							<% end %>
+                        </div>
+                    </div>
+                    </form>
+                    <div class="profile_bar">
+                        <div class="avatar">
+                          <% img =  useravatar(@profileuser)  %>
+						 <%= image_tag(img) %>	
+						 </div>
+                        <div class="profile_data" <% if @profileuser.user_type.to_i == 3  %> style="background-color: rgb(177, 26, 151)" <% end %> >
+                            <div class="personal_data">
+                             <% if @profileuser.last_name.present? %>
+							 <% lname = @profileuser.last_name %>
+							 <% else %>
+							 <%  lname = '' %>
+							 <% end %>
+                                <h1><%= @profileuser.first_name.capitalize + ' ' +  lname.capitalize  %></h1>
+                              
+                                 <% unless @account.id == @profileuser.id %>	
+								 <% if @account.pending_friends.present? %>					  
+								 <% @account.pending_friends.each do |friendship| %>		
+
+									<% if friendship.id == @profileuser.id %>	
+									  <button data-id="<%= Base64.encode64(friendship.id.to_s)%>" class="cancelfriend">Cancel Request</button>
+									  <button data-id="" class="addfriend" style="display:none;" >Add Friend</button>							         	
+									<% end %>
+								  <% end %>		
+								<% end %>		
+
+								<% if !@friend.present? %>
+								  <% if @profileuser.user_type.to_i == 3 && @account.user_type.to_i == 3 %>
+									<p></p>
+								  <% else %>
+									<button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" class="addfriend">
+									  <%= if  @profileuser.user_type==3 
+										'Join' 
+										elsif @profileuser.user_type==2
+										'Add Personal Trainer'
+										else
+										'Add Friend'
+										end %>   
+									</button>
+								  <% end %>	
+								<button data-id="" class="cancelfriend" style="display:none;">Cancel Request</button>	
+								<% elsif @friend.approved== true %>								
+									 <% if  @profileuser.user_type==3 %>
+								   <button> Joined </button>		     
+								  
+								  <% else %>
+									 <button> Friend </button>			
+								  <% end %>	     
+								 	
+								<% else %>								 
+									<button><%= @profileuser.id == @friend.account_id ? 'Request Pending ' : 'Request Sent ' %></button>    
+								 	
+								<% end %>
+								<% end %>
+					
+								<% if @profileuser.user_type == 1 %>
+                                <p><%= @profileuser.profession.present? ? @profileuser.profession.name : ''  %> <%= @profileuser.company.present? ? 'at' + @profileuser.company.to_s  : '' %></p>
+                                <% end %>
+                            
+                                	<% if @profileuser.user_type == 2 %>                                	
+                                <p> Trainer <%= @profileuser.account_trainer.gym_id.present? ? 'at ' + get_gym_name(@profileuser.account_trainer.gym_id)  : '' %></p>
+                                <% end %>
+                                
+                            </div>
+                            <div class="statistics">
+                              
+                                			  <% if @profileuser.user_type.to_i == 2 %> 
+							<div class="rating-box trainer-rating"><div class="rating-inner"> <p>Average rating -</p>
+								<div id="star"></div>
+							  </div>
+							  <% if @account.id != @profileuser.id  %>
+								<div class="rating-inner last">
+								  <p>Your rating -</p>
+								  <div id="user_star"></div>
+								</div>
+							  <% end  %>                  </div>
+						  <% end  %>
+                                 <% if  @profileuser.user_type.to_i == 1 %>
+                                <div><h1>30</h1><h2>Challenges</h2></div>
+                                <div><h1>28</h1><h2>Goals Completed</h2></div>
+                                <% end %>
+                                
+                                  <% if  @profileuser.user_type.to_i == 3 %>
+                                  <% total_members = @profileuser.active_friends.count + @profileuser.passive_friends.count %>
+                                  <% str = Time.now.strftime("%A").downcase %>                                  
+                              <% if @profileuser.account_gym.timings.present? %>
+                             <div><h1><%= @profileuser.account_gym.timings[str + "_start"] %>-<%= @profileuser.account_gym.timings[str + "_end"] %></h1><h2>Open Today</h2></div>
+                             <% end %>
+                              <div><h1><%= total_members %></h1><h2>Members</h2></div>
+                                <% end %>
+                            </div>
+                        </div>
+                        <div class="profile_nav">
+                        <% if @account.id != @profileuser.id %>
+                            <div class="actions">
+                              <button class="message" data-toggle="modal" data-target="#messageForm">Message</button>
+                               <% if @profileuser.user_type !=3 %>
+                               <button class="message" data-toggle="modal" data-target="#challengeForm">Challenge</button>
+                               <% end %>                               
+                            </div>
+                         <% end %>   
+                         <div class="actions">
+                         <% if @profileuser.user_type ==3 %>
+                               <button>Schedule</button>
+                               <% end %>
+                         </div>      
+
+
+
+
 <script type="text/javascript">
 
   $(document).ready(function() {

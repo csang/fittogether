@@ -2,7 +2,7 @@
 <div class="notification_menu">
   <div id="notifications_nav"><a class="goal-btn" href="<%= challenge_path() %>" >Challenges </a>
  
-      <span style="float:right"><a style="width:auto;" class="goal-btn" href="javascript:void(0)" data-toggle="modal" data-target="#challengeForm">New Challenge</a></spa></div>
+      <span style="float:right"><a style="width:auto;" class="goal-btn" href="javascript:void(0)" data-toggle="modal" data-target="#challengeForm">New Challenge</a></span></div>
 
 </div>
 <div id="conv">
@@ -98,7 +98,7 @@
       <div class="modal-body">
         <div class="pop-row listing-hover">
           
-  <label>To:</label>
+  <label>Who do you want to Challenge?</label>
           <input class="form-control" type="text" id="tags" value="" name="search" placeholder="search...">
           
             <ul class="arport" style="display:none;">
@@ -109,12 +109,11 @@
         
  	<%= render(:partial => 'challenges/challenge') %>
       </div>
-      <div class="modal-footer">
-        <button type="button" id="challenge" class="btn btn-primary"    >Send</button>
+      <div class="modal-footer create">
+        <button type="button" id="challenge" class="btn btn-primary"    >Create Challenge</button>
       </div>
     </div>
   </div>
-</div>
 <script type="text/javascript">
  
 $(document).on("click", ".reject", function() { 

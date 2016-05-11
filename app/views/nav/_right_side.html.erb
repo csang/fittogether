@@ -1,0 +1,211 @@
+  <%= render(:partial=>'/nav/classvar') %>
+    <!-- Start: Side Info -->
+                <div id="side_info">
+                    <div class="fitbit_activity">
+                        <div class="header">
+                            <h2>This Week</h2>
+                            <!-- sync with --->
+                            <% if @account.linked? or session[:oauth_secret].present? %>
+							<% session.delete(:oauth_secret) %>
+							<a class="sync-info" style="display:inline-block;" title="fitibit" href="<%= un_sync_path %>" >
+							<div class="fitbit_logo_unsync"></div></a>
+							<% else %>
+							<a style="display:inline-block;" href="#login-popup" target="_blank" title="fitibit" contype="fitbit" class='login-popup fitbit sync-info' >   
+							<div class="fitbit_logo"></div></a>
+							<% end  %>
+							
+                         
+                        </div>
+                        <div class="data">
+                            <div class="calories">
+                                <h1><%= @account.fitbit.present? ? number_with_delimiter(@account.fitbit.summary_calories) : 'N/A'  %></h1>
+                                <h3>Calories</h3>
+                            </div>
+                            <div class="miles">
+                                <h1><%= @account.fitbit.present? ? number_with_delimiter(@account.fitbit.distance) : 'N/A'  %></h1>
+                                <h3>Miles</h3>
+                            </div>
+                            <div class="steps">
+                                <h1><%= @account.fitbit.present? ? number_to_human( @account.fitbit.steps, :format => '%n%u', :units => { :thousand => 'K' }) : 'N/A'  %></h1>
+                                <h3>Steps</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="appointments">
+                        <div class="header">
+                            <h2>Appointments</h2>
+                        </div>
+                        <div class="list">
+							    <!--- trainer's own user -->
+							<% @account.tainer_appointments.each do|app| %>
+							<% if DateTime.parse(app.start_date) > DateTime.now %>
+							<% img = useravatar(app.account) %>
+                            <div>
+                                <div class="avatar"><h3><%= image_tag(img)%></h3></div>
+                                <div class="description">
+                                    <p class="date"><%= DateTime.parse(app.start_date).strftime("%e %B @ %I:%M %p ") %> </p><br>
+                                    <p class="event"><%= app.title %> </p><br>
+                                    <p class="with"><%= app.account.first_name %></p><br>
+                                    <a href="/<%= app.trainer.user_name   %>/appointments">Change</a>
+                                </div>
+                            </div>
+                            <% end %>
+                            <% end %>
+                            <!--- for requested by user -->
+							<% @account.appointment.each do|app| %>
+							<% if DateTime.parse(app.start_date) > DateTime.now %>
+							<% img = useravatar(app.trainer) %>
+                            <div>
+                                <div class="avatar"><h3><%= image_tag(img)%></h3></div>
+                                <div class="description">
+                                    <p class="date"><%= DateTime.parse(app.start_date).strftime("%e %B @ %I:%M %p ") %> </p><br>
+                                    <p class="event"><%= app.title %> </p><br>
+                                    <p class="with"><%= app.trainer.first_name %></p><br>
+                                    <a href="/<%= app.trainer.user_name   %>/appointments">Change</a>
+                                </div>
+                            </div>
+                            <% end %>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="events">
+                        <div class="header">
+                            <h2>Events</h2>
+                            	<%  fitspot = fitspot_invitation %>  
+                            <a href="/fitspots/index" class="amount"> 
+								<% if fitspot.count > 0 %>
+								<%= fitspot.count  %>Invitations
+								<% end %>                            
+                            </a>
+                            
+                        </div>
+                        <div class="list">
+						
+							<%  if fitspot.present? %>  
+							<% fitspot.each do |ft| %>
+							<% img = ft.fitspot.fitspot_image    %>
+                            <div>
+                                <div class="avatar"><h3><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %></h3></div>
+                                <div class="description">
+                                    <p class="date"><%= ft.fitspot.fitspot_date.strftime("%e %B ") %></p><br>
+                                    <p class="event"><%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %></p><br>
+                                    <p class="location"><%= ft.fitspot.location %></p><br>
+                                    <p class="actions">
+									<button class="attending" data-type="add" title="Attending" <%=  ft.fitspot.status == 1 ? 'disabled' : '' %>  data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>"> 
+									Attending</button>
+								<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>">Not Attending</button></p>
+                                </div>
+                            </div>
+                            <% end %>
+                            <% else %>
+                            <p> N/A </p>
+                            <% end %>
+                            
+                           </div>
+                        <div class="see_all">
+                                   <%= link_to  'See All Events','/fitspots/index'  %>
+                        </div>
+                    </div>
+                        <% trainers = suggested_trainer %>
+                      <% if  trainers.present? %>
+                    <div class="suggested_trainers">
+                        <div class="header">
+                            <h2>Suggested Trainers</h2>  
+                        </div>
+                        <div class="list">
+							 <% trainers.each do |trainer| %>
+							 <% img = useravatar(trainer) %>						   
+                            <div>
+                                <div class="avatar"><%= link_to(image_tag(img), "/#{trainer.user_name}") %></div>
+                                <div class="description">
+                                    <p class="name">
+                                    <%= link_to(trainer.first_name, "/#{trainer.user_name}") %>
+                                    </p><br>
+                                    <p class="location"><%= get_city_name(trainer.city_id) %>, <%= get_state_code(trainer.city_id) %></p>
+                                </div>
+                            </div>
+                               <% end %>                          
+                        </div>
+                    </div>
+                      <% end %>
+                    <% fitspots = suggested_fitspot %>  
+                    <% if  fitspots.present? %>
+                    <div class="suggested_fitspots">
+                        <div class="header">
+                            <h2>Suggested Fitspots</h2>
+                          </div>
+                        <div class="list">
+             		    <% fitspots.each do |fs| %>
+						<% img = fs.fitspot_image    %>
+                            <div>
+                                <div class="avatar"><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %></div>
+                                <div class="description">
+                                    <p class="fitspot"><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> </p><br>
+                                    <p class="location"><%= fs.location %></p><br>
+                                    <p class="checkins"><%= fs.fitspot_member.count %> Check ins</p>
+                                </div>
+                            </div>
+                            <% end %>                     
+                           </div>
+                        <div class="see_all">                           
+                            <%= link_to  'See All Fitspots','fitspots/index'  %>
+                        </div>
+                    </div>
+                     <% end %>
+                </div>
+                <!-- End: Side Info -->
+  <script type="text/javascript">
+
+    // add member
+    $('.attending').on('click', function() {
+	
+      var id = $(this).attr('data-id');
+      var type = $(this).attr('data-type');
+      var that = this;
+      var mydata = {'id': id, 'type': type};
+      $.ajax({
+        type: "POST",
+        url: '<%= add_del_going_path() %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,  
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          if (type == 'add') {
+			//	$(that).prop('disabled', true);             
+			$(that).parent().parent().parent().hide();
+		
+          } else {
+             $(that).parent().parent().parent().hide();
+             
+          }
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    });              
+            
+
+  // login with fitbit
+  $('.login-popup').click(function(e) {
+    var connectionType = $(this).attr('contype');
+    e.preventDefault();
+    auth0.login({
+      connection: connectionType,
+      popup: false,
+      popupOptions: {
+        width: 450,
+        height: 600
+      }
+    });
+  });
+  
+ 
+  </script>

@@ -1,0 +1,42 @@
+<nav id="side_nav">
+	<div class="side_nav_inner">
+		<div class="home_icon" title="Home"></div>		
+		<%= link_to('', challenges_show_path , html_options={:class => 'trophies_icon', :title => 'Challenges'}) %>
+		<div class="statistics_icon"></div> 
+		<div class="friends_icon" title="Friends"></div>
+		<div class="nearby_icon"></div>	
+		  <% if @profileuser.present? && @profileuser.user_type == 3 && @profileuser.id != @account.id && params[:controller]=='profile' %>
+		 <%#= link_to '', 'javascript:void(0)', { :class => 'gym_icon', 'data-toggle' => 'modal',  :title => 'Review', 'data-target' => '#reviewForm' } %>
+		  <% end %>
+		
+		<%= link_to '', 'javascript:void(0)', { :class => 'groups_icon', :title => 'Group' } %>
+		
+		<div class="gym_icon"></div>
+		<%= link_to('', '/invites/index' , html_options={:class => 'create_icon',:title => 'Invite'}) %>				
+		<%= link_to('', fitspots_index_path , html_options={:class => 'fitsports_icon'}) %>
+			
+		<div class="settings_icon" title="Settings"></div>
+		<%= link_to('', logout_path , html_options={:class => 'log_icon', :title => 'Logout'}) %>  
+	</div>
+</nav>            
+
+
+
+         
+<script>
+$(window).load(function() {
+window.friends = [];
+window.friends = '<%= raw(new_friends_and_members) %>';
+window.friends = JSON.parse(window.friends)
+
+window.groups = [];
+window.groups = '<%= raw(get_groups) %>';
+window.groups = JSON.parse(window.groups)
+
+
+
+      });
+  
+
+</script>      
+

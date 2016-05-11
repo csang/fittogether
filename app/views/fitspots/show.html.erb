@@ -1,5 +1,5 @@
-<%= render(:partial => 'feed/feed_aside') %>
-<div id="content">
+<%#= render(:partial => 'feed/feed_aside') %>
+<div id="content" class="invite-inner">
 
   <div class="group-top">
     <%= image_tag(@fitspot.fitspot_image(:medium), :class =>'group_image') %>
@@ -164,7 +164,7 @@
         type: "POST",
         url: '<%= add_del_going_path() %>', //sumbits it to the given url of the form
         dataType: "HTML",
-        data: mydata,
+        data: mydata,  
         beforeSend: function(xhr) {
           xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
         },
@@ -193,7 +193,7 @@
       });
 
     });
-
+    
     // invite friend
 
     $('.invite').on('click', function() {
@@ -206,7 +206,7 @@
         type: "POST",
         url: '<%= invite_for_fitspot_path() %>', //sumbits it to the given url of the form
         dataType: "HTML",
-        data: mydata,
+        data: mydata, 
         beforeSend: function(xhr) {
           xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
         },
@@ -227,4 +227,7 @@
 
   });
 </script>
+
+
+
 

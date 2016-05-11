@@ -1,12 +1,18 @@
 class Account < ActiveRecord::Base
+    attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
 
   serialize :goals, Array
 	has_one :account_user, :dependent => :delete
   has_one :account_trainer , :dependent => :delete
 	has_one :account_gym , :dependent => :delete
 	has_many :authorization, :dependent =>:delete_all
+	has_many :city
+	belongs_to :profession
 	has_many :post, :dependent =>:delete_all
+	has_many :comment, :dependent =>:delete_all
+	has_many :kudos, :dependent =>:delete_all
 	has_one :account_privacy, :dependent =>:delete
+	
 	has_many :friendships
   has_many :albums, :dependent =>:delete_all
   has_many :passive_friendships, :class_name => "Friendship", :foreign_key => "friend_id"
@@ -32,8 +38,13 @@ class Account < ActiveRecord::Base
   has_many :rator, :class_name => "Rating", :foreign_key => "account_id"
   has_many :review, :dependent => :delete_all
   has_many :appointment, :dependent => :delete_all
+  has_many :tainer_appointments, :class_name => "Appointment", :foreign_key => "trainor_id"
+  
+  has_many :gym_class, :dependent =>:delete_all
+   has_many :gym_class_trainer, :class_name => "gym_class", :foreign_key => "trainer_id"
   
   
+
   def average_rating
         raty.sum(:score) / raty.count
   end
@@ -46,10 +57,21 @@ class Account < ActiveRecord::Base
 	has_attached_file :avatar, 
     :path => ":rails_root/app/assets/images/:attachment/:id/:basename_:style.:extension",
     :url => "/assets/:attachment/:id/:basename_:style.:extension",
-    :styles => { :medium => "300x300>", :thumb => "160x160>" }
+    :styles => { :medium => "300x300>", :thumb => "160x160>", :large =>"500x500>"  },
+    :processors => [:cropper]
+  
  
   validates_attachment_content_type :avatar, :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, :message => 'File type is not allowed (only jpeg/png/gif images)'
   # validates :avatar, presence: { message: 'Please select  image'  }
+  
+  has_attached_file :cover, 
+    :path => ":rails_root/app/assets/images/:attachment/:id/:basename_:style.:extension",
+    :url => "/assets/:attachment/:id/:basename_:style.:extension",
+    :default_url => "group.jpg",
+    :styles => { :large => "700x250>" }
+    
+   validates_attachment_content_type :cover, :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, :message => 'File type is not allowed (only jpeg/png/gif images)'  
+    
 	def account_info
 		'sweet'
 	end
@@ -97,7 +119,24 @@ class Account < ActiveRecord::Base
   def self.secure_hash(string)
     Digest::SHA2.hexdigest(string)
   end
+
+  def cropping?
+    !crop_x.blank? && !crop_y.blank? && !crop_w.blank? && !crop_h.blank?
+  end
+
+  def avatar_geometry(style = :original)
   
+    @geometry ||= {}
+  
+    @geometry[style] ||= Paperclip::Geometry.from_file(avatar.path(style))
+  end
+  
+  
+
+  def reprocess_avatar
+    avatar.reprocess!
+  end
+ 
 
 	
   

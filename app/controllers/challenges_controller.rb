@@ -170,16 +170,15 @@ end
     
 	  if !params[:type].present?	
         
-        if params[:uid].strip != 'group'
-    
-          uid = params[:uid].present? ? Base64.decode64(params[:uid]) : 0
-        @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND accounts.id != #{uid} AND accounts.user_type NOT IN (2,3)  AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%")
+        if params[:uid].present? && params[:uid].strip == 'group'
+          cm = ConversationMember.where(:conversation_id => Base64.decode64(params[:conv_id].to_s))
+              account_ids = cm.map(&:account_id).join(',')           
+              @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND accounts.id NOT IN (#{account_ids}) AND accounts.user_type NOT IN (2,3)  AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%") 
+        
           else
-            
-              cm = ConversationMember.where(:conversation_id => Base64.decode64(params[:conv_id].to_s))
-              account_ids = cm.map(&:account_id).join(',')
-           
-              @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND accounts.id NOT IN (#{account_ids}) AND accounts.user_type NOT IN (2,3)  AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%")
+              uid = params[:uid].present? ? Base64.decode64(params[:uid]) : 0
+              @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND accounts.id != #{uid} AND accounts.user_type NOT IN (2,3)  AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR lower(accounts.email) LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%") 
+              
           end    
         
     else

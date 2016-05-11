@@ -63,7 +63,7 @@
             </div>
 
             <!--div class="user">
-                    <span class="status" style="display: none;"><?= Asset::img('icons/online_white.png'); ?></span><h4>Chat</h4>
+                    <span class="status" style="display: none;"></span><h4>Chat</h4>
                 
             </div-->
           </div>
@@ -77,10 +77,13 @@
       <h3>CONTACTS</h3>
     </div> 
   </div>	
+  
+  
 </footer>
+</div>
 <script type="text/javascript">
-  var first_name = "dips",
-          last_name = "khosla",
+  var first_name = "sk",
+          last_name = "kapil",
           start_password = false,
           valid_password = false;
   $(document).ready(function() {
@@ -89,15 +92,12 @@
     $('.notifications_view input[name="lname"]').keyup(Settings.update_info);
     $('.notifications_view input[name="mobile[]"]').keydown(Settings.update_phone);
     $('.notifications_view input[name="mobile[]"]').keyup(Settings.check_phone);
-    $('.notifications_view .profile_info #save_changes').click(Settings.save_changes);
-    $('.notifications_view .profile_info #change_password').click(Settings.change_password);
-    $('.notifications_view .profile_info #save_password').click(Settings.save_password);
-    $('.notifications_view .profile_info #cancel_password').click(Settings.cancel_password);
-    $('.notifications_view .check_data').focusout(Settings.check_user_data);
-    //$('.notifications_view input[name="current_password"]').focusout(Settings.check_password);
-    //$('.notifications_view input[name="new_password"]').keyup(Settings.valid_password);
-    //$('.notifications_view input[name="verify_password"]').keyup(Settings.confirm_password);
-  });
+    $('#basic  #save_changes').click(Settings.save_changes);
+    $('#basic  #change_password').click(Settings.change_password);
+    $('#basic  #save_password').click(Settings.save_password);
+    $('#basic  #cancel_password').click(Settings.cancel_password);
+    $('#basic .check_data').focusout(Settings.check_user_data);
+   });
 </script>
 
 <script type="text/javascript">
@@ -310,7 +310,7 @@ if (chat_window != null) {
     $(this).parent().siblings('div.add-chat-box').slideToggle();
   });
 
-  $(document).on('keyup', ".search_chat , .token-input", function(e) {
+  $(document).on('keyup', ".search_chat , .token-inputs", function(e) {
     var that = $(this);
     var keyword = $(this).val();
 
@@ -386,13 +386,14 @@ if (chat_window != null) {
   });
 
   function refresh() {
-    if (new Date().getTime() - time >= 60000)
-      window.location.reload(true);
-    else
-      setTimeout(refresh, 10000);
+
+   // if (new Date().getTime() - time >= 60000)
+    //  window.location.reload(true);
+   // else
+      //setTimeout(refresh, 10000);
   }
 
-  setTimeout(refresh, 10000);
+
 
 
   // chat window remains open even after refresh
@@ -432,4 +433,10 @@ if (chat_window != null) {
   }
 
 </script>
+
+<% if @account.present? %>
+	<script>   
+	setTimeout(refresh, 10000);
+	 </script>
+<% end %>
 

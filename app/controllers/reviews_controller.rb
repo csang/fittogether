@@ -19,7 +19,7 @@ class ReviewsController < ApplicationController
         end
          u_name = Account.select(:user_name).where(:id => id).first
       
-				redirect_to  :controller => 'profile', :action => "reviews", :id => u_name.user_name
+				 redirect_to request.env['HTTP_REFERER'] and return
   	else
       flash[:error] = review.errors.full_messages.first
       redirect_to request.env['HTTP_REFERER'] and return

@@ -1,0 +1,151 @@
+			
+				<% if @profileuser.user_type == 1 %>
+                   <% my_gym = my_trainer_or_gym(@profileuser,3) %>
+				   <% if my_gym.present? %>
+                    <div class="my_gym">
+                        <div class="header">
+                            <h2>My Gym</h2>
+                        </div>
+                        <div class="list">
+                            <div>
+                                <div class="avatar">
+					    		  <% img =  useravatar(my_gym) %>
+                                  <%= link_to(image_tag(img), "/#{my_gym.user_name}") %>
+                                 </div>
+                                <div class="description">
+                                    <p class="gym"><%= get_gym_name(my_gym.id) %></p><br>
+                                    <p class="location"><%= my_gym.city.name %>, FL</p><br>
+                                    <p class="checkins">8 Check ins</p>
+                                </div>
+                            </div>                        
+                        </div>
+                    </div>
+                    <% end %>
+                    <% end %>
+                    <% if @profileuser.user_type == 1 %>
+                    <% my_trainer = my_trainer_or_gym(@profileuser,2) %>
+                    <% if my_trainer.present? %>
+                    <div class="suggested_trainers">
+                        <div class="header">
+                            <h2>My Trainer</h2>
+                        </div>
+                        <div class="list">
+                            <div>
+                                <div class="avatar">
+                               <% img =  useravatar(my_trainer) %>
+                                <%= link_to(image_tag(img), "/#{my_trainer.user_name}") %>
+                                </div>
+                                <div class="description">
+                                    <p class="name"><%= my_trainer.first_name + ' '+ ( my_trainer.last_name.present? ? my_trainer.last_name : '') %></p><br>
+                                    <p class="location"><%= my_trainer.city.name %>, CA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% end %>
+                    <% end %>
+                    <% my_fav_fitspot = my_favorite_fitspot(@profileuser.id) %>
+                   	<%  if my_fav_fitspot.present? %>  
+                    <div class="suggested_fitspots">
+                        <div class="header">
+                            <h2>My Favorite Fitspots</h2>
+                        </div>
+                        <div class="list">
+						
+							<% my_fav_fitspot.each do |ft| %>
+							<% img = ft.fitspot.fitspot_image    %>
+                            <div>
+                                <div class="avatar"> <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %></div>
+                                <div class="description">
+                                    <p class="fitspot"><%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %></p><br>
+                                    <p class="location"><%= ft.fitspot.location %>, FL</p><br>
+                                   <!-- <p class="checkins">12 Check ins</p> -->
+                                </div>
+                            </div>
+                         <% end %>                         
+                        </div>
+                        <div class="see_all">
+                              <%= link_to  'See All Fitspot','/fitspots/index'  %>
+                        </div>
+                    </div>
+                    <% end %>
+                    	<% if @profileuser.user_type != 3 %>
+                    <div class="my_activities">
+                        <div class="header">
+                            <h2>My Activities</h2>
+                        </div>
+                        <div class="list">
+							 <% @profileuser.account_activity.each do |activity| %>
+								<% if activity.activity_id.present?   %>
+								 <% activity.activity_id.each do |act| %>
+									<% value =  get_activity_name(act) %>
+                              <div>
+                                <div class="avatar activity <%= value %>"><h3></h3></div>
+                                <div class="description">
+                                    <p class="activity"><%= value.capitalize %></p><br>
+                                </div>
+                               
+                            </div>
+                             <% end %>
+                                <% end %>
+                                <% end %>
+                            </div>
+                        <div class="see_all">
+                            <a href="/<%= @profileuser.user_name %>/activities">See All Activities</a>
+                        </div>
+                    </div>
+                      <% end %>
+                      
+                      
+                      <!---- gym  --->
+                      <% if @profileuser.user_type == 3 %>
+                        <div class="my_activities classes">
+                        <div class="header">
+                            <h2>Classes</h2>
+                        </div>
+                        <div class="list">
+						<% gym_class =	get_sidebar_classes(@profileuser.id) %>
+						<% if gym_class.present? %>
+						<% gym_class.each do |gc| %>
+                            <div>
+                                <div class="avatar activity <%= gc.specialty.name.downcase %>"><h3></h3></div>
+                                <div class="description">
+                                    <p class="activity"><%= gc.specialty.name.capitalize %></p><br>
+                                    <p class="time"><%= gc.class_time %> for <%= gc.duration %> minutes  </p><br>
+                                    <p class="openings"><%= gc.total_slot %> Openings Today</p>
+                                </div>
+                            </div>
+                         <% end %>
+						 <% end %>
+				          </div>
+                        <div class="see_all">
+                            <a href="/<%= @profileuser.user_name%>/classes">See All</a>
+                        </div>
+                    </div>
+                    <div class="suggested_trainers trainers">
+                        <div class="header">
+                            <h2>Trainers</h2>
+                        </div>
+                        <div class="list">
+						<% trainers =	get_gym_trainors(@profileuser) %>
+						<% if trainers.present? %>
+						<% trainers.each do |member| %>
+						<% img = useravatar(member) %>
+						<% name = member.last_name.present? ? member.last_name : '' %>
+                            <div>
+                                <div class="avatar">  <%= link_to(image_tag(img), "/#{member['user_name']}") %></div>
+                                <div class="description">
+                                    <p class="name"><%= link_to(member.first_name + name, "/#{member['user_name']}") %></p><br>
+                                    <p class="location"><%= get_city_name(member.city_id) %>, <%= get_state_code(member.city_id) %></p><br>
+                                    <p class="availability">3 Timeslots Available</p>
+                                </div>
+                            </div>
+                         <% end %>
+                         <% else %>
+                          <p class="availability">No Trainers</p>
+						<% end %>	  
+                
+                        </div>
+                    </div>
+                    <% end %>
+         

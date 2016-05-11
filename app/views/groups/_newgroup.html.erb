@@ -15,14 +15,12 @@
 <div class="pop-row">
 	 <%= f.label :text, 'Type' %>
          
- 	<%= f.select :is_public, options_for_select({"Public" =>1, "Private" =>0}), :class => 'selectpicker' %>		
+ 	<%= f.select :is_public, options_for_select({"Public" =>1, "Private" =>0}), {}, {class: 'form-control'} %>		
 		
 </div>
-  
-      <div class="modal-footer">
-       <%= f.submit  'Submit',  :name => 'submit', :class =>'btn btn-primary' %>
+ <div class="modal-footer modal-footer-btn">
+		<%= f.submit  'Submit',  :name => 'submit', :class =>'btn btn-primary' %>
       </div>
-
 <% end %> 
 <script>
   window.imgVar = true;

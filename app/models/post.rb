@@ -1,13 +1,16 @@
 class Post < ActiveRecord::Base
 
 belongs_to :account
+belongs_to :group
 has_many :comment,  :dependent =>:delete_all
+has_many :kudos,  :dependent =>:delete_all
 
 =begin
 has_many :taggings
 has_many :tags, through: :taggings  
 =end
-
+  validates_presence_of :account_id
+  
 has_attached_file :image, 
     :path => ":rails_root/app/assets/images/:attachment/:id/:basename_:style.:extension",
     :url => "/assets/:attachment/:id/:basename_:style.:extension",

@@ -1,0 +1,50 @@
+
+		<% if @gym_class.present? %>
+			<% @gym_class.each do |gc| %>
+	<div class="class">
+		<div>
+			<div><div class="avatar activity cardio_circuit"><h3></h3></div></div>
+			<div>
+				<h2><%= gc.specialty.name %> @ <%= gc.class_time %> <span><%= gc.duration %> Min</span></h2><br>
+				<p>With <a href=""><%= gc.trainer.first_name.capitalize %> <%= gc.trainer.last_name.present? ? gc.trainer.last_name.capitalize : '' %></a></p>
+			</div>
+		</div>
+		<div>
+			<div class="spots">
+				<div class="radial-progress" data-progress="0">
+					<div class="circle">
+						<div class="mask full">
+							<div class="fill"></div>
+						</div>
+						<div class="mask half">
+							<div class="fill"></div>
+							<div class="fill fix"></div>
+						</div>
+						<div class="shadow"></div>
+					</div>
+					<div class="inset">
+						<div class="percentage">
+							<div class="numbers"><p>
+								<span class="count" data-count="<%= get_booked_class_count(gc.id) %>"><%= get_booked_class_count(gc.id) %></span>
+								<span class="max" data-count="<%= gc.total_slot %>">/<%= gc.total_slot %></span></p></div>
+						</div>
+					</div>
+				</div>
+				<p class="label">Spots</p>
+			</div>
+			<% if @account.user_type != 3 %>
+				<% prsnt = check_class_attendance(gc.id) %>
+				
+				<% if prsnt == nil %>
+					 <div class="action" id="<%= Base64.encode64(gc.id.to_s) %>"><button class="add">+</button></div>			
+				<% else %>
+				<div class="action" id="<%= Base64.encode64(gc.id.to_s) %>"><button class="remove">-</button></div>
+				<% end %>
+			<% end %>
+		</div>
+	</div>
+	<% end %>
+	<% else %>
+	<h4 class="noti-heading"> No Class Found</h4>
+	<% end %>
+

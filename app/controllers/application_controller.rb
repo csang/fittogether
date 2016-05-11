@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
  require "base64"
 
   def get_account
+ #  city = Geocoder.coordinates('')
+   
     @act ||= Account.find_by remember_token: (cookies[:auth_token]) if cookies[:auth_token]    
     if !@act.present?
   	@act = Account.find_by fit_id: session[:fit_id]
@@ -26,15 +28,13 @@ class ApplicationController < ActionController::Base
   	    session.clear
   	   # flash[:notice] = "Please Sign In to continue to FitTogether."
   	 	 redirect_to ('/login') and return
-  	end 
-    get_group = Group.where(:account_id => @account.id).collect(&:id)
-    
-    if get_group.present?
-        @cnt = GroupMember.where("group_id IN (?) && status = ? && seen =?  ", get_group, false, false ).count
-    end
-    
-     @cnt =  @cnt == 0 ? '' : @cnt
-     
+  	end
+  	 
+    get_group = Group.where(:account_id => @account.id).collect(&:id)    
+			if get_group.present?
+				@cnt = GroupMember.where("group_id IN (?) && status = ? && seen =?  ", get_group, false, false ).count
+			end    
+     @cnt =  @cnt == 0 ? '' : @cnt     
      @fitspot_cont = FitspotMember.where(:account_id => @account.id,:status => false, :seen => false ).count     
      @fitspot_cont =  @fitspot_cont == 0 ? '' : @fitspot_cont
     
@@ -42,7 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ActiveRecord::RecordNotFound do |exception|
-    render_error 404
+    render_error 404    
   end
 
 
@@ -84,7 +84,7 @@ def current_user
 end
 
 def get_profile_user
-  
+
    @profileuser = Account.where(:status =>1,:user_name =>params[:id]).first
      if !@profileuser.present?
 			redirect_to('/feed')
@@ -112,6 +112,18 @@ end
 		  end	
 	end	  
     
+  end
+  
+  def get_frineds_ids(id)
+
+   active_friend	= Friendship.where(:account_id => id)
+   acfriend = active_friend.map(&:friend_id)
+   passive_friend	= Friendship.where(:friend_id => id)
+   pcfriend = passive_friend.map(&:account_id)
+   
+   return pcfriend + acfriend
+  
+  
   end
 
   

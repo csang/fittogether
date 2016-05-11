@@ -1,0 +1,282 @@
+<!-- Start: Dashboard -->
+<div class="count_boxes">   
+ <!-- <input class="form-control" type="text" readonly name="valid_date" id="datepicker"> -->
+    <div class="checkins count_box">
+        <div class="header">          
+            <h2>Check Ins</h2>   
+             
+          <%= select_tag 'checkin', options_for_select(["Today" , "Yesterday",'Calender' ], 'Today') %> 
+          </div>
+        <div class="body">
+            <h1> <%= Checkin.count_all(@account.account_gym.id, Date.today) %></h1>
+            <p>Today</p>
+        </div>
+    </div>
+    <div class="classes count_box">
+        <div class="header">
+            <h2>Classes</h2>
+         <% special = Specialty.all.map{|x| [x.name] + [x.id]} %>
+			<%= select_tag(:specialty, options_for_select(special)) %>
+        </div>
+        <div class="body">
+            <h1 class="occupied"></h1>/<span id="total_slot"></span>
+            <p>Open Slots Today</p>
+        </div>
+    </div>
+    <div class="appointments count_box">
+        <div class="header">
+            <h2>Appointments</h2>
+              <%= select_tag 'aptmnts', options_for_select(["Today" , "Yesterday",'Calender' ], 'Today') %> 
+        </div>
+        <div class="body">
+            <h1><%= @appointment_count %></h1>
+            <p>Today</p>
+        </div>
+    </div>
+</div>
+
+<div class="list_boxes">
+    <div class="most_active list_box">
+        <div class="header">
+            <h2>Most Active Members</h2>
+            <% abc = {'This Week' => 'week', 'This Month' => 'month', 'This Year' => 'year'} %>
+              <%= select_tag 'mostActive', options_for_select(abc, 'week') %> 
+        </div>
+        <div class="body mostActive">
+            <ol>
+           
+            <% if @active_members.present? %>
+            <% a = 1 
+            @active_members.each do |am| %>
+                <li>
+                    <div class="position"><p> <%= a %>.</p></div>
+                    <div class="avatar">
+                    <% img = useravatar(am.account) %>
+					<%= image_tag(img) %>
+                    </div>
+                    <div class="name"><p><%= am.account.first_name %></p></div>
+                    <div class="count"><p> <%= am.total %> Check Ins</p></div>
+                </li>
+                <% a += 1 %>
+                <% end %>
+              <% else %>  
+               <li> No active member for the period </li>
+              <% end %>   
+               
+            </ol>
+        </div>
+    </div>
+
+    <div class="trainers_working list_box">
+        <div class="header">
+            <h2>Trainers Working</h2>
+              <%= select_tag 'trn_working', options_for_select(["Today" , "Yesterday"], 'Today') %> 
+        </div>
+        <div class="body" id="trn_working_body">
+			<% if @Gym_trainer.present? %>
+			<%  @Gym_trainer.each do |gt| %>
+			<% img = useravatar(gt.trainer) %>
+            <div class="trainer">
+                <div class="avatar"><%= link_to(image_tag(img), "/#{gt.trainer.user_name}") %></div>
+                <div class="details">
+                    <div class="name"><p>  <%= link_to(gt.trainer.first_name, "/#{gt.trainer.user_name}") %></p></div>
+                    <div class="time">
+					<% if gt.morning_start_time.present? %>
+							<p><%= gt.morning_start_time %> -<%= gt.morning_end_time %></p>
+							<% elsif gt.afternoon_start_time.present? %>
+							<p><%= gt.afternoon_start_time %> -<%= gt.afternoon_end_time %></p>
+							<% else gt.evening_start_time.present? %>
+							<p><%= gt.evening_start_time %> -<%= gt.evening_end_time %></p>
+							<% end %>
+						</div>
+                    <div class="timeslots"><p>3 Timeslots Available</p></div>
+                </div>
+            </div>
+           <% end %>
+       
+           <% else %>
+                <div class="timeslots"><p>No Trainer Working.</p></div>
+           <% end %>
+        </div>
+    </div>
+</div>
+<!-- End: Dashboard -->
+<script>
+	 function showDatepicker(){
+    // Don't  show more then 1
+    if($("#datpicker").length) return;  
+    $(this).after("<div id='datpicker' style='position:absolute; right:0px;'></div>");
+    var _tmp = $("#datpicker").datepicker({
+		 dateFormat: 'yy-mm-dd',
+		 onSelect: function(date) {
+				 get_checkin($(this).val());
+				 $('#datpicker').hide();
+			 },
+    });
+	}
+	
+	 function show_datepicker(){
+    // Don't  show more then 1
+    if($("#datpicker").length) return;  
+    $(this).after("<div id='datpicker' style='position:absolute; right:0px;'></div>");
+    var _tmp = $("#datpicker").datepicker({
+		 dateFormat: 'yy-mm-dd',
+		 onSelect: function(date) {
+				 get_appointment_cont($(this).val());
+				 $('#datpicker').hide();
+			 },
+    });
+	}
+	
+	
+  $('#checkin').on('change', function() {
+    var tareek = $(this).val();
+    if (tareek == 'Calender') {
+		showDatepicker.call(this);   
+    } else {
+		 $("#datpicker").remove();  
+         get_checkin(tareek)
+	}
+});
+    var get_checkin = function(tareek){
+          $.ajax({
+          type: "POST",
+          url: '<%= get_check_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {date: tareek},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+			$('.checkins .body h1').html(data);
+			$('.checkins .body p').html(tareek);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+  
+
+    }
+    
+      var get_appointment_cont = function(tareek){
+          $.ajax({
+          type: "GET",
+          url: '<%= get_appointment_count_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {date: tareek},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+			$('.appointments .body h1').html(data);
+			$('.appointments .body p').html(tareek);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+  
+
+    }
+    // get appointments
+    $('#aptmnts').on('change', function() {
+    var tareek = $(this).val();
+    if (tareek == 'Calender') {
+		show_datepicker.call(this);   
+    } else {
+		 $("#datpicker").remove();  
+		// alert($(this).val());
+         get_appointment_cont(tareek)
+	}
+});
+    
+    // most active members
+      $('#mostActive').on('change', function() {
+          var tarik = $(this).val();
+          $.ajax({
+          type: "POST",
+          url: '<%= get_most_active_members_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {date: tarik},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+			$('.mostActive').html(data);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+  
+
+    });
+    
+        // get class total and open slot
+     
+		var get_speciality = function(class_id) {  
+       
+           $.ajax({
+          type: "GET",
+          url: '<%= get_class_slot_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {class_id: class_id},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+			data = JSON.parse(data)
+			$('#total_slot').html('');
+			$('#total_slot').html(data.total);
+			$('.occupied').html(data.occupied);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+	}
+	   // get working trainer for the day
+     
+	 $('#trn_working').on('change', function() {
+		var tareek = $(this).val();
+		   $.ajax({
+          type: "GET",
+          url: '<%= get_working_trainer_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {date: tareek},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {		
+			$('#trn_working_body').html(data);			
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+    
+	}); // end of trainer working
+	
+     $('#specialty').on('change', function() {
+		get_speciality($(this).val());
+    });
+    $(window).on('load', function() {
+		get_speciality($("#specialty").val());
+    });
+</script>

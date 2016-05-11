@@ -1,6 +1,35 @@
+<div class="modal fade" id="reviewForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="z-index: 5456666666000;">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Review</h4>
+      </div>
+      <div class="modal-body">
+       
+        
+ <%= render(:partial => 'reviews/newreview') %>
+    
+    </div>
+  </div>
+</div>
+</div>
+<div class="header">
+                        <div class="title">
+                            <h2>Reviews</h2>
+                        </div>
+                        <div class="actions">
+                          <% if @profileuser.present? && @profileuser.user_type == 3 && @profileuser.id != @account.id  %>
+                          <button class="Review" data-target="#reviewForm" data-toggle="modal">Write Review</button>
+                          <% end %>
+                           
+                        </div>
+ </div>
+<div class="post_input">
   <div class="about">
 <ul class="review-wpr">
   
+      <% if @reviews.present? %>
       <%  @reviews.each do |review| %>
   <li>
     <div class="imageRound">
@@ -8,13 +37,16 @@
       <%= image_tag(avt) %>
     </div>
     <div class="user-name">
-      <p><%=  review.review %></p>
     <span class="chat-time"><time><%=   review.created_at.strftime("%d %b %Y") %></time>
     </span><h2> <%= link_to("<h3>#{review.account.first_name} </h3>".html_safe, "/#{review.account.user_name}") %>
- 
+	 <p><%=  review.review %></p>
     </div> </li>
+      <%  end %>
       <%  end %>
   
       
     </ul>
   </div>
+  </div>
+
+

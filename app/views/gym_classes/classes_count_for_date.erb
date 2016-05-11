@@ -1,0 +1,8 @@
+<div class="option selected"><p>All<span><%= @total_count %></span></p></div>
+				<% if @count_as_time.present? %>
+				<%  @count_as_time.each do |ab| %>
+				<div class="option"><p><%= ab.class_time %><span><%= ab.total %></span></p></div>
+			    <% end %> 
+			    <% end %> 
+			    
+			</div>

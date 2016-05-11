@@ -1,25 +1,97 @@
+
  <%= form_for( Challenge.create, :remote => true, :html => {id: "challenge_form"}) do |f| %>
+ 
 	 <% gspecial = Category.where(:ctype =>'challenge').map{|x| [x.name] + [x.id]} %>
-<div class="pop-row">
-  <label>Category:</label>
-	 <%= select_tag(:category_id, options_for_select(gspecial)) %>
- </div>
-<div class="pop-row">
- <%= f.label :text, 'Quantity:' %>
-	<%= f.text_field :qty, class: " form-control" %>
+<div class="pop-row row">
+	<div class="col-md-6">
+	     <label>What type of Challenge?</label>
+		 <%= select_tag(:category_id, options_for_select(gspecial), :class=>'form-control') %>
+	 </div>
+	<div class="col-md-6">
+		 <%= f.label :text, 'Challenge Duration:' %>
+		<select name="qty" class="form-control">
+		<option disabled="" selected="">Select Duration</option><option value="1">1 Week</option><option value="2">2 Weeks</option><option value="1">1 Month</option>
+		</select>
+    </div>
   </div>
 <div class="pop-row">
 	 <%= f.label :text, 'Description:' %>
   <%= f.text_area :text, class: "boxtextarea form-control" %>
 </div>
-<div class="pop-row">
-  <label>Till Date:</label>
-  <input class="form-control" type="text" readonly name="valid_date" id="datepicker">
+<div class="pop-row row">
+	<div class="col-md-6">
+		<label>Till Date:</label>
+		<input class="form-control" type="text" readonly name="valid_date" id="datepicker">
   </div>
-<div class="pop-row">
- <%= f.label :reward_points, 'Reward Points:' %>
-	<%= select_tag(:reward_points, options_for_select((50..500).step(50))) %>
+  <div class="col-md-6">
+		<%= f.label :reward_points, 'Reward Points:' %>
+		<%= select_tag(:reward_points, options_for_select((50..500).step(50)), :class=>'form-control') %>
+  </div>
 </div>
 <input type="hidden" value="" id="rip">
 <input type="hidden" value="" id="rip2">
 <% end %> 
+
+<!-- Start: Challenge post -->
+<% chal =  Challenge.last %>
+<% if chal.present? %>
+<div class="preview">
+<div class="post challenge">
+    <div class="header">
+        <div class="user">
+            <div class="avatar"><a href=""><div class="img"></div></a></div>
+            <div class="data">
+				
+			    <a href=""><h3 class="name"><%= chal.category.name %> Challenge</h3></a>
+                <p class="challenge"><%= chal.category.name %></p>
+            </div>
+        </div>
+        <div class="rivals">
+            <div class="user">
+            
+				<% img = useravatar(chal.sender) %>
+				<% img2 = useravatar(chal.recipient) %>
+				 <%= link_to(image_tag(img), "/#{chal.sender.user_name}") %>
+					</div>
+            <div><p>VS</p></div>
+            <div class="opponent">
+				 <%= link_to(image_tag(img2), "/#{chal.recipient.user_name}") %></div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="left">
+            <div class="container">
+                <div class="background">
+                   <%= image_tag(chal.sender.avatar(:medium)) %>
+                    <div class="cover"></div>
+                </div>
+                <div class="data">
+                    <div class="score">
+                       
+                    </div>
+                    <div class="user">
+                        <h2><%= chal.sender.first_name %><br><%= chal.sender.last_name %></h2>
+                    </div>
+                </div>
+            </div>
+        </div><div class="right">
+            <div class="container">
+                <div class="background">
+				     <%= image_tag(chal.recipient.avatar(:medium)) %>
+                    <div class="cover"></div>
+                </div>
+                <div class="data">
+                    <div class="score">
+                       
+                    </div>
+                    <div class="user">
+                        <h2><%= chal.recipient.first_name %><br><%= chal.recipient.last_name %></h2>
+                    </div>
+                </div>
+            </div>
+        </div><div class="vs"></div></div>
+</div>
+</div>
+<% end  %>
+<!-- End: Challenge post -->
+

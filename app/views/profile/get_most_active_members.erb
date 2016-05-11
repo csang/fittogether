@@ -1,0 +1,19 @@
+<ol>
+<% if @active_members.present? %>
+            <% a = 1 
+            @active_members.each do |am| %>
+                <li>
+                    <div class="position"><p> <%= a %>.</p></div>
+                    <div class="avatar">
+                    <% img = useravatar(am.account) %>
+					<%= image_tag(img) %>
+                    </div>
+                    <div class="name"><p><%= am.account.first_name %></p></div>
+                    <div class="count"><p> <%= am.total %> Check Ins</p></div>
+                </li>
+                <% a += 1 %>
+                <% end %>               
+            </ol>
+<% else %>  
+               <li> No active member for the period </li>
+              <% end %>             

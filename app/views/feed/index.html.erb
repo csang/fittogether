@@ -1,16 +1,354 @@
-<%= render(:partial => 'feed_aside') %>
-<div id="content">
-	<div class="comment_view_bg">
-		<div class="comment_view">
-			<%= render(:partial => 'feed_share') %>
-		</div>
-	</div>
-	<%= render(:partial => 'feed') %>
- 
+<style>
+#infinite-scrolling {
+display:none;
+}
+</style>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+  <script type="text/javascript" charset="utf-8">
+
+   
+       
+         var currgeocoder;
+
+         //Set geo location lat and long
+        function getLocation() {
+             navigator.geolocation.getCurrentPosition(function(position, html5Error) {
+             geo_loc = processGeolocationResult(position);
+             currLatLong = geo_loc.split(",");
+             initializeCurrent(currLatLong[0], currLatLong[1]);
+
+        });
+        }
+
+        //Get geo location result
+
+       function processGeolocationResult(position) {
+             html5Lat = position.coords.latitude; //Get latitude
+             html5Lon = position.coords.longitude; //Get longitude
+             html5TimeStamp = position.timestamp; //Get timestamp
+             html5Accuracy = position.coords.accuracy; //Get accuracy in meters
+             return (html5Lat).toFixed(8) + ", " + (html5Lon).toFixed(8);
+       }
+
+        //Check value is present or not & call google api function
+
+        function initializeCurrent(latcurr, longcurr) {
+             currgeocoder = new google.maps.Geocoder();
+             console.log(latcurr + "-- ######## --" + longcurr);
+
+             if (latcurr != '' && longcurr != '') {
+                 var myLatlng = new google.maps.LatLng(latcurr, longcurr);
+                 return getCurrentAddress(myLatlng);
+             }
+       }
+
+        //Get current address
+
+         function getCurrentAddress(location) {
+              currgeocoder.geocode({
+                  'location': location
+
+            }, function(results, status) {
+           
+                if (status == google.maps.GeocoderStatus.OK) {
+                    console.log(results[0]);
+                    $("#location").val(results[0].formatted_address);
+                } else {
+                    alert('Geocode was not successful for the following reason: ' + status);
+                }
+            });
+         }
+
+    </script>
+   
+<div id="feed_container">
+                  <div class="header">
+                        <div class="title">
+                            <h2>Fit Feed</h2>
+                        </div>
+                        <div class="actions">
+                            <button class="write_post">Write Post</button>
+                            <button data-toggle="modal" data-target="#challengeForm" class="challenge">Challenge</button>
+                            <% if @account.user_type != 3 %>
+                            <button class="checkin" onclick="getLocation();" data-toggle="modal" data-target="#checkinForm" class="checkin">Check-In</button>
+                     	<% end %>
+                     	 
+                     	  <%= form_for @profile, :url=>{:action=>'create_album'}, :html=>{:name=>'createalbum',:id => "create_album", :enctype=>"multipart/form-data", :onsubmit=>'return before_submit()',} do |f| %>
+  <input style="display:none;" name="album" id="album" type="file" accept="image/* , video/mp4"><span id="create_album"></span>
+    <button id="share_album" title="You can create album of videos and images" class="create_album">Create Album</button>
+<% end %>
+
+                        </div>
+                    </div>
+		 <div class="post_input">                   
+		 <%= render(:partial => 'feed_share') %>      
+		 </div>   
+		 <div id="feed">
+			<%= render(:partial => 'feed') %>     
+		 </div> 
+		                   <div id="infinite-scrolling">                        
+  <%= will_paginate @posts %>
+</div>    
+</div>	
+<!-- challenges on feed page --->
+<div class="modal fade " id="challengeForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" style="width:850px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Create Challenge</h4>
+      </div>
+      <div class="description">
+<p>Challenge your friends to see who can generate the most steps, run/walk the most miles or burn the most calories within the timeframe you define. Challenges start upon acceptance.</p>
+</div>
+      <div class="modal-body">
+        <div class="pop-row listing-hover row">
+          
+                  <%  if @account.user_type != 1 %>
+      
+            <div class="col-md-5">
+           <input class="form-control" autocomplete="off" type="text" id="tags" value="" name="search" placeholder="search...">
+          <ul class="arport" style="display:none;">     
+               
+            </ul>
+           </div> 
+          <div class="col-md-2 text-center">
+            <label style="margin:10px 0 0;">Between</label> </div>
+           <div class="col-md-5">
+              <input class="form-control" autocomplete="off" type="text" id="tags2" value="" name="search" placeholder="search...">
+              
+            <ul class="arport2" style="display:none;">
+            
+               
+            </ul>
+            </div>
+            <% else %>
+            <div class="col-xs-12">
+            <label>Who do you want to Challenge?</label>
+			<input class="form-control" type="text" id="tags" value="" name="search" placeholder="search...">
+          
+            <ul class="arport" id="pop-drop" style="display:none;">
+            
+               
+            </ul>
+              <input type="hidden"  value=" <%=@account.user_type %>" id="uType">
+              </div>
+              <% end %>
+          
+        </div>
+        
+ 	<%= render(:partial => 'challenges/challenge') %>
+      </div>
+      <div class="modal-footer create">
+        <button type="button" id="challenge" class="btn btn-primary">Create Challenge</button>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script type="text/javascript">
-$(document).ready(function() {
+<!-- check in -->
+
+<div class="modal fade" id="checkinForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Check In location</h4>
+      </div>
+      <div class="modal-body">
+        <div class="pop-row listing-hover row">          
+      
+            <div class="col-md-12">
+             <label> Your Current Location: </label>
+             <input class="form-control" autocomplete="off" type="text" id="location" value="" name="search" placeholder="location">
+             </div>             
+             </div>
+              <div class="pop-row listing-hover row">   
+               <div class="col-md-12">
+              <label> Select Gym To Check-In:</label>
+              <% gym = AccountGym.all.map{|x| [x.name] + [x.id]} %>
+			<%= select_tag(:account_gym_id, options_for_select(gym), :class=>'form-control') %>	
+             </div>
+       </div>
+    </div>
+    <div class="modal-footer create">
+		<button type="button" id="chkin" class="btn btn-primary">Check In</button>
+	  </div>
+</div>
+</div>
+</div>
+<script>
+$(function() {
+
+$("#tags , #tags2").keyup(function(){
+  var id = this.id
+  var keyword = $(this).val();
+  var uid = id == 'tags2' ? $('#rip').val() : $('#rip2').val() ;
+  
+	if (keyword.length >= 2) {
+		$.ajax({
+			type: "POST",
+			url: '/search_user/'+ keyword + '/ /' + uid, //sumbits it to the given url of the form
+			dataType: "HTML",
+			beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+					},
+		    success: function(data){
+			        if (id == 'tags2') {
+				$('.arport2').fadeIn().html(data)
+                                $('.arport').fadeOut()
+				
+                                } else {
+                                  $('.arport').fadeIn()
+				$('.arport').html(data)
+                                $('.arport2').fadeOut()
+                                }
+				},
+		    error:	function (xhr, ajaxOptions, thrownError) {
+				console.log(xhr.status)
+				
+			}	
+		
+	    });
+		}
+});
+
+$('#challenge').on('click', function() {
+if ($('#challenge_form').valid()) {
+var rid = $('#rip').val();
+var rip2 = $('#rip2').val();
+ <%  if @account.user_type != 1 %>
+if(rid=='' || rip2 ==''){
+  alert('Please select user');
+  return false;
+}
+<% else %>
+ if(rid==''){
+  alert('Please select user');
+  return false;
+}
+<% end %>
+var bodytext = $('.boxtextarea').val();
+var categoryid = $('#category_id').val();
+var rewardpoints = $('#reward_points').val();
+var qty = $('#challenge_qty').val();
+var valid_till = $('#datepicker').val();
+
+
+	$.ajax({
+				type: "POST",
+				url: '<%= challenge_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {to_id:rid, category_id:categoryid, text:bodytext, reward_points:rewardpoints,qty:qty,valid_till:valid_till, rip2:rip2,},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#challengeForm').modal('hide');						
+					$('.flash-message').html('<div class="alert alert-success"> Challenge Sent Succesfully</div>').show();
+					window.location.href = '/challenges';
+                                        },
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+}                        
+	    
+	    });	  
+// check in 
+
+
+$('#chkin').on('click', function() {
 	
-})
+		 var gymid = $('#account_gym_id').val();   
+		 var location = $('#location').val();   
+		 	$.ajax({
+				type: "POST",
+				url: '<%= check_in_path %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {account_gym_id:gymid, location:location},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#checkinForm').modal('hide');	                                        },
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)					
+				}	
+			
+			});
+	    
+}); // end of checkin
+
+
+  document.getElementById('share_album').onclick = function() {
+  document.getElementById("create_album").reset();
+    $('#album').click();
+    if (!$('#album').val()) //check empty input filed
+    {
+      return false;
+    }
+
+
+  };
+  $('#album').on('change', function(e) {
+    if (!$('#album').val()) //check empty input filed
+    {
+      return false;
+    }
+    else {
+     
+      bf = before_submit();
+      if (bf == false) {		  
+		return false; 
+	  }else {
+	     $('#create_album').submit();		
+        return false;
+        }
+    }
+  });
+
+
+
+});
+//function to check file size before uploading.
+  function before_submit() {
+
+    //check whether browser fully supports all File API
+    if (window.File && window.FileReader && window.FileList && window.Blob)
+    {
+	
+      var fsize = $('#album')[0].files[0].size; //get file size
+      var ftype = $('#album')[0].files[0].type; // get file type
+
+
+      //allow only valid image file types
+      switch (ftype)
+      {
+        case 'image/png':
+        case 'image/gif':
+        case 'image/jpeg':
+        case 'image/pjpeg':
+        case 'video/mp4':
+          break;
+        default:
+          // $("#output").html("Only png, jpg, gif file formats are allowed.");
+          $('.flash-message').html('<div class="alert alert-danger">Only png, jpg, gif and mp4 formats are allowed.</div>').show();
+
+          return false
+      }
+
+     }
+    else
+    {
+
+      $('.flash-message').html('<div class="alert alert-danger"> please upgrade your browser, because your current browser lacks some new features we need!').show();
+      return false;
+    }
+  }
 </script>
+

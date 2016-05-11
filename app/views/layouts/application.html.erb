@@ -7,8 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fit Together</title>
     <%= favicon_link_tag 'global/favicon.ico' %>
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag 'jquery-ui.min' %>
     <%= csrf_meta_tags %>
+    <%= stylesheet_link_tag 'settings' if params[:controller] == 'settings' %>
+    <%= stylesheet_link_tag 'jquery.timepicker'  %>
+    <%= stylesheet_link_tag 'profile' if params[:controller] == 'profile' %>
+    <%= stylesheet_link_tag 'fullcalendar' if params[:controller] == 'profile' %>
+    <%= stylesheet_link_tag 'gym_admin' if params[:action] == 'dashboard' || params[:action] == 'classes' || params[:action] == 'gym_admin_appointments' || params[:action] == 'gym_trainors' %>
+    <%= stylesheet_link_tag 'landing' if params[:controller] == 'landing' %>
+    <%= stylesheet_link_tag 'gym' if params[:controller] == 'profile' %>
+    <%= stylesheet_link_tag 'radial_progress' if params[:action] == 'show_classes' || params[:action] == 'classes' %>
+    
+   
+    
   <script type="text/javascript">
     if (!window.location.origin) {
   window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
@@ -25,9 +37,12 @@
 		  </style>
 		<![endif]-->
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+     <%= javascript_include_tag 'profile' if params[:controller] == 'profile' %>
+     <%= javascript_include_tag 'gym' if params[:action] == 'show_classes' %>
      <script>
       $(function() {
           $( "#datepicker" ).datepicker({minDate: 1, dateFormat: 'dd-mm-yy'});
+          $( "#datepickers" ).datepicker({minDate: 1, dateFormat: 'dd-mm-yy'});
       });
   </script>
    
@@ -36,20 +51,40 @@
 
 	
 <div class="full-loader" style="display:none">
-<%= image_tag("loading.gif", :alt => "rss feed") %>
+	<div>
+<%= image_tag("loading.gif", :alt => "loading...") %>
+	</div>
 </div>
-    <%= render(:partial => '/nav/nav') %>
+    <%= render(:partial => '/nav/nav1') %>
 
 <%#= yield :nav %>
 
-    <div id="container">
-      <div class="flash-message">  
-          <%= render 'layouts/flash_messages' %>
-        </div>
-        <%= yield %>
+ <div id="body" class="profile_new">
+			<% if @account.present? %>
+            <!-- Start: Side Nav -->
+             <%= render(:partial => '/nav/left_side') %>
+            <!-- End: Side Nav -->
+            <% end %>
+			
+            <div id="main_container">
+				
+			   <div class="flash-message">  
+				  <%= render 'layouts/flash_messages' %>
+				</div>
+           <%= yield %>
+             <%= render(:partial => '/footer/common') %>
+           <%# if @account.present? && params[:controller] !='settings' && params[:controller] !='profile' && params[:controller] !='conversations' && params[:controller] !='challenges' %>
+           <% if @account.present? && params[:controller] =='feed'  %>
+           <%= render(:partial => '/nav/right_side') %>
+           <% end %>
+          
+
+           </div>
+           <% if @account.present? %>
+           <%= render(:partial => '/advertisements/ads') %>
         <%= render(:partial => '/footer/footer') %>
+        <% end %>
   <%#= yield :footer %>
-      </div>
 
     </body>
 

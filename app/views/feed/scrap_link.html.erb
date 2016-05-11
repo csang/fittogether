@@ -1,0 +1,18 @@
+<div class="link_container">
+	<a href="<%= params[:lnk] %>" target="_blank">
+		<div class="link">
+			<div class="logo">
+			<% if @img.present? %>
+			<img width="150" height="150" src="<%= @img %>">
+			<% end %>
+			</div>
+			<div class="data">
+				<h4 class="source"><%= @title %></h4>
+				<h2 class="title"><%= @title %></h2>
+				<h3 class="author"><%= @author.present? ? 'By' + @author : ''  %></h3>
+				<p class="body"><%= @contents.present? ? @contents.chomp('"')  : ''  %></p>
+			</div>
+		</div>
+	</a>
+</div>
+

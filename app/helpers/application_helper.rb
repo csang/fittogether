@@ -68,8 +68,15 @@ module ApplicationHelper
    
   def get_city_name(id)
     cityName = City.where(:id => id).first
-    return (cityName.present?) ?  cityName['name'] : false ; 
+    return (cityName.present?) ?  cityName['name'] : 'N/A' ; 
   end
+  
+  def get_state_code(id)
+    stateCode = City.where(:id => id).first
+    return (stateCode.present?) ?  stateCode['state_code'] : 'N/A' ; 
+  end
+  
+  
    
   def get_state_name(code)
     stateName = State.where(:state_code => code).first
@@ -130,37 +137,37 @@ module ApplicationHelper
   def useravatar(profileuser)
     #abort(profileuser.inspect)
     @privacy = nil 
-    @profileuser = profileuser 
    
-    if @profileuser.account_privacy.present? 
-	 
-      if @profileuser.account_privacy.account_id!=@account.id  
-        @privacy = @profileuser.account_privacy 
+    if !profileuser.account_privacy.nil?	
+      if profileuser.account_privacy.account_id!=@account.id  
+        privacy = profileuser.account_privacy 
       end 
     end 
-		
-    if !@privacy.present? 
-			if @profileuser.avatar.present? 
-        @img = @profileuser.avatar(:thumb)
-      elsif   @profileuser.pic.present?  
-        @img = 'https://' + @profileuser.pic
-			else  
+	 	
+    if !privacy.present?     
+		if profileuser.avatar.present? 
+         @img = profileuser.avatar(:thumb)
+		elsif   profileuser.pic.present?  
+			@img = 'https://' + profileuser.pic
+	    else  
         @img = 'default.png'
-		  end 
-    else 						  
-      if @privacy.profile_pic.present? &&  @privacy.profile_pic==true  
-        if @profileuser.avatar.present? 
-          @img = @profileuser.avatar(:thumb)
-        elsif   @profileuser.pic.present?  
-          @img = 'https://' + @profileuser.pic
-        else 
-          @img = 'default.png'
-        end 
-      else 
-        @img = 'default.png'
-      end 				  
-    end 					 
+	    end 	     		
+    else    			  
+		  if privacy.profile_pic.present? &&  privacy.profile_pic==true  
+			if profileuser.avatar.present? 
+			  @img = profileuser.avatar(:thumb)
+			elsif   profileuser.pic.present?  
+			  @img = 'https://' + profileuser.pic
+			else 
+			  @img = 'default.png'
+			end 
+		  else 
+			@img = 'default.png'
+		  end 				  
+    end 	
+    					 
     return @img
+    
   end
    
   def messagecount
@@ -201,7 +208,242 @@ module ApplicationHelper
     acc_name = Account.select(:first_name).where(:id =>account_ids)
     return acc_name.map(&:first_name).join(', ')
   end
+  
+  def get_user_array(account)
+  
+     if account.present?          
+         acc = {}		      
+		 acc[:id] = account.id.to_s		     						
+		 acc[:first_name] = account.first_name
+		 acc[:last_name] = account.last_name
+		 acc[:user_name] = account.user_name
+		 acc[:pic] = account.pic
+		 acc[:avatar] = account.avatar		
+		  return acc
+	 end	 	
     
+  end
+  
+  def get_friend_and_member(profileuser, goings = nil)
+ 
+  user = Array.new  
+	 if profileuser.passive_friends.present? 
+        profileuser.passive_friends.each do |member|
+      
+        if goings.present?
+			if  !goings.include? member.id  
+			 user.push(member)
+			end
+        else 
+        user.push(member)
+        end
+     
+         if member.account_privacy.present? 
+			 if member.account_privacy.account_id!= current_user.id  
+			  privacy = {}			     						
+			  privacy[:privacy] = member.account_privacy 
+			  user.push(privacy)
+			end 
+		 end 
+       end 
+     end 
+     
+      if profileuser.active_friends.present? 
+         profileuser.active_friends.each do |member|
+         if goings.present?
+         if  !goings.include? member.id  
+         user.push(member)
+         end
+         else 
+         user.push(member)
+         end
+         if member.account_privacy.present? 
+			 if member.account_privacy.account_id!= current_user.id 
+			  privacy = {}			     						
+			  privacy[:privacy] = member.account_privacy 
+			  user.push(privacy)
+			 end 
+		 end 
+       end 
+     end 
+  
+   return user
+  end
+  
+  def suggested_fitspot
+  
+	fitspots = Fitspot.where('account_id != ?', @account.id).limit(3)
+	return fitspots
+  end
+  
+   def suggested_trainer  
+	trainer = Account.where('id != ? AND user_type =?', @account.id,2).limit(3)
+	return trainer
+  end
+  
+  def fitspot_invitation
+   fitspot = FitspotMember.where(:account_id => @account.id,:status => false).joins(:fitspot).where("Date(fitspot_date) >= ?",Date.today)
+   return fitspot
+  end
+  
+  # get trainer as method name suggested 
+    def my_trainer_or_gym(profileuser, type)  
+ 
+     if profileuser.active_friends.present?    
+		 profileuser.active_friends.each do |ac|
+			#abort(ac.user_type.inspect)
+			if ac.user_type == type
+			@ac = ac
+			end
+	 	end
+	 else
+		 if profileuser.passive_friends.present?	 
+			profileuser.passive_friends.each do |ac|			 
+				if ac.user_type == type
+				@ac = ac
+				end
+			end
+		 end	
+	  end	 
+	  @ac.present? ? @ac : nil
+  end
+  
+  def my_favorite_fitspot(id)
+  
+   fitspot = FitspotMember.where(:account_id => id,:status => false)
+   return fitspot
+  
+  end
+  
+  def get_gym_trainors(account = nil)
+
+    account = account.present? ? account : @account 
+	active_trainer = []
+	passive_trainer =[]
+	if account.active_friends.present?    
+		 account.active_friends.each do |ac|		
+			if ac.user_type == 2 # 2 for trainer
+			active_trainer.push(ac)
+			end
+	 	end
+	end
+	
+	if account.passive_friends.present?    
+		 account.passive_friends.each do |pc|		
+			if pc.user_type == 2 # 2 for trainer
+			passive_trainer.push(pc)
+			end
+	 	end
+	end
+	
+	trainers = active_trainer + passive_trainer
+	return trainers
+  
+  end
+  
+  def check_class_attendance(gym_class_id)
+	 attend = ClassAttendance.where(:gym_class_id => gym_class_id, :account_id => @account.id ).first
+     return  (attend.present?) ? true : nil
+  end
+  
+  def get_booked_class_count(gym_class_id)
+	 attend = ClassAttendance.where(:gym_class_id => gym_class_id).count
+     return  (attend.present?) ? attend : 0
+  end
+  
+  def get_trainer_class (id)
+  
+	gym_class = GymClass.where("trainer_id = ? AND  Date(class_date) = ?", id, Date.today).first
+    return  (gym_class.present?) ? gym_class.specialty.name : 'N/a'
+  end
+  
+  
+  def new_friends_and_members
+	
+		
+			 user = Array.new  
+			 if @account.passive_friends.present? 
+				@account.passive_friends.each do |member|			 
+					  user.push(member)			 
+				 if member.account_privacy.present? 
+					 if member.account_privacy.account_id!= @account.id  
+					  privacy = {}			     						
+					  privacy[:privacy] = member.account_privacy 
+					  user.push(privacy)
+					end 
+				 end 
+			   end 
+			 end 
+			
+			  if @account.active_friends.present? 
+				 @account.active_friends.each do |member|
+				   user.push(member)				 
+				 if member.account_privacy.present? 
+					 if member.account_privacy.account_id!= @account.id 
+					  privacy = {}			     						
+					  privacy[:privacy] = member.account_privacy 
+					  user.push(privacy)
+					 end 
+				 end 
+				end 
+				end 
+		
+		     users = Array.new  						
+			 user.each do |usr|
+			     if usr.present? && usr[:first_name]!=nil
+					 hash = {}	
+					 hash[:full_name] = usr[:first_name].capitalize.to_s + ' ' + ( usr[:last_name].present? ? usr[:last_name].to_s : '')
+					 hash[:initials] =  usr[:first_name]
+					 hash[:user_name] =  usr[:user_name]	
+				
+					 if usr.avatar.present? 					
+						img = usr.avatar(:thumb)
+					 elsif   usr[:pic].present?  
+						img = 'https://' + usr[:pic]
+					 else  
+						img = 'default.png'
+					 end 
+					 hash[:avatar] =    img
+					 users.push(hash)
+				 end 
+		     end	
+		  return  users.to_json
+		
+	end
+	
+	def get_fitbit(id)	
+	fit = Fitbit.where(:account_id => id).first	
+	return fit    
+    end
+    
+    def get_sidebar_classes (id)
+    
+    	@gym_class = GymClass.where("account_id = ? AND  Date(class_date) = ?", id, Date.today).limit(5)
+    
+    end
+    
+    
+    def get_groups	
+		
+			 groups = Group.all				
+		     groups_array = Array.new  						
+			 groups.each do |group|
+			 
+			     if groups.present? 
+					 hash = {}	
+					 hash[:full_name] = group[:title].capitalize
+					 hash[:initials] =  group[:title][0]
+					 hash[:id] =  group[:id]
+					 hash[:avatar] =  group.group_image.present? ? group.group_image(:thumb) : '/assets/group.jpg'	
+				     groups_array.push(hash)
+				 end 
+		     end	
+		  return  groups_array.to_json
+		
+	end
+ 
+    
+
   end
   
 

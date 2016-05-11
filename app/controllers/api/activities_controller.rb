@@ -21,10 +21,11 @@ before_action :get_account
    
       if !@fit.present?
          Fitbit.create(:account_id => @account.id, :steps =>@activities['goals']['steps'], :calories =>@activities['goals']['caloriesOut'], :distance =>@activities['goals']['distance'], :summary_calories =>@activities['summary']['caloriesOut'])
-      else
-       
+		  Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+	     else       
          @fit.update_attributes(:steps =>@activities['goals']['steps'], :calories =>@activities['goals']['caloriesOut'], :distance =>@activities['goals']['distance'], :summary_calories =>@activities['summary']['caloriesOut'])
       end  
+
     else
       flash[:error] = "Error processing in api.Please try after sometime."
       redirect_to request.env['HTTP_REFERER'] and return

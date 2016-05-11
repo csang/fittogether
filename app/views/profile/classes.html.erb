@@ -1,0 +1,231 @@
+<div id="classes">
+ <% gspecial = Specialty.all.map{|x| [x.name] + [x.id]} %>
+ <% train = get_gym_trainors(@profileuser) %>
+  <% arr = train.map{|x| [x.first_name] + [x.id]} %>
+	<div class="header">
+		<h3>Classes</h3>
+		<button>New Class</button>
+		<button data-target="#classForm" data-toggle="modal">New Class</button>
+	</div>
+	<div id="classes_container">
+		<div class="time_container">
+			<div class="header">
+				<p>Today</p>
+				<input type="text" class="callender rgtcld" id="datepicker" placeholder="<%= Time.now.strftime("%d-%m-%Y") %>">
+			</div>
+			<div class="list" id="classes_count">
+				<div class="option selected"><p>All<span><%= @gym_class.count %></span></p></div>
+				<%  @count_as_time.each do |ab| %>
+				<div class="option"><p><%= ab.class_time %><span><%= ab.total %></span></p></div>
+			    <% end %> 
+			</div>
+		</div
+		><div class="data_container">
+			<div class="header">
+				<div class="filters">
+					<div class="type">
+						<p>Type:</p>
+						 <%= select_tag(:specialties, options_for_select(gspecial)) %>
+					</div>
+					<div class="trainer">
+						<p>Trainer:</p>
+						 <%= select_tag(:trainers, options_for_select(arr)) %>
+					</div>
+				</div>
+			</div>
+			<div class="body" id="get_classes">
+			<% if @gym_class.present? %>
+			<% @gym_class.each do |gc| %>
+				<div class="class">
+					<div>
+						<div><div class="avatar activity spinning"><h3></h3></div></div>
+						<div>
+							<h2><%= gc.specialty.name %> @ <%= gc.class_time %> <span><%= gc.duration %> Min</span></h2><br>
+							<p>With <a href="/<%= gc.trainer.user_name %>"><%= gc.trainer.first_name.capitalize %> <%= gc.trainer.last_name.present? ? gc.trainer.last_name.capitalize : '' %></a></p>
+						</div>
+					</div>
+					<div class="stat">
+						<div class="spots">
+							<div class="radial-progress" data-progress="50"> <!-- For data-progress, (occupied spots)/max)*100  -->
+								<div class="circle">
+									<div class="mask full">
+										<div class="fill"></div>
+									</div>
+									<div class="mask half">
+										<div class="fill"></div>
+										<div class="fill fix"></div>
+									</div>
+									<div class="shadow"></div>
+								</div>
+								<div class="inset">
+									<div class="percentage">
+										<div class="numbers"><p><span class="count" data-count="<%= get_booked_class_count(gc.id) %>"><%= get_booked_class_count(gc.id) %></span><span class="max" data-count="10"><%= gc.total_slot %></span></p></div>
+									</div>
+								</div>
+								
+							</div>
+							
+							<p class="label">Spots</p>
+						</div>
+						<div class="action"><button class="add">+</button></div>
+						<!--<div class="action"><button class="add">+</button></div>-->
+					</div>
+					<div class="roster">
+						<div class="list">
+							<div>
+								<div class="gymnast">
+									<div class="position"><p>1.</p></div>
+				                    <div class="avatar"><img src="" title="Michael Jordan" alt="MJ"></div>
+				                    <div class="name"><p>Michael Jordan</p></div>
+								</div>
+								<div class="actions">
+									<button class="remove">Remove</button>
+									<button class="change">Change</button>
+								</div>
+							</div>
+							
+						</div>
+						<div class="view"><p>View Class Roster</p></div>
+					</div>
+					
+				</div>
+				<% end %>
+				<% end %>
+				
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+$(function() {
+	$( "#datepicker" ).datepicker({
+		dateFormat: "M d, yy",
+	});
+	$('#classes .class .roster .view').click(Gym_admin.view_roster);
+	$('#classes #classes_container .time_container .list > div').click(Gym_admin.select_hour);
+    $('#classes #classes_container .class > div .action button').click(Gym_admin.add_or_remove_spot);
+});
+</script>
+
+
+<!---classs -->
+<div class="modal fade" id="classForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Class Form</h4>
+      </div>
+      <div class="modal-body">
+       
+        
+		 <%= form_for( GymClass.new, :remote => true, :html => {id: "gym_class_form"}) do |f| %>
+			 <% gspecial = Specialty.all.map{|x| [x.name] + [x.id]} %>
+		<div class="pop-row">
+		  <label>Type</label>
+			 <%= select_tag(:specialty_id, options_for_select(gspecial), :class=>'form-control') %>
+		 </div>
+		 
+		<div class="pop-row">
+	
+
+		 <%= f.label :text, 'Trainer:' %>
+		
+			 <%= select_tag(:trainer_id, options_for_select(arr), :class=>'form-control') %>
+		  </div>
+		<div class="pop-row">
+		 <label>Time:</label>
+		  <input class="form-control" type="text"  name="class_time" id="timepickernew">
+		  </div>
+		
+		 
+		 <div class="pop-row">
+		 <%= f.label :duration, 'Duration:(In minutes)' %>
+			<%= select_tag(:duration, options_for_select((10..120).step(10)), :class=>'form-control') %>
+		</div>
+		
+		<div class="pop-row">
+		  <label>Date:</label>
+		  <input class="form-control" type="text" readonly name="class_date" id="datepickers">
+		  </div>
+		  
+		<div class="pop-row">
+		 <%= f.label :total_slot, 'Total Slot:' %>
+			<%= select_tag(:total_slot, options_for_select((10..200).step(10)), :class=>'form-control') %>
+		</div>
+		
+		 <div class="modal-footer">
+       <button type="send" id="sendfeedback" class="btn btn-primary" >Send</button>
+      </div>
+
+		<% end %> 
+    
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+$(function() {
+  $("#gym_class_form").on("ajax:success", function(e, data, status, xhr)  {
+    $('.flash-message').html('<div class="alert alert-success"> Class added succesfully.</div>').show();
+    $('#classForm').modal('hide');
+     });
+ $("#gym_class_form").on("ajax:error", function(e, data, status, xhr)  {
+	console.log(data);
+    $('.flash-message').html('<div class="alert alert-danger"> Please Try again.</div>').show();
+     });
+    // get gym class count on the basis of date 
+     $('.callender').on('change', function(){
+      var tarik = $(this).val();
+      $.ajax({
+       type: "GET",
+          url: '<%= get_counts_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {date: tarik},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+       		$('#classes_count').html('');
+       		$('#classes_count').html(data);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+      
+      });
+     });
+     
+         // get gym class detail 
+     $('#trainers , #specialties').on('change', function(){
+      var trainers = $('#trainers').val();
+      var specialties = $('#specialties').val();
+      var date = $('.rgtcld').val();
+      $.ajax({
+       type: "GET",
+          url: '<%= get_classes_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {trainers: trainers, specialties: specialties, date: date},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+       		$('#get_classes').html('');
+       		$('#get_classes').html(data);
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+      
+      });
+     });
+    
+ });   
+
+</script>
