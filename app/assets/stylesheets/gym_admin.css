@@ -27,6 +27,7 @@ header .gym_nav nav a{
 	font-weight: bold;
 	font-size: 14px;
 	padding: 0 10px;
+	font-family: "Helvetica Neue","Helvetica","Arial";
 }
 
 header .gym_nav nav a{
@@ -89,6 +90,7 @@ header .gym_nav nav a.selected{
 	line-height: 43px;
 	font-size: 16px;
 	text-transform: uppercase;
+	font-weight:bold;
 }
 
 #main_container .count_box .header select{
@@ -171,6 +173,7 @@ header .gym_nav nav a.selected{
 	line-height: 43px;
 	font-size: 16px;
 	text-transform: uppercase;
+	font-weight:bold;
 }
 
 #main_container .list_box .header select{
@@ -206,6 +209,7 @@ header .gym_nav nav a.selected{
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	
 }
 
 #main_container .list_box .body li div.position{
@@ -243,6 +247,7 @@ header .gym_nav nav a.selected{
 
 #main_container .list_box .body li div p{
 	display: inline;
+	font-size:16px;
 }
 
 #main_container .list_box .body li:last-child{

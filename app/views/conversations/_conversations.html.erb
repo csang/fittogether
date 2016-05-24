@@ -21,7 +21,7 @@
     <% @i = 1%>
         <% @msg = true %>
 <li class="<%= @type %> profile_data" id="<%= message.id %>">
-
+<% if message.account.present? %>
 <div class="imageRound">
 <% img = useravatar(message.account) %>
 <%= image_tag(img) %>
@@ -45,6 +45,7 @@
 </ul>
 <% end %>
 </div>
+<% end %>
 <% if @messages.present? && @msg.present?  %>
 
 <div class="reply-box" id="reply-box">

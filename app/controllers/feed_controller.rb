@@ -41,7 +41,8 @@ class FeedController < ApplicationController
        if post_type == 'text'
        post_type = params[:post_type].present? ? params[:post_type] : 'text' 
        end
-       @posts =  Post.create(:account_id=>@account.id,:text=>params[:posttextnew],:image=>params[:image],:video=>params[:video], :status=>1,:share_with=> share, :post_type => post_type )	        
+       group_or_fitpost = params[:group_id].present? ? Base64.decode64(params[:group_id])  : ''
+       @posts =  Post.create(:account_id=>@account.id,:text=>params[:posttextnew],:image=>params[:image],:video=>params[:video], :status=>1,:share_with=> share, :post_type => post_type ,:group_id => group_or_fitpost )	        
        respond_to do |format|
         if @posts.save!
           params[:posttextnew].split.select {|w|         
@@ -340,6 +341,11 @@ class FeedController < ApplicationController
      
 	  check_in = Checkin.create(checkin_params.merge(account_id: @account.id))	
       if check_in.save!  
+         id = AccountGym.find(params[:account_gym_id])
+         hrf =  "<a href=" + id.account.user_name + "> Gym </a>"
+         text = "#{@account.first_name} checked in for #{hrf} at #{params[:location]}"
+			@posts =  Post.create(:account_id=>@account.id,:text=>text,:status=>1,:share_with=> 'Public', :post_type => 'checkin'  )	         
+       
         render :json => 1  and return     
       else
 		render :json => 0  and return   

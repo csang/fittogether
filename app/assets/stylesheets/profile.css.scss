@@ -511,16 +511,15 @@ height: 70px;
 }
 
 #profile_header .collage .sub_collage > div{
-	float: left;
-	border-radius: 5px;
-	border: 1px solid rgb(151,151,151);
-	box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
-	overflow: hidden;
-	vertical-align: center;
-	margin-right: 5px;
-	margin-bottom: 5px;
-	background-color: #000;
-	display: block;
+	background: #d8d8d8 url("/images/global/avatar_placeholder.png") no-repeat scroll center center;
+    border: 1px solid rgb(151, 151, 151);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    display: block;
+    float: left;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    overflow: hidden;
 }
 
 #profile_header .collage .sub_collage > div img{
@@ -1224,5 +1223,7 @@ aside#ads{
 	margin-left: 0;
 }
 
-
+img[src='']{
+    display: none;
+}
 

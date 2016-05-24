@@ -23,9 +23,9 @@
  *= require jquery.Jcrop.min
  */
 
-/* Reset */
+/* Reset 
 
-/*@font-face {
+@font-face {
 	font-family: 'Helvetica Neue';
 	src: url('fonts/HelveticaNeue.eot');
 	src: url('fonts/HelveticaNeue.eot?#iefix') format('embedded-opentype'),
@@ -932,7 +932,7 @@ ul.chating .imageRound{width:70px; height:70px;}
 .conver-right p{color:#333;}
 .conver-right{width:70%;float:left;border-left:1px solid #ccc; padding:5px 5px 50px; margin:0 0 0 -1px;}
 .user-name{padding:0 0 0 80px;}
-.chat-time{float:right; padding:7px 0 0; color:#9197a3;}
+.chat-time{float:right; padding:7px 0 0; color:#9197a3; font-size:13px;}
 .reply-box{padding:10px 0 50px 0;}
 .reply-box textarea{margin:0px 0 5px;}
 .chat-delete{background:url(../assets/chat-delete.png) no-repeat; width:11px; height:13px;text-indent: -9999px;float: right; border:none; padding:0px; opacity:0; margin:10px 0 0;}
@@ -951,7 +951,7 @@ ul.chating li:hover .chat-delete{opacity:1;}
 .msg-right .user-name a.btn{margin:10px 10px 0 0; float:left;}
 .chat-edit{background:url(../assets/chat-edit.png) no-repeat; width:13px; height:13px;text-indent: -9999px;float: right; border:none; padding:0px; opacity:0; margin:10px 15px 0 0;}
 ul.chating li:hover .chat-edit{opacity:1;}
-.msg-right ul.chating{max-height:inherit!important;}
+.msg-right ul.chating{max-height:inherit!important; font-family: "Helvetica Neue","Helvetica","Arial";}
 .msg-right .chat-edit, .msg-right .chat-delete{opacity:1;}
 .msg-right .detail-inner{float:left; margin:10px 30px 0 0; width:auto;}
 .msg-right .detail-inner span{float;none;}
@@ -986,7 +986,7 @@ ul.chating li:hover .chat-edit{opacity:1;}
 .modal-backdrop{display:none;}
 .notification-msg{text-align: center;font-size: 17px;color: #2F8352;margin: 20px 0 0;}
 .about_form select option, select option, .selection option{padding:1px 5px;}
-.event-indication{display:inline-block; vertical-align:top; text-align:center; padding:15px 0 20px; width:100%;}
+.event-indication{display:inline-block; vertical-align:top; text-align:center; padding:15px 0 20px; width:100%;font-family: "Helvetica Neue","Helvetica","Arial";}
 .event-box{display:inline-block; vertical-align:top; margin-right:20px; font-size:15px; }
 span.event-color{border:1px solid #fff; width:16px; height:16px; float:left;}
 .event-box p{padding:0px 0 0 23px; font-weight: normal;}
@@ -998,7 +998,7 @@ span.ver{padding:15px 3px 0;display:inline-block; vertical-align:top;}
 .show-challanges h2 a, .show-challanges h2 a h3{font-size:15px;}
 .modal-title{font-size:18px; font-weight:bold;font-family: "Helvetica Neue","Helvetica","Arial";}
 .show-challanges .user-name{padding:0px 0 0 205px; float:none;}
-.show-challanges select, .show-challanges .selection{padding: 5px 65px 5px 10px; background: #2F8352 url("support/select_arrow.png") no-repeat scroll right -13px;}
+.show-challanges select, .show-challanges .selection{padding: 5px 10px 5px 10px; /*background: #2F8352 url("support/select_arrow.png") no-repeat scroll right -13px;*/ border:2px solid #000;}
 .chat-left{float:left;white-space: normal;}
 .msg-right .show-challanges .show-inner{float:right; margin:10px 0 0; width:auto;}
 .post-delete{background:url(../assets/close.png) no-repeat 4px 4px; width:19px; height:19px; position:absolute; right:4px; top:4px; text-indent:-9999px;border: 1px solid #5F5F5F; border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%; -o-border-radius:50%;}
@@ -1036,18 +1036,18 @@ ul.group-imgs-invite p.notification-msg{margin:0px; font-weight: normal; font-si
 .account_info .profile_nav, .account_info .profile_data{width:970px;}
 .account_info .profile_nav a{font-size:18px;margin: 0px 15px;} ============*/
 .rating-box{padding:7px 15px; color:#fff; background:#292929;}
-.rating-box p{float:left; margin:0 5px 0 0; width:110px;}
+.rating-box p{float:left; margin:0 5px 0 0; width:120px;}
 .rating-inner{display:inline-block; vertical-align: top; width:100%; margin:0 0 5px;}
 .rating-inner.last{margin:0px;}
 .invite-section{padding:20px 0 0; display: inline-block; width: 100%;}
 .invite-top{color:#2f8352; padding-bottom:10px;}
-ul.review-wpr{display:inline-block; vertical-align: top; width:100%; margin:0px; padding:0px; background:#fff;}
+ul.review-wpr{display:inline-block; vertical-align: top; width:100%; margin:0px; padding:0px; background:#fff; font-family: "Helvetica Neue","Helvetica","Arial";}
 ul.review-wpr li{list-style-type:none; vertical-align: top; width:100%;border-bottom: 1px solid #d1d1d1;padding:8px;}
 ul.review-wpr li .review-dis{padding:0px 0 0 100px;}
 ul.review-wpr li h2{color:#2f8352; font-size:18px; margin:0px;}
 ul.review-wpr li h2 a h3{font-size:18px; margin:0px;}
 ul.review-wpr li .chat-time{float:right; color:#8c8c8c; font-weight: normal; font-size:13px; padding:3px 0 0;}
-ul.review-wpr li p{padding:0px 0 5px; color:#4a4a4a; font-size:16px; font-weight: normal;min-height: 50px;}
+ul.review-wpr li p{padding:0px 0 5px; color:#4a4a4a; font-size:16px; font-weight: normal;min-height: 50px; white-space:normal;}
 ul.review-wpr .imageRound {height:70px;width:70px;float: left;overflow: hidden;}
 ul.review-wpr .imageRound img {height: 100%; width: 100%;}
 ul.review-wpr .user-name{padding: 0 0 0 80px;}
@@ -1069,6 +1069,7 @@ footer .chat_bar .chat .box.available-chat .textbox textarea{padding:3px 8px; he
 .user-chat-avialble{margin-right:5px;}
 footer h3{margin:0px; font-size:13px;}
 footer .box-list .header h4{margin:0px; font-size:14px;}
+.pac-container{z-index:9999;}
 /* ================================== new  css end ========================================================================================*/
 @media screen and (max-width: 1279px){
 	/*#container{

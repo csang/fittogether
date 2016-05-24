@@ -1,0 +1,107 @@
+<div style="top: inherit; position: absolute;" class="header">
+    <div class="title">
+        <h2>Groups <span><%= @groups.count.values[0] %></span></h2>
+    </div>
+    <div class="actions">
+        <button class="add_group" onclick ="alert('coming soon: with new design')">Add Group</button>
+    </div>
+</div>
+
+<div id="feed" class="fitspot">
+	<!-- Start: Group post -->
+	<% if @groups.present? %>
+	<% @groups.each do |gm| %>
+	<% group = gm.group %>
+    <div class="post group">
+        <div class="header">
+            <div class="user">
+						<div class="avatar">
+						<%= image_tag(group.group_image(:thumb)) %>
+						 </div>
+						<div class="data">
+							<a href="../group"><h3 class="name"><%= group.title.capitalize %></h3></a>
+							<span class="gtype"><%=  group.is_public ==true ? 'Public' : 'Private' %></span>
+							<p class="member_count"> <% cnt = group.group_member.count  %>
+							  <%= cnt +1 %>Member(s)</p>
+						</div>
+					</div>
+           <!-- <button class="close"></button> -->
+        </div>
+        <div class="content">
+            <p>Description: N/A</p>
+        </div>
+					<div class="members">
+							<div class="title">
+								<p>You have <span>5</span> Friends who are members</p>
+							</div>
+								<div class="friends">
+									<!--  -->
+									
+										<% if group.group_member.present? %>
+										<%  group.group_member.each do |ac| %>
+										<% if ac.status == true && ac.account.present? %>
+										<% img = useravatar(ac.account) %>
+											<div class="avatar">        			
+											<%= link_to(image_tag(img), "/#{ac.account.user_name}") %>
+											</div>
+										<% end %>
+										<% end %>
+										<% else %>
+											<div class="title">
+											<p>Be the first of your Friends to join this group</p>
+											</div>
+										<% end %>
+									<!--  -->
+								</div>
+					</div>
+			<div class="footer">
+				  <button class="join_group join jnew"  data-type="add" title="join" data-id="<%=  Base64.encode64(group.id.to_s)   %>">Join Group</button>
+			</div>
+    </div>
+
+    <% end %>
+    <% end %>
+    <!-- End: Group post -->
+  
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+
+    // add member
+    $('.jnew').on('click', function() {
+      var id = $(this).attr('data-id');
+      var type = $(this).attr('data-type');
+      var gtype = $('.group-left span').text();
+     
+      var that = this;
+      var mydata = {'id': id, 'type': type, 'gtype' : gtype };
+      $.ajax({
+        type: "POST",
+        url: '<%= add_del_member_path() %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+         
+            if (gtype == 'Private') {
+                $(that).attr('data-type', 'leave').attr('title', 'leave group').html('Pending');              
+              } else {
+                $(that).parent().parent().parent('div').hide('slow');
+              
+            }
+        
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    });
+    });

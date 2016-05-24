@@ -70,8 +70,9 @@
 		</div>
   
 		<div class="people column">
+			<a onclick = "hide_chatbox();" style="float:right; margin:0px -20px 0 0;" href="javascript:void(0)" title="Close">X</a>
 		<% if @user.present?  %>
-			<h2>PEOPLE</h2>			
+			<h2>PEOPLE </h2>			
 			<%  @user.each do |abc| %>
 			<div class="trainers">
 				<div class="column_header">
@@ -94,9 +95,13 @@
 						</div>
 						<div class="name">
 						<% if abc.user_type == 3 %>
-							<h4> <%= abc.account_gym.name.present? ? abc.account_gym.name : abc.first_name  %></h4>
+							<h4> <%# abc.account_gym.name.present? ? abc.account_gym.name : abc.first_name  %>
+							<%= link_to(abc.account_gym.name.present? ? abc.account_gym.name.capitalize : abc.first_name.capitalize, "/#{abc.user_name}"); %>
+							</h4>
 						<% else %>
-							<h4><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></h4>
+							<h4>
+							<%= link_to(abc.first_name.capitalize + ' ' + (abc.last_name.present? ? abc.last_name : ''), "/#{abc.user_name}"); %>
+							</h4>
 						<% end %>	
 						</div>
                                           <% if abc.account_user.present? && abc.account_user.trainer_contacts ==1  %>
@@ -186,7 +191,7 @@
            <% cnt = gp.group_member.count  %>
 				<div class="column_header">
 					<h3>GROUP</h3>
-                                           <%= link_to('MORE', "/groups//#{Base64.encode64(gp.id.to_s)}") %>
+                                           <%= link_to('MORE', "/groups/#{Base64.encode64(gp.id.to_s)}") %>
 				</div>
 				<div class="list">
 					<div class="person" style="display:block;">
@@ -195,10 +200,8 @@
 						</div>
 						<div class="name">
 							<h4>
-                                                        <%= gp.title  %>
-                                                       
-                                                        </h4>
-							
+								 <%= link_to(gp.title.capitalize, "/groups/#{Base64.encode64(gp.id.to_s)}") %>
+                            </h4>
 						</div>
 						<div class="requirement">
 							<span class="check_ins">
@@ -217,7 +220,7 @@
            <% cnt = gp.fitspot_member.count  %>
 				<div class="column_header">
 					<h3>FITSPOTS</h3>
-                                           <%= link_to('MORE', "/fitspots//#{Base64.encode64(gp.id.to_s)}") %>
+                                           <%= link_to('MORE', "/fitspots/#{Base64.encode64(gp.id.to_s)}") %>
 				</div>
 				<div class="list">
 					<div class="person" style="display:block;">
@@ -226,10 +229,9 @@
 						</div>
 						<div class="name">
 							<h4>
-                                                        <%= gp.title  %>
-                                                       
-                                                        </h4>
-							
+                             <%= link_to(gp.title.capitalize , "/fitspots//#{Base64.encode64(gp.id.to_s)}") %>                        
+                            </h4>
+
 						</div>
 						<div class="requirement">
 							<span class="check_ins">
@@ -242,7 +244,12 @@
 			</div>
           <% end  %>
                          <% if !@user.present? && !@groups.present? && !@fitspot.present? %>
-	<h2 class="text-center"> No record found </h2>	
+	<h2 class="text-center"> No records found </h2>	
         <% end %>
 	</div>
+ <script>
+ function hide_chatbox() {
+		$('.search_results_section').slideUp('slow');
+  }
  
+ </script>

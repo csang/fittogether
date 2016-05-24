@@ -3,7 +3,7 @@ class Account < ActiveRecord::Base
 
   serialize :goals, Array
 	has_one :account_user, :dependent => :delete
-  has_one :account_trainer , :dependent => :delete
+    has_one :account_trainer , :dependent => :delete
 	has_one :account_gym , :dependent => :delete
 	has_many :authorization, :dependent =>:delete_all
 	has_many :city

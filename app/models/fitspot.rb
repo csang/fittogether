@@ -1,13 +1,13 @@
 class Fitspot < ActiveRecord::Base
-  
+  geocoded_by :location
   belongs_to :account
   belongs_to :group
   has_many :fitspot_member
   
-validates_presence_of :title
-validates_presence_of :location
-validates_presence_of :fitspot_date
-
+  validates_presence_of :title
+  validates_presence_of :location
+  validates_presence_of :fitspot_date
+  after_validation :geocode, :if => :location_changed?
    has_attached_file :fitspot_image, 
     :path => ":rails_root/app/assets/images/:attachment/:id/:basename_:style.:extension",
     :url => "/assets/:attachment/:id/:basename_:style.:extension",

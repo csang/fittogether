@@ -1,4 +1,6 @@
-<%#= render(:partial => 'feed/feed_aside') %>
+ <script src="http://malsup.github.com/jquery.form.js"></script>
+ 
+<% if false %>
 <div id="content" class="invite-inner">
 
   <div class="group-top">
@@ -37,7 +39,8 @@
     <div class="tab-content">
       <div id="sectionA" class="tab-pane fade in active">
         <ul class="group-dtail">
-          <li><span>Created for group :</span><%= @fitspot.group.title %> </li>
+        
+          <li><span>Created for group :</span><%= @fitspot.group.present? ? @fitspot.group.title : '' %> </li>
           <li><span>Date :</span> <%= @fitspot.fitspot_date.strftime("%d %b %Y ") %> </li>
           <li><span>Time :</span> <%= @fitspot.fitspot_time.present? ? @fitspot.fitspot_time : 'N/A' %> </li>
           <li><span>Location :</span> <%= @fitspot.location %> </li>       
@@ -45,10 +48,12 @@
         </ul>
         <h3 class="group-detail-hding">Going</h3>
         <ul class="group-imgs">
+        <% if @fitspot.account.present? %>
           <% img = useravatar(@fitspot.account) %>
           <li><%= link_to(image_tag(img), "/#{@fitspot.account.user_name}", {:class => 'grop-img'}) %>
             <%= link_to(@fitspot.account.first_name.capitalize,  "/#{@fitspot.account.user_name}") %>
           </li>
+        <% end %>  
           <% @fitspot.fitspot_member.each do |fm|  %>
             <% if fm.status == true %>
               <% img = useravatar(fm.account) %>
@@ -131,6 +136,7 @@
   </div>
 
 </div>
+<% end %>
 
 <div class="modal fade" id="fitspotEditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="z-index: 5456666666000;">
@@ -149,10 +155,223 @@
   </div>
 </div>
 
+<div id="profile_header">
+                    <div class="collage">
+                        <div class="sub_collage">
+                            <div class="square">
+								<%= form_for( FitspotCover.new , :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_one", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @fitspot.account_id %>
+								<span class="cover-icon"></span>
+							  <input type="file" value="Change cover"  accept="image/*" id="cfone" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+							   <input type="hidden" name="position" value=1>	
+							    <input type="hidden" name="fit" value="<%= @fitspot.id %>">								
+								 <% end %>
+								 <% end %>
+								<% img = get_fit_cover(1, @fitspot.id ) %>
+								
+								<%= image_tag(img , :id =>'position_one')  %>
+								</div>
+                            <div class="square">
+								 <%= form_for( FitspotCover.new , :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_two", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @fitspot.account_id %>
+								 <span class="cover-icon"></span>
+							     <input type="file" value="Change cover" id="cftwo" accept="image/*" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+							     <input type="hidden" name="position" value=2>	
+							      <input type="hidden" name="fit" value="<%= @fitspot.id %>">								
+								 <% end %>
+								 <% end %>
+								<% img = get_fit_cover(2, @fitspot.id) %>
+								<%= image_tag(img , :id =>'position_two') %>
+							</div>
+                            <div class="landscape">
+                             <%= form_for( FitspotCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_three", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @fitspot.account_id %>
+							  <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cfthree"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 150)" />
+							   <input type="hidden" name="position" value=3>	
+							    <input type="hidden" name="fit" value="<%= @fitspot.id %>">								
+								 <% end %>
+								 <% end %>
+								 <% img = get_fit_cover(3, @fitspot.id) %>
+								<%= image_tag(img , :id =>'position_three') %>
+								 </div>
+                        </div>
+                        <div class="sub_collage">
+                            <div class="big_square">
+                             <%= form_for( FitspotCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_four", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @fitspot.account_id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cffour"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 300)" />
+							   <input type="hidden" name="position" value=4>								
+							   <input type="hidden" name="fit" value="<%= @fitspot.id %>">								
+								 <% end %>
+								 <% end %>
+								 <% img = get_fit_cover(4, @fitspot.id) %>
+								<%= image_tag(img , :id =>'position_four') %>
+								</div>
+                            <div class="square">
+								   <%= form_for( FitspotCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_five", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @fitspot.account_id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cffive"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+							   <input type="hidden" name="position" value=5>	
+							    <input type="hidden" name="fit" value="<%= @fitspot.id %>">								
+								 <% end %>
+								 <% end %>
+								 <% img = get_fit_cover(5, @fitspot.id) %>
+								<%= image_tag(img , :id =>'position_five') %>
+								</div>
+                            <div class="square">
+                              <%= form_for( FitspotCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_six", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @fitspot.account_id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cfsix"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+							   <input type="hidden" name="position" value=6>	
+							    <input type="hidden" name="fit" value="<%= @fitspot.id %>">								
+								 <% end %>
+								 <% end %>
+								 <% img = get_fit_cover(6, @fitspot.id) %>
+								<%= image_tag(img , :id =>'position_six') %>
+								</div>
+                        </div>
+                    </div>
+                    <div class="profile_bar">
+                        <div class="avatar">
+						 <div id="map_canvas" style="height:100px;"></div>
+						  <input id="geocomplete2" type="hidden" value="<%=  @fitspot.location %>" placeholder="Type in an address" size="90" />
+                        </div>
+                        <div class="profile_data">
+                            <div class="personal_data">
+                                <h1><%=  @fitspot.title.capitalize %> </h1>
+                                 <% if @fitspot.account_id == @account.id %>
+          <a href="javascript:void(0);" class="join" title="Following"><button>Following</button></a>    
+          <a href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#fitspotEditForm" title="edit"><button>Edit</button></a>    
+
+        <% elsif @going.present?  %>
+          <a href="javascript:void(0);" class="join jnew"  data-type="cancel" title="Cancel Going" data-id="<%=  Base64.encode64(@fitspot.id.to_s) %>"><button>Cancel</button></a>
+        <% else %>
+          <a href="javascript:void(0);" class="join jnew"  data-type="add" title="join" data-id="<%=  Base64.encode64(@fitspot.id.to_s)   %>"><button>Join Fitspot</button></a>
+        <% end  %>
+        
+                                <p><%=  @fitspot.location %></p>
+                            </div>
+                            <div class="statistics">
+                                <div><h1><%= fitspot_count(@fitspot.id) %></h1><h2>Checkins Today</h2></div>
+                                <div><h1><%= @groups.count.values[0] %></h1><h2>Groups Active</h2></div>
+                            </div>
+                        </div>
+                        <div class="profile_nav">
+                            <div class="actions">
+                                
+                            <button data-toggle="modal" data-target="#checkinForm">Check-In</button>
+                              <span style="display:none;" class="gtype"><%=  @fitspot.group.present? &&  @fitspot.group.is_public ==true ? 'Public' : 'Private' %></span>
+                             <% if @fitspot.group && @fitspot.group.account_id == @account.id ||  @member.present? %>
+                            <button title="Already Joined <%= @fitspot.group.title %>">Joined</button>
+                            <% else %>
+                             <button class="join jgroup"  data-type="add" title="join <%= @fitspot.group.title %>" data-id="<%=  Base64.encode64(@fitspot.group_id.to_s)   %>">Join Group</button>
+                            <% end %>
+                            </div>
+                            <div class="nav">
+                               <!-- <a class="selected" href="#fit_feed">Fit Feed</a> -->
+                                <%= link_to('Fit Feed', fs_path(Base64.encode64(@fitspot.id.to_s), 'fit_feed'), :remote => true, :class => 'selected') %>
+                                <%= link_to('About', fs_path(Base64.encode64(@fitspot.id.to_s), 'about'), :remote => true) %>
+                                <%= link_to('Photos', fs_path(Base64.encode64(@fitspot.id.to_s), 'photos'), :remote => true) %>
+                                <%= link_to('Videos', fs_path(Base64.encode64(@fitspot.id.to_s), 'videos'), :remote => true) %>
+                                <%= link_to('Activities', fs_path(Base64.encode64(@fitspot.id.to_s), 'activities'), :remote => true) %>
+                                <%= link_to('Events', fs_path(Base64.encode64(@fitspot.id.to_s), 'events'), :remote => true) %>
+                                <%= link_to('Groups', fs_path(Base64.encode64(@fitspot.id.to_s), 'groups'), :remote => true) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="side_info">
+                    <div class="events">
+                        <div class="header">
+                            <h2>Events</h2>
+                          <%  fitspot = fitspot_invitation %>  
+                            <a href="/fitspots/index" class="amount"> 
+								<% if fitspot.count > 0 %>
+								<%= fitspot.count  %>Invitations
+								<% end %>                            
+                            </a>
+                            
+                        </div>
+                        <div class="list">
+						
+							<%  if fitspot.present? %>  
+							<% fitspot.each do |ft| %>
+							<% img = ft.fitspot.fitspot_image    %>
+                            <div>
+                                <div class="avatar"><h3><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %></h3></div>
+                                <div class="description">
+                                    <p class="date"><%= ft.fitspot.fitspot_date.strftime("%e %B ") %></p><br>
+                                    <p class="event"><%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %></p><br>
+                                    <p class="location"><%= ft.fitspot.location %></p><br>
+                                    <p class="actions">
+									<button class="attending" data-type="add" title="Attending" <%=  ft.fitspot.status == 1 ? 'disabled' : '' %>  data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>"> 
+									Attending</button>
+								<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>">Not Attending</button></p>
+                                </div>
+                            </div>
+                            <% end %>
+                            <% else %>
+                            <p> N/A </p>
+                            <% end %>
+                        </div>
+                        <div class="see_all">
+                            <a href="#events">See All Events</a>
+                        </div>
+                    </div>
+                    <div class="my_activities">
+                        <div class="header">
+                            <h2>Activities</h2>
+                        </div>
+                        <div class="list">
+                      <% @account.account_activity.each do |activity| %>
+								<% if activity.activity_id.present?   %>
+								 <% activity.activity_id.each do |act| %>
+									<% value =  get_activity_name(act) %>
+                              <div>
+                                <div class="avatar activity <%= value %>"><h3></h3></div>
+                                <div class="description">
+                                    <p class="activity"><%= value.capitalize %></p><br>
+                                </div>
+                               
+                            </div>
+                             <% end %>
+                                <% end %>
+                                <% end %>
+                            </div>
+                        <div class="see_all">
+                            <a href="/<%= @account.user_name %>/activities">See All</a>
+                        </div>
+                    </div>
+                    <div class="groups">
+                        <div class="header">
+                            <h2>Group</h2>
+                        </div>
+                  
+                        <div class="list">
+                            <div>
+                                <div class="avatar">
+									<a href="/groups/<%= Base64.encode64(@fitspot.group.id.to_s) %>">
+										<%= image_tag( @fitspot.group.group_image) %>
+										</a></div>
+                                <div class="description">
+                                    <p class="name"> <%= @fitspot.group.title %></p><br>
+                                </div>
+                            </div>
+                                                       
+                        </div>
+                    </div>
+                </div>
+                <div id="feed_container">
+					<%= render(:partial => 'fit_feed') %>
+    
 
 <script type="text/javascript">
-  $(document).ready(function() {
-
+	$(function() {
+   
     // add member
     $('.jnew').on('click', function() {
       var id = $(this).attr('data-id');
@@ -224,10 +443,144 @@
       });
 
     });
+    
+    // to update cover photo
+    $('body').on('change','.cover_file', function() {
+	var id = $(this).closest('form').attr('id');
+	var field_id = $(this).attr('id');
+	var imgs = $(this).parent().parent('div').children('img').attr('id');
+	
+    bf = before_submit_image(field_id);
+    bf.then(function(){
+		console.log('Resolve..')
+		//=============
+		$("#" + id).ajaxSubmit({			
+	      type: "POST",
+          url: '<%= fitspot_covers_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#'+imgs).attr('src' , data )
+         
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
 
+          }
+
+        }); 
+		
+		//===========
+	}, function(){
+		console.log('Reject..')
+		return false;
+	});
+	
+	
+     
   });
-</script>
 
+$('#fit_chkin').on('click', function() {
+		 var fitspot_id = "<%= @fitspot.id %>"   
+		 var location = $('#location').val();  
+		 	$.ajax({
+				type: "POST",
+				url: '/fitspot_check_in', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {fitspot_id:fitspot_id, location:location},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('#checkinForm').modal('hide');
+					window.location.reload();  	                                        },
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)					
+				}	
+			
+			});
+	    
+}); // end of checkin
+
+$(".nav a").click(function() {
+    $(this).addClass('selected').siblings().removeClass('selected');
+
+    });
+    
+    
+      // add member
+    $('.jgroup').on('click', function() {
+      var id = $(this).attr('data-id');
+      var type = $(this).attr('data-type');
+      var gtype = $('.gtype').text();
+     
+      var that = this;
+      var mydata = {'id': id, 'type': type, 'gtype' : gtype };
+      $.ajax({
+        type: "POST",
+        url: '<%= add_del_member_path() %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {         
+          $(that).attr('data-type', 'add').attr('title', 'Joined group').html('Joined');       
+      
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    });
+
+});
+
+window.onload = function() {	
+		    $("#geocomplete2").geocomplete({ map: "#map_canvas"})	
+          $("#geocomplete2").trigger("geocode");
+        }
+
+</script>
+<!-- check in -->
+
+<div class="modal fade" id="checkinForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Check In : <%= @fitspot.title.capitalize %></h4>
+      </div>
+      <div class="modal-body">
+        <div class="pop-row listing-hover row">          
+      
+            <div class="col-md-12">
+             <label> Type Location: </label>
+             <input class="form-control" type="text" id="location"  name="search" >
+             </div>             
+             </div>
+              <div class="pop-row listing-hover row">   
+               <div class="col-md-12">
+              
+       </div>
+    </div>
+    <div class="modal-footer create">
+		<button type="button" id="fit_chkin" class="btn btn-primary">Check In</button>
+	  </div>
+</div>
+</div>
+</div>
+
+</div>
 
 
 

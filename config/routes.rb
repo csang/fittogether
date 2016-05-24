@@ -3,7 +3,13 @@ Rails.application.routes.draw do
  
  
  
-  get 'gym_trainer_appointments/new'
+  get 'account_covers/new'
+
+  get 'account_covers/create'
+  
+   match 'account_cover/', :to=>'account_covers#create',:via => [:post,:get] ,  :defaults => { :format => 'json' }, :as => :account_covers
+   match 'fitspot_cover/', :to=>'fitspots#fitspot_cover',:via => [:post,:get] ,  :defaults => { :format => 'json' }, :as => :fitspot_covers
+    get 'gym_trainer_appointments/new'
 
   post 'gym_trainer_appointments/create'
 
@@ -75,6 +81,7 @@ Rails.application.routes.draw do
   match 'add_del_going', to: 'fitspots#add_del_going', :via => [:post,:delete] , :as => :add_del_going
   match 'invite_for_fitspot', to: 'fitspots#invite_for_fitspot', :via => [:post,:delete] , :as => :invite_for_fitspot
   match 'fitspots/edit/(:id)', to: 'fitspots#edit',:via => [:patch,:get], :as=>:fitspots_edit
+  match '/fitspot/:id/(:type)', to: 'fitspots#show', :via => [:get,:post] , :as => :fs 
   get 'fitspots/index'
   get 'fitspots/:id', to: 'fitspots#show'  
   post 'fitspots/create'
@@ -133,6 +140,8 @@ Rails.application.routes.draw do
   match 'check_in', to: 'feed#check_in', :via => [:post] , :as => :check_in
   match 'scrap_link', to: 'feed#scrap_link', :via => [:post] , :as => :scrap_link
   
+   match 'fitspot_check_in', to: 'fitspots#fitspot_check_in', :via => [:post] , :as => :fitspot_check_in
+  
   
   
   
@@ -182,7 +191,7 @@ Rails.application.routes.draw do
   get 'getgymaddress', to: 'settings#get_gym_address/:id'
   post 'update_avatar', to:'settings#update_avatar'
   patch 'update_crop', to:'settings#update_crop', :as=>:update_crop
-  post 'update_cover', to:'profile#update_cover'
+  match 'update_cover', to:'profile#update_cover',:via => [:post]
   post 'update_profile', to:'settings#update_profile', :as=>:update_profile
   post 'update_privacy', to:'settings#update_privacy', :as=>:update_privacy
   post 'update_activity', to:'settings#update_activity', :as=>:update_activity

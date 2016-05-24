@@ -140,7 +140,7 @@
           
 <% if @group.group_member.present? %>
             <%  @group.group_member.each do |ac| %>
-            <% if ac.status == true %>
+            <% if ac.status == true && ac.account.present? %>
               <% img = useravatar(ac.account) %>
               <li><%= link_to(image_tag(img), "/#{ac.account.user_name}", {:class => 'grop-img'}) %><%= link_to(ac.account.first_name.capitalize,  "/#{ac.account.user_name}") %></li>
            <% end %>
@@ -154,6 +154,7 @@
            <h3 class="event-title"><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn creat-event" data-target="#fitspotForm"> Create FitSpot</a> Events</h3>
             <% end %>
   <% @group.fitspot.each do |fs|   %>
+  <% if fs.account.present? %>
          <% img = useravatar(fs.account)    %>
            <div class="posts">
              <div class="posts-img">
@@ -165,6 +166,7 @@
              </div>
            </div>
            <% end %>
+       <% end %>
          </div>
     </div>
   </div>
