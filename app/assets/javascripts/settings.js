@@ -272,7 +272,7 @@ $(document).ready(function(){
 	Settings.init();
 	$(window).on("load resize",function(e){
 		var win_hight = $(this).height();
-		var tis_height = win_hight - 170;
+		var tis_height = win_hight - 100;
 		$('#side_nav').css("height", tis_height);
 	});
 	
