@@ -65,7 +65,10 @@ end
        @inviteables = GroupMember.where("group_id = ? " ,@fitspot.group_id).collect(&:account_id)
       end
       
-        @groups = GroupMember.where("account_id !=? ",  @account.id).group('group_id').group('group_id')
+        #@groups = GroupMember.where("account_id !=? ",  @account.id).group('group_id')
+        @groups = GroupMember.find_by_sql("SELECT * FROM `group_members` WHERE `group_id` NOT IN 
+        (SELECT `group_id` FROM `group_members`WHERE `account_id` = #{@account.id})")
+		
         @posts = Post.where(:status=>1, :group_id => id).order("id DESC")
          @member = GroupMember.where(:group_id => @fitspot.group_id, :account_id => @account.id).first
        

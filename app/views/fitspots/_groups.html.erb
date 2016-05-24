@@ -1,6 +1,6 @@
 <div style="top: inherit; position: absolute;" class="header">
     <div class="title">
-        <h2>Groups <span><%= @groups.count.values[0] %></span></h2>
+        <h2>Groups <span><%= @groups.count %></span></h2>
     </div>
     <div class="actions">
         <button class="add_group" onclick ="alert('coming soon: with new design')">Add Group</button>
@@ -32,7 +32,7 @@
         </div>
 					<div class="members">
 							<div class="title">
-								<p>You have <span>5</span> Friends who are members</p>
+								<p>You have <span><%= group.group_member.present? ?  group.group_member.count : 0 %></span> Friends who are members</p>
 							</div>
 								<div class="friends">
 									<!--  -->

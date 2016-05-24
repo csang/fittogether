@@ -544,9 +544,9 @@ header #top_nav .notifications_icon .notification_list > .show_all{
 	margin: 0;
 	padding: 0 22px;
 	height: 100%;
-	height: calc(100% - 140px);
-	height: -moz-calc(100% - 140px);
-	height: -webkit-calc(100% - 140px);
+	height: calc(100% - 100px);
+	height: -moz-calc(100% - 100px);
+	height: -webkit-calc(100% - 100px);
 	overflow-y: auto;
 	position: fixed;
 	/*top: 5px;*/
