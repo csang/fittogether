@@ -23,7 +23,7 @@ Profile = {
 				$('#profile_header .profile_bar .profile_nav .nav a').removeClass('selected');
 				$(nav_elements[i]).addClass('selected');
 				var page = $(nav_elements[i]).attr('href').replace('#','');
-				$("#feed_container").load("../views/"+page+".html");
+				//$("#feed_container").load("../views/"+page+".html");
 			}
 		};
 

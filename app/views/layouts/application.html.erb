@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -12,7 +13,7 @@
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag 'settings' if params[:controller] == 'settings' %>
     <%= stylesheet_link_tag 'jquery.timepicker'  %>
-    <%= stylesheet_link_tag 'profile' if params[:controller] == 'profile' %>
+    <%= stylesheet_link_tag 'profile' if params[:controller] == 'profile' || params[:controller] == 'fitspots' %>
     <%= stylesheet_link_tag 'fullcalendar' if params[:controller] == 'profile' %>
     <%= stylesheet_link_tag 'gym_admin' if params[:action] == 'dashboard' || params[:action] == 'classes' || params[:action] == 'gym_admin_appointments' || params[:action] == 'gym_trainors' %>
     <%= stylesheet_link_tag 'landing' if params[:controller] == 'landing' %>
@@ -27,22 +28,18 @@
 	}
 	
 	</script>
-	<!-- Scripts -->
-		<!--[if gte IE 9]>
-		  <style type="text/css">
-			.about_form select, select, .selection {
-			   background:#2f8352; padding:15px 10px 12px;
-			}
-			#content .comment_view .post_options .share select, #content .comment_view .post_options .share .selection{padding:15px 10px 12px;}
-		  </style>
-		<![endif]-->
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-     <%= javascript_include_tag 'profile' if params[:controller] == 'profile' %>
+
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true  %>
+     <%= javascript_include_tag 'profile' if params[:controller] == 'profile' || params[:controller] == 'fitspots' %>
      <%= javascript_include_tag 'gym' if params[:action] == 'show_classes' %>
+      <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
+
      <script>
       $(function() {
           $( "#datepicker" ).datepicker({minDate: 1, dateFormat: 'dd-mm-yy'});
           $( "#datepickers" ).datepicker({minDate: 1, dateFormat: 'dd-mm-yy'});
+          $("#geocomplete , #location").geocomplete();
+          
       });
   </script>
    

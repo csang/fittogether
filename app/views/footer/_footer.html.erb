@@ -102,6 +102,7 @@
 
 <script type="text/javascript">
   $(document).ready(function() {
+  
      window.chattemplate = '<div class="chat user-chat user-chat-avialble" data-aid="{AID}" data-cid="{CID}"><div class="box available-chat"><div class="header"><h4 class="chat-h-four" title="{NAME}">{NAME}</h4><span class="close_chat">X</span><span class="minimize_chat">-</span><span class="add-chat"></span></div><div style="display:none;" class="add-chat-box"><input type="text" class="search_chat" placeholder="Search" /><button class="btn btn-sm btn-primary done" type="button">Done</button><div class="tkns"></div><ul style="" class="arport arports"></ul></div><div class="conversation" id="cov_{NCID}">{MSGS}</div><div class="textbox"><textarea style="resize: none;" placeholder="Type a message..." class="sendmsg"></textarea></div></div><div class="user"><span class="status"></span><h4>{NAME}</h4></div></div>';
     var chat_window = getCookie('mychat');
 if (chat_window != null) {
@@ -431,6 +432,17 @@ if (chat_window != null) {
     }
     return null;
   }
+  
+  	$('.geopost').each(function(i, v){
+		
+		var $that = $(this);
+		$that.geocomplete({ 
+			map: '#'+$that.attr('mapPlaceholder')			
+		});	
+		$that.trigger("geocode");
+	});
+	
+	
 
 </script>
 

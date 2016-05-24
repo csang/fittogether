@@ -88,7 +88,9 @@
                                 <div class="avatar"><h3><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %></h3></div>
                                 <div class="description">
                                     <p class="date"><%= ft.fitspot.fitspot_date.strftime("%e %B ") %></p><br>
-                                    <p class="event"><%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %></p><br>
+                                    <p class="event">
+										<%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %>
+										</p><br>
                                     <p class="location"><%= ft.fitspot.location %></p><br>
                                     <p class="actions">
 									<button class="attending" data-type="add" title="Attending" <%=  ft.fitspot.status == 1 ? 'disabled' : '' %>  data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>"> 
@@ -106,7 +108,62 @@
                                    <%= link_to  'See All Events','/fitspots/index'  %>
                         </div>
                     </div>
-                        <% trainers = suggested_trainer %>
+                    <% fitspots = suggested_fitspot %>  
+                    <% if  fitspots.present? %>
+                    <div class="suggested_fitspots">
+                        <div class="header">
+                            <h2>Suggested Fitspots</h2>
+                          </div>
+                        <div class="list">
+             		    <% fitspots.each do |fs| %>
+						<% img = fs.fitspot_image    %>
+                            <div>
+                                <div class="avatar"><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %></div>
+                                <div class="description">
+                                    <p class="fitspot">
+										<%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> 
+									</p><br>
+                                    <p class="location"><%= fs.location %></p><br>
+                                    <p class="checkins"><%= fs.fitspot_member.count %> Check ins</p>
+                                </div>
+                            </div>
+                            <% end %>                     
+                           </div>
+                        <div class="see_all">                           
+                            <%= link_to  'See All Fitspots','fitspots/index'  %>
+                        </div>
+                    </div>
+                     <% end %>
+                        
+                      <div class="suggested_friends">
+                        <div class="header">
+                            <h2>Suggested Friends</h2>
+                        </div>
+                        <div class="list">
+                            <div>
+                                <div class="avatar"><a href="profile.html"><img alt="VW" title="Venus Williams" src="../public/img/profile/venuswilliams_avatar.png"></a></div>
+                                <div class="description">
+                                    <p class="name">Venus Williams</p>
+                                    <br><p class="location">Beverly Hills, CA</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="avatar"><a href="profile.html"><img alt="AR" title="Aaron Rodgers" src="../public/img/profile/aaronrodgers_avatar.png"></a></div>
+                                <div class="description">
+                                    <p class="name">Aaron Rodgers</p>
+                                    <br><p class="location">Beverly Hills, CA</p>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="avatar"><a href="profile.html"><img alt="AL" title="Andrew Luck" src="../public/img/profile/andrewluck_avatar.png"></a></div>
+                                <div class="description">
+                                    <p class="name">Andrew Luck</p>
+                                    <br><p class="location">Beverly Hills, CA</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <% trainers = suggested_trainer %>
                       <% if  trainers.present? %>
                     <div class="suggested_trainers">
                         <div class="header">
@@ -120,6 +177,7 @@
                                 <div class="description">
                                     <p class="name">
                                     <%= link_to(trainer.first_name, "/#{trainer.user_name}") %>
+                                    
                                     </p><br>
                                     <p class="location"><%= get_city_name(trainer.city_id) %>, <%= get_state_code(trainer.city_id) %></p>
                                 </div>
@@ -128,71 +186,9 @@
                         </div>
                     </div>
                       <% end %>
-                    <% fitspots = suggested_fitspot %>  
-                    <% if  fitspots.present? %>
-                    <div class="suggested_fitspots">
-                        <div class="header">
-                            <h2>Suggested Fitspots</h2>
-                          </div>
-                        <div class="list">
-             		    <% fitspots.each do |fs| %>
-						<% img = fs.fitspot_image    %>
-                            <div>
-                                <div class="avatar"><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %></div>
-                                <div class="description">
-                                    <p class="fitspot"><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> </p><br>
-                                    <p class="location"><%= fs.location %></p><br>
-                                    <p class="checkins"><%= fs.fitspot_member.count %> Check ins</p>
-                                </div>
-                            </div>
-                            <% end %>                     
-                           </div>
-                        <div class="see_all">                           
-                            <%= link_to  'See All Fitspots','fitspots/index'  %>
-                        </div>
-                    </div>
-                     <% end %>
                 </div>
                 <!-- End: Side Info -->
   <script type="text/javascript">
-
-    // add member
-    $('.attending').on('click', function() {
-	
-      var id = $(this).attr('data-id');
-      var type = $(this).attr('data-type');
-      var that = this;
-      var mydata = {'id': id, 'type': type};
-      $.ajax({
-        type: "POST",
-        url: '<%= add_del_going_path() %>', //sumbits it to the given url of the form
-        dataType: "HTML",
-        data: mydata,  
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-        },
-        success: function(data) {
-          if (type == 'add') {
-			//	$(that).prop('disabled', true);             
-			$(that).parent().parent().parent().hide();
-		
-          } else {
-             $(that).parent().parent().parent().hide();
-             
-          }
-
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
-          console.log(thrownError)
-
-        }
-
-      });
-
-    });              
-            
-
   // login with fitbit
   $('.login-popup').click(function(e) {
     var connectionType = $(this).attr('contype');

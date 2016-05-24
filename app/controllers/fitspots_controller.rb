@@ -56,6 +56,7 @@ end
       @fitspot = Fitspot.where(:id => id).first        
       @going = FitspotMember.where(:fitspot_id => id, :account_id => @account.id, :status => true).first
       @goings = FitspotMember.where(:fitspot_id => id).collect(&:account_id)
+    
       if @goings.present?
       @inviteable = GroupMember.where("group_id = ? && account_id NOT IN (?)" ,@fitspot.group_id, @goings)
       @inviteables = GroupMember.where("group_id = ? && account_id NOT IN (?)" ,@fitspot.group_id, @goings).collect(&:account_id)
@@ -63,10 +64,13 @@ end
        @inviteable = GroupMember.where("group_id = ? " ,@fitspot.group_id)
        @inviteables = GroupMember.where("group_id = ? " ,@fitspot.group_id).collect(&:account_id)
       end
-     
       
+        @groups = GroupMember.where("account_id !=? ",  @account.id).group('group_id').group('group_id')
+        @posts = Post.where(:status=>1, :group_id => id).order("id DESC")
+         @member = GroupMember.where(:group_id => @fitspot.group_id, :account_id => @account.id).first
+       
       flash[:error] =''
-      if !@fitspot.present?
+      if !@fitspot.present? || !@fitspot.group.present?
      
           redirect_to('/feed')
       end 
@@ -139,10 +143,47 @@ end
     
   end
   
+  def  fitspot_cover
+ 
+   if request.xhr?
+		 @acc = FitspotCover.where(:fitspot_id => params[:fit], :position => params[:position] ).first
+			if @acc.present?
+				@acc.update_attribute(:cover, params[:cover])	
+			else
+				@acc = FitspotCover.create(:fitspot_id => params[:fit], :position => params[:position], :cover=> params[:cover]) 
+			end
+			if @acc.present?
+				render :json => @acc.cover(:medium)
+			else
+				render :json =>  @acc.errors.full_messages.first if @acc.errors.any?  
+			end
+					
+		end
+    end 
+    
+    
+   def fitspot_check_in
+      
+     
+	  check_in = FitspotCheckin.create(checkin_params.merge(account_id: @account.id))	
+      if check_in.save!  
+        text = "#{@account.first_name} checked in at #{params[:location]}"
+        @posts =  Post.create(:account_id=>@account.id,:text=>text,:status=>1,:share_with=> 'Public', :post_type => 'checkin' ,:group_id => params[:fitspot_id] )	         
+        render :json => 1  and return     
+      else
+		render :json => 0  and return   
+      end 	
+  
+  end
+  
+  
   
  private  
   def fitspot_parm
     params.require(:fitspot).permit(:title, :description, :fitspot_image, :location, :fitspot_date, :fitspot_time)
 
   end
+   def checkin_params
+    params.permit(:location, :fitspot_id)
+  end 
 end

@@ -1,8 +1,160 @@
-
 /*
 Fit Green:
 rgb(47,131,82);
 */
+
+/*
+Helvetica
+*/
+@font-face {
+    font-family: 'Helvetica';
+    src: local('Helvetica'),
+        url('../fonts/helvetica/Helvetica.woff2') format('woff2'),
+        url('../fonts/helvetica/Helvetica.woff') format('woff'),
+        url('../fonts/helvetica/Helvetica.otf') format('opentype'),
+        url('../fonts/helvetica/Helvetica.ttf') format('truetype'),
+        url('../fonts/helvetica/Helvetica.svg') format('svg'),
+        url('../fonts/helvetica/Helvetica.eot') format('embedded-opentype');
+}
+
+@font-face {
+    font-family: 'Helvetica';
+    src: local('Helvetica'),
+        url('../fonts/helvetica/Helvetica-Bold.woff2') format('woff2'),
+        url('../fonts/helvetica/Helvetica-Bold.woff') format('woff'),
+        url('../fonts/helvetica/Helvetica-Bold.otf') format('opentype'),
+        url('../fonts/helvetica/Helvetica-Bold.ttf') format('truetype'),
+        url('../fonts/helvetica/Helvetica-Bold.svg') format('svg'),
+        url('../fonts/helvetica/Helvetica-Bold.eot') format('embedded-opentype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Helvetica';
+    src: local('Helvetica'),
+        url('../fonts/helvetica/Helvetica-Light.woff2') format('woff2'),
+        url('../fonts/helvetica/Helvetica-Light.woff') format('woff'),
+        url('../fonts/helvetica/Helvetica-Light.otf') format('opentype'),
+        url('../fonts/helvetica/Helvetica-Light.ttf') format('truetype'),
+        url('../fonts/helvetica/Helvetica-Light.svg') format('svg'),
+        url('../fonts/helvetica/Helvetica-Light.eot') format('embedded-opentype');
+    font-weight: lighter;
+}
+
+@font-face {
+    font-family: 'Helvetica';
+    src: local('Helvetica'),
+        url('../fonts/helvetica/Helvetica-Oblique.woff2') format('woff2'),
+        url('../fonts/helvetica/Helvetica-Oblique.woff') format('woff'),
+        url('../fonts/helvetica/Helvetica-Oblique.otf') format('opentype'),
+        url('../fonts/helvetica/Helvetica-Oblique.ttf') format('truetype'),
+        url('../fonts/helvetica/Helvetica-Oblique.svg') format('svg'),
+        url('../fonts/helvetica/Helvetica-Oblique.eot') format('embedded-opentype');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Helvetica';
+    src: local('Helvetica'),
+        url('../fonts/helvetica/Helvetica-Bold-Oblique.woff2') format('woff2'),
+        url('../fonts/helvetica/Helvetica-Bold-Oblique.woff') format('woff'),
+        url('../fonts/helvetica/Helvetica-Bold-Oblique.otf') format('opentype'),
+        url('../fonts/helvetica/Helvetica-Bold-Oblique.ttf') format('truetype'),
+        url('../fonts/helvetica/Helvetica-Bold-Oblique.svg') format('svg'),
+        url('../fonts/helvetica/Helvetica-Bold-Oblique.eot') format('embedded-opentype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Helvetica';
+    src: local('Helvetica'),
+        url('../fonts/helvetica/Helvetica-Light-Oblique.woff2') format('woff2'),
+        url('../fonts/helvetica/Helvetica-Light-Oblique.woff') format('woff'),
+        url('../fonts/helvetica/Helvetica-Light-Oblique.otf') format('opentype'),
+        url('../fonts/helvetica/Helvetica-Light-Oblique.ttf') format('truetype'),
+        url('../fonts/helvetica/Helvetica-Light-Oblique.svg') format('svg'),
+        url('../fonts/helvetica/Helvetica-Light-Oblique.eot') format('embedded-opentype');
+    font-weight: lighter;
+    font-style: italic;
+}
+
+/*
+Helvetica Neue
+*/
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: local('Helvetica Neue'),
+        url('../fonts/helvetica_neue/HelveticaNeue.woff2') format('woff2'),
+        url('../fonts/helvetica_neue/HelveticaNeue.woff') format('woff'),
+        url('../fonts/helvetica_neue/HelveticaNeue.otf') format('opentype'),
+        url('../fonts/helvetica_neue/HelveticaNeue.ttf') format('truetype'),
+        url('../fonts/helvetica_neue/HelveticaNeue.svg') format('svg'),
+        url('../fonts/helvetica_neue/HelveticaNeue.eot') format('embedded-opentype');
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: local('Helvetica Neue'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Bold.woff2') format('woff2'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Bold.woff') format('woff'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Bold.otf') format('opentype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Bold.ttf') format('truetype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Bold.svg') format('svg'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Bold.eot') format('embedded-opentype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: local('Helvetica Neue'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Light.woff2') format('woff2'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Light.woff') format('woff'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Light.otf') format('opentype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Light.ttf') format('truetype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Light.svg') format('svg'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Light.eot') format('embedded-opentype');
+    font-weight: lighter;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: local('Helvetica Neue'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Italic.woff2') format('woff2'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Italic.woff') format('woff'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Italic.otf') format('opentype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Italic.ttf') format('truetype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Italic.svg') format('svg'),
+        url('../fonts/helvetica_neue/HelveticaNeue-Italic.eot') format('embedded-opentype');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: local('Helvetica Neue'),
+        url('../fonts/helvetica_neue/HelveticaNeue-BoldItalic.woff2') format('woff2'),
+        url('../fonts/helvetica_neue/HelveticaNeue-BoldItalic.woff') format('woff'),
+        url('../fonts/helvetica_neue/HelveticaNeue-BoldItalic.otf') format('opentype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-BoldItalic.ttf') format('truetype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-BoldItalic.svg') format('svg'),
+        url('../fonts/helvetica_neue/HelveticaNeue-BoldItalic.eot') format('embedded-opentype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Helvetica Neue';
+    src: local('Helvetica Neue'),
+        url('../fonts/helvetica_neue/HelveticaNeue-LightItalic.woff2') format('woff2'),
+        url('../fonts/helvetica_neue/HelveticaNeue-LightItalic.woff') format('woff'),
+        url('../fonts/helvetica_neue/HelveticaNeue-LightItalic.otf') format('opentype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-LightItalic.ttf') format('truetype'),
+        url('../fonts/helvetica_neue/HelveticaNeue-LightItalic.svg') format('svg'),
+        url('../fonts/helvetica_neue/HelveticaNeue-LightItalic.eot') format('embedded-opentype');
+    font-weight: lighter;
+    font-style: italic;
+}
+
 *:before, *:after {
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -16,7 +168,7 @@ html, body{
 	background-color: rgb(250,250,250);
 	margin: 0;
 	padding: 0;
-	/*font-family: "Helvetica Neue","Helvetica","Arial";*/
+	font-family: "Helvetica Neue","Helvetica","Arial";
 	text-rendering: optimizeLegibility !important;
     -webkit-font-smoothing: antialiased !important;
     -moz-osx-font-smoothing: grayscale !important;
@@ -33,25 +185,28 @@ a{
 	text-decoration: none;
 	color: rgb(47,131,82);
 }
+.post .content a:hover{
+	text-decoration: underline;
+}
 a:hover, a:focus{color: rgb(47,131,82);}
 p{
 	margin: 0;
 }
 
 h1,h2,h3,h4,h5,h6{
-	/*font-family: 'helvetica Neue';*/
+	font-family: 'Helvetica Neue';
 }
 
 input, textarea, select, button{
 	outline-color: rgb(47,131,82);
 	outline: none;
-	/*font-family: 'helvetica Neue';*/
+	font-family: 'Helvetica Neue';
 }
 
 input:focus, textarea:focus, select:focus, button:focus{
 	box-shadow: 0 0 1px 1px rgb(47,131,82); -moz-box-shadow: 0 0 1px 1px rgb(47,131,82); -webkit-box-shadow: 0 0 1px 1px rgb(47,131,82); -o-box-shadow: 0 0 1px 1px rgb(47,131,82);
 }
-.alert{/*font-family: 'helvetica Neue';*/}
+.alert{font-family: 'Helvetica Neue';}
 img{vertical-align:inherit;}
 h4, .h4{margin:0px;}
 /*----------------------------------------------------
@@ -61,7 +216,7 @@ h4, .h4{margin:0px;}
 header{
 	background-color: rgb(47,131,82);
 	color: #fff;
-	height: 99px;
+	max-height: 99px;
 	width: 100%;
 	position: fixed;
 	top: 0;
@@ -71,12 +226,12 @@ header{
 
 header .container{
 	margin: 0 auto;
-	padding: 14px 15px;
+	padding: 5px 15px;
 	width: 100%;
 	max-width: 960px;
 	white-space: nowrap;
 }
-
+header .container > a,
 header .container div,
 header .container nav{
 	display: inline-block;
@@ -85,8 +240,9 @@ header .container nav{
 
 header #logo{
 	margin: 0 16px 0 0;
+	height: 67px;
 }
-
+header #logo a{display:inline-block; vertical-align:top;}
 header #search{
 	width: 100%;
 	max-width: 444px;
@@ -104,7 +260,7 @@ header input{
 	max-width: 900px;
 	width:100%;
 	outline: none;
-	padding: 10px 35px 10px 0;
+	padding: 10px 35px 8px 0;
 	background: url(/../images/global/lens.png) no-repeat;
 	background-position: right; 
 }
@@ -163,7 +319,7 @@ header #top_nav .profile_icon .profile_list::before{
 }
 
 header #top_nav .profile_icon .profile_list::before{
-	content: url(../img/global/bubble_arrow_profile.png);
+	content: url(/images/global/bubble_arrow_profiletop_nav.png);
 	display: block;
 	position: absolute;
 	top: -62px;
@@ -346,10 +502,10 @@ header #top_nav .notifications_icon .notification_list > .show_all{
 
 #body{
 	max-width: 960px;
-	margin: 99px auto 0;
+	margin: 77px auto 0;
 	white-space: nowrap;
 	/*height: 100%;*/
-	/*height: calc(100% - 99px);*/
+	/*height: calc(100% - 77px);*/
 	overflow-y: auto;
 	overflow-x: hidden;
 	position: relative;
@@ -462,7 +618,15 @@ header #top_nav .notifications_icon .notification_list > .show_all{
 #side_nav .gym_icon.selected{
 	background-color: rgba(34,133,222,.2);
 }
+#side_nav .plus_icon{
+	background: url(../img/nav/plus.png) no-repeat;
+	top: calc(68px * 7);
+}
 
+#side_nav .plus_icon:hover,
+#side_nav .plus_icon.selected{
+	background-color: rgba(177,26,151,.2);
+}
 #side_nav .settings_icon{
 	background: url(/../images/nav/settings.png) no-repeat;
 	top: calc(68px * 6);
@@ -566,7 +730,7 @@ header #top_nav .notifications_icon .notification_list > .show_all{
 #feed_container .header h2{
 	font-size: 18px;
 	font-weight: bold;
-	/*font-family: 'helvetica neue';*/
+	font-family: 'helvetica neue';
 	display: inline-block;
 	vertical-align: bottom;
 	position: absolute;
@@ -604,7 +768,7 @@ background: transparent;
     height: 21px;
     font-weight: bold;
     font-size: 14px;
-    padding: 0 5px 2px;
+    padding: 0 7px 2px;
     cursor: pointer;
 }
 select{
@@ -644,10 +808,10 @@ select{
 
 #feed_container .post_input .container textarea{
 	width:100%;
-	height: 80px;
+	height: 100px;
 	max-height: 800px;
 	border: 1px solid rgb(151,151,151);
-	border-radius: 5px;
+	border-radius: 5px!important; -moz-border-radius: 5px!important; -webkit-border-radius: 5px!important;
 	font-weight: bold;
 	font-size: 14px;
 	padding: 10px 5px;
@@ -673,6 +837,7 @@ select{
 	display: inline-block;
 	vertical-align: middle;
 	font-weight: bold;
+	margin:0px;
 }
 
 #feed_container .post_input .container .actions .share_with select{
@@ -682,7 +847,7 @@ select{
 	border-radius: 5px;
 	max-width: 200px;
 	background-color: transparent;
-	font-size: 12px;
+	font-size: 13px;
 	padding:4px 0px;
 
 }
@@ -700,6 +865,7 @@ select{
 	width: 40px;
 	padding: 2px 0 3px;
 	cursor: pointer;
+	overflow:hidden;
 }
 
 #feed_container .post_input .container .actions .share_what button.video, #feed_container .post_input .container .actions .share_what .video{
@@ -708,6 +874,7 @@ select{
 	width: 40px;
 	padding: 2px 0 3px;
 	cursor: pointer;
+	overflow:hidden;
 }
 
 #feed_container .post_input .container .actions .share_what button.image input, #feed_container .post_input .container .actions .share_what .image input,
@@ -721,7 +888,7 @@ select{
 #feed_container .post_input .container .actions .share_what button, #feed_container .post_input .container .actions .share_what div{
 	background-color: transparent;
 	border: none;
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: bold;
 	text-transform: uppercase;
 	color: rgb(47,131,82);
@@ -738,7 +905,10 @@ select{
 	width:100%;
 	white-space:normal;
 }
-
+#feed_container #feed.group,
+#feed_container #feed.fitspot{
+	margin: 55px 5px;
+}
 /*	Posts	*/
 
 #feed_container #feed .post{
@@ -819,7 +989,7 @@ select{
 }
 
 #feed_container #feed .post .header .user p{
-	/*font-family: 'Helvetica Neue';*/
+	font-family: 'Helvetica Neue';
 	font-size: 14px;
 	font-weight: normal;
 }
@@ -833,8 +1003,37 @@ select{
 	white-space: normal;
 	font-size: 14px;
 	line-height: 19px;
-	font-family: "Helvetica Neue","Helvetica","Arial";
 	
+	
+}
+
+#feed_container #feed .post .attending_friends,
+#feed_container #feed .post .members{
+	border-top: 1px solid rgb(151,151,151);
+	padding: 0 0 10px;
+}
+
+#feed_container #feed .post .attending_friends p,
+#feed_container #feed .post .members p{
+	font-weight: bold;
+	padding: 10px;
+	font-size: 14px;
+}
+
+#feed_container #feed .post .attending_friends .friends,
+#feed_container #feed .post .members .friends{
+	text-align: center;
+}
+
+#feed_container #feed .post .attending_friends .friends > div,
+#feed_container #feed .post .members .friends > div{
+	display: inline-block;
+	overflow: hidden;
+	border-radius: 48px;
+	width: 48px;
+	height: 48px;
+	margin: 0 25px;
+	border: 2px solid rgb(151,151,151);
 }
 
 #feed_container #feed .post .footer{
@@ -848,7 +1047,7 @@ select{
 	display: inline-block;
 	vertical-align: middle;
 	font-weight: bold;
-	font-size: 12px;
+	font-size: 13px;
 	margin: 0;
 }
 
@@ -1105,7 +1304,7 @@ select{
 	display: inline-block;
 	vertical-align: middle;
 	padding: 20px 0;
-	width: 33%;
+	width: 32%;
 }
 
 #feed_container #feed .post.fitbit .content .box{
@@ -1209,12 +1408,39 @@ select{
 	width: 100%;
 }
 
+/*	Photo	*/
+#feed_container #feed .post.photo .content .photo_container{
+	background: url(../img/global/media_post_bg.png) no-repeat;
+	background-size: cover;
+	/*height: 206px;*/
+	padding: 10px 0;
+	text-align: center;
+}
+
+#feed_container #feed .post.photo .content .text{
+	border-bottom: 1px solid rgb(151,151,151);
+}
+
+#feed_container #feed .post.photo .content .photo,
+#feed_container #feed .post.photo .content img{
+	max-width: 375px;
+	width: 100%;
+	min-height: 193px;
+	border: 4px solid #000;
+	background-color: #000;
+	margin: 0px auto;
+}
+
 /*	Link	*/
 #feed_container #feed .post.link .content, .lnk .link_container{
 	background: url(/images/global/media_post_bg.png) no-repeat;
 	background-size: cover;
 	/*height: 246px;*/
 	padding: 30px 0;
+}
+
+#feed_container #feed .post.link .content .text{
+	border-bottom: 1px solid rgb(151,151,151);
 }
 
 #feed_container #feed .post.link .content .link, .lnk .link_container .link{
@@ -1441,12 +1667,20 @@ select{
 	vertical-align: middle;
 }
 
+#feed_container #feed .post .comment_container .comment:nth-child(odd){
+	background-color: #F6FFF4;
+}
+
+#feed_container #feed .post .comment_container .comment:nth-child(even){
+	background-color: #fff;
+}
+
 #feed_container #feed .post .comment_container .comment > div.avatar{
 	border: 2px solid rgb(151,151,151);
 	border: none;
-	width: 48px;
-	height: 48px;
-	border-radius: 48px;
+	width: 38px;
+	height: 38px;
+	border-radius: 38px;
 	overflow: hidden;
 }
 
@@ -1491,13 +1725,13 @@ select{
 	padding: 5px 0;
 	white-space:normal;
 	overflow: hidden;
-	font-family: "Helvetica Neue","Helvetica","Arial";
+	
 }
 
 #feed_container #feed .post .comment_container .comment p.timestamp{
 	font-size: 12px;
 	color: #333;
-	font-family: "Helvetica Neue","Helvetica","Arial";
+	
 }
 
 #feed_container #feed .post .add_comment{
@@ -1548,9 +1782,9 @@ select{
 
 #side_info{
 	width: 279px;
-	height: calc(100% - 99px);
-	height: -webkit-calc(100% - 99px);
-	height: -moz-calc(100% - 99px);
+	height: calc(100% - 77px);
+	height: -webkit-calc(100% - 77px);
+	height: -moz-calc(100% - 77px);
 	overflow-y: auto;
 	padding-right: 16px;
 	position: fixed;
@@ -1601,7 +1835,7 @@ select{
 #side_info h2{
 	font-size: 18px;
 	font-weight: bold;
-	/*font-family: 'helvetica neue';*/
+	font-family: 'Helvetica Neue';
 	display: inline-block;
 	vertical-align: bottom;
 	position: absolute;
@@ -1614,6 +1848,7 @@ select{
 	display: inline-block;
 	white-space: nowrap;
 	width: 33%;
+	text-align:center;
 }
 
 #side_info .fitbit_activity h1{
@@ -1629,7 +1864,7 @@ select{
 #side_info .fitbit_activity h1,
 #side_info .fitbit_activity h3{
 	font-weight: bold;
-	/*font-family: 'helvetica neue';*/
+	font-family: 'Helvetica Neue';
 	text-align: center;
 	margin: 0;
 	padding: 0;
@@ -1642,11 +1877,11 @@ select{
 
 #side_info a{
 	font-weight: bold;
-	font-family: "Helvetica Neue","Helvetica","Arial";
+	
 }
 
 #side_info .list > div{
-	margin: 5px 0;
+	margin:10px 0;
 }
 
 #side_info .list div > div{
@@ -1682,6 +1917,7 @@ select{
 #side_info .my_activities .activity,
 #side_info .events .event,
 #side_info .suggested_trainers .name,
+#side_info .suggested_friends .name,
 #side_info .suggested_fitspots .fitspot{
 	font-weight: bold;
 }
@@ -1691,11 +1927,12 @@ select{
 #side_info .my_activities .openings,
 #side_info .suggested_trainers .availability{
 	color: rgb(47,131,82);
-	font-size: 12px;
+	font-size: 13px;
 	font-weight: bold;
 }
 
 #side_info .suggested_trainers .list div > div,
+#side_info .suggested_friends .list div > div,
 #side_info .my_activities .list div > div{
 	display: inline-block;
 	vertical-align: middle;
@@ -1744,11 +1981,33 @@ select{
     text-overflow: ellipsis;
     margin: 5px 0 5px 8px;
 }
-
+#side_info .description a{color:#000; font-size:16px;}
 #side_info .description p{
 	/*text-overflow: ellipsis;*/
 	display: inline;
-	font-family: "Helvetica Neue","Helvetica","Arial";
+}
+
+#side_info .description p.date,
+#side_info .description p.event{
+	font-size: 14px;
+}
+
+#side_info .description p.location{
+	font-size: 12px;
+}
+
+#side_info > div.groups .list .avatar{
+	border-color: #000;
+}
+
+#side_info > div.groups .list .description{
+	vertical-align: middle;
+}
+
+#side_info > div.groups .list .description .name{
+	white-space: normal;
+	font-weight: bold;
+	font-size: 14px;
 }
 
 /*----------------------------------------------------
@@ -1815,7 +2074,27 @@ aside#ads .ad{
 }
 
 .avatar.activity.cardio_circuit{
-	background: url(/../images/activity/cardio_circuit.png) no-repeat;
+	background: url(/images/activity/cardio_circuit.png) no-repeat;
+	background-position: center;
+}
+
+.avatar.activity.mountain_biking{
+	background: url(/images/activity/mountain_biking.png) no-repeat;
+	background-position: center;
+}
+
+.avatar.activity.cycling{
+	background: url(/images/activity/cycling.png) no-repeat;
+	background-position: center;
+}
+
+.avatar.activity.hiking{
+	background: url(/images/activity/hiking.png) no-repeat;
+	background-position: center;
+}
+
+.avatar.activity.snorkling{
+	background: url(/images/activity/snorkling.png) no-repeat;
 	background-position: center;
 }
 
@@ -1936,6 +2215,8 @@ body #dark_cover{
 	display: inline-block;
 	vertical-align: middle;
 	padding-left: 18px;
+	display: inline;
+	color:#000;
 }
 
 #list_of_friends .list > div.friend:last-child{
@@ -1944,7 +2225,7 @@ body #dark_cover{
 
 /*	List of Groups	*/
 #list_of_groups{
-	position: absolute;
+	position: fixed;
 	z-index: 101;
 	left: 0;
 	top: 114px;
@@ -2069,6 +2350,8 @@ body #dark_cover{
 	vertical-align: middle;
 	padding-left: 18px;
 	display: inline;
+	color:#000;
+	
 }
 
 #list_of_groups .list > div.group:last-child{
@@ -2261,7 +2544,7 @@ body #dark_cover{
 }
 
 #create_challenge .preview .post .header .user p{
-	/*font-family: 'Helvetica Neue';*/
+	font-family: 'Helvetica Neue';
 	font-size: 14px;
 	font-weight: normal;
 }
@@ -2285,11 +2568,12 @@ body #dark_cover{
     margin: 0px 0 0 52px;
     padding: 0 5px;
     position: absolute;
+    z-index:2;
 }
 .btn-primary {
     background-color: #2F8352;
     border-color: #1F7342;
-    font-family: "Helvetica Neue","Helvetica","Arial";
+    
 }
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active{
     background-color: #3F9362;
@@ -2334,7 +2618,7 @@ body #dark_cover{
     appearance: none;
     text-indent: 0.01px;
     text-overflow: '';
-}*/
+}
 #main_container  select.winner{
 -moz-appearance: none;
 -webkit-appearance: none;
@@ -2342,7 +2626,7 @@ body #dark_cover{
 appearance: none;
 text-indent: 0.01px;
 text-overflow: '';
-}
+}*/
 .error {
     color: #FF0000;
     font-size: 12px !important;
@@ -2397,7 +2681,7 @@ text-overflow: '';
  * https://github.com/sliptree/bootstrap-tokenfield
  * Copyright 2013-2014 Sliptree and other contributors; Licensed MIT
  */
-@-webkit-keyframes blink{0%{border-color:#ededed}100%{border-color:#b94a48}}@-moz-keyframes blink{0%{border-color:#ededed}100%{border-color:#b94a48}}@keyframes blink{0%{border-color:#ededed}100%{border-color:#b94a48}}.tokenfield{height:auto;min-height:34px;padding-bottom:0}.tokenfield.focus{border-color:#2f8352;outline:0;-webkit-box-shadow:inset 0 1px 1px rgba(47,131,82,.075),0 0 8px rgba(47,131,82,.6);box-shadow:inset 0 1px 1px rgba(47,131,82,.075),0 0 8px rgba(47,131,82,.6)}.tokenfield .token{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;display:inline-block;border:1px solid #d9d9d9;background-color:#ededed;white-space:nowrap;margin:-1px 5px 5px 0;height:22px;vertical-align:top;cursor:default}.tokenfield .token:hover{border-color:#b9b9b9}.tokenfield .token.active{border-color:#52a8ec;border-color:rgba(82,168,236,.8)}.tokenfield .token.duplicate{border-color:#ebccd1;-webkit-animation-name:blink;animation-name:blink;-webkit-animation-duration:.1s;animation-duration:.1s;-webkit-animation-direction:normal;animation-direction:normal;-webkit-animation-timing-function:ease;animation-timing-function:ease;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}.tokenfield .token.invalid{background:0 0;border:1px solid transparent;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;border-bottom:1px dotted #d9534f}.tokenfield .token.invalid.active{background:#ededed;border:1px solid #ededed;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}.tokenfield .token .token-label{display:inline-block;overflow:hidden;text-overflow:ellipsis;padding-left:4px;vertical-align:top}.tokenfield .token .close{display:inline-block;line-height:100%;font-size:1.1em;line-height:1.49em;margin-left:5px;float:none;height:100%;vertical-align:top;padding-right:4px}.tokenfield .token-input{background:0 0;width:60px;min-width:60px;border:0;height:20px;padding:0;margin-bottom:6px;-webkit-box-shadow:none;box-shadow:none}.tokenfield .token-input:focus{border-color:transparent;outline:0;-webkit-box-shadow:none;box-shadow:none}.tokenfield.disabled{cursor:not-allowed;background-color:#eee}.tokenfield.disabled .token-input{cursor:not-allowed}.tokenfield.disabled .token:hover{cursor:not-allowed;border-color:#d9d9d9}.tokenfield.disabled .token:hover .close{cursor:not-allowed;opacity:.2;filter:alpha(opacity=20)}.has-warning .tokenfield.focus{border-color:#66512c;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #c0a16b;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #c0a16b}.has-error .tokenfield.focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #ce8483;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #ce8483}.has-success .tokenfield.focus{border-color:#2b542c;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #67b168;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #67b168}.tokenfield.input-sm,.input-group-sm .tokenfield{min-height:30px;padding-bottom:0}.input-group-sm .token,.tokenfield.input-sm .token{height:20px;margin-bottom:4px}.input-group-sm .token-input,.tokenfield.input-sm .token-input{height:18px;margin-bottom:5px}.tokenfield.input-lg,.input-group-lg .tokenfield{height:auto;min-height:45px;padding-bottom:4px}.input-group-lg .token,.tokenfield.input-lg .token{height:25px}.input-group-lg .token-label,.tokenfield.input-lg .token-label{line-height:23px}.input-group-lg .token .close,.tokenfield.input-lg .token .close{line-height:1.3em}.input-group-lg .token-input,.tokenfield.input-lg .token-input{height:23px;line-height:23px;margin-bottom:6px;vertical-align:top}.tokenfield.rtl{direction:rtl;text-align:right}.tokenfield.rtl .token{margin:-1px 0 5px 5px}.tokenfield.rtl .token .token-label{padding-left:0;padding-right:4px}
+@-webkit-keyframes blink{0%{border-color:#ededed}100%{border-color:#b94a48}}@-moz-keyframes blink{0%{border-color:#ededed}100%{border-color:#b94a48}}@keyframes blink{0%{border-color:#ededed}100%{border-color:#b94a48}}.tokenfield{height:auto;min-height:34px;padding-bottom:0}.tokenfield.focus{outline:0;-webkit-box-shadow:inset 0 1px 1px rgba(47,131,82,.075),0 0 8px rgba(47,131,82,.6);box-shadow:inset 0 1px 1px rgba(47,131,82,.075),0 0 8px rgba(47,131,82,.6)}.tokenfield .token{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;display:inline-block;border:1px solid #d9d9d9;background-color:#ededed;white-space:nowrap;margin:-1px 5px 5px 0;height:22px;vertical-align:top;cursor:default}.tokenfield .token:hover{border-color:#b9b9b9}.tokenfield .token.active{border-color:#52a8ec;border-color:rgba(82,168,236,.8)}.tokenfield .token.duplicate{border-color:#ebccd1;-webkit-animation-name:blink;animation-name:blink;-webkit-animation-duration:.1s;animation-duration:.1s;-webkit-animation-direction:normal;animation-direction:normal;-webkit-animation-timing-function:ease;animation-timing-function:ease;-webkit-animation-iteration-count:infinite;animation-iteration-count:infinite}.tokenfield .token.invalid{background:0 0;border:1px solid transparent;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;border-bottom:1px dotted #d9534f}.tokenfield .token.invalid.active{background:#ededed;border:1px solid #ededed;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px}.tokenfield .token .token-label{display:inline-block;overflow:hidden;text-overflow:ellipsis;padding-left:4px;vertical-align:top}.tokenfield .token .close{display:inline-block;line-height:100%;font-size:1.1em;line-height:1.49em;margin-left:5px;float:none;height:100%;vertical-align:top;padding-right:4px}.tokenfield .token-input{background:0 0;width:60px;min-width:60px;border:0;height:20px;padding:0;margin-bottom:6px;-webkit-box-shadow:none;box-shadow:none}.tokenfield .token-input:focus{border-color:transparent;outline:0;-webkit-box-shadow:none;box-shadow:none}.tokenfield.disabled{cursor:not-allowed;background-color:#eee}.tokenfield.disabled .token-input{cursor:not-allowed}.tokenfield.disabled .token:hover{cursor:not-allowed;border-color:#d9d9d9}.tokenfield.disabled .token:hover .close{cursor:not-allowed;opacity:.2;filter:alpha(opacity=20)}.has-warning .tokenfield.focus{border-color:#66512c;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #c0a16b;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #c0a16b}.has-error .tokenfield.focus{border-color:#843534;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #ce8483;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #ce8483}.has-success .tokenfield.focus{border-color:#2b542c;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #67b168;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 6px #67b168}.tokenfield.input-sm,.input-group-sm .tokenfield{min-height:30px;padding-bottom:0}.input-group-sm .token,.tokenfield.input-sm .token{height:20px;margin-bottom:4px}.input-group-sm .token-input,.tokenfield.input-sm .token-input{height:18px;margin-bottom:5px}.tokenfield.input-lg,.input-group-lg .tokenfield{height:auto;min-height:45px;padding-bottom:4px}.input-group-lg .token,.tokenfield.input-lg .token{height:25px}.input-group-lg .token-label,.tokenfield.input-lg .token-label{line-height:23px}.input-group-lg .token .close,.tokenfield.input-lg .token .close{line-height:1.3em}.input-group-lg .token-input,.tokenfield.input-lg .token-input{height:23px;line-height:23px;margin-bottom:6px;vertical-align:top}.tokenfield.rtl{direction:rtl;text-align:right}.tokenfield.rtl .token{margin:-1px 0 5px 5px}.tokenfield.rtl .token .token-label{padding-left:0;padding-right:4px}
 /*!
  * bootstrap-tokenfield end
  */
@@ -2538,6 +2822,7 @@ input[type="checkbox"]:focus{box-shadow:none;}
 }
 .group-tab {
     margin: 30px 10px 0;
+    
 }
 .group-tab .nav-tabs > li a {
     -moz-border-bottom-colors: none;
@@ -2664,6 +2949,7 @@ ul.group-imgs li .grop-img img {
 .profile_analytics {
   display: inline-block;
   width:100%; vertical-align:top;
+  
 }
 .profile_analytics .a_header {
   background-color: #343434;
@@ -2744,6 +3030,7 @@ ul.group-imgs li .grop-img img {
     resize: none;
     width: 100%;
     background:none;
+    color:#636363;
 }
 #feed_container #feed .post .add_comment {
     border-top: 1px solid #979797;
@@ -2847,7 +3134,7 @@ ul.group-imgs li .grop-img img {
 }
 
 #challengeForm .preview .post .header .user p{
-	/*font-family: 'Helvetica Neue';*/
+	font-family: 'Helvetica Neue';
 	font-size: 14px;
 	font-weight: normal;
 }
@@ -3047,13 +3334,14 @@ ul.group-imgs li .grop-img img {
     font-weight: normal;
 }
 h1, h2, h3, h4, h5, h6 {
-    /*font-family: "helvetica Neue";*/
+    font-family: 'Helvetica Neue';
 }
 .fade.in{background:rgba(0, 0, 0, 0.5);}
+.tab-content .fade.in{background:#fff;}
 a:hover, a:focus{text-decoration: none;}
 .crop-img{padding:20px; max-width:100%; float:left;}
 .crop-preview{padding:20px; float:left; text-align:center;}
-.crop-preview h4{margin:0px 0 6px; font-family: "Helvetica Neue","Helvetica","Arial";}
+.crop-preview h4{margin:0px 0 6px; font-family: 'Helvetica Neue';}
 .crop-preview form{margin-top:15px;}
 .crop-preview > div{border-radius:100px; border:1px solid #2F8352;}
 

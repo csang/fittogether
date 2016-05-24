@@ -1,118 +1,78 @@
-<% if false %>
-<div id="left_side">
-
-  <div id="left_side_fixed">
-    <div id="account_info" class="profile_aside">
-      <div class="cover">
-        <% image_tag('covers/cover.png') %>
-      </div>
-      <div class="user">
-        <div class="mask">
-          <% img =  useravatar(@account)  %>
-          <%= image_tag(img) %>			  
-        </div>
-        <% if @profileuser.last_name.present? %>
-          <% lname = @profileuser.last_name %>
-        <% else %>
-          <%  lname = '' %>
-        <% end %>
-        <h3><label class="pro-name"><%= @profileuser.first_name + ' ' +  lname  %></label>
-
-          <% unless @account.id == @profileuser.id %>	
-
-            <% if @account.pending_friends.present? %>					  
-              <% @account.pending_friends.each do |friendship| %>		
-
-                <% if friendship.id == @profileuser.id %>	
-                  <button data-id="<%= Base64.encode64(friendship.id.to_s)%>" class="cancelfriend">Cancel Request</button>
-                  <button data-id="" class="addfriend" style="display:none;" >Add Friend</button>							         	
-
-
-                <% end %>
-              <% end %>		
-            <% end %>		
-
-            <% if !@friend.present? %>
-
-              <% if @profileuser.user_type.to_i == 3 && @account.user_type.to_i == 3 %>
-                <p></p>
-              <% else %>
-                <button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" class="addfriend">
-                  <%= if  @profileuser.user_type==3 
-                    'Join' 
-                    elsif @profileuser.user_type==2
-                    'Add Personal Trainer'
-                    else
-                    'Add Friend'
-                    end %>   
-                </button>
-              <% end %>		  
-
-              <button data-id="" class="cancelfriend" style="display:none;">Cancel Request</button>	
-            <% elsif @friend.approved== true %>
-			  <% if  @profileuser.user_type==3 %>
-			   <div class="reqsent">
-                <span>Joined</span>							     
-              </div>
-              <% else %>
-                <div class="reqsent">
-                <span>Friend</span>							     
-              </div>	
-              <% end %>
-            <% else %>
-
-              <div class="reqsent">
-                <span><%= @profileuser.id == @friend.account_id ? 'Request Pending ' : 'Request Sent ' %></span>							     
-              </div>		
-            <% end %>
-
-
-
-          <% end %>
-
-        </h3>
-      </div>
-      <% if @account.id != @profileuser.id %>
-        <div class="profile_actions">			
-          <button class="message" data-toggle="modal" data-target="#messageForm">Message</button>
-          <% if @profileuser.user_type !=3 %>
-          <button class="message" data-toggle="modal" data-target="#challengeForm">Challenge</button>
-          <% end %>
-        </div>
-      <% end %>
-      <% if @profileuser.user_type.to_i == 2 %> 
-        <div class="rating-box"><div class="rating-inner"> <p>Average rating -</p>
-            <div id="star"></div>
-          </div>
-          <% if @account.id != @profileuser.id  %>
-            <div class="rating-inner last">
-              <p>Your rating -</p>
-              <div id="user_star"></div>
-            </div>
-          <% end  %>                  </div>
-      <% end  %>
-
-
-      <%= render(:partial => 'nav/side_nav', :profileuser => @profileuser) %>
-
-    </div>
-  </div>
-</div>
-<% end %>
-<!--- New --->
- <form novalidate="novalidate" method="post" enctype="multipart/form-data" action="<%= update_cover_url %>" accept-charset="UTF-8">
-                    <div class="collage">
-                        <div class="cover_photo">
-														<%= image_tag(@profileuser.cover) %>
-							  <% if @account.id == @profileuser.id %>							
-							<div class="photo_upload">
-								<input type="file" value="Change cover" onchange="this.form.submit()" accept="image/*" name="cover" title="(ideal image size : 730 X 250)" />
-								<span>Change cover</span>
+<!--- New --->	
+  <script src="http://malsup.github.com/jquery.form.js"></script>
+  
+               <div class="collage">
+                        <div class="sub_collage">
+                            <div class="square">
+								<%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_one", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @profileuser.id %>
+								<span class="cover-icon"></span>
+							  <input type="file" value="Change cover"  accept="image/*" id="cfone" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+							   <input type="hidden" name="position" value=1>								
+								 <% end %>
+								 <% end %>
+								<% img = get_cover(1) %>
+								<%= image_tag(img , :id =>'position_one') %>
+								</div>
+                            <div class="square">
+								 <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_two", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @profileuser.id %>
+								 <span class="cover-icon"></span>
+							     <input type="file" value="Change cover" id="cftwo" accept="image/*" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+							     <input type="hidden" name="position" value=2>								
+								 <% end %>
+								 <% end %>
+								<% img = get_cover(2) %>
+								<%= image_tag(img , :id =>'position_two') %>
 							</div>
-							<% end %>
+                            <div class="landscape">
+                             <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_three", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @profileuser.id %>
+							  <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cfthree"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 150)" />
+							   <input type="hidden" name="position" value=3>								
+								 <% end %>
+								 <% end %>
+								 <% img = get_cover(3) %>
+								<%= image_tag(img , :id =>'position_three') %>
+								 </div>
+                        </div>
+                        <div class="sub_collage">
+                            <div class="big_square">
+                             <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_four", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @profileuser.id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cffour"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 300)" />
+							   <input type="hidden" name="position" value=4>								
+								 <% end %>
+								 <% end %>
+								 <% img = get_cover(4) %>
+								<%= image_tag(img , :id =>'position_four') %>
+								</div>
+                            <div class="square">
+								   <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_five", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @profileuser.id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cffive"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+							   <input type="hidden" name="position" value=5>								
+								 <% end %>
+								 <% end %>
+								 <% img = get_cover(5) %>
+								<%= image_tag(img , :id =>'position_five') %>
+								</div>
+                            <div class="square">
+                              <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_six", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @profileuser.id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cfsix"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+							   <input type="hidden" name="position" value=6>								
+								 <% end %>
+								 <% end %>
+								 <% img = get_cover(6) %>
+								<%= image_tag(img , :id =>'position_six') %>
+								</div>
                         </div>
                     </div>
-                    </form>
                     <div class="profile_bar">
                         <div class="avatar">
                           <% img =  useravatar(@profileuser)  %>
@@ -156,13 +116,14 @@
 								<% elsif @friend.approved== true %>								
 									 <% if  @profileuser.user_type==3 %>
 								   <button> Joined </button>		     
-								  
+								   <% elsif  @profileuser.user_type==2 %>
+								    <button> Following </button>	
 								  <% else %>
 									 <button> Friend </button>			
 								  <% end %>	     
 								 	
 								<% else %>								 
-									<button><%= @profileuser.id == @friend.account_id ? 'Request Pending ' : 'Request Sent ' %></button>    
+									<!--<button><%= @profileuser.id == @friend.account_id ? 'Request Pending ' : 'Request Sent ' %></button>-->    
 								 	
 								<% end %>
 								<% end %>
@@ -221,10 +182,12 @@
 
 
 
-
 <script type="text/javascript">
-
+  
+ 
+ 
   $(document).ready(function() {
+
 
 //remove friend
 
@@ -372,10 +335,54 @@
         });
       }
     });
+    
+    // ajax form 
+    
+  $('body').on('change','.cover_file', function() {
+	var id = $(this).closest('form').attr('id');
+	var field_id = $(this).attr('id');
+	var imgs = $(this).parent().parent('div').children('img').attr('id');
+	
+    bf = before_submit_image(field_id);
+    bf.then(function(){
+		console.log('Resolve..')
+		//=============
+		$("#" + id).ajaxSubmit({			
+	      type: "POST",
+          url: '<%= account_covers_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#'+imgs).attr('src' , data )
+         
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
 
+          }
 
+        }); 
+		
+		//===========
+	}, function(){
+		console.log('Reject..')
+		return false;
+	});
+	
+	
+     
+  });
+  
 
+  
   });	  // end of document.ready  
-
+  
+  
+ 
 
 </script>
+
+

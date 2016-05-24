@@ -994,9 +994,45 @@ $(document).ready(function () {
               }
         },
 	  
-    }); 
-
+    });
     
+      // add member
+    $('.attending').on('click', function() {
+	
+      var id = $(this).attr('data-id');
+      var type = $(this).attr('data-type');
+      var that = this;
+      var mydata = {'id': id, 'type': type};
+      $.ajax({
+        type: "POST",
+        url: "/add_del_going", //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,  
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          if (type == 'add') {
+			//	$(that).prop('disabled', true);             
+			$(that).parent().parent().parent().hide();
+		
+          } else {
+             $(that).parent().parent().parent().hide();
+             
+          }
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    }); 
+    
+ 
    
 }); // end of document dot ready
 
@@ -1100,6 +1136,65 @@ function sse() {
       return false;
     }
   }
+  
+     //function to check file size before uploading.
+  function before_submit_image(id) {
+
+		//check whether browser fully supports all File API
+		if (window.File && window.FileReader && window.FileList && window.Blob){
+
+			
+
+			// image width and height chck
+			var p1 = new Promise(function(resolve, reject) {
+				
+				var ftype = $('#' + id)[0].files[0].type; // get file type
+				//allow only valid image file types
+				switch (ftype){
+					case 'image/png':
+					case 'image/gif':
+					case 'image/jpeg':
+					case 'image/pjpeg':
+					break;
+					default:
+					// $("#output").html("Only png, jpg, gif file formats are allowed.");
+					$('.flash-message').html('<div class="alert alert-danger">Only png, jpg, gif formats are allowed.</div>').show();
+
+					reject()
+				}
+				
+				var reader = new FileReader();
+				//Read the contents of Image File.
+				reader.readAsDataURL($('#' +id)[0].files[0]);
+				reader.onload = function (e) {
+					//Initiate the JavaScript Image object.
+					var image = new Image();
+					//Set the Base64 string return from FileReader as source.
+					image.src = e.target.result;
+					var height = image.height;
+					var width = image.width;
+			    	if ( width > 400 || height > 325) {
+						$('.flash-message').html('<div class="alert alert-danger"> Image is large.</div>').show();
+						reject();
+						console.log('Insided function reject')
+					} else {
+						console.log('Insided function resolve')
+						resolve();
+					}
+				}
+				
+			});
+			
+			
+
+			return p1;
+		} else {
+
+			$('.flash-message').html('<div class="alert alert-danger"> please upgrade your browser, because your current browser lacks some new features we need!').show();
+			return false;
+		}
+  }
+
 
 
 

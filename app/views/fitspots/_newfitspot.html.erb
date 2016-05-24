@@ -10,16 +10,18 @@
  <%= f.label :text, 'Description' %>
 	<%= f.text_area :description, class: " boxtextarea form-control", maxlength: 150 %>
   </div>
-
+<!--
 <div class="pop-row">
 <label>Image <span class="small">(ideal image size : 730 X 250)</span></label>
 	<%= f.file_field :fitspot_image %>
-  <input class="form-control" type="hidden"  name="fitspot[group_id]" value="<%= Base64.encode64(@group.id.to_s) %>">
+ 
    <label for="fitspot_img" generated="true" class="errors fimgerror" style="display:none;">Image width must be greater than  730 pixels.</label>
   </div>
+  -->
+   <input class="form-control" type="hidden"  name="fitspot[group_id]" value="<%= Base64.encode64(@group.id.to_s) %>">
 <div class="pop-row">
  <%= f.label :text, 'Location*' %>
-	<%= f.text_field :location, class: " form-control", maxlength: 150 %>
+	<%= f.text_field :location, id: "geocomplete" ,class: " form-control", maxlength: 150 %>
   </div>
 <div class="pop-row">
  <%= f.label :text, 'When*' %>

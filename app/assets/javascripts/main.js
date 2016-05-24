@@ -431,6 +431,14 @@ Fit = {
 		$(this).remove();
 		$('.over_cover').remove();
 	},
+	toggle_notification_list: function(e){
+		var notifications = $('header #top_nav .notifications_icon .notification_list, header #top_nav .notifications_icon #dark_cover');
+		if(notifications.css('display') == "none"){
+			notifications.css('display','block');
+		}else{
+			notifications.css('display','none');
+		}
+	},
 		toggle_profile_list: function(e){
 		var profile = $('header #top_nav .profile_icon .profile_list, header #top_nav .profile_icon #dark_cover');
 		if(profile.css('display') == "none"){
@@ -468,6 +476,7 @@ Fit = {
 		$(document).on('click','#feed_container #feed .post .footer > div.comment',Fit.toggle_comments);
 		
 		$('header #top_nav .profile_icon').click(Fit.toggle_profile_list);
+		$('header #top_nav .notifications_icon').click(Fit.toggle_notification_list);
 		
 	}
 

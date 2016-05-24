@@ -15,4 +15,16 @@ module FitspotsHelper
 	end	  
     
   end
+  
+  
+  def get_fit_cover(position, id=nil)	
+	  acc = FitspotCover.where(:fitspot_id => id, :position => position ).first
+	  acc.present? ? acc.cover(:medium) : ''	
+	end
+	
+  def fitspot_count(id)
+  
+     return FitspotCheckin.where("fitspot_id = ? AND  Date(created_at) = ?", id, Date.today).count
+    
+  end 	
 end

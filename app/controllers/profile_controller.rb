@@ -209,12 +209,27 @@ class ProfileController < ApplicationController
 	
 	
 	def update_cover
-  
-    @acc = Account.find(@account.id)
-    @acc.update_attribute(:cover, params[:cover])	
-    flash[:notice] = "Cover has been updated successfully."
-    redirect_to request.env['HTTP_REFERER'] and return
-    
+
+     if request.xhr?    
+		@acc = AccountCover.where(:account_id => @account.id, :position => params[:position] )
+	   
+		resond_to  do |format|
+			if @acc.present?
+				@acc.update_attribute(:cover, params[:cover])	
+			else
+				@acc = AccountCover.create(:account_id => @account.id, :position => params[:position], :cover=> params[:cover]) 
+			end
+			if @acc.present?
+				render :json => @acc[:cover]
+			else
+				render :json => 1
+			end
+		
+			
+		end
+      end		
+   
+        
   end
 	
 	
