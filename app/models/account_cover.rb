@@ -10,13 +10,13 @@ has_attached_file :cover,
   # the styles to be used by paperclip resizing
   def styles
    if position == 1 || position == 2
-       { :medium => "175x150#" }
+       { :medium => "175x150>" }
   elsif position == 3
-       { :medium => "350x150#" }  
+       { :medium => "350x150>" }  
   elsif position == 4
-       { :medium => "350x300#" }          
+       { :medium => "350x300>" }          
   else
-       { :medium => "175x150#" }
+       { :medium => "175x150>" }
   end
  end
  validates_attachment_content_type :cover,

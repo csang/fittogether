@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'account_covers/create'
   
    match 'account_cover/', :to=>'account_covers#create',:via => [:post,:get] ,  :defaults => { :format => 'json' }, :as => :account_covers
+   match 'update_cover_offset/', :to=>'account_covers#update_cover_offset',:via => [:post] ,  :as => :update_cover_offset
    match 'fitspot_cover/', :to=>'fitspots#fitspot_cover',:via => [:post,:get] ,  :defaults => { :format => 'json' }, :as => :fitspot_covers
     get 'gym_trainer_appointments/new'
 

@@ -21,6 +21,7 @@
  *= require main
  *= require style
  *= require jquery.Jcrop.min
+ *= require jquery.drag-n-crop
  */
 
 /* Reset 

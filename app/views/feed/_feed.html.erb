@@ -141,7 +141,7 @@
                          
                                 <div class="comment show_comment">
                                     <div class="icon"></div>
-                                    <h3>Comment</h3>
+                                    <h3>Comment <%= post.comment.present? ? "(#{post.comment.count})" : '' %></h3>
                                 </div>
                                 <!-- if( post belongs to user ){ -->
                                 	<% if @account.id == post.account_id  %>     
