@@ -11,11 +11,10 @@
 								 <% end %>
 								 <% end %>
 								<% img = get_cover(1) %>
-								<div style="width:166.8px;height:166.8px;">
-								<% if img.present? %> 	
-								<input type ="hidden" value="<%= img.position_offset %>" id="offset_one">
-								<%= image_tag(img.cover , :id =>'position_one') %>
-								<% end %>
+								<div style="width:166.8px;height:166.8px;">							
+								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_one">
+								<%= image_tag(img.present? ? img.cover : '' , :id =>'position_one') %>
+								
 								</div>
 								</div>
                             <div class="square">
@@ -28,10 +27,10 @@
 								 <% end %>
 								<% img = get_cover(2) %>
 								 <div style="width:166.8px;height:166.8px;">
-								<% if img.present? %> 	
-								<input type ="hidden" value="<%= img.position_offset %>" id="offset_two">
-								<%= image_tag(img.cover , :id =>'position_two') %>
-								<% end %>
+							
+								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_two">
+								<%= image_tag(img.present? ? img.cover : '' , :id =>'position_two') %>
+							
 							</div>
 							</div>
                             <div class="landscape">
@@ -44,10 +43,10 @@
 								 <% end %>
 								 <% img = get_cover(3) %>
 								  <div style="width:340.6px;height:166.8px;">
-								<% if img.present? %> 
-								<input type ="hidden" value="<%= img.position_offset %>" id="offset_three">
-								<%= image_tag(img.cover , :id =>'position_three') %>
-								<% end %>
+								
+								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_three">
+								<%= image_tag(img.present? ? img.cover : '', :id =>'position_three') %>
+								
 								 </div>
 								 </div>
                         </div>
@@ -62,10 +61,10 @@
 								 <% end %>
 								 <% img = get_cover(4) %>
 									<div style="width:340.6px;height:340.6px;"> 
-									<% if img.present? %> 	
-									<input type ="hidden" value="<%= img.position_offset %>" id="offset_four">
-									<%= image_tag(img.cover , :id =>'position_four') %>
-									<% end %>
+									
+									<input type ="hidden" value="<%= img.present? ? img.position_offset : ''%>" id="offset_four">
+									<%= image_tag(img.present? ? img.cover : '' , :id =>'position_four') %>
+									
 									</div>
 								</div>
                             <div class="square">
@@ -78,10 +77,10 @@
 								 <% end %>
 								 <% img = get_cover(5) %>
 								 <div style="width:166.8px;height:166.8px;"> 
-								 	<% if img.present? %> 
-									<input type ="hidden" value="<%= img.position_offset %>" id="offset_five"> 		
-								<%= image_tag(img.cover , :id =>'position_five') %>
-								<% end %>
+								 
+									<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_five"> 		
+								<%= image_tag(img.present? ?img.cover : '' , :id =>'position_five') %>
+							
 								</div>
 								</div>
                             <div class="square">
@@ -94,10 +93,10 @@
 								 <% end %>
 								 <% img = get_cover(6) %>
 								  <div style="width:166.8px;height:166.8px;"> 
-									<% if img.present? %> 	
-										<input type ="hidden" value="<%= img.position_offset %>" id="offset_six"> 
-									<%= image_tag(img.cover , :id =>'position_six') %>
-								<% end %>
+									
+										<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_six"> 
+									<%= image_tag(img.present? ? img.cover : '' , :id =>'position_six') %>
+								
 								</div>
 								</div>
                         </div>
@@ -443,7 +442,11 @@
 <% if @account.id == @profileuser.id %>
  
 var offset_six =  document.getElementById("offset_six"); 
-var ofsix  = offset_six.value.split(',')
+if (offset_six != null) {
+var ofsix  = offset_six.value.split(',');
+} else {
+var ofsix  = "" ;	
+}	
 $('#position_six').dragncrop({
   position: {offset: [ofsix[0],ofsix[1]]},
   start: function(){  },
@@ -455,7 +458,11 @@ $('#position_six').dragncrop({
  	  
  
 var offset_five =  document.getElementById("offset_five"); 
+if (offset_five != null) {
 var offive  = offset_five.value.split(',')
+}else {
+var offive  = ""
+}
 $('#position_five').dragncrop({
   position: {offset: [offive[0],offive[1]]},
   start: function(){  },
@@ -466,7 +473,12 @@ $('#position_five').dragncrop({
 }); 
  
 var offset_four =  document.getElementById("offset_four"); 
+if (offset_five != null) {
 var of  = offset_four.value.split(',')
+}else {
+var of  = "";
+}
+
 $('#position_four').dragncrop({
   position: {offset: [of[0],of[1]]},
   start: function(){  },
@@ -477,7 +489,12 @@ $('#position_four').dragncrop({
 });
 
 var offset_three =  document.getElementById("offset_three"); 
+if (offset_three != null) {
 var ofthree  = offset_three.value.split(',')
+}else {
+var ofthree  = "";
+}
+
 $('#position_three').dragncrop({
   position: {offset: [ofthree[0],ofthree[1]]},
   start: function(){  },
@@ -487,7 +504,11 @@ $('#position_three').dragncrop({
   }
 });
 var offset_two =  document.getElementById("offset_two"); 
+if (offset_two != null) {
 var oftwo  = offset_two.value.split(',')
+} else {
+var oftwo  = ""	
+}
 $('#position_two').dragncrop({
   position: {offset: [oftwo[0],oftwo[1]]},
   start: function(){  },
@@ -498,7 +519,11 @@ $('#position_two').dragncrop({
 });
 
 var offset_one =  document.getElementById("offset_one"); 
-var ofone  = offset_one.value.split(',')
+var ofone = "";
+if (offset_one != null) {
+ ofone  = offset_one.value.split(',')
+}
+
 console.log(ofone[0])
 console.log(ofone[1])
 $('#position_one').dragncrop({
@@ -509,7 +534,61 @@ $('#position_one').dragncrop({
 	  update_offset(position.offset,1)
   }
 });
+<% else %>
 
+var offset_six =  document.getElementById("offset_six"); 
+var ofsix  = "" ;	
+if (offset_six != null) {
+var ofsix  = offset_six.value.split(',');
+}
+$('#position_six').dragncrop({
+  position: {offset: [ofsix[0],ofsix[1]]}
+}); 
+ 	  
+ 
+var offset_five =  document.getElementById("offset_five"); 
+var offive = ""
+if (offset_five != null) {
+var offive  = offset_five.value.split(',')
+}
+$('#position_five').dragncrop({
+  position: {offset: [offive[0],offive[1]]}
+}); 
+ 
+var offset_four =  document.getElementById("offset_four"); 
+var of = ""
+if (offset_four != null) {
+var of  = offset_four.value.split(',')
+}
+$('#position_four').dragncrop({
+  position: {offset: [of[0],of[1]]}
+});
+
+var offset_three =  document.getElementById("offset_three"); 
+var ofthree =""
+if (offset_three != null) {
+var ofthree  = offset_three.value.split(',')
+}
+$('#position_three').dragncrop({
+  position: {offset: [ofthree[0],ofthree[1]]}
+});
+var offset_two =  document.getElementById("offset_two"); 
+var oftwo  = ""
+if (offset_two != null) {
+var oftwo  = offset_two.value.split(',')
+}
+$('#position_two').dragncrop({
+  position: {offset: [oftwo[0],oftwo[1]]}
+});
+
+var offset_one =  document.getElementById("offset_one"); 
+var ofone  = "";
+if (offset_two != null) {
+var ofone  = offset_one.value.split(',')
+}
+$('#position_one').dragncrop({
+  position: {offset: [ofone[0],ofone[1]]}
+  });
 <% end %>
 
 </script>
