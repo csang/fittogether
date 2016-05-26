@@ -30,5 +30,7 @@ Rails.application.config.assets.precompile += %w( auth0-4.2.min.js )
 Rails.application.config.assets.precompile += %w( ckeditor/* )
 Rails.application.config.assets.precompile += %w( profile.js )
 Rails.application.config.assets.precompile += %w( gym.js )
+Rails.application.config.assets.precompile += %w( imagesloaded.js )
+Rails.application.config.assets.precompile += %w( jquery.drag-n-crop.js )
 
 

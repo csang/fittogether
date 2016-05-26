@@ -3344,4 +3344,4 @@ a:hover, a:focus{text-decoration: none;}
 .crop-preview h4{margin:0px 0 6px; font-family: 'Helvetica Neue';}
 .crop-preview form{margin-top:15px;}
 .crop-preview > div{border-radius:100px; border:1px solid #2F8352;}
-
+.dragncrop .dragncrop-vertical{width:100%; max-width:100%;}

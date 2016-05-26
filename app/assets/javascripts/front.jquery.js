@@ -1173,9 +1173,10 @@ function sse() {
 					image.src = e.target.result;
 					var height = image.height;
 					var width = image.width;
-			    	if ( width > 400 || height > 325) {
-						$('.flash-message').html('<div class="alert alert-danger"> Image is large.</div>').show();
-						reject();
+			    	if ( width > 1000 || height > 1000) {
+					//	$('.flash-message').html('<div class="alert alert-danger"> Image is large.</div>').show();
+						//reject();
+						resolve();
 						console.log('Insided function reject')
 					} else {
 						console.log('Insided function resolve')

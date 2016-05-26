@@ -18,6 +18,8 @@
 //= stub admin/jquery-1.2.6.min
 //= stub profile
 //= stub gym
+//= stub jquery.drag-n-crop
+//= stub imagesloaded
 
 var chat = true;
 Main_List_Url = {

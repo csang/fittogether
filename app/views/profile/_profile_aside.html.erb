@@ -1,40 +1,54 @@
 <!--- New --->	
-  <script src="http://malsup.github.com/jquery.form.js"></script>
-  
+ 
                <div class="collage">
                         <div class="sub_collage">
                             <div class="square">
 								<%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_one", :onsubmit=>'return before_submit()'}) do |f| %>
 								 <% if @account.id == @profileuser.id %>
 								<span class="cover-icon"></span>
-							  <input type="file" value="Change cover"  accept="image/*" id="cfone" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+							  <input type="file" value="Change cover"  accept="image/*" id="cfone" data-id="1" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
 							   <input type="hidden" name="position" value=1>								
 								 <% end %>
 								 <% end %>
 								<% img = get_cover(1) %>
-								<%= image_tag(img , :id =>'position_one') %>
+								<div style="width:166.8px;height:166.8px;">
+								<% if img.present? %> 	
+								<input type ="hidden" value="<%= img.position_offset %>" id="offset_one">
+								<%= image_tag(img.cover , :id =>'position_one') %>
+								<% end %>
+								</div>
 								</div>
                             <div class="square">
 								 <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_two", :onsubmit=>'return before_submit()'}) do |f| %>
 								 <% if @account.id == @profileuser.id %>
 								 <span class="cover-icon"></span>
-							     <input type="file" value="Change cover" id="cftwo" accept="image/*" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+							     <input type="file" value="Change cover" id="cftwo" data-id="2" accept="image/*" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
 							     <input type="hidden" name="position" value=2>								
 								 <% end %>
 								 <% end %>
 								<% img = get_cover(2) %>
-								<%= image_tag(img , :id =>'position_two') %>
+								 <div style="width:166.8px;height:166.8px;">
+								<% if img.present? %> 	
+								<input type ="hidden" value="<%= img.position_offset %>" id="offset_two">
+								<%= image_tag(img.cover , :id =>'position_two') %>
+								<% end %>
+							</div>
 							</div>
                             <div class="landscape">
                              <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_three", :onsubmit=>'return before_submit()'}) do |f| %>
 								 <% if @account.id == @profileuser.id %>
 							  <span class="cover-icon"></span>
-							  <input type="file" value="Change cover" id="cfthree"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 150)" />
+							  <input type="file" value="Change cover" id="cfthree" data-id="3"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 150)" />
 							   <input type="hidden" name="position" value=3>								
 								 <% end %>
 								 <% end %>
 								 <% img = get_cover(3) %>
-								<%= image_tag(img , :id =>'position_three') %>
+								  <div style="width:340.6px;height:166.8px;">
+								<% if img.present? %> 
+								<input type ="hidden" value="<%= img.position_offset %>" id="offset_three">
+								<%= image_tag(img.cover , :id =>'position_three') %>
+								<% end %>
+								 </div>
 								 </div>
                         </div>
                         <div class="sub_collage">
@@ -42,34 +56,49 @@
                              <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_four", :onsubmit=>'return before_submit()'}) do |f| %>
 								 <% if @account.id == @profileuser.id %>
 								 <span class="cover-icon"></span>
-							  <input type="file" value="Change cover" id="cffour"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 300)" />
+							  <input type="file" value="Change cover" id="cffour" data-id="4"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 300)" />
 							   <input type="hidden" name="position" value=4>								
 								 <% end %>
 								 <% end %>
 								 <% img = get_cover(4) %>
-								<%= image_tag(img , :id =>'position_four') %>
+									<div style="width:340.6px;height:340.6px;"> 
+									<% if img.present? %> 	
+									<input type ="hidden" value="<%= img.position_offset %>" id="offset_four">
+									<%= image_tag(img.cover , :id =>'position_four') %>
+									<% end %>
+									</div>
 								</div>
                             <div class="square">
 								   <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_five", :onsubmit=>'return before_submit()'}) do |f| %>
 								 <% if @account.id == @profileuser.id %>
 								 <span class="cover-icon"></span>
-							  <input type="file" value="Change cover" id="cffive"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+							  <input type="file" value="Change cover" id="cffive" data-id="5"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
 							   <input type="hidden" name="position" value=5>								
 								 <% end %>
 								 <% end %>
 								 <% img = get_cover(5) %>
-								<%= image_tag(img , :id =>'position_five') %>
+								 <div style="width:166.8px;height:166.8px;"> 
+								 	<% if img.present? %> 
+									<input type ="hidden" value="<%= img.position_offset %>" id="offset_five"> 		
+								<%= image_tag(img.cover , :id =>'position_five') %>
+								<% end %>
+								</div>
 								</div>
                             <div class="square">
                               <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_six", :onsubmit=>'return before_submit()'}) do |f| %>
 								 <% if @account.id == @profileuser.id %>
 								 <span class="cover-icon"></span>
-							  <input type="file" value="Change cover" id="cfsix"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+							  <input type="file" value="Change cover" id="cfsix" data-id="6"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
 							   <input type="hidden" name="position" value=6>								
 								 <% end %>
 								 <% end %>
 								 <% img = get_cover(6) %>
-								<%= image_tag(img , :id =>'position_six') %>
+								  <div style="width:166.8px;height:166.8px;"> 
+									<% if img.present? %> 	
+										<input type ="hidden" value="<%= img.position_offset %>" id="offset_six"> 
+									<%= image_tag(img.cover , :id =>'position_six') %>
+								<% end %>
+								</div>
 								</div>
                         </div>
                     </div>
@@ -341,8 +370,8 @@
   $('body').on('change','.cover_file', function() {
 	var id = $(this).closest('form').attr('id');
 	var field_id = $(this).attr('id');
-	var imgs = $(this).parent().parent('div').children('img').attr('id');
-	
+	var pid = $(this).attr('data-id');
+	var imgs = $(this).parent().parent('div').children('div').children('img').attr('id');
     bf = before_submit_image(field_id);
     bf.then(function(){
 		console.log('Resolve..')
@@ -355,7 +384,16 @@
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
           },
           success: function(data) {
-            $('#'+imgs).attr('src' , data )
+		          $('#'+imgs).attr('src' , data );		          
+		          $('#'+imgs).dragncrop('destroy');
+				  $('#'+imgs).dragncrop({
+				  //position: {offset: [ofone[0],ofone[1]]},
+				  start: function(){  },
+				  drag: function(event, position){  },
+				  stop: function(e, position){
+					  update_offset(position.offset,pid)
+				  }
+				});		 
          
           },
           error: function(xhr, ajaxOptions, thrownError) {
@@ -380,9 +418,98 @@
   
   });	  // end of document.ready  
   
-  
+ var update_offset = function(position_offset ,position) {
+	 
+	 $.ajax({
+          type: "POST",
+          url: '<%= update_cover_offset_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {position_offset: position_offset, position: position},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+				console.log('success')
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+          
+            console.log(thrownError)
+
+          }
+
+        }); 
+ }
  
+<% if @account.id == @profileuser.id %>
+ 
+var offset_six =  document.getElementById("offset_six"); 
+var ofsix  = offset_six.value.split(',')
+$('#position_six').dragncrop({
+  position: {offset: [ofsix[0],ofsix[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_offset(position.offset,6)
+  }
+}); 
+ 	  
+ 
+var offset_five =  document.getElementById("offset_five"); 
+var offive  = offset_five.value.split(',')
+$('#position_five').dragncrop({
+  position: {offset: [offive[0],offive[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_offset(position.offset,5)
+  }
+}); 
+ 
+var offset_four =  document.getElementById("offset_four"); 
+var of  = offset_four.value.split(',')
+$('#position_four').dragncrop({
+  position: {offset: [of[0],of[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_offset(position.offset,4)
+  }
+});
+
+var offset_three =  document.getElementById("offset_three"); 
+var ofthree  = offset_three.value.split(',')
+$('#position_three').dragncrop({
+  position: {offset: [ofthree[0],ofthree[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_offset(position.offset,3)
+  }
+});
+var offset_two =  document.getElementById("offset_two"); 
+var oftwo  = offset_two.value.split(',')
+$('#position_two').dragncrop({
+  position: {offset: [oftwo[0],oftwo[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_offset(position.offset,2)
+  }
+});
+
+var offset_one =  document.getElementById("offset_one"); 
+var ofone  = offset_one.value.split(',')
+console.log(ofone[0])
+console.log(ofone[1])
+$('#position_one').dragncrop({
+  position: {offset: [ofone[0],ofone[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_offset(position.offset,1)
+  }
+});
+
+<% end %>
 
 </script>
-
-
