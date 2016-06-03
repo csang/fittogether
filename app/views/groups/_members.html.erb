@@ -1,0 +1,33 @@
+<div class="header">
+    <div class="title">
+        <h2>Members</h2>
+    </div>
+</div>
+
+<div class="fitspot" id="feed">
+		
+			                           <% if @group.group_member.present? %>
+                           <% @group.group_member.each do |gm| %>
+                           <% if gm.status == true %>
+                           <% if gm.account.present? %>
+                            <div class="post group">
+                            <div class="header">
+					<div class="user">
+                                <div class="avatar">
+									<% img = useravatar(gm.account) %>
+									<%= link_to(image_tag(img), "/#{gm.account.user_name}" ) %>
+									</div>
+                                <div class="data">
+                                    <p class="name"><%=  gm.account.first_name  %> <%=  gm.account.last_name.present? ?  gm.account.last_name : ''  %> </p><br>
+                                    <p class="location"><%= get_city_name( gm.account.city_id) %>, <%= get_state_code( gm.account.city_id) %></p><br>
+                                </div>
+                           	</div>
+				   
+				</div>
+			  
+			</div>
+                           <% end %>
+                           <% end %>
+                           <% end %>
+                           <% end %>
+</div>    

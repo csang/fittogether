@@ -2,5 +2,7 @@ class GroupMember < ActiveRecord::Base
   
   belongs_to :group
   belongs_to :account
+ validates_presence_of :account_id
+ validates :group_id, uniqueness: { scope: :account_id }
   
 end

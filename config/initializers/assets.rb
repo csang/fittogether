@@ -18,6 +18,7 @@ Rails.application.config.assets.precompile += %w( gym_admin.css )
 Rails.application.config.assets.precompile += %w( jquery-ui.min.css )
 Rails.application.config.assets.precompile += %w( radial_progress.css )
 Rails.application.config.assets.precompile += %w( gym.css )
+Rails.application.config.assets.precompile += %w( notificatons.css )
 
 Rails.application.config.assets.precompile += %w( jquery.js )
 Rails.application.config.assets.precompile += %w( jquery_ujs.js )

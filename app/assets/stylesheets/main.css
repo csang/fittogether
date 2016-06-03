@@ -1097,7 +1097,7 @@ select{
 	min-width: 100%;
 	min-height: 100%;
 	width: 100%;
-	background: url(../img/icon/trophies.png) no-repeat;
+	background: url(/images/global/trophies.png) no-repeat;
 	background-color: rgb(252,81,5);
 	color: rgb(252,81,5);
 }
@@ -1119,7 +1119,7 @@ select{
 #feed_container #feed .post.challenge .content > div:not(.vs),
 #create_challenge .preview .post.challenge .content > div:not(.vs){
 	width: 61%;
-	width:60%;
+	width: calc(61% - 4px);
     height: 100%;
     -webkit-transform: skew(-25deg);
     -moz-transform: skew(-25deg);
@@ -1130,8 +1130,8 @@ select{
 #create_challenge .preview .post.challenge .content .left{
 	
     background-color: rgba(47,131,82,.5);
-    margin-left: -10%;
-    margin-left:10%;
+     margin-left: -10%;
+    margin-left: calc(-10% - 2px);
     border-right: 2px solid #000;
     overflow: hidden;
 }
@@ -1248,7 +1248,7 @@ select{
 	left: calc(50% - 24px);
 	width: 48px;
 	height: 48px;
-	background: url(../img/global/vs.png) no-repeat;
+	background: url(/images/global/vs.png) no-repeat;
 }
 
 #feed_container #feed .post .header .rivals,
@@ -1387,11 +1387,16 @@ select{
 }
 
 /*	Video	*/
-#feed_container #feed .post.video .content{
+#feed_container #feed .post.video .content .video_container{
 	background: url(/images/global/media_post_bg.png) no-repeat;
 	background-size: cover;
 	/*height: 206px;*/
 	padding: 10px 0;
+	text-align:center;
+}
+
+#feed_container #feed .post.video .content .text{
+	border-bottom: 1px solid rgb(151,151,151);
 }
 
 #feed_container #feed .post.video .content .video,
@@ -1410,7 +1415,7 @@ select{
 
 /*	Photo	*/
 #feed_container #feed .post.photo .content .photo_container{
-	background: url(../img/global/media_post_bg.png) no-repeat;
+	background: url(/images/global/media_post_bg.png) no-repeat;
 	background-size: cover;
 	/*height: 206px;*/
 	padding: 10px 0;
@@ -1423,8 +1428,8 @@ select{
 
 #feed_container #feed .post.photo .content .photo,
 #feed_container #feed .post.photo .content img{
-	max-width: 375px;
-	width: 100%;
+	max-width: 547px;
+	/*width: 100%;*/
 	min-height: 193px;
 	border: 4px solid #000;
 	background-color: #000;
@@ -3017,7 +3022,6 @@ ul.group-imgs li .grop-img img {
   text-transform: uppercase;
 }
 .ui-datepicker table{line-height:20px;}
-.content .background{text-align:center;}
 
 #feed_container #feed .post .add_comment textarea {
     border: medium none;
@@ -3345,3 +3349,4 @@ a:hover, a:focus{text-decoration: none;}
 .crop-preview form{margin-top:15px;}
 .crop-preview > div{border-radius:100px; border:1px solid #2F8352;}
 .dragncrop .dragncrop-vertical{width:100%; max-width:100%;}
+.modal-body select.form-control.multi-select{height: 100px;}

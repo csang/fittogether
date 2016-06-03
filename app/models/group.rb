@@ -1,11 +1,13 @@
 class Group < ActiveRecord::Base
-  
+  serialize :activity_ids, Array
   belongs_to :account
   has_many :group_member, :dependent =>:delete_all
   has_many :post, :dependent =>:delete_all
    has_many :fitspot
   
   validates_presence_of :title
+  validates_presence_of :description
+  validates_presence_of :address
   validates_presence_of :account_id
   
   has_attached_file :group_image, 

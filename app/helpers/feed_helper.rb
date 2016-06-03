@@ -47,21 +47,21 @@ module FeedHelper
     
   end
   
-  def set_fitbit
-  
-    activity_date = 'today'
-     @activities = Fitbit::Activity.fetch_all_on_date(@account, activity_date)  
-     if @activities.present?    
-      @activities['goals']['caloriesOut']
-      @activities['summary']['caloriesOut']
-      @activities['goals']['steps']
+  def set_fitbit(activities)
+	
+    if activities.present?    
+      activities['goals']['caloriesOut']
+      activities['summary']['caloriesOut']
+      activities['goals']['steps']
+
       @fit = Fitbit.where(:account_id => @account.id).first
-   
+	 
 		  if !@fit.present?
-			 Fitbit.create(:account_id => @account.id, :steps =>@activities['goals']['steps'], :calories =>@activities['goals']['caloriesOut'], :distance =>@activities['goals']['distance'], :summary_calories =>@activities['summary']['caloriesOut'])
+			 Fitbit.create(:account_id => @account.id, :steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])
+			  
 			  Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
 			 else       
-			 @fit.update_attributes(:steps =>@activities['goals']['steps'], :calories =>@activities['goals']['caloriesOut'], :distance =>@activities['goals']['distance'], :summary_calories =>@activities['summary']['caloriesOut'])
+			 @fit.update_attributes(:steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>@activities['summary']['caloriesOut'])
 		  end  
   end
   end

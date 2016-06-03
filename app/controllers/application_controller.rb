@@ -37,7 +37,12 @@ class ApplicationController < ActionController::Base
      @cnt =  @cnt == 0 ? '' : @cnt     
      @fitspot_cont = FitspotMember.where(:account_id => @account.id,:status => false, :seen => false ).count     
      @fitspot_cont =  @fitspot_cont == 0 ? '' : @fitspot_cont
-    
+     # for notification
+      @fit_spot = FitspotMember.where(:account_id => @account.id,:status => false)
+       get_group = Group.where(:account_id => @account.id).collect(&:id) 
+      if get_group.present?
+        @joining_request = GroupMember.where("group_id IN (?) && status = ?  ", get_group, false )
+      end
   
   end
 

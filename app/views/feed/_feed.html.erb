@@ -8,6 +8,12 @@
 						  
                         <div class="post <%= post.post_type!='text' ? post.post_type : '' %> <%= post.account.user_type ==3 ? 'gym' :'' %>" id="<%= post.id %>">
                             <div class="header">
+                           	<% if post.post_type =='challenge' %>	
+									<%=  get_challenge_head(post.group_id) %>        
+                               
+                           	
+                           	<% else %>
+                           
                                 <div class="user">
                                     <div class="avatar">
                                  <%= link_to(image_tag(img), "/#{post.account.user_name}" ,html_options={:title => "#{post.account.first_name}", :alt => '#{post.account.first_name}'}); %>   
@@ -22,9 +28,13 @@
                                         <button class=" close post-delete " data-id="<%= Base64.encode64(post.id.to_s)%>"></button>
 									<% end %>
                                 
-                            </div>
+                         
+                            <% end %>
+                               </div>
                             <div class="content">
-                            <% if post.post_type =='fitbit' %>
+							<% if post.post_type =='challenge' %>	
+										<%=  get_challenge_body(post.group_id) %>    
+						    <% elsif post.post_type =='fitbit' %>
                              
                                 <div class="segment">
                                     <div class="box calories">
@@ -64,7 +74,7 @@
 							<% end %>	 
 							<!-- video section -->
 							<% if post.video.present? %>		
-							  <div class="video">
+							  <div class="video_container">
 
 								<video id='video'  controls width="375" height="193">
 								  <source src='<%= post.video %>' type='video/mp4'/>
@@ -74,7 +84,7 @@
 							<% end %>  
 							<!-- image section -->
 							<% if post.image.present? %>		
-							  <div class="background">
+							  <div class="photo_container">
 								<%= image_tag(post.image(:medium)) %>		
 							  </div>
 							<% end %>
@@ -144,7 +154,7 @@
                                     <h3>Comment <%= post.comment.present? ? "(#{post.comment.count})" : '' %></h3>
                                 </div>
                                 <!-- if( post belongs to user ){ -->
-                                	<% if @account.id == post.account_id  %>     
+                                	<% if @account.id == post.account_id && (post.post_type != "fitbit" || post.post_type != "challenge") %>     
                                 <div class="edit" data-toggle="modal" data-target="#postEditForm" data-id="<%= post.id %>" >
                                     <div class="icon"></div>
                                     <h3>Edit</h3>

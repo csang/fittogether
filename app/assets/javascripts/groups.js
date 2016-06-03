@@ -24,14 +24,14 @@ Group = {
 					$('#profile_header .profile_bar .profile_nav .nav a').removeClass('selected');
 					$(nav_elements[i]).addClass('selected');
 					var page = $(nav_elements[i]).attr('href').replace('#','');
-					$("#feed_container").load("../group/"+page+".html");
+					//$("#feed_container").load("../group/"+page+".html");
 				}
 			};
 		}else{
-			$("#feed_container").load("../group/fit_feed.html");
+		//	$("#feed_container").load("../group/fit_feed.html");
 		}
 
-		$(window).bind('hashchange', function() {
+		/*$(window).bind('hashchange', function() {
 			if(window.location.hash == '#fit_feed'){
 				$("#feed_container").load("../group/fit_feed.html");
 			}else if(window.location.hash == '#about'){
@@ -52,7 +52,7 @@ Group = {
 					$(nav_elements[i]).addClass('selected');
 				}
 			};
-		});		
+		});		*/
 	}
 }
 

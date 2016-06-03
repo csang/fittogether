@@ -46,19 +46,22 @@ display:none;
 <p>Challenge your friends to see who can generate the most steps, run/walk the most miles or burn the most calories within the timeframe you define. Challenges start upon acceptance.</p>
 </div>
       <div class="modal-body">
+		<div class="listing-hover row">
+			<div class="col-xs-12">
+				<label style="margin:0px 0 7px;">Between</label> 
+            </div>
+		</div>
         <div class="pop-row listing-hover row">
           
                   <%  if @account.user_type != 1 %>
       
-            <div class="col-md-5">
+            <div class="col-md-6">
            <input class="form-control" autocomplete="off" type="text" id="tags" value="" name="search" placeholder="search...">
           <ul class="arport" style="display:none;">     
                
             </ul>
-           </div> 
-          <div class="col-md-2 text-center">
-            <label style="margin:10px 0 0;">Between</label> </div>
-           <div class="col-md-5">
+           </div>
+           <div class="col-md-6">
               <input class="form-control" autocomplete="off" type="text" id="tags2" value="" name="search" placeholder="search...">
               
             <ul class="arport2" style="display:none;">
@@ -190,7 +193,7 @@ var valid_till = $('#datepicker').val();
 				success: function(data){				
 					$('#challengeForm').modal('hide');						
 					$('.flash-message').html('<div class="alert alert-success"> Challenge Sent Succesfully</div>').show();
-					window.location.href = '/challenges';
+					window.location.href = '/feed';
                                         },
 				error:	function (xhr, ajaxOptions, thrownError) {
 				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();

@@ -1,0 +1,22 @@
+<div class="header">
+    <div class="title">
+        <h2>Events <span>4</span></h2>
+    </div>
+    <div class="actions">
+        <button class="new_event">New Event</button>
+    </div>
+</div>
+
+<div id="feed" class="group">
+	<!-- Start: Event post -->
+  <h1>Coming Soon</h1>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    if(typeof Fit !== 'undefined'){
+        $('#feed_container #feed .post .footer > div.comment').click(Fit.toggle_comments);
+        $('#feed_container #feed .post .comment_section .post_comment').click(Fit.post_comment);
+    }
+});
+</script>

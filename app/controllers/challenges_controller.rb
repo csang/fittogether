@@ -6,22 +6,23 @@ class ChallengesController < ApplicationController
     if request.xhr?  
       to_id = Base64.decode64(params[:to_id])
       account_id = params[:rip2].present? ? Base64.decode64(params[:rip2]) : ''
-      if account_id.present?
-      @challenge = Challenge.create(:category_id=> params[:category_id],
-		 		:account_id =>account_id,:to_id=> to_id, :creater_id=> @account.id, :text=>params[:text],:reward_points => params[:reward_points],:qty=>params[:qty],:valid_till=>params[:valid_till])
-      else
-         @challenge = Challenge.create(:category_id=> params[:category_id],
-		 		:account_id =>@account.id,:to_id=> to_id,  :text=>params[:text],:reward_points => params[:reward_points],:qty=>params[:qty],:valid_till=>params[:valid_till])
-     
-      end  
+		  if account_id.present? # if trainer of gym manager is creating challegn between other user
+		  @challenge = Challenge.create(:category_id=> params[:category_id],
+					:account_id =>account_id,:to_id=> to_id, :creater_id=> @account.id, :text=>params[:text],:reward_points => params[:reward_points],:qty=>params[:qty],:valid_till=>params[:valid_till])
+		  else #direct challenge
+			 @challenge = Challenge.create(:category_id=> params[:category_id],
+					:account_id =>@account.id,:to_id=> to_id,  :text=>params[:text],:reward_points => params[:reward_points],:qty=>params[:qty],:valid_till=>params[:valid_till])
+		
+		  end  
 		
       if @challenge.save
+        @posts =  Post.create(:account_id=>@account.id,:status=>1,:share_with=> 'Public', :post_type => 'challenge' ,:group_id => @challenge.id )
         render :json => 1  and return     
       else
-		    render :json => 0  and return   
+		render :json => 0  and return   
       end 	
     else
-      redirect_to('/challenges')	 
+      redirect_to('/feed')	 
     end
   end	
 	

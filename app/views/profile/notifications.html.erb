@@ -1,0 +1,293 @@
+<div id="feed_container">
+                    <div class="header">
+                        <div class="title">
+                            <h2>Notifications <span></span></h2>
+                        </div>
+                    </div>
+                    
+                    <div id="feed">
+						 <!-- fitspot request notificato -->
+							<%  if @fitspot.present? %>  
+						   	<% @fitspot.each do |ft| %>
+                        <div class="notification">
+                            <div>
+                                <div class="avatar">
+                                    <% img = useravatar(ft.fitspot.account) %>
+									<%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %>
+                                </div>
+                            </div>
+                            <div class="text">
+                                <p>
+                                <% link_to(ft.fitspot.account.first_name.capitalize , "/#{ft.fitspot.account.user_name}"); %>
+                                invited you to <%= link_to(ft.fitspot.title, "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %> on , 
+										<%= ft.fitspot.fitspot_date.strftime('%B %d') %>
+										<%= ft.fitspot.fitspot_time %> at 
+										 <%= ft.fitspot.location %></p>
+                            </div>
+                            <div class="actions">
+                                <p>
+									   <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.id.to_s)%>" class="frequest" type="reject">Reject</a>|
+             <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.id.to_s)%>" class="frequest" type="accept">Join</a>
+									</p>
+                            </div>
+                        </div>
+						 <% end  %>  
+							  <% end %>
+							  <!-- group -->
+							  
+						  <%  if @joining_request.present? %>  
+						   	<%	@joining_request.each do |member| %>
+                        <div class="notification">
+                            <div>
+                                <div class="avatar">
+                                    <% img = useravatar(member.group.account) %>
+									<%= link_to(image_tag(img), "/#{member.group.account['user_name']}") %>
+                                </div>
+                            </div>
+                            <div class="text">
+                                <p><%= member.group.account.first_name.capitalize %> <%= member.group.account.last_name.present? ? member.group.account.last_name : '' %>
+                               
+                                Sent you join request for group <%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group_id.to_s)}") %> 
+										
+                            </div>
+                            <div class="actions">
+                                <p>
+                                 <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" class="grequest" type="reject">Reject</a>|
+             <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" class="grequest" type="accept">Join</a>
+                                
+                                </p>
+                            </div>
+                        </div>
+						 <% end  %>  
+							  <% end %>
+							  
+							  <!-- friend request notificato -->
+                        <% if @account.requested_friendships.present? %>
+									<% @account.requested_friendships.each do |member| %>
+									<% img = useravatar(member) %>
+
+                        <div class="notification">
+								<div>
+									<div class="avatar">
+										 <%= link_to(image_tag(img), "/#{member.user_name}") %>
+									</div>
+								</div>
+								<div class="text">
+									<p><%= link_to(member.first_name, "/#{member['user_name']}") %> added you as a friend</p>
+								</div>
+								<div class="actions">
+									<p> <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" id="rejectfriend">Decline</a>|
+				 <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" id="acceptfriend">Accept</a>
+				 </p>
+								</div>
+                        </div>
+                        	<% end %>		
+							 <% end %>	
+							 
+							 <% if !@account.requested_friendships.present? && !@joining_request.present?  && !@fitspot.present?  %>
+								<h2 class="notification-msg"> No new notification found. </h2>
+								<% end %>
+
+                    </div>
+                    	 
+                </div>
+
+<% if false %>
+<div class="settings_activities member-data">
+
+<% if @account.requested_friendships.present? %>
+
+
+<% @account.requested_friendships.each do |member| %>
+<div class="row" id="<%= Base64.encode64(member.id.to_s)%>">
+<% if !member.avatar.blank? %>
+          <%= link_to(image_tag(member.avatar(:thumb)), "/#{member.user_name}") %>
+           
+          <% elsif !member.pic.blank? %>
+          <%= link_to(image_tag('https://' + member.pic), "/#{member['user_name']}") %>
+          <% else %>
+           <%= link_to(image_tag('default.png'), "/#{member['user_name']}") %>
+          <% end %>
+          
+           <%= link_to(member.first_name, "/#{member['user_name']}") %>
+			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend">Reject</button>
+             <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="acceptfriend">Accept</button>
+                
+         
+</div>
+<% end %>
+<% end %>
+
+</div>
+<div class="settings_activities member-data">
+
+<% if @joining_request.present? %>
+
+
+<% @joining_request.each do |member| %>
+  
+<div class="row" id="<%= Base64.encode64(member.account.id.to_s)%>">
+  <p class="jointext"> Join request for your group :  <%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group.id.to_s)}") %></p>
+  <% img = useravatar(member.account) %>
+  <%= link_to(image_tag(img), "/#{member.account['user_name']}") %>
+           <%= link_to(member.account.first_name, "/#{member.account['user_name']}") %>
+			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="reject">Reject</button>
+             <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="accept">Allow</button>
+                
+         
+</div>
+<% end %>
+  <% end %>
+  
+ <%  if @fitspot.present? %>
+  
+  <% @fitspot.each do |ft| %>
+  
+  <div class="row">
+ 
+  <% img = useravatar(ft.fitspot.account) %>
+  <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %>
+    <%= ft.fitspot.account.first_name.capitalize %>       Invited you to Fitspot event <%= link_to(ft.fitspot.title, "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %>
+			               
+         
+</div>
+  
+  <% end  %>
+  
+  <% end %>
+  
+<% if !@account.requested_friendships.present? && !@joining_request.present?  && !@fitspot.present?  %>
+<h2 class="notification-msg"> No new notification found. </h2>
+<% end %>
+
+</div>
+<% end %>
+<script type="text/javascript">
+$(document).ready(function(){
+
+$(document).on('click', '#rejectfriend', function() {
+
+var toid = $(this).attr('data-id');
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '/rejectrequest/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$(that).parent('.notification').fadeOut();
+									
+					$('.flash-message').html('<div class="alert alert-success"> Request was successfully removed.</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+	    
+$(document).on('click','#acceptfriend', function() {
+var toid = $(this).attr('data-id');
+var that = this;
+	$.ajax({
+				type: "PUT",
+				url: '/acceptrequest/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$(that).parent().parent().parent('div .notification').fadeOut();
+									
+					$('.flash-message').html('<div class="alert alert-success"> Request was successfully approved.</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+            
+ $('.grequest').on('click', function() {
+var toid = $(this).attr('data-id');
+var type = $(this).attr('type');
+if (type == 'reject') {  
+
+  if (!confirm('Are you sure you want to reject request?')) {
+    return false;
+  }
+  
+}
+var mydata = {'id': toid, 'type' : type};
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '<%= group_request_path()  %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: mydata,
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+						$(that).parent().parent().parent('div .notification').fadeOut();
+                                        var text = type == 'reject' ? 'Request was successfully removed.' :'Request was successfully approved.'
+					$('.flash-message').html('<div class="alert alert-success"> '+ text +'</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+	    
+	    
+	    /// friend request
+$('.frequest').on('click', function() {
+var toid = $(this).attr('data-id');
+var type = $(this).attr('type');
+if (type == 'reject') {  
+  if (!confirm('Are you sure you want to reject request?')) {
+    return false;
+  }  
+}
+var mydata = {'id': toid, 'type' : type};
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '<%= fitspot_request_path()  %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: mydata,
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+						$(that).parent().parent().parent('div .notification').fadeOut();
+                                        var text = type == 'reject' ? 'Request was successfully removed.' :'Request was successfully approved.'
+					$('.flash-message').html('<div class="alert alert-success"> '+ text +'</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+          
+	    
+	    }); // end of document ready
+</script>	    

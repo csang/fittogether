@@ -1,5 +1,5 @@
-<%#= render(:partial => 'feed/feed_aside') %>
-<div id="seed">
+<% if false %>
+	<div id="seed">
 
   <div class="group-top">
     <%= image_tag(@group.group_image(:medium), :class =>'group_image') %>
@@ -172,33 +172,243 @@
   </div>
 
 </div>
-<div class="modal fade" id="fitspotForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog" >
-    <div class="modal-content" >
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">New Fitspot for the Group: <%= @group.title  %></h4>
-      </div>
-      <div class="modal-body">
-		<%= render(:partial => 'fitspots/newfitspot') %>
-    </div>
-  </div>
-</div>
-</div>
+<% end %>
+<!--- New Code -->
 
-<div class="modal fade" id="groupEditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content" >
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Edit Group</h4>
-      </div>
-      <div class="modal-body">
-		<%= render(:partial => 'groups/edit') %>
-    </div>
-  </div>
-</div>
-</div>
+<div id="profile_header">
+                   <div class="collage">
+                        <div class="sub_collage">
+                            <div class="square">
+								<%= form_for( GroupCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_one", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @group.account.id %>
+								<span class="cover-icon"></span>
+							  <input type="file" value="Change cover"  accept="image/*" id="cfone" data-id="1" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+							   <input type="hidden" name="position" value=1>
+							    	    <input type="hidden" name="gid" value="<%= @group.id %>">									
+								 <% end %>
+								 <% end %>
+								<% img = get_group_cover(1, @group.id) %>
+								<div style="width:166.8px;height:166.8px;">							
+								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_one">
+								<%= image_tag(img.present? ? img.cover : '' , :id =>'position_one') %>
+								
+								</div>
+								</div>
+                            <div class="square">
+								 <%= form_for( GroupCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_two", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @group.account.id %>
+								 <span class="cover-icon"></span>
+							     <input type="file" value="Change cover" id="cftwo" data-id="2" accept="image/*" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+							     <input type="hidden" name="position" value=2>	
+							      	    <input type="hidden" name="gid" value="<%= @group.id %>">								
+								 <% end %>
+								 <% end %>
+								<% img = get_group_cover(2, @group.id) %>
+								 <div style="width:166.8px;height:166.8px;">
+							
+								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_two">
+								<%= image_tag(img.present? ? img.cover : '' , :id =>'position_two') %>
+							
+							</div>
+							</div>
+                            <div class="landscape">
+                             <%= form_for( GroupCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_three", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @group.account.id %>
+							  <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cfthree" data-id="3"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 150)" />
+							   <input type="hidden" name="position" value=3>
+							    	    <input type="hidden" name="gid" value="<%= @group.id %>">									
+								 <% end %>
+								 <% end %>
+								 <% img = get_group_cover(3, @group.id) %>
+								  <div style="width:340.6px;height:166.8px;">
+								
+								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_three">
+								<%= image_tag(img.present? ? img.cover : '', :id =>'position_three') %>
+								
+								 </div>
+								 </div>
+                        </div>
+                        <div class="sub_collage">
+                            <div class="big_square">
+                             <%= form_for( GroupCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_four", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @group.account.id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cffour" data-id="4"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 300)" />
+							   <input type="hidden" name="position" value=4>		
+							   	    <input type="hidden" name="gid" value="<%= @group.id %>">								
+								 <% end %>
+								 <% end %>
+								 <% img = get_group_cover(4, @group.id) %>
+									<div style="width:340.6px;height:340.6px;"> 
+									
+									<input type ="hidden" value="<%= img.present? ? img.position_offset : ''%>" id="offset_four">
+									<%= image_tag(img.present? ? img.cover : '' , :id =>'position_four') %>
+									
+									</div>
+								</div>
+                            <div class="square">
+								   <%= form_for( GroupCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_five", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @group.account.id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cffive" data-id="5"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+							   <input type="hidden" name="position" value=5>	
+							    	    <input type="hidden" name="gid" value="<%= @group.id %>">								
+								 <% end %>
+								 <% end %>
+								 <% img = get_group_cover(5, @group.id) %>
+								 <div style="width:166.8px;height:166.8px;"> 
+								 
+									<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_five"> 		
+								<%= image_tag(img.present? ?img.cover : '' , :id =>'position_five') %>
+							
+								</div>
+								</div>
+                            <div class="square">
+                              <%= form_for( GroupCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_six", :onsubmit=>'return before_submit()'}) do |f| %>
+								 <% if @account.id == @group.account.id %>
+								 <span class="cover-icon"></span>
+							  <input type="file" value="Change cover" id="cfsix" data-id="6"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+							   <input type="hidden" name="position" value=6>	
+							    	    <input type="hidden" name="gid" value="<%= @group.id %>">								
+								 <% end %>
+								 <% end %>
+								 <% img = get_group_cover(6, @group.id) %>
+								  <div style="width:166.8px;height:166.8px;"> 
+									
+										<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_six"> 
+									<%= image_tag(img.present? ? img.cover : '' , :id =>'position_six') %>
+								
+								</div>
+								</div>
+                        </div>
+                    </div>
+                    <div class="profile_bar">
+                        <div class="avatar">
+							  <%= image_tag(@group.group_image(:thumb)) %>
+							
+							</div>
+                        <div class="profile_data">
+                            <div class="personal_data">
+                                <h1><%=  @group.title %></h1>
+                          
+                                    <% if @group.account_id == @account.id %>
+          <button class="join" title="joined">Joined</button>
+           <button data-toggle="modal" class="goal-btn" data-target="#groupEditForm" title="edit">Edit</button>    
+        <% elsif @member.present? && @member.status == true %>
+          <button  class="join jnew"  data-type="leave" title="leave group" data-id="<%=  Base64.encode64(@group.id.to_s) %>">Leave Group</button>
+        <% elsif @member.present? && @member.status == false && @group.is_public == false %>
+          <button class="join jnew"  data-type="leave" title="Click to Cancel" data-id="<%=  Base64.encode64(@group.id.to_s) %>">Pending</button>
+      <% else %>
+          <button class="join jnew"  data-type="add" title="join" data-id="<%=  Base64.encode64(@group.id.to_s)   %>">Join</button>
+        <% end  %>
+                                <p><%= @group.address %></p>
+                            </div>
+                            <div class="statistics">
+                                <div><h1><%= @group.group_member.count + 1 %></h1><h2>Members</h2></div>
+                            </div>
+                        </div>
+                        <div class="profile_nav">
+                            <div class="actions">
+								<% if @account.id == @group.account.id %>
+								   <button class="message" onclick ="alert('You are group admin.You can not send message to yourself.') ">Message</button>
+								<% else %>
+                                  <button class="message" data-toggle="modal" data-target="#messageForm">Message</button>
+                                <% end %>  
+                               <%= link_to('<button>Invite Friends</button>'.html_safe, gp_path(Base64.encode64(@group.id.to_s), 'invite'), :remote => true) %>
+                            </div>
+                            <div class="nav">
+                               <%= link_to('Fit Feed', gp_path(Base64.encode64(@group.id.to_s), 'fit_feed'), :remote => true, :class => 'selected') %>
+                                <%= link_to('About', gp_path(Base64.encode64(@group.id.to_s), 'about'), :remote => true) %>
+                                <%= link_to('Photos', gp_path(Base64.encode64(@group.id.to_s), 'photos'), :remote => true) %>
+                                <%= link_to('Videos', gp_path(Base64.encode64(@group.id.to_s), 'videos'), :remote => true) %>
+                                <%= link_to('Members', gp_path(Base64.encode64(@group.id.to_s), 'members'), :remote => true) %>
+                                <%= link_to('Events', gp_path(Base64.encode64(@group.id.to_s), 'events'), :remote => true) %>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="side_info">
+                    <div class="my_activities">
+                        <div class="header">
+                            <h2>Activities</h2>
+                        </div>
+                        <div class="list">
+							<% if @group.activity_ids.present? %>
+							
+						   <%  @group.activity_ids.each do |id| %>    
+						  
+                            <div>
+                                <div class="avatar activity <%= get_activity_name(id) %>"><h3></h3></div>
+                                <div class="description">
+                                    <p class="activity"><%= get_activity_name(id) %></p><br>
+                                </div>
+                            </div>
+                            <% end %>
+                            <% end %>
+                           
+                        </div>
+                    </div>
+                    <div class="events">
+                        <div class="header">
+                            <h2>Events</h2>
+                        </div>
+                        <div class="list">
+                            <!--<div>
+                                <div class="avatar"><h3>13</h3></div>
+                                <div class="description">
+                                    <p class="date">November 13</p><br>
+                                    <p class="event">5K Run at Iron Mountain Trail</p><br>
+                                    <p class="location">San Diego, CA</p><br>
+                                    <p class="actions"><button>Attending</button><span>|</span><button>Not Attending</button></p>
+                                </div>
+                            </div>-->
+                            
+                        </div>
+                        <div class="see_all">
+                            <a href="">coming soon</a>
+                        </div>
+                    </div>
+                    <div class="members">
+                        <div class="header">
+                            <h2>Members</h2>
+                        </div>
+                        <div class="list">
+						                          
+							<!--- other members -->
+                           <% if @group.group_member.present? %>
+                           <% @group.group_member.each do |gm| %>
+                           <% if gm.status != false %>
+                           <% if gm.account.present? %>
+                            <div>
+                                <div class="avatar">
+									<% img = useravatar(gm.account) %>
+									<%= link_to(image_tag(img), "/#{gm.account.user_name}" ) %>
+									</div>
+                                <div class="description">
+                                    <p class="name"><%=  gm.account.first_name  %> <%=  gm.account.last_name.present? ?  gm.account.last_name : ''  %> </p><br>
+                                    <p class="location">Charlotte, NC</p><br>
+                                </div>
+                            </div>
+                           <% end %>
+                           <% end %>
+                           <% end %>
+                           <% end %>
+                            <!--<div class="see_all">
+                                <a href="">See All Fitspots</a>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="feed_container" ><!-- Start: Home Feed -->
+<%= render(:partial => 'fit_feed') %>
+<!-- End: Home Feed -->
+
+
+
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -375,7 +585,261 @@
     });
 
 
+ $('body').on('change','.cover_file', function() {
+	var id = $(this).closest('form').attr('id');
+	var field_id = $(this).attr('id');
+	var pid = $(this).attr('data-id');
+	var imgs = $(this).parent().parent('div').children('div').children('img').attr('id');
+    bf = before_submit_image(field_id);
+    bf.then(function(){
+		console.log('Resolve..')
+		//=============
+		$("#" + id).ajaxSubmit({			
+	      type: "POST",
+          url: '<%= group_covers_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+		          $('#'+imgs).attr('src' , data );		          
+		          $('#'+imgs).dragncrop('destroy');
+				  $('#'+imgs).dragncrop({
+				  //position: {offset: [ofone[0],ofone[1]]},
+				  start: function(){  },
+				  drag: function(event, position){  },
+				  stop: function(e, position){
+					  update_group_cover_offset(position.offset,pid)
+				  }
+				});		 
+         
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
 
+          }
+
+        }); 
+		
+		//===========
+	}, function(){
+		console.log('Reject..')
+		return false;
+	});
+	
+	
+     
+  });
+  
+   var update_group_cover_offset = function(position_offset ,position) {
+	 
+	 $.ajax({
+          type: "POST",
+          url: '<%= update_group_cover_offset_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {position_offset: position_offset, position: position,  gid:  <%= @group.id %>},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+				console.log('success')
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+          
+            console.log(thrownError)
+
+          }
+
+        }); 
+ }
+ 
+    $('#sendmessage').on('click', function(e) {
+      e.preventDefault();
+      CKEDITOR.instances['message_body'].updateElement();
+
+      if ($('#conversation_form').valid()) {
+		var sid = $(this).attr('data-sid');
+        var rid = $(this).attr('data-rip');
+        var bodytext = $('.bodyboxtextarea').val();
+
+
+
+        $.ajax({
+          type: "POST",
+          url: '<%= messages_path %>', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: {sender_id: sid, recipient_id: rid, body: bodytext},
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#messageForm').modal('hide');
+
+            $('.flash-message').html('<div class="alert alert-success"> Message Sent Succesfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+
+    });
+  
+  <% if @account.id == @group.account.id %>
+ 
+var offset_six =  document.getElementById("offset_six"); 
+if (offset_six != null) {
+var ofsix  = offset_six.value.split(',');
+} else {
+var ofsix  = "" ;	
+}	
+$('#position_six').dragncrop({
+  position: {offset: [ofsix[0],ofsix[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_group_cover_offset(position.offset,6)
+  }
+}); 
+ 	  
+ 
+var offset_five =  document.getElementById("offset_five"); 
+if (offset_five != null) {
+var offive  = offset_five.value.split(',')
+}else {
+var offive  = ""
+}
+$('#position_five').dragncrop({
+  position: {offset: [offive[0],offive[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_group_cover_offset(position.offset,5)
+  }
+}); 
+ 
+var offset_four =  document.getElementById("offset_four"); 
+if (offset_five != null) {
+var of  = offset_four.value.split(',')
+}else {
+var of  = "";
+}
+
+$('#position_four').dragncrop({
+  position: {offset: [of[0],of[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_group_cover_offset(position.offset,4)
+  }
+});
+
+var offset_three =  document.getElementById("offset_three"); 
+if (offset_three != null) {
+var ofthree  = offset_three.value.split(',')
+}else {
+var ofthree  = "";
+}
+
+$('#position_three').dragncrop({
+  position: {offset: [ofthree[0],ofthree[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_group_cover_offset(position.offset,3)
+  }
+});
+var offset_two =  document.getElementById("offset_two"); 
+if (offset_two != null) {
+var oftwo  = offset_two.value.split(',')
+} else {
+var oftwo  = ""	
+}
+$('#position_two').dragncrop({
+  position: {offset: [oftwo[0],oftwo[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_group_cover_offset(position.offset,2)
+  }
+});
+
+var offset_one =  document.getElementById("offset_one"); 
+var ofone = "";
+if (offset_one != null) {
+ ofone  = offset_one.value.split(',')
+}
+
+console.log(ofone[0])
+console.log(ofone[1])
+$('#position_one').dragncrop({
+  position: {offset: [ofone[0],ofone[1]]},
+  start: function(){  },
+  drag: function(event, position){  },
+  stop: function(e, position){
+	  update_group_cover_offset(position.offset,1)
+  }
+});
+<% else %>
+
+var offset_six =  document.getElementById("offset_six"); 
+var ofsix  = "" ;	
+if (offset_six != null) {
+var ofsix  = offset_six.value.split(',');
+}
+$('#position_six').dragncrop({
+  position: {offset: [ofsix[0],ofsix[1]]}
+}); 
+ 	  
+ 
+var offset_five =  document.getElementById("offset_five"); 
+var offive = ""
+if (offset_five != null) {
+var offive  = offset_five.value.split(',')
+}
+$('#position_five').dragncrop({
+  position: {offset: [offive[0],offive[1]]}
+}); 
+ 
+var offset_four =  document.getElementById("offset_four"); 
+var of = ""
+if (offset_four != null) {
+var of  = offset_four.value.split(',')
+}
+$('#position_four').dragncrop({
+  position: {offset: [of[0],of[1]]}
+});
+
+var offset_three =  document.getElementById("offset_three"); 
+var ofthree =""
+if (offset_three != null) {
+var ofthree  = offset_three.value.split(',')
+}
+$('#position_three').dragncrop({
+  position: {offset: [ofthree[0],ofthree[1]]}
+});
+var offset_two =  document.getElementById("offset_two"); 
+var oftwo  = ""
+if (offset_two != null) {
+var oftwo  = offset_two.value.split(',')
+}
+$('#position_two').dragncrop({
+  position: {offset: [oftwo[0],oftwo[1]]}
+});
+
+var offset_one =  document.getElementById("offset_one"); 
+var ofone  = "";
+if (offset_two != null) {
+var ofone  = offset_one.value.split(',')
+}
+$('#position_one').dragncrop({
+  position: {offset: [ofone[0],ofone[1]]}
+  });
+<% end %>
 
 
 
@@ -440,3 +904,50 @@
 
 
 </script>
+
+
+<!-- end code -->
+<div class="modal fade" id="fitspotForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Fitspot for the Group: <%= @group.title  %></h4>
+      </div>
+      <div class="modal-body">
+		<%= render(:partial => 'fitspots/newfitspot') %>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="modal fade" id="groupEditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Group</h4>
+      </div>
+      <div class="modal-body">
+		<%= render(:partial => 'groups/edit') %>
+    </div>
+  </div>
+</div>
+</div>
+
+ <div class="modal fade" id="messageForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Message to group admin</h4>
+      </div>
+      <div class="modal-body">
+        <%= render(:partial => 'messages/message') %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="sendmessage" class="btn btn-primary"  data-sid ="<%= Base64.encode64(@account.id.to_s) %>", data-rip =" <%=  Base64.encode64(@group.account.id.to_s) %>" >Send</button>
+      </div>
+    </div>
+  </div>
+</div>

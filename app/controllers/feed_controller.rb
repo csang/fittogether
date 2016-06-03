@@ -23,7 +23,9 @@ class FeedController < ApplicationController
       if @acc.present?
         if @acc.update_attributes(:uid =>session[:uid],:oauth_token =>  session[:oauth_token], :access_secret =>session[:oauth_secret])
           flash[:notice] = "User connected with fitbit ."
-          set_fitbit() # add data to table
+          activity_date = 'today'
+          act = Fitbit::Activity.fetch_all_on_date(@account, activity_date)
+          set_fitbit(act) # add data to table
           session.delete(:oauth_token)
         else 
           flash[:error] = "Please try again."
@@ -37,10 +39,14 @@ class FeedController < ApplicationController
     #abort(params.inspect)
     if request.xhr?   
        share = params[:feed].present? ? params[:feed][:share_with] : params[:profile_fit_feed][:share_with] 
-       post_type = (params[:video].present? || params[:image].present? ) ? 'video' : 'text' 
+       post_type = params[:video].present?  ? 'video' : 'text' 
+       if post_type != 'video'
+       post_type = params[:image].present?  ? 'photo' : 'text' 
+       end
        if post_type == 'text'
        post_type = params[:post_type].present? ? params[:post_type] : 'text' 
        end
+    
        group_or_fitpost = params[:group_id].present? ? Base64.decode64(params[:group_id])  : ''
        @posts =  Post.create(:account_id=>@account.id,:text=>params[:posttextnew],:image=>params[:image],:video=>params[:video], :status=>1,:share_with=> share, :post_type => post_type ,:group_id => group_or_fitpost )	        
        respond_to do |format|

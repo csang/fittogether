@@ -10,7 +10,10 @@ Rails.application.routes.draw do
    match 'account_cover/', :to=>'account_covers#create',:via => [:post,:get] ,  :defaults => { :format => 'json' }, :as => :account_covers
    match 'update_cover_offset/', :to=>'account_covers#update_cover_offset',:via => [:post] ,  :as => :update_cover_offset
    match 'fitspot_cover/', :to=>'fitspots#fitspot_cover',:via => [:post,:get] ,  :defaults => { :format => 'json' }, :as => :fitspot_covers
-    get 'gym_trainer_appointments/new'
+   
+   
+
+   get 'gym_trainer_appointments/new'
 
   post 'gym_trainer_appointments/create'
 
@@ -92,11 +95,18 @@ Rails.application.routes.draw do
   match 'add_del_member', to: 'groups#add_del_member', :via => [:get,:post,:delete] , :as => :add_del_member
   match 'create_group_post', to: 'groups#create_group_post', :via => [:post] , :as=>:create_group_post  
   match 'group_request', to: 'groups#group_request', :via => [:put,:delete] , :as => :group_request
-  get 'groups/:id', to: 'groups#show'
+  match 'fitspot_request', to: 'fitspots#fitspot_request', :via => [:put,:delete] , :as => :fitspot_request
+ 
   post 'groups/create'
+  match '/groups/:id/(:type)', to: 'groups#show', :via => [:get,:post] , :as => :gp 
   get 'groups/index'
- match 'groups/edit/(:id)', to: 'groups#edit',:via => [:patch,:get], :as=>:groups_edit
+  match 'groups/edit/(:id)', to: 'groups#edit',:via => [:patch,:get], :as=>:groups_edit
   
+  match 'update_group_cover_offset/', :to=>'groups#update_cover_offset',:via => [:post] ,  :as => :update_group_cover_offset
+  match 'update_fitspot_cover_offset/', :to=>'fitspots#update_fitspot_cover_offset',:via => [:post] ,  :as => :update_fitspot_cover_offset
+   match 'group_cover/', :to=>'groups#group_cover',:via => [:post,:get] ,  :defaults => { :format => 'json' }, :as => :group_covers
+   match 'invite_for_group', to: 'groups#invite_for_group', :via => [:post,:delete] , :as => :invite_for_group
+
 
   get 'conversations/create'
   get 'conversations/show'

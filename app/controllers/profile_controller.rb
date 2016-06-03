@@ -160,9 +160,13 @@ class ProfileController < ApplicationController
         end
       end	
       get_group = Group.where(:account_id => @account.id).collect(&:id) 
+      
       if get_group.present?
         @joining_request = GroupMember.where("group_id IN (?) && status = ?  ", get_group, false )
+      else
+         @joining_request = GroupMember.where(:account_id => @account.id,:status => false)
       end
+     
       if @joining_request.present?
         @joining_request.each do |ff|
           ff.update_attributes(seen: true)
@@ -176,8 +180,8 @@ class ProfileController < ApplicationController
         end
       end   
   
-      @profile = 'profile_notifications'
-      render 'index'
+     # @profile = 'profile_notifications'
+     # render 'index'
     end	
 	end
   
