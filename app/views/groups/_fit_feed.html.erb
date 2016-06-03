@@ -4,6 +4,9 @@
         <h2>Fit Feed</h2>
     </div>
     <div class="actions">
+             <% if @group.account_id == @account.id %>
+        <button  data-toggle="modal" class="goal-btn creat-event" data-target="#fitspotForm"> Create FitSpot</button> 
+            <% end %>
         <button class="write_post">Write Post</button>
         <!-- <button class="challenge">Challenge</button> -->
     </div>
