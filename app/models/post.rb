@@ -14,7 +14,7 @@ has_many :tags, through: :taggings
 has_attached_file :image, 
     :path => ":rails_root/app/assets/images/:attachment/:id/:basename_:style.:extension",
     :url => "/assets/:attachment/:id/:basename_:style.:extension",
-    :styles => { :medium => "300x300>", :thumb => "160x160>" }
+    :styles => { :medium => "550x300>", :thumb => "160x160>" }
     
 has_attached_file :video, :path => ":rails_root/app/assets/:attachment/:id/:basename_:style.:extension",
 :url => "/assets/:id/:basename_:style.:extension"

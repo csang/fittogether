@@ -1,7 +1,8 @@
 <nav id="side_nav">
 	<div class="side_nav_inner">
 		<div class="home_icon" title="Home"></div>		
-		<%= link_to('', challenges_show_path , html_options={:class => 'trophies_icon', :title => 'Challenges'}) %>
+		<div class="trophies_icon"></div>
+		<%#= link_to('', challenges_show_path , html_options={:class => 'trophies_icon', :title => 'Challenges'}) %>
 		<div class="statistics_icon"></div> 
 		<div class="friends_icon" title="Friends"></div>
 		<div class="nearby_icon"></div>	
@@ -13,7 +14,7 @@
 		
 		<div class="gym_icon"></div>
 		<%= link_to('', '/invites/index' , html_options={:class => 'create_icon',:title => 'Invite'}) %>				
-		<%= link_to('', fitspots_index_path , html_options={:class => 'fitsports_icon'}) %>
+		<%#= link_to('', fitspots_index_path , html_options={:class => 'fitsports_icon'}) %>
 			
 		<div class="settings_icon" title="Settings"></div>
 		<%= link_to('', logout_path , html_options={:class => 'log_icon', :title => 'Logout'}) %>  

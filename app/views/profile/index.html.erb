@@ -63,7 +63,7 @@
 
 <!-- Challenge -->
 <div class="modal fade" id="challengeForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="width:825px;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -73,7 +73,7 @@
         <%= render(:partial => 'challenges/challenge') %>
       </div>
       <div class="modal-footer">
-        <button type="button" id="challenge" class="btn btn-primary"   data-rip =" <%=  Base64.encode64(@profileuser.id.to_s) %>" >Send</button>
+        <button type="button" id="challenge" class="btn btn-primary"   data-rip =" <%=  Base64.encode64(@profileuser.id.to_s) %>" >Create Challenge</button>
       </div>
     </div>
   </div>

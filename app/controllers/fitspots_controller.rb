@@ -156,7 +156,7 @@ end
 				@acc = FitspotCover.create(:fitspot_id => params[:fit], :position => params[:position], :cover=> params[:cover]) 
 			end
 			if @acc.present?
-				render :json => @acc.cover(:medium)
+				render :json => @acc.cover(:original)
 			else
 				render :json =>  @acc.errors.full_messages.first if @acc.errors.any?  
 			end
@@ -178,6 +178,50 @@ end
       end 	
   
   end
+  
+   def update_fitspot_cover_offset
+    
+    if request.xhr?
+			abc = params[:position_offset].map(&:inspect).join(',')
+			abc.gsub!('"', '')
+			@acc = FitspotCover.where(:fitspot_id => params[:fid], :position => params[:position] ).first
+			if @acc.present?
+				if @acc.update_attribute(:position_offset, abc)	
+					render :json => 1
+				else
+				   render :json =>  @acc.errors.full_messages.first if @acc.errors.any?   
+				end
+			else
+				render :json =>  @acc.errors.full_messages.first if @acc.errors.any?   
+			end					
+		end
+    
+    
+    end 
+    
+    
+def fitspot_request    
+if request.xhr?  
+	id = Base64.decode64(params[:id])  
+	@member = FitspotMember.find(id)
+	if params[:type] =='accept'   
+		if  @member.update_attribute(:status, true)		
+		  render :json => 1  and return     
+		else
+		  render :json => 0  and return   
+		end 	
+	else       
+		if @member.delete
+		 render :json => 1  and return     
+		else
+		 render :json => 0  and return   
+		end 	
+	end
+
+else
+redirect_to('/feed')	 
+end
+end
   
   
   

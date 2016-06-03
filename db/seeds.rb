@@ -49,8 +49,8 @@ Reason.create([
 { name: 'health and fitness'}, 
 { name: 'meet people'}, 
 { name: 'find people who are interested in what I am'},
-{ name: 'networking'},
-{ name: 'romance'}
+{ name: 'networking'}
+
 ]);
 
 Activity.create([
@@ -624,9 +624,9 @@ Amenity.create([
 { name: 'Tennis Courts'}
 ]);
 Category.create([
-{ name: 'Steps to Walk', ctype: 'challenge'}, 
-{ name: 'Calories to Burn', ctype: 'challenge'}, 
-{ name: 'Weight to Lift', ctype: 'challenge'}, 
+{ name: 'Most Steps', ctype: 'challenge'}, 
+{ name: 'Most Calories', ctype: 'challenge'}, 
+{ name: 'Most Miles', ctype: 'challenge'}, 
 { name: 'General Feedback', ctype: 'feedback'}, 
 { name: 'Something Wrong', ctype: 'feedback'},
 { name: 'Photos', ctype: 'feedback'}, 
@@ -647,7 +647,7 @@ EmailSetting.create([
 { name: 'New Rating',slug: 'new_rating'}, 
 { name: 'New Appointment Request' ,slug: 'new_appointment_request'}, 
 { name: 'New Review',slug: 'new_review'}, 
-{ name: 'Appointment Approve',slug: 'appointment_approve'},
+{ name: 'Appointment Approval',slug: 'appointment_approve'},
 { name: 'Fitspot Invitation',slug: 'group_invitation'},
 { name: 'Mentioned In Post/Comment',slug: 'mentioned_in'},
 { name: 'Comment on Post',slug: 'comment_on_post'}

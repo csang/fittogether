@@ -524,7 +524,7 @@ $(document).ready(function () {
              number:true,        
           
               },
-              'valid_date' :{
+              'qty' :{
                 required: true,
               }
         },
@@ -537,8 +537,8 @@ $(document).ready(function () {
                 required: 'Please enter quantity.',
                 number: 'Please enter only numeric value.',
               },
-              'valid_date' :{
-                required: 'Please select date.',
+              'qty' :{
+                required: 'Please select duration.',
               }
         },
 	  
@@ -620,11 +620,23 @@ $(document).ready(function () {
         rules: {
             'group[title]': {
                 required: true,
+              },
+               'group[description]': {
+                required: true,
+              },
+               'group[address]': {
+                required: true,
               }
         },
         messages: {
             'group[title]': {
                 required: 'Please enter name.',
+                
+            },'group[description]': {
+                required: 'Please enter description.',
+                
+            },'group[address]': {
+                required: 'Please enter address.',
                 
             }
         },

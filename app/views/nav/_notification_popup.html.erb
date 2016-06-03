@@ -1,0 +1,108 @@
+	<div class="notification_list">
+							<div class="list">
+								<!-- Start: Notification -->
+							<!--	<div class="notification">
+									<div><div class="avatar"><img src="../../public/img/profile/venuswilliams_avatar.png" title="Venus Williams" alt="VW"></div></div
+									><div>
+										<h5>Venus Williams</h5>
+										<h6>Commented</h6>
+										<p>"I was too busy taking selfies to work out"</p>
+										<div class="actions">
+											<a href="">Reply</a>
+										</div>
+									</div><div>
+										<a href="../notifications"></a>
+									</div>
+								</div>-->
+								
+								<!-- End: Notification -->
+								 
+							<%  if @fit_spot.present? %>  
+						   	<% @fit_spot.each do |ft| %>
+								<div class="notification">
+									<div>
+									<div class="avatar">
+									<% img = useravatar(ft.fitspot.account) %>
+									<%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %>
+									</div></div><div>
+										<h5> <%= ft.fitspot.account.first_name.capitalize %> <%= ft.fitspot.account.last_name.present? ? ft.fitspot.account.last_name : '' %> </h5>
+										<h6>Invited you to</h6>
+										<p><%= link_to(ft.fitspot.title, "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %> on , 
+										<%= ft.fitspot.fitspot_date.strftime('%B %d') %>
+										<%= ft.fitspot.fitspot_time %> at 
+										 <%= ft.fitspot.location %></p>
+										
+										<!--<div class="actions">
+											<a href="">Decline</a>
+											<a href="">Accept</a>
+										</div> -->
+									</div><div>
+										<a href="/<%= @account.user_name %>/notifications""></a>
+									</div>
+								</div>
+								  
+							  <% end  %>  
+							  <% end %>
+							  
+							  <%  if @joining_request.present? %>  
+						   	<%	@joining_request.each do |member| %>
+								<div class="notification">
+									<div>
+									<div class="avatar">
+									<% img = useravatar(member.account) %>
+									<%= link_to(image_tag(img), "/#{member.account['user_name']}") %>
+									</div></div><div>
+										<h5> <%= member.account.first_name.capitalize %> <%= member.account.last_name.present? ? member.account.last_name : '' %> </h5>
+										<h6>Sent you join request for group</h6>
+										<p><%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group_id.to_s)}") %> 
+										<!--<div class="actions">
+											<a href="">Decline</a>
+											<a href="">Accept</a>
+										</div> -->
+									</div><div>
+										<a href="/<%= @account.user_name %>/notifications""></a>
+									</div>
+								</div>
+								  
+							  <% end  %>  
+							  <% end %>
+								
+								<!--<div class="notification">
+									<div><div class="avatar"><img src="../../public/img/profile/venuswilliams_avatar.png" title="Venus Williams" alt="VW"></div></div
+									><div>
+										<h5>Venus Williams</h5>
+										<h6>Posted on your timeline</h6>
+										<p>"you're too slow on the treadmill girl"</p>
+										<div class="actions">
+											<a href="">Reply</a>
+										</div>
+									</div><div>
+										<a href="../notifications"></a>
+									</div>
+								</div>-->
+								<% if @account.requested_friendships.present? %>
+									<% @account.requested_friendships.each do |member| %>
+									<% img = useravatar(member) %>
+									<div class="notification">
+										<div>
+										<div class="avatar">
+										  <%= link_to(image_tag(img), "/#{member.user_name}") %>
+										</div></div><div>
+											<h5><%= link_to(member.first_name, "/#{member['user_name']}") %></h5>
+											<h6>Added you as a friend</h6>
+											<div class="actions">
+											 <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" id="rejectfriend">Decline</a>
+             <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" id="acceptfriend">Accept</a>
+											</div>
+										</div><div>
+											<a href="/<%= @account.user_name %>/notifications"></a>
+										</div>
+									</div>
+							 <% end %>		
+							 <% end %>		
+							</div>
+							<div class="show_all">
+								<a href="/<%= @account.user_name %>/notifications">Show All Notifications</a>
+							</div>
+						</div>
+						<div id="dark_cover"></div>

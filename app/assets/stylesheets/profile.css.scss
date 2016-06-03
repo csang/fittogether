@@ -427,7 +427,7 @@ height: 70px;
 
 #feed_container .profile_photos_view .collection .photo{
 	width: 167px;
-	height: 152px;
+	height: 167px;
 	border: 3px solid #ffffff;
 	overflow: hidden;
 	display: inline-block;
@@ -435,6 +435,9 @@ height: 70px;
 	box-shadow: 0px 0px 1px #097356;
 	position: relative;
 	cursor: pointer;
+	border-radius:50%;
+	-moz-border-radius:50%;
+	-webkit-border-radius:50%;
 }
 
 #feed_container .profile_photos_view .collection .photo .on_hover{

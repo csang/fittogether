@@ -118,7 +118,7 @@
                            <% end %>	
                            	<!-- video section -->
 							<% if @post.video.present? %>		
-							  <div class="video">
+							  <div class="video_container">
 
 								<video id='video'  controls width="375" height="193">
 								  <source src='<%= @post.video %>' type='video/mp4'/>
@@ -128,7 +128,7 @@
 							<% end %>  
 							<!-- image section -->
 							<% if @post.image.present? %>		
-							  <div class="background">
+							  <div class="photo_container">
 								<%= image_tag(@post.image(:medium)) %>		
 							  </div>
 							<% end %>

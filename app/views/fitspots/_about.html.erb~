@@ -1,0 +1,271 @@
+<div class="header">
+    <div class="title">
+        <h2>Events <span>4</span></h2>
+    </div>
+    <div class="actions">
+        <button class="new_event">New Event</button>
+    </div>
+</div>
+
+<div id="feed" class="group">
+	<!-- Start: Event post -->
+    <div class="post event">
+        <div class="header">
+            <div class="user">
+                <div class="avatar"><h3>18</h3></div>
+                <div class="data">
+                    <h3 class="date">April 18th 10am-2pm</h3>
+                    <h3 class="event">Lazy River Festival</h3>
+                    <h3 class="location">Kelly Rock Springs Park, Apopka, FL</h3>
+                </div>
+            </div>
+            <button class="close"></button>
+        </div>
+        <div class="content">
+            <div class="content">
+	            <p>A weather-pending weekly evening ride through the Little Big Econ state forest aka Snow Hill. Please note that this is NOT the Jones East Trailhead. Mileage is 10-15 and is off-road.</p>
+				<p>The group departs from the Flagler Trailhead and heads North along the Flagler Trail. Expect to pedal about two miles on the Flagler Trail. Once they get to Two Bridges or the River trails, the single-track fun starts. <a href="">READ MORE</a></p>
+	        </div>
+        </div>
+        <div class="attending_friends">
+        	<div class="title">
+        		<p>You have <span>5</span> Friends who are attending</p>
+        	</div>
+        	<div class="friends">
+        		<!--  -->
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/michaeljordan_avatar.png" title="Michael Jordan" alt="MJ"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/hopesolo_avatar.png" title="Hope Solo" alt="HS"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/carolinewozniacki_avatar.png" title="Caroline Wozniacki" alt="CW"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/jjwatt_avatar.png" title="J.J. Watt" alt="JW"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/rondarousey_avatar.png" title="Ronda Rousey" alt="RR"></a></div>
+        		<!--  -->
+        	</div>
+        </div>
+        <div class="comment_section">
+            <div class="comment_container">
+            </div>
+            <div class="add_comment">
+                <textarea placeholder="Start commenting here..." maxlength="255"></textarea>
+                <button type="button" class="post_comment">Post Comment</button>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="kudos">
+                <div class="icon"></div>
+                <h3>Give Kudos</h3>
+            </div>
+            <div class="comment">
+                <div class="icon"></div>
+                <h3>Comment</h3>
+            </div>
+            <!-- if( post belongs to user ){ -->
+            <!-- <div class="edit">
+                <div class="icon"></div>
+                <h3>Edit</h3>
+            </div> -->
+            <!-- } //end if -->
+            <div class="event_actions">
+            	<button>Attending</button>
+            	<button>Not Attending</button>
+            </div>
+        </div>
+    </div>
+    <!-- End: Event post -->
+
+    <!-- Start: Event post -->
+    <div class="post event">
+        <div class="header">
+            <div class="user">
+                <div class="avatar"><h3>21</h3></div>
+                <div class="data">
+                    <h3 class="date">April 21st 10am-2pm</h3>
+                    <h3 class="event">Snorklingfest</h3>
+                    <h3 class="location">Kelly Rock Springs Park, Apopka, FL</h3>
+                </div>
+            </div>
+            <button class="close"></button>
+        </div>
+        <div class="content">
+            <p>A weather-pending weekly evening ride through the Little Big Econ state forest aka Snow Hill. Please note that this is NOT the Jones East Trailhead. Mileage is 10-15 and is off-road.</p>
+			<p>The group departs from the Flagler Trailhead and heads North along the Flagler Trail. Expect to pedal about two miles on the Flagler Trail. Once they get to Two Bridges or the River trails, the single-track fun starts. <a href="">READ MORE</a></p>
+        </div>
+        <div class="attending_friends">
+        	<div class="title">
+        		<p>You have <span>6</span> Friends who are attending</p>
+        	</div>
+        	<div class="friends">
+        		<!--  -->
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/michaeljordan_avatar.png" title="Michael Jordan" alt="MJ"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/hopesolo_avatar.png" title="Hope Solo" alt="HS"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/carolinewozniacki_avatar.png" title="Caroline Wozniacki" alt="CW"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/jjwatt_avatar.png" title="J.J. Watt" alt="JW"></a></div>
+        			<div class="avatar more"><h3>2+</h3></div>
+        		<!--  -->
+        	</div>
+        </div>
+        <div class="comment_section">
+            <div class="comment_container">
+            </div>
+            <div class="add_comment">
+                <textarea placeholder="Start commenting here..." maxlength="255"></textarea>
+                <button type="button" class="post_comment">Post Comment</button>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="kudos">
+                <div class="icon"></div>
+                <h3>Give Kudos</h3>
+            </div>
+            <div class="comment">
+                <div class="icon"></div>
+                <h3>Comment</h3>
+            </div>
+            <!-- if( post belongs to user ){ -->
+            <!-- <div class="edit">
+                <div class="icon"></div>
+                <h3>Edit</h3>
+            </div> -->
+            <!-- } //end if -->
+            <div class="event_actions">
+            	<button>Attending</button>
+            	<button>Not Attending</button>
+            </div>
+        </div>
+    </div>
+    <!-- End: Event post -->
+
+	<!-- Start: Event post -->
+    <div class="post event">
+        <div class="header">
+            <div class="user">
+                <div class="avatar"><h3>18</h3></div>
+                <div class="data">
+                    <h3 class="date">April 18th 10am-2pm</h3>
+                    <h3 class="event">Time Trial Ride</h3>
+                    <h3 class="location">Soldiers Creek Trail, Longwood Trail</h3>
+                </div>
+            </div>
+            <button class="close"></button>
+        </div>
+        <div class="content">
+            <div class="content">
+	            <p>A weather-pending weekly evening ride through the Little Big Econ state forest aka Snow Hill. Please note that this is NOT the Jones East Trailhead. Mileage is 10-15 and is off-road.</p>
+				<p>The group departs from the Flagler Trailhead and heads North along the Flagler Trail. Expect to pedal about two miles on the Flagler Trail. Once they get to Two Bridges or the River trails, the single-track fun starts. <a href="">READ MORE</a></p>
+	        </div>
+        </div>
+        <div class="attending_friends">
+        	<div class="title">
+        		<p>You have <span>5</span> Friends who are attending</p>
+        	</div>
+        	<div class="friends">
+        		<!--  -->
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/michaeljordan_avatar.png" title="Michael Jordan" alt="MJ"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/hopesolo_avatar.png" title="Hope Solo" alt="HS"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/carolinewozniacki_avatar.png" title="Caroline Wozniacki" alt="CW"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/jjwatt_avatar.png" title="J.J. Watt" alt="JW"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/rondarousey_avatar.png" title="Ronda Rousey" alt="RR"></a></div>
+        		<!--  -->
+        	</div>
+        </div>
+        <div class="comment_section">
+            <div class="comment_container">
+            </div>
+            <div class="add_comment">
+                <textarea placeholder="Start commenting here..." maxlength="255"></textarea>
+                <button type="button" class="post_comment">Post Comment</button>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="kudos">
+                <div class="icon"></div>
+                <h3>Give Kudos</h3>
+            </div>
+            <div class="comment">
+                <div class="icon"></div>
+                <h3>Comment</h3>
+            </div>
+            <!-- if( post belongs to user ){ -->
+            <!-- <div class="edit">
+                <div class="icon"></div>
+                <h3>Edit</h3>
+            </div> -->
+            <!-- } //end if -->
+            <div class="event_actions">
+            	<button>Attending</button>
+            	<button>Not Attending</button>
+            </div>
+        </div>
+    </div>
+    <!-- End: Event post -->
+
+    <!-- Start: Event post -->
+    <div class="post event">
+        <div class="header">
+            <div class="user">
+                <div class="avatar"><h3>18</h3></div>
+                <div class="data">
+                    <h3 class="date">April 18th 10am-2pm</h3>
+                    <h3 class="event">Time Trial Ride</h3>
+                    <h3 class="location">Soldiers Creek Trail, Longwood Trail</h3>
+                </div>
+            </div>
+            <button class="close"></button>
+        </div>
+        <div class="content">
+            <p>A weather-pending weekly evening ride through the Little Big Econ state forest aka Snow Hill. Please note that this is NOT the Jones East Trailhead. Mileage is 10-15 and is off-road.</p>
+			<p>The group departs from the Flagler Trailhead and heads North along the Flagler Trail. Expect to pedal about two miles on the Flagler Trail. Once they get to Two Bridges or the River trails, the single-track fun starts. <a href="">READ MORE</a></p>
+        </div>
+        <div class="attending_friends">
+        	<div class="title">
+        		<p>You have <span>6</span> Friends who are attending</p>
+        	</div>
+        	<div class="friends">
+        		<!--  -->
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/michaeljordan_avatar.png" title="Michael Jordan" alt="MJ"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/hopesolo_avatar.png" title="Hope Solo" alt="HS"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/carolinewozniacki_avatar.png" title="Caroline Wozniacki" alt="CW"></a></div>
+        			<div class="avatar"><a href="../profile.html"><img src="../../public/img/profile/jjwatt_avatar.png" title="J.J. Watt" alt="JW"></a></div>
+        			<div class="avatar more"><h3>2+</h3></div>
+        		<!--  -->
+        	</div>
+        </div>
+        <div class="comment_section">
+            <div class="comment_container">
+            </div>
+            <div class="add_comment">
+                <textarea placeholder="Start commenting here..." maxlength="255"></textarea>
+                <button type="button" class="post_comment">Post Comment</button>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="kudos">
+                <div class="icon"></div>
+                <h3>Give Kudos</h3>
+            </div>
+            <div class="comment">
+                <div class="icon"></div>
+                <h3>Comment</h3>
+            </div>
+            <!-- if( post belongs to user ){ -->
+            <!-- <div class="edit">
+                <div class="icon"></div>
+                <h3>Edit</h3>
+            </div> -->
+            <!-- } //end if -->
+            <div class="event_actions">
+            	<button>Attending</button>
+            	<button>Not Attending</button>
+            </div>
+        </div>
+    </div>
+    <!-- End: Event post -->
+</div>
+
+<script type="text/javascript">
+$(function() {
+    if(typeof Fit !== 'undefined'){
+        $('#feed_container #feed .post .footer > div.comment').click(Fit.toggle_comments);
+        $('#feed_container #feed .post .comment_section .post_comment').click(Fit.post_comment);
+    }
+});
+</script>

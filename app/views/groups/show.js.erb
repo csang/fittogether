@@ -1,0 +1,26 @@
+ <% if params[:type] =='fit_feed' %>
+$('#feed_container').html("<%= escape_javascript(render :partial => 'fit_feed') %>");
+<% end %>
+ <% if params[:type] =='events' %>
+$('#feed_container').html("<%= escape_javascript(render :partial => 'events') %>");
+<% end %>
+ <% if params[:type] =='photos' %>
+$('#feed_container').html("<%= escape_javascript(render :partial => 'photos') %>");
+<% end %>
+
+ <% if params[:type] =='about' %>
+$('#feed_container').html("<%= escape_javascript(render :partial => 'about') %>");
+<% end %>
+
+ <% if params[:type] =='videos' %>
+$('#feed_container').html("<%= escape_javascript(render :partial => 'videos') %>");
+<% end %>
+
+ <% if params[:type] =='members' %>
+$('#feed_container').html("<%= escape_javascript(render :partial => 'members') %>");
+<% end %>
+ <% if params[:type] =='invite' %>
+$('#feed_container').html("<%= escape_javascript(render :partial => 'invite') %>");
+<% end %>
+
+

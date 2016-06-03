@@ -1,0 +1,63 @@
+<div class="header">
+    <div class="title">
+        <h2>Members</h2>
+    </div>
+</div>
+
+<div class="fitspot" id="feed">
+		
+			                           <% if @invite_able.present? %>
+                           <% @invite_able.each do |gm| %>
+                        
+                            <div class="post group">
+                            <div class="header">
+					<div class="user">
+                                <div class="avatar">
+									<% img = useravatar(gm) %>
+									<%= link_to(image_tag(img), "/#{gm.user_name}" ) %>
+									</div>
+                                <div class="data">
+                                    <p class="name"><%=  gm.first_name  %> <%=  gm.last_name.present? ?  gm.last_name : ''  %> </p><br>
+                                    <p class="location"><%= get_city_name( gm.city_id) %>, <%= get_state_code( gm.city_id) %></p><br>
+                                </div>
+                           	</div>
+				   <button data-id="<%= Base64.encode64(gm.id.to_s)%>" data-gid="<%= Base64.encode64(@group.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
+				</div>
+				
+			  
+			</div>
+                           <% end %> 
+                           <% else %>
+                          <h2 class="notification-msg"> No Friend to invite.  </h2>         
+                           <% end %>
+</div>    
+<script>
+   $('.invite').on('click', function() {
+      var id = $(this).attr('data-id');
+      var gid = $(this).attr('data-gid');
+
+      var that = this;
+      var mydata = {'account_id': id, 'group_id': gid};
+      $.ajax({
+        type: "POST",
+        url: '<%= invite_for_group_path() %>', //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata, 
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          $(that).parent().parent('div .group').slideUp('slow');
+           $('.flash-message').html('<div class="alert alert-success"> Invitation sent succesfully.</div>').show();
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    });
+</script>

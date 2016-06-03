@@ -1,15 +1,34 @@
- <%= form_for @group , :url =>  groups_edit_url ,   :html => {id: "group_form", onsubmit:  "return validateImage()"} do |f| %>
+ <%= form_for @group , :url =>  groups_edit_url ,   :html => {id: "group_form", onsubmit:  ""} do |f| %>
 	
 
 <div class="pop-row">
  <%= f.label :text, 'Name' %>
 	<%= f.text_field :title, class: " form-control", maxlength: 50 %>
   </div>
+  
+  <div class="pop-row">
+ <%= f.label :text, 'Description' %>
+	<%= f.text_area :description, class: " boxtextarea form-control", maxlength: 150 %>
+  </div> 
+ <div class="pop-row">
+ <%= f.label :text, 'Address' %>
+	<%= f.text_field :address, id: "geocomplete" ,class: "form-control", maxlength: 150 %>
+  </div> 
+  
+     <div class="pop-row">
+ <%= f.label :text, 'Activities' %>
+	<% gspecial = Activity.all.map{|x| [x.name] + [x.id]} %>
+
+	
+		 <%= select_tag(:activity_ids, options_for_select(gspecial, @group.activity_ids.present? ? @group.activity_ids.map {|j| j} : ''), :class=>'form-control multi-select' ,multiple: true) %>
+		 
+		 
+  </div>   
 
 <div class="pop-row">
- <label>Image <span class="small">(ideal image size : 730 X 250)</span></label>
+<!-- <label>Image <span class="small">(ideal image size : 730 X 250)</span></label>-->
 	<%= f.file_field :group_image,  :id=>"group_edit_image" %>
-  <label for="group_img" generated="true" class="errors imgerror1" style="display:none;">Image width must be greater than  730 pixels.</label>
+  <!--<label for="group_img" generated="true" class="errors imgerror1" style="display:none;">Image width must be greater than  730 pixels.</label>-->
   </div>
 
 <div class="pop-row">

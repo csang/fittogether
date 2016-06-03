@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet href="HelveticaNeue-Bold_files/intl.css" type="text/css"?>
+<parsererror xmlns="http://www.mozilla.org/newlayout/xml/parsererror.xml">XML Parsing Error: reference to invalid character number
+Location: http://appuix.com/fittogether/public/fonts/helvetica_neue/HelveticaNeue-Bold.svg
+Line Number 5721, Column 29:<sourcetext>    &lt;hkern u1="&amp;#x10f;" u2="&amp;#x8;" k="-126" /&gt;
+----------------------------^</sourcetext></parsererror>

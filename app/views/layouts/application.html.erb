@@ -13,11 +13,14 @@
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag 'settings' if params[:controller] == 'settings' %>
     <%= stylesheet_link_tag 'jquery.timepicker'  %>
+    <% if params[:action] != 'notifications' %>
     <%= stylesheet_link_tag 'profile' if params[:controller] == 'profile' || params[:controller] == 'fitspots' || params[:controller] == 'groups' %>
+   <% end %>
     <%= stylesheet_link_tag 'fullcalendar' if params[:controller] == 'profile' %>
     <%= stylesheet_link_tag 'gym_admin' if params[:action] == 'dashboard' || params[:action] == 'classes' || params[:action] == 'gym_admin_appointments' || params[:action] == 'gym_trainors' %>
     <%= stylesheet_link_tag 'landing' if params[:controller] == 'landing' %>
     <%= stylesheet_link_tag 'gym' if params[:controller] == 'profile' %>
+    <%= stylesheet_link_tag 'notificatons' if params[:action] == 'notifications' %>
     <%= stylesheet_link_tag 'radial_progress' if params[:action] == 'show_classes' || params[:action] == 'classes' %>
     
    
@@ -33,8 +36,8 @@
      <%= javascript_include_tag 'profile' if params[:controller] == 'profile' || params[:controller] == 'fitspots' %>
      <%= javascript_include_tag 'gym' if params[:action] == 'show_classes' %>
      
-     <%= javascript_include_tag 'imagesloaded' if params[:controller] == 'profile' %>
-     <%= javascript_include_tag 'jquery.drag-n-crop' if params[:controller] == 'profile' %>
+     <%= javascript_include_tag 'imagesloaded' if params[:controller] == 'profile' ||  params[:controller] == 'fitspots' ||  params[:controller] == 'groups' %>
+     <%= javascript_include_tag 'jquery.drag-n-crop' if params[:controller] == 'profile' ||  params[:controller] == 'fitspots' ||  params[:controller] == 'groups' %>
       <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 
      <script>
@@ -74,7 +77,8 @@
            <%= yield %>
              <%= render(:partial => '/footer/common') %>
            <%# if @account.present? && params[:controller] !='settings' && params[:controller] !='profile' && params[:controller] !='conversations' && params[:controller] !='challenges' %>
-           <% if @account.present? && params[:controller] =='feed'  %>
+   
+           <% if @account.present? && (params[:controller] =='feed' || params[:action] =='notifications')  %>
            <%= render(:partial => '/nav/right_side') %>
            <% end %>
           

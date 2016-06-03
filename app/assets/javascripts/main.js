@@ -343,6 +343,18 @@ Fit = {
 		$('body').scrollTop(0);
 		$('#feed_container .post_input .container textarea').focus();
 	},
+	show_challenges: function(e){
+		var self = $(this);
+		if(self.hasClass('selected')){
+			self.removeClass('selected');
+			$('#feed .post').show();
+		}else{
+			self.parent().find('div').removeClass('selected');
+			self.addClass('selected')
+			$('#feed .post:not(.challenge)').hide();
+			$('#feed .post.challenge').show();
+		}
+	},
 	show_friends: function(e){
 		Fit.show_dark_cover();
 		var left_offset = $('#side_nav .friends_icon').offset().left + 77 + 'px';

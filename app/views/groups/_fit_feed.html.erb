@@ -1,0 +1,63 @@
+
+<div class="header" style="top: inherit; position: absolute;">
+    <div class="title">
+        <h2>Fit Feed</h2>
+    </div>
+    <div class="actions">
+        <button class="write_post">Write Post</button>
+        <!-- <button class="challenge">Challenge</button> -->
+    </div>
+</div>
+ 
+ <div class="post_input">
+  <% if @member.present? || @group.account_id == @account.id  %>
+  	   <div class="container">
+          <%= form_for @profile, :url=>{:action=>'create_post'}, :html=>{:name=>'sharepost',:id => "update_post", :enctype=>"multipart/form-data"} do |f| %>
+
+                            <textarea name="post" placeholder="Post comments and start discussions here" class="posttext"></textarea>
+                               <input type="hidden" name="posttextnew" id="posttext">
+    <ul class="arport" style="display:none;">
+
+
+    </ul>
+    <span class="lnk"></span>
+                            <div class="actions ">
+                                <div class="share_with">
+                                    <label>Share With:</label>
+                                   <%= f.select :share_with, options_for_select(["Public", "Private","Friends"]), :class => 'genForm_dropBox' %>		
+                                </div>
+                                 <div class="share_what">
+									 <div class="image"><input type="file" id="photo" accept="image/*" name="image"></div>
+                                    <div  class="video" ><input id="video" type="file" accept="video/*" name="video"></div>
+                                  <button id="share_post" class="share">Share</button>
+                                 </div>
+                                </div>
+                                <input type="hidden" value="<%= Base64.encode64(@group.id.to_s) %>" name="group_id">
+                                <input type="hidden" value="fitspot" name="post_type">
+                                <% end %>     
+                             <%#= form_for @profile, :url=> createalbum_path, :html=>{:name=>'createalbum',:id => "create_albums", :class=>'createalbums', :enctype=>"multipart/form-data", :onclick=>"this.form.reset()" } do |f| %>
+                               <!-- <div class="actions sharing-links">
+                                
+                                <div class="share_what">
+                                    
+                                    <div class="image"><input type="file" id="photo" accept="image/*" name="image"></div>
+                                    <div id="share_album" class="video"><input id="video" type="file" accept="video/*" name="video"></div>
+                                   
+                                </div>
+                            </div> -->
+							<%# end %>        
+          
+                
+     
+                        </div>
+                        <% end %>
+</div> 
+
+<div id="feed">
+   	<%= render(:partial => 'feed/feed') %>     
+    </div>
+    <!-- End: Fitspot post -->
+
+</div>
+<!-- End: Home Feed -->
+
