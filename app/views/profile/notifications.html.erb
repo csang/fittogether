@@ -18,7 +18,7 @@
                             </div>
                             <div class="text">
                                 <p>
-                                <% link_to(ft.fitspot.account.first_name.capitalize , "/#{ft.fitspot.account.user_name}"); %>
+                                <%= link_to(ft.fitspot.account.first_name.capitalize , "/#{ft.fitspot.account.user_name}"); %>
                                 invited you to <%= link_to(ft.fitspot.title, "/fitspots/#{Base64.encode64(ft.fitspot_id.to_s)}") %> on , 
 										<%= ft.fitspot.fitspot_date.strftime('%B %d') %>
 										<%= ft.fitspot.fitspot_time %> at 
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="text">
-                                <p><%= member.inviter.first_name.capitalize %> <%= member.inviter.last_name.present? ? member.inviter.last_name : '' %>
+								      <p><%= member.inviter.first_name.capitalize %> <%= member.inviter.last_name.present? ? member.inviter.last_name : '' %>
                                
                                  invited you to join a group <%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group_id.to_s)}") %> 
 										

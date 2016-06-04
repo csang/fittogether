@@ -31,18 +31,24 @@ class ApplicationController < ActionController::Base
   	end
   	 
     get_group = Group.where(:account_id => @account.id).collect(&:id)    
-			if get_group.present?
-				@cnt = GroupMember.where("group_id IN (?) && status = ? && seen =?  ", get_group, false, false ).count
-			end    
+	if get_group.present?
+		@cnt = GroupMember.where("group_id NOT IN (?) && account_id = ? && status = ? && seen =?  ", get_group, @account.id, false, false ).count
+	else
+		@cnt = GroupMember.where("account_id = ? && status = ? && seen =?  ",@account.id ,false, false ).count
+	end    
      @cnt =  @cnt == 0 ? '' : @cnt     
      @fitspot_cont = FitspotMember.where(:account_id => @account.id,:status => false, :seen => false ).count     
      @fitspot_cont =  @fitspot_cont == 0 ? '' : @fitspot_cont
      # for notification
       @fit_spot = FitspotMember.where(:account_id => @account.id,:status => false)
+      
        get_group = Group.where(:account_id => @account.id).collect(&:id) 
       if get_group.present?
-        @joining_request = GroupMember.where("group_id IN (?) && status = ?  ", get_group, false )
+        @joining_request = GroupMember.where("group_id NOT IN (?) && account_id = ? && status = ?  ", get_group, @account.id, false )
+      else
+        @joining_request = GroupMember.where("account_id = ? && status = ?  ", @account.id, false )
       end
+     
   
   end
 
