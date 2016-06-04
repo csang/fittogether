@@ -67,22 +67,33 @@
 							
 							<p class="label">Spots</p>
 						</div>
-						<div class="action"><button class="add">+</button></div>
+						<div class="action"></div>
 						<!--<div class="action"><button class="add">+</button></div>-->
 					</div>
 					<div class="roster">
 						<div class="list">
+							<% if gc.class_attendance.present? %>
+							<% i = 0 %>
+							<% gc.class_attendance.each do |usr| %>
+							
 							<div>
 								<div class="gymnast">
-									<div class="position"><p>1.</p></div>
-				                    <div class="avatar"><img src="" title="Michael Jordan" alt="MJ"></div>
-				                    <div class="name"><p>Michael Jordan</p></div>
+									<div class="position"><p>	<%= i =+1 %>.</p></div>
+				                    <div class="avatar">
+										<% img = useravatar(usr.account) %>
+										<%= image_tag(img) %>
+																				</div>
+				                    <div class="name"><p><%= usr.account.first_name.capitalize %> <%= usr.account.last_name.present? ? usr.account.last_name : '' %></p></div>
 								</div>
 								<div class="actions">
-									<button class="remove">Remove</button>
+									<button class="remove" data-id="<%= Base64.encode64(usr.id.to_s) %> ">Remove</button>
 									<button class="change">Change</button>
 								</div>
 							</div>
+							<% end %>
+							<% else %>
+							<h4 class="noti-heading"> No Records Found</h4>
+							<% end %>
 							
 						</div>
 						<div class="view"><p>View Class Roster</p></div>
@@ -102,7 +113,8 @@ $(function() {
 	$( "#datepicker" ).datepicker({
 		dateFormat: "M d, yy",
 	});
-	$('#classes .class .roster .view').click(Gym_admin.view_roster);
+	$(document).on('click' ,'#classes .class .roster .view',Gym_admin.view_roster);
+
 	$('#classes #classes_container .time_container .list > div').click(Gym_admin.select_hour);
     $('#classes #classes_container .class > div .action button').click(Gym_admin.add_or_remove_spot);
 });
@@ -225,6 +237,33 @@ $(function() {
       
       });
      });
+     
+     
+     $(document).on('click','.remove', function() {
+		var toid = $(this).attr('data-id');
+		var that = this;
+			$.ajax({
+				type: "Post",
+				url: '/remove_from_class/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$(that).parent().parent('div').fadeOut();
+									
+					$('.flash-message').html('<div class="alert alert-success"> Removed successfully.</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
     
  });   
 

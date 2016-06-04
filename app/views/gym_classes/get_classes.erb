@@ -33,24 +33,35 @@
 					</div>
 					<div class="roster">
 						<div class="list">
+						<% if gc.class_attendance.present? %>
+							<% i = 0 %>
+							<% gc.class_attendance.each do |usr| %>
+							
 							<div>
 								<div class="gymnast">
-									<div class="position"><p>1.</p></div>
-				                    <div class="avatar"><img src="" title="Michael Jordan" alt="MJ"></div>
-				                    <div class="name"><p>Michael Jordan</p></div>
+									<div class="position"><p>	<%= i =+1 %>.</p></div>
+				                    <div class="avatar">
+										<% img = useravatar(usr.account) %>
+										<%= image_tag(img) %>
+																				</div>
+				                    <div class="name"><p><%= usr.account.first_name.capitalize %> <%= usr.account.last_name.present? ? usr.account.last_name : '' %></p></div>
 								</div>
 								<div class="actions">
-									<button class="remove">Remove</button>
+									<button class="remove" data-id="<%= Base64.encode64(usr.id.to_s) %> ">Remove</button>
 									<button class="change">Change</button>
 								</div>
 							</div>
+							<% end %>
+							<% else %>
+							<h4 class="noti-heading"> No Records Found</h4>
+							<% end %>
 							
 						</div>
-						<div class="view"><p></p></div>
+						<div class="view"><p>View Class Roster</p></div>
 					</div>
 					
 				</div>
 				<% end %>
 				<% else %>
-				<h4 class="noti-heading">No class available.</h4>
+				<h4 class="noti-heading">No classes available.</h4>
 				<% end %>

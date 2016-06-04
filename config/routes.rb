@@ -33,6 +33,8 @@ Rails.application.routes.draw do
   match 'show_classes_details/', :to=>'gym_classes#show_classes_details',:via => [:get] ,  :as => :show_classes_details
   match 'get_class_slot/', :to=>'gym_classes#get_class_slot',:via => [:get] ,  :as => :get_class_slot
   match 'attend_class/', :to=>'gym_classes#attend_class',:via => [:post] ,  :as => :attend_class
+  
+  match 'remove_from_class/', :to=>'gym_classes#remove_from_class',:via => [:post] ,  :as => :remove_from_class
   match 'get_weekly_appointment/', :to=>'gym_trainer_appointments#get_weekly_appointment',:via => [:get] 
   match 'get_working_trainer/', :to=>'gym_trainer_appointments#get_working_trainer',:via => [:get] ,  :as => :get_working_trainer
   
