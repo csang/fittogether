@@ -162,7 +162,7 @@ class ProfileController < ApplicationController
       get_group = Group.where(:account_id => @account.id).collect(&:id) 
       
       if get_group.present?
-        @joining_request = GroupMember.where("group_id IN (?) && status = ?  ", get_group, false )
+        @joining_request = GroupMember.where("group_id NOT IN (?) && account_id =? && status = ?  ", get_group, @account.id, false )
       else
          @joining_request = GroupMember.where(:account_id => @account.id,:status => false)
       end
