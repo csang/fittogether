@@ -81,13 +81,23 @@ class GymClassesController < ApplicationController
 	   end 	  
   end
 
-  def update
-  end
-
-  def delete
+   def remove_from_class
+   if request.xhr?  
+    attend = ClassAttendance.where(:id => Base64.decode64(params[:id])).first
+      if attend.present?
+      if attend.destroy 
+        render :json => 1  and return      
+      else
+        render :json => 0  and return     
+      end
+    else
+		 render :json => 0  and return    
+    end 
+  else
+	redirect_to('/feed')	
   end
   
-  
+  end 
   
   private
   
