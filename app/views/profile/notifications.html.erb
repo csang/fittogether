@@ -37,17 +37,18 @@
 							  
 						  <%  if @joining_request.present? %>  
 						   	<%	@joining_request.each do |member| %>
+						   	<% if member.inviter.present? %>	
                         <div class="notification">
                             <div>
                                 <div class="avatar">
-                                    <% img = useravatar(member.group.account) %>
-									<%= link_to(image_tag(img), "/#{member.group.account['user_name']}") %>
+                                    <% img = useravatar(member.inviter) %>
+									<%= link_to(image_tag(img), "/#{member.inviter['user_name']}") %>
                                 </div>
                             </div>
                             <div class="text">
-                                <p><%= member.group.account.first_name.capitalize %> <%= member.group.account.last_name.present? ? member.group.account.last_name : '' %>
+                                <p><%= member.inviter.first_name.capitalize %> <%= member.inviter.last_name.present? ? member.inviter.last_name : '' %>
                                
-                                Sent you join request for group <%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group_id.to_s)}") %> 
+                                 invited you to join a group <%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group_id.to_s)}") %> 
 										
                             </div>
                             <div class="actions">
@@ -58,6 +59,7 @@
                                 </p>
                             </div>
                         </div>
+						 <% end  %>  
 						 <% end  %>  
 							  <% end %>
 							  

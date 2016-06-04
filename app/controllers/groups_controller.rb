@@ -193,7 +193,7 @@ end
      if request.xhr?     
      gid = Base64.decode64(params[:group_id])   
      aid = Base64.decode64(params[:account_id])        
-       @member = GroupMember.create(:group_id=> gid,:account_id =>aid, :status => 0)	
+       @member = GroupMember.create(:group_id=> gid,:account_id =>aid, :status => 0, :inviter_id => @account.id)	
   
 =begin  
 		   met = email_settings(aid, 'group_invitation')
