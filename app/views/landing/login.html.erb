@@ -170,8 +170,6 @@
       userData.password = $('.authentication form input[name=register_password]').val();
       userData.verify_password = $('.authentication form input[name=register_verify_password]').val();
       userData.account_type = $('.authentication form #user_type').val();
-      alert(userData.account_type)
-      return false;
       userData.connection = 'Username-Password-Authentication';
       userData.email_verified = false;
       var cData = {};
