@@ -1,6 +1,7 @@
 class LandingController < ApplicationController
 
   before_action :logged_in , :except => [:login, :logout]
+  layout 'landing'
 
   def index
   end

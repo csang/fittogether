@@ -1,114 +1,150 @@
- <%= render(:partial => '/nav/classvar') %>
-<div id="account_container">
-  <div id="login_logo"></div>
-  <div id="login_container">
-    <div id="login_view">
-      <h1>Login to FitTogether</h1>
-      <%= form_tag({:action => '/login'}, {:id => 'loginform', :novalidate => true}) %>
-      <div class="field-row">
-        <input type="email" id="email" name="login_username" placeholder="Email" value="<%#= @account['email'] %>" autofocus>
-      </div>
-      <div class="field-row">
-        <input type="password" id="password" name="login_password" placeholder="Password">
-      </div>
-      <div class="field-row">
-      <div class="term-check">
-      <input type="checkbox" name="remember_me" id="rme">
-      </div>
-      <label class="top-lbl"> Remember me</label> 
-      </div>
-     <div class="text-center"><button class="signin-db" title="Sign In" onclick="get_url();">Sign In</button></div>
-      
-      <div class="fb-option"><span><em class="left"></em>Or<em class="right"></em></span></div>
-      <h2 class="soc-heading">Login with Social Connection</h2>
-      <ul class="social-connect">
-        <li><a href="#login-popup" title="Facebook" contype="facebook" class='login-popup fb'>login with facebook on popup</a></li>
-        <li><a href="#login-popup" title="twitter" contype="twitter" class='login-popup twit'>login with twitter on popup</a></li>
-        <li><a href="#login-popup" title="Linkedin" contype="linkedin" class='login-popup linkdin'>login with linkedin on popup</a></li>
-      
-      </ul>
-    </div>
-    <p>Don't have an account? <span title="Sign Up">Sign Up</span></p>
-    <p id="fp" style="text-decoration: underline;cursor: pointer;" title="Forgot your password?">Forgot your password? </p>
-    </form>
-  </div>
-  <div id="forgot_container" style="display:none">
-    <div id="forgot_view">
-      <h1>Forgot Your Password?</h1>
-      <%= form_tag({:action => '/forgot'}, {:id => 'forgotform', :novalidate => true}) %>
-      <div class="field-row">
-        <input type="email" id="forgotemail" name="login_username" placeholder="Email" value="<%#= @account['email'] %>" autofocus>
-      </div>
-      <div class="field-row">
-        <input type="password" id="forgotpassword" name="login_password" placeholder="New Password">
-      </div>
-      <button class="forgot-db">Submit</button>
+<%= render(:partial => '/nav/classvar') %>
+<div class="fittogether">
+            <div class="logo">
+               <%= link_to(image_tag('global/big_white_logo.png'), "/#{@path}" ,html_options={'class'=>'logo', 'alt' => 'FitTogether'}); %>
+            </div>
+            <div class="tagline">
+                <h1>FitTogether Connects You</h1>
+                <p>Locally, Globally, Online and in Person to People, Fitness Professionals and Groups That Share Similar Fitness Interests As You Do.</p>
+            </div>
+        </div>
+        <div class="authentication">
+            <div class="login">
+                <button type="button">Login</button>
+            </div>
+            <div>
+                <h1>Sign Up Today<br>It’s Free to Join</h1>
+            </div>
+            <div class="form">
+                <%= form_tag({:action =>'#'},{:id=>'registerform',:novalidate => true}) %>
+                    <div class="user_type">
+                        <label for="user_type">User Type:</label>
+                        <select name="user_type" id="user_type" required>
+                            <option value="" selected disabled>Please Select</option>
+                            <option value="1" data-index="1">Social User</option>
+                            <option value="3" data-index="3">Gym</option>
+                            <option value="2" data-index="2">Trainer</option>
+                        </select>
+                    </div>
+                    <div class="user">
+                        <div class="social">
+                            <p>Sign Up With Social Connection:</p>
+                            <div class="links">
+                                <a href="#login-popup" title="Facebook" contype="facebook" class="login-popup fb fbnew">login with facebook on popup</a>
+                               <!-- <a href="#login-popup" title="twitter" contype="twitter" class="login-popup twit">login with twitter on popup</a>
+                                <a href="#login-popup" title="Linkedin" contype="linkedin" class="login-popup linkdin">login with linkedin on popup</a> -->
+                            </div>
+                        </div>
+                        <div class="separator"><h2>OR</h2></div>
+                        <div class="local">
+                            <div class="first_name">
+                                <label for="first_name">First Name:</label>
+                                <input type="text" name="register_fname" id="first_name" minlength="2" required>
+                            </div>
+                            <div class="last_name">
+                                <label for="last_name">Last Name:</label>
+                                <input type="text" name="register_lname" id="last_name" minlength="2" required>
+                            </div>
+                            <div class="username">
+                                <label for="username">User Name:</label>
+                                <input type="text" name="register_username" id="username" minlength="4" required>
+                            </div>
+                            <div class="email">
+                                <label for="email">Email:</label>
+                                <input type="email" name="register_email" id="email" required>
+                            </div>
+                            <div class="password">
+                                <label for="password">Password:</label>
+                                <input type="password" name="register_password" id="confirm_password" minlength="6" required>
+                            </div>
+                            <div class="verify_password">
+                                <label for="verify_password">Verify Password:</label>
+                                <input type="password" name="register_verify_password" id="verify_password" minlength="6" required>
+                                 <input type="hidden" name="register_account_type" value="1">
+                            </div>
+                            <div class="terms">
+                                <input type="checkbox" id="t_c" name="register[tos_agreement]" required><label for="agree_to_terms"><span></span>I agree to <a href="terms_and_conditions">terms &amp; conditions</a></label>
+                                <label for="register[tos_agreement]" generated="true" class="error" style="display:none;"></label>
+                            </div>
+                            <div class="submit">
+                                <button class="create-account">REGISTER</button>
+                            </div>
+                        </div>
+                        <div class="cover"></div>
+                    </div>
+              </form>
+            </div>
+            <div class="copyright">
+                <p>Copyright 2016 FitTogether, INC</p>
+            </div>
+        </div>
+        <div id="login_popup">
+            <div class="close_bg"></div>
+            <div id="login_container" style="display: block;">
+                <div id="login_view">
+                    <h1>Login to FitTogether</h1>
+                    <%= form_tag({:action => '/login'}, {:id => 'loginform', :novalidate => true}) %>
+					
+                        <div class="field-row">
+                        <input type="email" id="email" name="login_username" placeholder="Email" value="<%#= @account['email'] %>" autofocus>
+                        </div>
+                        <div class="field-row">
+                            <input type="password" id="password" name="login_password" placeholder="Password">
+                        </div>
+                        <div class="field-row">
+                            <input type="checkbox" name="remember_me" id="rme">
+                            <label class="top-lbl" for="rme"><span></span> Remember me</label> 
+                        </div>
+                        <div class="text-center"><button class="signin-db" title="Sign In" onclick="get_url();">Sign In</button></div>
+                      
+                        <div class="fb-option"><span><em class="left"></em>Or<em class="right"></em></span></div>
+                        <h2 class="soc-heading">Login with Social Connection:</h2>
+                        <a href="#login-popup" title="Facebook" contype="facebook" class="login-popup fb fbnewsignin">login with facebook on popup</a>
+                      <!--  <a href="#login-popup" title="twitter" contype="twitter" class="login-popup twit">login with twitter on popup</a>
+                        <a href="#login-popup" title="Linkedin" contype="linkedin" class="login-popup linkdin">login with linkedin on popup</a>-->
+                    </form>
+                </div>
+                <div class="forgot_password">
+                    <p id="fp" style="text-decoration: underline;cursor: pointer;" title="Forgot your password?">Forgot your password? </p>
+                </div>
+        </div>   
+        </div>   
+           <!-- forgot password -->
+            <div id="forgot_popup">
+				 <div class="close_bg"></div>
+             <div id="forgot_container" style="display:block">
+					<div id="forgot_view">
+					  <h1>Forgot Your Password?</h1>
+					  <%= form_tag({:action => '/forgot'}, {:id => 'forgotform', :novalidate => true}) %>
+					  <div class="field-row">
+						<input type="email" id="forgotemail" name="login_username" placeholder="Email" value="<%#= @account['email'] %>" autofocus>
+					  </div>
+					  <div class="field-row">
+						<input type="password" id="forgotpassword" name="login_password" placeholder="New Password">
+					  </div>
+					  <button class="forgot-db">Submit</button>
 
-      </form>
-    </div>
-    <p style="text-decoration: underline;cursor: pointer;color: #2f8352;">Back To Sign In</p>
+					  </form>
+					</div>
+					<div class="forgot_password">
+					<p style="text-decoration: underline;cursor: pointer;color: #2f8352;">Back To Sign In</p>
+					</div>
 
-  </div>
+			 </div>
+    	  </div>
+				  
 
-
-  <div id="register_container"  style="display:none;">
-    <div id="register_view">
-      <h1>Create Account</h1>
-      <%= form_tag({:action =>'#'},{:id=>'registerform',:novalidate => true}) %>
-      <div class="field-row">
-        <ul>
-          <li class="select" data-index="1">User</li>
-          <li data-index="2">Trainer</li>
-          <li data-index="3">Gym</li>
-        </ul>
-      </div>
-      <div class="field-row">
-        <input type="text" name="register_fname" placeholder="First Name" autofocus>
-      </div>
-      <div class="field-row">
-        <input type="text" name="register_lname" placeholder="Last Name">
-      </div>
-      <div class="field-row">
-        <input type="text" name="register_username" placeholder="Username" class="check_data">
-      </div>
-      <div class="field-row">
-        <input type="text" name="register_email" placeholder="Email">
-      </div>
-      <div class="field-row">
-        <input type="password" id="confirm_password" name="register_password" placeholder="Password">
-      </div>
-      <div class="field-row">
-        <input type="password"  name="register_verify_password" placeholder="Verify Password">
-        <input type="hidden" name="register_account_type" value="1">
-      </div>
-
-    <!--  <div class="field-row">
-        <div class="term-check"><%= check_box("register", "tos_agreement", :id=>'t_c') %></div> <label for="t_c">Terms and Conditions</label>
-      </div> -->
-      <div class="field-row">
-        <div class="term-check"><input type="checkbox" value="1" name="register[tos_agreement]" id="t_c"></div> <label for="t_c">Terms and Conditions</label>
-      </div>
-      <div class="text-center"><button class="create-account" title="Create Account">Create Account</button></div>
-    </div>
-    <p>Have an account? <span title="Sign In">Sign In</span></p>
-  </div>
-</div>
-
-
-
-<script>
-
-
+ <script>
   $('.signin-db').click(function(event) {
     if ($("#loginform").valid()) {
       if (event && event.preventDefault) {
         event.preventDefault();
       }
-      $('.flash-message').html('');
+       $('.flash-message').html('');
       auth0.signin({
         connection: 'Username-Password-Authentication',
-        username: $('#email').val(),
-        password: $('#password').val()
+        username: $('#login_container #email').val(),
+        password: $('#login_container #password').val()
       }, function(err) {
         $('.flash-message').html('<div class="alert alert-danger">' + err.message + '</div>').show();
         setTimeout(function() {
@@ -127,13 +163,15 @@
     if ($("#registerform").valid()) {
       var userData = {};
 
-      userData.first_name = $('#register_container input[name=register_fname]').val();
-      userData.last_name = $('#register_container input[name=register_lname]').val();
-      userData.username = $('#register_container input[name=register_username]').val();
-      userData.email = $('#register_container input[name=register_email]').val();
-      userData.password = $('#register_container input[name=register_password]').val();
-      userData.verify_password = $('#register_container input[name=register_verify_password]').val();
-      userData.account_type = $('#register_container input[name=register_account_type]').val();
+      userData.first_name = $('.authentication form input[name=register_fname]').val();
+      userData.last_name = $('.authentication form input[name=register_lname]').val();
+      userData.username = $('.authentication form input[name=register_username]').val();
+      userData.email = $('.authentication form input[name=register_email]').val();
+      userData.password = $('.authentication form input[name=register_password]').val();
+      userData.verify_password = $('.authentication form input[name=register_verify_password]').val();
+      userData.account_type = $('.authentication form #user_type').val();
+      alert(userData.account_type)
+      return false;
       userData.connection = 'Username-Password-Authentication';
       userData.email_verified = false;
       var cData = {};
@@ -239,4 +277,4 @@
 
 }
 
-</script>
+</script>       

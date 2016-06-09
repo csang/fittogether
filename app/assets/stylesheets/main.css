@@ -2634,8 +2634,9 @@ text-overflow: '';
 }*/
 .error {
     color: #FF0000;
-    font-size: 12px !important;
-    font-weight: normal;
+    font-size: 14px !important;
+    font-weight: normal!important;
+    font-family: "Helvetica Neue";
 }
 .side_nav_inner .home_icon, .side_nav_inner a, .side_nav_inner .home_icon, .side_nav_inner > div{width:52px; height:52px; margin-bottom:15px; border-radius:100%; float:left; top:inherite;}
 .album-img {
@@ -2912,6 +2913,9 @@ ul.group-imgs li .grop-img img {
     float: left;
     height: 50px;
     width: 50px;
+    overflow:hidden;
+    position:relative; z-index:5;
+    border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%; -o-border-radius:50%;
 }
 .posts-img img {
     height: 100%;
@@ -3350,3 +3354,10 @@ a:hover, a:focus{text-decoration: none;}
 .crop-preview > div{border-radius:100px; border:1px solid #2F8352;}
 .dragncrop .dragncrop-vertical{width:100%; max-width:100%;}
 .modal-body select.form-control.multi-select{height: 100px;}
+
+
+.activity-list, .activity-list > div{display:inline-block; vertical-align:top; width:100%; white-space:normal; padding:3px 0px;}
+.activity-list{padding:44px 0 0;}
+.activity-list .avatar{width:48px; height:48px; float:left; overflow:hidden; border:2px solid rgb(47,131,82); background-color: rgb(47,131,82); color:#fff; border-radius:50%;}
+.activity-list .avatar.activity{background-color: rgb(47,131,82);}
+.activity-list .description{padding:10px 0 5px 65px; font-weight:bold;}

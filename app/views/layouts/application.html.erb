@@ -21,6 +21,7 @@
     <%= stylesheet_link_tag 'landing' if params[:controller] == 'landing' %>
     <%= stylesheet_link_tag 'gym' if params[:controller] == 'profile' %>
     <%= stylesheet_link_tag 'notificatons' if params[:action] == 'notifications' %>
+    <%= stylesheet_link_tag 'signup' if params[:controller] == 'landing' %>
     <%= stylesheet_link_tag 'radial_progress' if params[:action] == 'show_classes' || params[:action] == 'classes' %>
     
    
@@ -38,6 +39,10 @@
      
      <%= javascript_include_tag 'imagesloaded' if params[:controller] == 'profile' ||  params[:controller] == 'fitspots' ||  params[:controller] == 'groups' %>
      <%= javascript_include_tag 'jquery.drag-n-crop' if params[:controller] == 'profile' ||  params[:controller] == 'fitspots' ||  params[:controller] == 'groups' %>
+      
+       <%= javascript_include_tag 'jquery.raty' if params[:controller] == 'profile' %>
+       <%= javascript_include_tag 'fullcalendar' if params[:controller] == 'profile' %>
+      
       <script src="http://maps.googleapis.com/maps/api/js?sensor=false&amp;libraries=places"></script>
 
      <script>

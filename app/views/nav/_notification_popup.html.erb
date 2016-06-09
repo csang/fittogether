@@ -19,6 +19,8 @@
 								 
 							<%  if @fit_spot.present? %>  
 						   	<% @fit_spot.each do |ft| %>
+						   	<% if ft.fitspot.account.present? %>
+						   	
 								<div class="notification">
 									<div>
 									<div class="avatar">
@@ -32,16 +34,17 @@
 										<%= ft.fitspot.fitspot_time %> at 
 										 <%= ft.fitspot.location %></p>
 										
-										<!--<div class="actions">
-											<a href="">Decline</a>
-											<a href="">Accept</a>
-										</div> -->
+								<div class="actions">
+											 <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.id.to_s)%>" class="frequest" type="reject">Decline</a>|
+             <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.id.to_s)%>" class="frequest" type="accept">Accept</a>
+										</div> 
 									</div><div>
 										<a href="/<%= @account.user_name %>/notifications""></a>
 									</div>
 								</div>
 								  
 							  <% end  %>  
+							  <% end %>
 							  <% end %>
 							  
 							  <%  if @joining_request.present? %>  
@@ -60,10 +63,10 @@
 										<h6>invited you to join a group</h6>
 									
 										<p><%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group_id.to_s)}") %> 
-										<!--<div class="actions">
-											<a href="">Decline</a>
-											<a href="">Accept</a>
-										</div> -->
+										<div class="actions">
+											 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="reject">Decline</button>
+             <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="accept">Accept</button>
+										</div> 
 									</div><div>
 										<a href="/<%= @account.user_name %>/notifications"></a>
 									</div>
@@ -111,3 +114,132 @@
 							</div>
 						</div>
 						<div id="dark_cover"></div>
+<script type="text/javascript">
+$(document).ready(function(){
+
+$(document).on('click', '#rejectfriend', function() {
+
+var toid = $(this).attr('data-id');
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '/rejectrequest/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$(that).parent('.notification').fadeOut();
+									
+					$('.flash-message').html('<div class="alert alert-success"> Request was successfully removed.</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+	    
+$(document).on('click','#acceptfriend', function() {
+var toid = $(this).attr('data-id');
+var that = this;
+	$.ajax({
+				type: "PUT",
+				url: '/acceptrequest/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$(that).parent().parent().parent('div .notification').fadeOut();
+									
+					$('.flash-message').html('<div class="alert alert-success"> Request was successfully approved.</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+            
+$('.grequest').on('click', function() {
+var toid = $(this).attr('data-id');
+var type = $(this).attr('type');
+if (type == 'reject') {  
+
+  if (!confirm('Are you sure you want to reject request?')) {
+    return false;
+  }
+  
+}
+var mydata = {'id': toid, 'type' : type};
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '<%= group_request_path()  %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: mydata,
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+						$(that).parent().parent().parent('div .notification').fadeOut();
+                                        var text = type == 'reject' ? 'Request was successfully removed.' :'Request was successfully approved.'
+					$('.flash-message').html('<div class="alert alert-success"> '+ text +'</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+	    
+	    
+	    /// friend request
+$('.frequest').on('click', function() {
+var toid = $(this).attr('data-id');
+var type = $(this).attr('type');
+if (type == 'reject') {  
+  if (!confirm('Are you sure you want to reject request?')) {
+    return false;
+  }  
+}
+var mydata = {'id': toid, 'type' : type};
+var that = this;
+	$.ajax({
+				type: "DELETE",
+				url: '<%= fitspot_request_path()  %>', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: mydata,
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+						$(that).parent().parent().parent('div .notification').fadeOut();
+                                        var text = type == 'reject' ? 'Request was successfully removed.' :'Request was successfully approved.'
+					$('.flash-message').html('<div class="alert alert-success"> '+ text +'</div>').show();
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    });
+          
+	    
+	    }); // end of document ready
+</script>	 

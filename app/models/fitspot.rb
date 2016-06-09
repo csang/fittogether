@@ -1,4 +1,5 @@
 class Fitspot < ActiveRecord::Base
+   serialize :activity_ids, Array
   geocoded_by :location
   belongs_to :account
   belongs_to :group

@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fit Together</title>
+    <%= favicon_link_tag 'global/favicon.ico' %>
+    <%#= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= stylesheet_link_tag 'jquery-ui.min' %>
+    <%= csrf_meta_tags %>
+        <%= stylesheet_link_tag 'main' if params[:controller] == 'landing' %>    
+    <%= stylesheet_link_tag 'signup' if params[:controller] == 'landing' %>    
+
+    
+  <script type="text/javascript">
+    if (!window.location.origin) {
+  window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+	}
+	
+	</script>
+
+    <%#= javascript_include_tag 'application', 'data-turbolinks-track' => true  %>
+      
+      <%= javascript_include_tag 'jquery'%>    
+      <%= javascript_include_tag 'auth0-4.2.min'%>
+      <%= javascript_include_tag 'jquery.timepicker'%>
+      <%= javascript_include_tag 'jquery.validate'%>
+      <%= javascript_include_tag 'front.jquery'%>
+      <%= javascript_include_tag 'landing'%>
+ 
+
+
+   
+  </head>
+  <body>
+
+	
+<div class="full-loader" style="display:none">
+	<div>
+<%= image_tag("loading.gif", :alt => "loading...") %>
+	</div>
+</div>
+   <div class="flash-message">  
+				  <%= render 'layouts/flash_messages' %>
+				</div>
+           <%= yield %>
+          
+    </body>
+
+  </html>
