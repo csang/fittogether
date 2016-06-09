@@ -5,7 +5,7 @@
    <% img = fs.fitspot_image    %>
            <div class="posts">
              <div class="posts-img">
-              <a href="javascript:void(0);" title="<%= fs.title %> "><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %></a>
+              <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
               </div>
              <div class="posts-content">
                <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> <span class="time"> <%= fs.fitspot_date.strftime("%B %e ") %>  <%= fs.fitspot_time.present? ? 'at ' + fs.fitspot_time : '' %>   </span></h4>

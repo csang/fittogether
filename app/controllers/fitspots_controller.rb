@@ -9,10 +9,9 @@ class FitspotsController < ApplicationController
   end
 
   def create
-   
-      gid = Base64.decode64(params[:fitspot][:group_id])
-      
-      @fitspot = Fitspot.create(fitspot_parm.merge(account_id: @account.id, :group_id => gid))
+	
+      gid = Base64.decode64(params[:fitspot][:group_id])      
+      @fitspot = Fitspot.create(fitspot_parm.merge(account_id: @account.id, :group_id => gid,  :activity_ids => params[:activity_ids]))
   
       if @fitspot.save!
         if params[:invite].present?
@@ -38,7 +37,7 @@ class FitspotsController < ApplicationController
   if params[:fitspot].present?
      cid = Base64.decode64(params[:id])		     
      @fitspot = Fitspot.where(:id => cid,:account_id =>@account.id).first
-    if @fitspot.update_attributes(fitspot_parm)
+    if @fitspot.update_attributes(fitspot_parm.merge(:activity_ids => params[:activity_ids]))
      flash[:notice] = 'Fitspot has been updated successfully.'
        redirect_to("/fitspots/" + Base64.encode64(@fitspot.id.to_s)) and return
    else

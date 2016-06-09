@@ -158,7 +158,7 @@
          <% img = useravatar(fs.account)    %>
            <div class="posts">
              <div class="posts-img">
-              <a href="javascript:void(0);" title="<%= fs.title %> "><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %></a>
+              <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
               </div>
              <div class="posts-content">
                <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>  <span class="time"> <%= fs.fitspot_date.strftime("%B %e ") %>  <%= fs.fitspot_time.present? ? 'at ' + fs.fitspot_time : '' %>   </span></h4>
@@ -305,7 +305,7 @@
                                 <p><%= @group.address %></p>
                             </div>
                             <div class="statistics">
-                                <div><h1><%= @group.group_member.count + 1 %></h1><h2>Members</h2></div>
+                                <div><h1><%= @group.group_member.members(@group.id)  %></h1><h2>Members</h2></div>
                             </div>
                         </div>
                         <div class="profile_nav">

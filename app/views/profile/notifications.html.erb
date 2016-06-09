@@ -9,6 +9,8 @@
 						 <!-- fitspot request notificato -->
 							<%  if @fitspot.present? %>  
 						   	<% @fitspot.each do |ft| %>
+						  		<% if ft.fitspot.account.present? %>
+						   	
                         <div class="notification">
                             <div>
                                 <div class="avatar">
@@ -26,12 +28,13 @@
                             </div>
                             <div class="actions">
                                 <p>
-									   <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.id.to_s)%>" class="frequest" type="reject">Reject</a>|
-             <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.id.to_s)%>" class="frequest" type="accept">Join</a>
+									   <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.id.to_s)%>" class="frequest" type="reject">Decline</a>|
+             <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.id.to_s)%>" class="frequest" type="accept">Accept</a>
 									</p>
                             </div>
                         </div>
 						 <% end  %>  
+							  <% end %>
 							  <% end %>
 							  <!-- group -->
 							  
@@ -87,7 +90,7 @@
 							 <% end %>	
 							 
 							 <% if !@account.requested_friendships.present? && !@joining_request.present?  && !@fitspot.present?  %>
-								<h2 class="notification-msg"> No new notification found. </h2>
+								<h2 class="notification-msg"> No new notifications found. </h2>
 								<% end %>
 
                     </div>
@@ -133,8 +136,8 @@
   <% img = useravatar(member.account) %>
   <%= link_to(image_tag(img), "/#{member.account['user_name']}") %>
            <%= link_to(member.account.first_name, "/#{member.account['user_name']}") %>
-			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="reject">Reject</button>
-             <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="accept">Allow</button>
+			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="reject">Decline</button>
+             <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="accept">Accept</button>
                 
          
 </div>
@@ -220,7 +223,7 @@ var that = this;
 	    
 	    });
             
- $('.grequest').on('click', function() {
+$('.grequest').on('click', function() {
 var toid = $(this).attr('data-id');
 var type = $(this).attr('type');
 if (type == 'reject') {  

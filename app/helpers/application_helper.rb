@@ -136,8 +136,9 @@ module ApplicationHelper
    
   def useravatar(profileuser)
     #abort(profileuser.inspect)
+    
     @privacy = nil 
-   
+  
     if !profileuser.account_privacy.nil?	
       if profileuser.account_privacy.account_id!=@account.id  
         privacy = profileuser.account_privacy 

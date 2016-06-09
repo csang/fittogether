@@ -23,6 +23,13 @@
  <%= f.label :text, 'Location*' %>
 	<%= f.text_field :location, id: "geocomplete" ,class: " form-control", maxlength: 150 %>
   </div>
+    <div class="pop-row">
+ <%= f.label :text, 'Activities' %>
+	<% gspecial = Activity.all.map{|x| [x.name] + [x.id]} %>
+		 <%= select_tag(:activity_ids, options_for_select(gspecial),multiple: true) %>
+		 
+		 
+  </div>  
 <div class="pop-row">
  <%= f.label :text, 'When*' %>
 	 <input class="form-control" type="text" readonly name="fitspot[fitspot_date]" id="datepicker">

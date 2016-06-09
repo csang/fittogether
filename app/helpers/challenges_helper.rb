@@ -42,7 +42,7 @@ html = <<-HTML
 				</div>
 				<div><p>VS</p></div>
 				<div class="opponent">
-				#{link_to(image_tag(img2), "/#{chal.sender.user_name}")}</div>
+				#{link_to(image_tag(img2), "/#{chal.recipient.user_name}")}</div>
 			</div>
                             
 		HTML
