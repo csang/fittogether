@@ -94,7 +94,7 @@ before_action :get_account
   def add_del_attending
    if request.xhr?     
      id = Base64.decode64(params[:id])   
-     if params[:type] =='add'         
+      if params[:type] =='add'         
         @member = EventAttender.where(:event_id=> id,:account_id =>@account.id).first
         if @member.present?
           if  @member.update_attribute(:status, true)
