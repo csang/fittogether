@@ -52,11 +52,9 @@
 						   	<% if member.inviter.present? %>	
 								<div class="notification">
 									<div>
-									<div class="avatar">
-									
+									<div class="avatar">									
 										<% img = useravatar(member.inviter) %>
-										<%= link_to(image_tag(img), "/#{member.inviter['user_name']}") %>
-								
+										<%= link_to(image_tag(img), "/#{member.inviter['user_name']}") %>								
 									</div></div><div>
 									
 										<h5> <%= member.inviter.first_name.capitalize %> <%= member.inviter.last_name.present? ? member.inviter.last_name : '' %> </h5>
@@ -64,8 +62,8 @@
 									
 										<p><%= link_to(member.group.title, "/groups/#{Base64.encode64(member.group_id.to_s)}") %> 
 										<div class="actions">
-											 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="reject">Decline</button>
-             <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="grouprequest" type="accept">Accept</button>
+											 <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" class="grequest" type="reject">Decline</a>
+              | <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" class="grequest" type="accept">Accept</a>
 										</div> 
 									</div><div>
 										<a href="/<%= @account.user_name %>/notifications"></a>

@@ -18,7 +18,7 @@
    <label for="fitspot_img" generated="true" class="errors fimgerror" style="display:none;">Image width must be greater than  730 pixels.</label>
   </div>
   -->
-   <input class="form-control" type="hidden"  name="fitspot[group_id]" value="<%= Base64.encode64(@group.id.to_s) %>">
+   <input class="form-control" type="hidden"  name="fitspot[group_id]" value="">
 <div class="pop-row">
  <%= f.label :text, 'Location*' %>
 	<%= f.text_field :location, id: "geocomplete" ,class: " form-control", maxlength: 150 %>
@@ -30,6 +30,7 @@
 		 
 		 
   </div>  
+<!--  
 <div class="pop-row">
  <%= f.label :text, 'When*' %>
 	 <input class="form-control" type="text" readonly name="fitspot[fitspot_date]" id="datepicker">
@@ -40,9 +41,10 @@
 	 <input class="form-control" type="text"  name="fitspot[fitspot_time]" id="timepickernew">
 	 
   </div>
+
 <div class="pop-row">
   <input type="checkbox" name="invite"> Invite all members of group.
-  </div>
+  </div> -->
 
       <div class="modal-footer modal-footer-btn">
        <%= f.submit  'Submit',  :name => 'submit', :class =>'btn btn-primary' %>

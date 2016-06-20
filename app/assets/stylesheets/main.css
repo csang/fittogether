@@ -3361,3 +3361,24 @@ a:hover, a:focus{text-decoration: none;}
 .activity-list .avatar{width:48px; height:48px; float:left; overflow:hidden; border:2px solid rgb(47,131,82); background-color: rgb(47,131,82); color:#fff; border-radius:50%;}
 .activity-list .avatar.activity{background-color: rgb(47,131,82);}
 .activity-list .description{padding:10px 0 5px 65px; font-weight:bold;}
+.atnat {background-color: rgb(47,131,82)!important;color: #fff!important;}
+.fitsport-row{padding:45px 0 0; position:relative;}
+.fitsport-header{margin:0px; padding:0px; display:inline-block; vertical-align:top; width:865px;border-bottom: 1px solid rgb(151, 151, 151);height: 45px;padding: 15px 0; position:fixed; top:76px;background-color: rgb(250, 250, 250); z-index:10;}
+.fitsport-header h2{font-family: "helvetica neue";font-size: 18px;font-weight: bold;margin: 0;padding: 0;}
+.fitsport-header .actions{ bottom: 5px;display: inline-block; position: absolute; right: 1px; vertical-align: bottom;}
+.fitsport-header .actions button {
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid rgb(47, 131, 82);
+    border-radius: 50px;
+    color: rgb(47, 131, 82);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    height: 21px;
+    min-width: 82px;
+    padding: 0 7px 2px;
+}
+.fitsport-header .actions button:hover {
+    background-color: rgb(47, 131, 82);
+    color: #fff;
+}

@@ -1,0 +1,51 @@
+
+ <%= form_for :event ,:url =>  events_create_url ,   :html => {id: "event_form"} do |f| %>
+	
+
+<div class="pop-row">
+ <%= f.label :text, 'Title*' %>
+	<%= f.text_field :title, class: " form-control", maxlength: 50 %>
+  </div>
+<div class="pop-row">
+ <%= f.label :text, 'Description' %>
+	<%= f.text_area :description, class: " boxtextarea form-control", maxlength: 150 %>
+  </div>
+
+<div class="pop-row">
+<label>Image </label>
+	<%= f.file_field :image %>
+ 
+   <label for="fitspot_img" generated="true" class="errors fimgerror" style="display:none;">Image width must be greater than  730 pixels.</label>
+  </div>
+
+   <input class="form-control" type="hidden"  name="event[fitspot_id]" value="<%= Base64.encode64(@fitspot.id.to_s) %>">
+
+   
+<div class="pop-row">
+ <%= f.label :text, 'When*' %>
+	 <input class="form-control datepicker" type="text" readonly name="event[event_date]" >
+        
+  </div>
+<div class="pop-row">
+ <%= f.label :text, 'Start Time' %>
+	 <input class="form-control start" type="text"  name="event[event_start_time]">
+	 
+  </div>
+  <div class="pop-row">
+ <%= f.label :text, 'End Time' %>
+	 <input class="form-control end" type="text"  name="event[event_end_time]">
+	 
+  </div>
+<div class="pop-row">
+  <input type="checkbox" name="invite"> Invite all fitspot followers to event.
+  </div>
+
+      <div class="modal-footer modal-footer-btn">
+       <%= f.submit  'Submit',  :name => 'submit', :class =>'btn btn-primary' %>
+      </div>
+
+<% end %> 
+<script>
+ $('.start').timepicker();
+ $('.end').timepicker();
+</script>

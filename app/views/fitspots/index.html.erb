@@ -1,5 +1,15 @@
 <%#= render(:partial => 'feed/feed_aside') %>
-<div id="seed">
+<div id="seed" class="fitsport-row">
+	
+	<div class="fitsport-header">
+		<div class="title">
+			<h2>FitSpots</h2>
+		</div>
+		<div class="actions">
+			<button class="write_post" data-toggle="modal" data-target="#fitspotForm">Create Fitspot</button>
+			
+		</div>
+	</div>
   <% if  @fitspots.present? %>
   <% @fitspots.each do |fs| %>
    <% img = fs.fitspot_image    %>
@@ -8,14 +18,29 @@
               <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
               </div>
              <div class="posts-content">
-               <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> <span class="time"> <%= fs.fitspot_date.strftime("%B %e ") %>  <%= fs.fitspot_time.present? ? 'at ' + fs.fitspot_time : '' %>   </span></h4>
+               <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> <span class="time">    </span></h4>
                <p><%= fs.description %></p>
              </div>
              <div class="clear"></div>
            </div>
            <% end %>
            <% else %>
-  <h4 class="noti-heading">No Event Found.</h4>
+  <h4 class="noti-heading">No Fitspot Found.</h4>
            <% end %>
   
 </div>
+<!-- end code -->
+<div class="modal fade" id="fitspotForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Fitspot</h4>
+      </div>
+      <div class="modal-body">
+		<%= render(:partial => 'fitspots/newfitspot') %>
+    </div>
+  </div>
+</div>
+</div>
+

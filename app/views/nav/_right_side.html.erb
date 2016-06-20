@@ -71,31 +71,31 @@
                     <div class="events">
                         <div class="header">
                             <h2>Events</h2>
-                            	<%  fitspot = fitspot_invitation %>  
+                            	<%  event = event_invitation %>  
                             <a href="/fitspots/index" class="amount"> 
-								<% if fitspot.count > 0 %>
-								<%= fitspot.count  %>Invitations
+								<% if event.count > 0 %>
+								<%= event.count  %>Invitations
 								<% end %>                            
                             </a>
                             
                         </div>
                         <div class="list">
 						
-							<%  if fitspot.present? %>  
-							<% fitspot.each do |ft| %>
-							<% img = ft.fitspot.fitspot_image    %>
+							<%  if event.present? %>  
+							<% event.each do |ft| %>
+							<% img = ft.event.image    %>
                             <div>
-                                <div class="avatar"><h3><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %></h3></div>
+                                <div class="avatar"><h3><%= image_tag(img) %></h3></div>
                                 <div class="description">
-                                    <p class="date"><%= ft.fitspot.fitspot_date.strftime("%e %B ") %></p><br>
+                                    <p class="date"><%= ft.event.event_date.strftime("%e %B ") %></p><br>
                                     <p class="event">
-										<%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %>
+										<%= ft.event.title.capitalize  %>
 										</p><br>
-                                    <p class="location"><%= ft.fitspot.location %></p><br>
+                                    <p class="location"><%= ft.event.fitspot.location %></p><br>
                                     <p class="actions">
-									<button class="attending" data-type="add" title="Attending" <%=  ft.fitspot.status == 1 ? 'disabled' : '' %>  data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>"> 
-									Attending</button>
-								<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>">Not Attending</button></p>
+									<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.id.to_s)   %>"> 
+										Attending</button>
+									<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.id.to_s)   %>">Not Attending</button></p>
                                 </div>
                             </div>
                             <% end %>
@@ -105,7 +105,7 @@
                             
                            </div>
                         <div class="see_all">
-                                   <%= link_to  'See All Events','/fitspots/index'  %>
+                                   <%= link_to  'See All Events','/events/index'  %>
                         </div>
                     </div>
                     <% fitspots = suggested_fitspot %>  
@@ -202,6 +202,7 @@
       }
     });
   });
+
   
  
   </script>

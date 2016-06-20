@@ -89,8 +89,9 @@
 							  </div>
 							<% end %>
 							<% if post.post_type =='checkin' %> 
-								<div class="visual">							
-									<input type="hidden" class="geopost" mapPlaceholder="placeholder_<%= post.id %>" value="<%=	post.text.split('at')[-1] %>">
+								<div class="visual">		
+										
+									<input type="hidden" class="geopost" mapPlaceholder="placeholder_<%= post.id %>" value="<%=	post.text.split('at ')[-1] %>">
                                     <div class="map" id="placeholder_<%= post.id %>" style="height:100px;">                                      
                                     </div>
                                 </div>
@@ -144,7 +145,7 @@
                             
                             <div class="footer">
 							
-                                <div class="kudos" data-id="<%= Base64.encode64(post.id.to_s) %>">
+                                <div class="kudos postkudos" data-id="<%= Base64.encode64(post.id.to_s) %>">
                                     <div class="<%= check_kudos(post.id.to_s) %>"></div>
                                     <h3>Give Kudos</h3>
                                 </div>

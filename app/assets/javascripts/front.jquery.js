@@ -1,3 +1,4 @@
+   
 $(document).ready(function () {
      $('#timepickernew').timepicker();
  	jQuery.validator.addMethod("require_from_group", function(value, element, options) {
@@ -777,6 +778,54 @@ $(document).ready(function () {
             $(element).removeClass("error");
         }
     });
+    
+       $("#event_form").validate({
+        rules: {
+            'event[title]': {
+                required: true,
+              },
+              
+            'event[description]': {
+                required: true,
+              },
+              
+            'event[event_date]': {
+                required: true,
+              },
+              'event[event_start_time]': {
+                required: true,
+              },
+              'event[event_end_time]': {
+                required: true,
+              }
+        },
+        messages: {
+            'event[title]': {
+                required: 'Please enter name.',
+                
+            },
+             'event[description]': {
+                required: 'Please enter description.',
+                
+            },
+             'event[event_date]': {
+                required: 'Please select date.',
+                
+            },
+             'event[event_start_date]': {
+                required: 'Please select start time.',
+                
+            },
+             'event[event_end_date]': {
+                required: 'Please select end time.',
+                
+            }
+        },
+	    highlight: function(element) {
+            $(element).removeClass("error");
+        }
+    });
+    
     // start of feed page js
     
 
@@ -955,7 +1004,7 @@ $(document).ready(function () {
     }
   });
   
-  $(document).on('click', '.kudos', function(e) {
+  $(document).on('click', '.postkudos', function(e) {
 	  
           var postid = $(this).attr('data-id');
           var classs = $(this).children('div').attr('class');
@@ -1073,42 +1122,7 @@ $(document).ready(function () {
 	  
     });
     
-      // add member
-    $('.attending').on('click', function() {
-	
-      var id = $(this).attr('data-id');
-      var type = $(this).attr('data-type');
-      var that = this;
-      var mydata = {'id': id, 'type': type};
-      $.ajax({
-        type: "POST",
-        url: "/add_del_going", //sumbits it to the given url of the form
-        dataType: "HTML",
-        data: mydata,  
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-        },
-        success: function(data) {
-          if (type == 'add') {
-			//	$(that).prop('disabled', true);             
-			$(that).parent().parent().parent().hide();
-		
-          } else {
-             $(that).parent().parent().parent().hide();
-             
-          }
-
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
-          console.log(thrownError)
-
-        }
-
-      });
-
-    }); 
-    
+ 
  
    
 }); // end of document dot ready

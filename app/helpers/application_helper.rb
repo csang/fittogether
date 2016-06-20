@@ -282,9 +282,9 @@ module ApplicationHelper
 	return trainer
   end
   
-  def fitspot_invitation
-   fitspot = FitspotMember.where(:account_id => @account.id,:status => false).joins(:fitspot).where("Date(fitspot_date) >= ?",Date.today)
-   return fitspot
+  def event_invitation
+   event = EventAttender.where(:account_id => @account.id,:status => false).joins(:event).where("Date(event_date) >= ?",Date.today)
+   return event
   end
   
   # get trainer as method name suggested 
@@ -424,24 +424,90 @@ module ApplicationHelper
     end
     
     
-    def get_groups	
-		
-			 groups = Group.all				
-		     groups_array = Array.new  						
-			 groups.each do |group|
-			 
-			     if groups.present? 
-					 hash = {}	
-					 hash[:full_name] = group[:title].capitalize
-					 hash[:initials] =  group[:title][0]
-					 hash[:id] =  group[:id]
-					 hash[:avatar] =  group.group_image.present? ? group.group_image(:thumb) : '/assets/group.jpg'	
-				     groups_array.push(hash)
-				 end 
-		     end	
-		  return  groups_array.to_json
-		
+    def get_groups			
+	 groups = Group.all				
+	 groups_array = Array.new  						
+	 groups.each do |group|
+	 
+		 if groups.present? 
+			 hash = {}	
+			 hash[:full_name] = group[:title].capitalize
+			 hash[:initials] =  group[:title][0]
+			 hash[:id] =  group[:id]
+			 hash[:avatar] =  group.group_image.present? ? group.group_image(:thumb) : '/assets/group.jpg'	
+			 groups_array.push(hash)
+		 end 
+	 end	
+     return  groups_array.to_json		
 	end
+	
+	 def check_event_kudos(id)
+      kudos =  EventKudo.where(:account_id => @account.id, :event_id =>id).first 
+      if kudos.present?
+        return 'icon-liked'
+      else
+        return 'icon'
+      end
+    
+  end
+  
+  def get_friend_and_attender(profileuser, goings = nil)
+ 
+  user = Array.new  
+	 if profileuser.passive_friends.present? 
+        profileuser.passive_friends.each do |member|
+      
+        if goings.present?
+			if  goings.include? member.id  
+			 user.push(member)
+			end
+        else 
+        user.push(member)
+        end
+     
+         if member.account_privacy.present? 
+			 if member.account_privacy.account_id!= current_user.id  
+			  privacy = {}			     						
+			  privacy[:privacy] = member.account_privacy 
+			  user.push(privacy)
+			end 
+		 end 
+       end 
+     end 
+     
+      if profileuser.active_friends.present? 
+         profileuser.active_friends.each do |member|
+         if goings.present?
+         if  goings.include? member.id  
+         user.push(member)
+         end
+         else 
+         user.push(member)
+         end
+         if member.account_privacy.present? 
+			 if member.account_privacy.account_id!= current_user.id 
+			  privacy = {}			     						
+			  privacy[:privacy] = member.account_privacy 
+			  user.push(privacy)
+			 end 
+		 end 
+       end 
+     end 
+  
+   return user
+  end
+  
+  def check_if_event_attender(event_attender)
+ 
+  if !event_attender.present? 
+	return false
+  end
+  id = event_attender.map(&:account_id)         
+  usr = id.include? @account.id ? @account.id : nil 
+  return usr.present? ? true : false 
+  
+  
+  end
  
     
 
