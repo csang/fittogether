@@ -52,7 +52,7 @@
         		<%  user.each do |usr| %>
         		<% if usr.present?  %>
         			<div class="avatar">					
-        			<%= link_to(image_tag(usr[:avatar]), "/#{usr.user_name}") %>
+        			<%= link_to(image_tag(usr[:avatar]), "/#{usr[:user_name]}") %>
         			</div>
         		<% end %>
         		<% end %>
