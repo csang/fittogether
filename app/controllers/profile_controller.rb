@@ -179,6 +179,16 @@ class ProfileController < ApplicationController
           fs.update_attributes(seen: true)
         end
       end   
+      
+      # event seen update
+      
+      @event = EventAttender.where(:account_id => @account.id,:status => false)
+      if @event.present?
+        @event.each do |fs|
+          fs.update_attributes(seen: true)
+        end
+      end   
+  
   
      # @profile = 'profile_notifications'
      # render 'index'

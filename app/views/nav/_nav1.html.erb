@@ -10,7 +10,7 @@
 			</div>
 		   <% @countreq = @account.requested_friendships_seen.present? ? @account.requested_friendships_seen.count : '' %> 
 		   <% @countreqchallenge = @account.requested_challenges_seen.present? ? @account.requested_challenges_seen.count : '' %> 
-		   <% @cnt = @countreq.to_i + @cnt.to_i + + @fitspot_cont.to_i %>
+		   <% @cnt = @countreq.to_i + @cnt.to_i +  @fitspot_cont.to_i + @event_cont.to_i %>
 	
 			<nav id="top_nav">
 			   <span class="new"> <%= @cnt == 0 ? '' : @cnt %> </span> 

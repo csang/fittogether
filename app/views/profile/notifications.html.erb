@@ -36,6 +36,43 @@
 						 <% end  %>  
 							  <% end %>
 							  <% end %>
+							  
+							  
+							  <!--  event ->
+							  
+							    <!--- event notification -->
+							  	<%  if @event.present? %>  
+						   	<% @event.each do |ft| %>
+						   	<% if ft.event.account.present? %>
+						   	
+								<div class="notification">
+									<div>
+									<div class="avatar">
+									<% img = useravatar(ft.event.account) %>
+									<%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.event.fitspot_id.to_s)}/events") %>
+									</div></div>
+									<div class="text">
+                                <p>
+										 <%= ft.event.account.first_name.capitalize %> <%= ft.event.account.last_name.present? ? ft.event.account.last_name : '' %> 
+										Invited you to
+										<%= link_to(ft.event.title, "/fitspots/#{Base64.encode64(ft.event.fitspot_id.to_s)}/events") %> on , 
+										<%= ft.event.event_date.strftime('%B %d') %>
+										<%= ft.event.event_start_time %> - <%= ft.event.event_end_time %> at 
+										 <%= ft.event.fitspot.location %></p>
+								</div>
+                            <div class="actions">
+                                <p>
+											 <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.event.id.to_s)%>" class="attending" data-type="not">Decline</a>|
+             <a href="javascript:void(0)" data-id="<%= Base64.encode64(ft.event.id.to_s)%>" class="attending" data-type="add">Accept</a>
+									</p>	</div> 
+									</div>
+								
+							  <% end  %>  
+							  <% end %>
+							  <% end %>
+							  
+							  
+							  
 							  <!-- group -->
 							  
 						  <%  if @joining_request.present? %>  
