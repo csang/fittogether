@@ -50,7 +50,7 @@
         		<!--  -->
         		<% if user.present? %>
         		<%  user.each do |usr| %>
-        		<% if usr.present? %>
+        		<% if usr.present? && usr.account_privacy.presnt? %>
         			<div class="avatar">
 					<% img = useravatar(usr) %>	
         			<%= link_to(image_tag(img), "/#{usr.user_name}") %>
