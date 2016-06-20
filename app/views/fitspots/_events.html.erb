@@ -1,19 +1,266 @@
 <div class="header">
     <div class="title">
-        <h2>Events <span>4</span></h2>
+        <h2>Events <span><%=  @fitspot.event.present? ?   @fitspot.event.count : '' %></span></h2>
     </div>
     <div class="actions">
-        <button class="new_event">New Event</button>
+        <button class="new_event" data-toggle="modal" data-target="#eventForm">New Event</button>
     </div>
 </div>
 
 <div id="feed" class="group">
-	<!-- Start: Event post -->
-  <h1>Coming Soon</h1>
+<% if @fitspot.event.present?  %>
+	<%  abc = @fitspot.event.sort.reverse  %>
+	<%  abc.each do |evnt|  %>
+	<%  if evnt.event_date > Date.today  %>
+	<div class="post event">
+        <div class="header">
+            <div class="user">
+                <div class="avatar"><h3><%= image_tag(evnt.image) %></h3></div>
+                <div class="data">
+                    <h3 class="date"><%= evnt.event_date.strftime('%B %d') %> <%= evnt.event_start_time %>-<%= evnt.event_start_time %></h3>
+                    <h3 class="event"><%= evnt.title %></h3>
+                    <h3 class="location"><%#= @fitspot.location %></h3>
+                </div>
+            </div>
+            <% if evnt.account_id == @account.id %>
+               <%= link_to('<button class="close"></button>'.html_safe , event_delete_path(evnt.id),method: :delete, :remote => true, :class => 'eve_del' ) %>
+            <% end %>
+        </div>
+        <div class="content">
+            <div class="content">
+	            <p></p><%= evnt.description %></p>
+	        </div>
+        </div>
+        <div class="attending_friends">
+        	<div class="title">
+					<%
+          goings = Array.new
+		  evnt.event_attender.each do |fm|
+		   if fm.status == true 
+		   goings.push(fm.account.id)
+		   end
+		  end
+		  	%>
+	
+        	<% user = goings.present? ? get_friend_and_attender(@account, goings) : nil %>
+        		<p>You have <span><%= user.present? ? user.count : 'no' %></span> Friends who are attending</p>
+        	</div>
+        
+        	<div class="friends">
+        		<!--  -->
+        		<% if user.present? %>
+        		<%  user.each do |usr| %>
+        			<div class="avatar">
+					<% img = useravatar(usr) %>	
+        			<%= link_to(image_tag(img), "/#{usr.user_name}") %>
+        			</div>
+        		<% end %>
+        		<% end %>
+        		<!--  -->
+        	</div>
+        </div>
+        <div class="comment_section" style="height: 0px;">
+            <div class="comment_container">				
+				    <% if evnt.event_comment.present? %>
+					<% evnt.event_comment.each do |cm| %>
+                                    <div class="comment" id="scont<%= cm.id  %>">
+                                     <% abc =  get_user_detail(cm.account_id) %>
+                                       <% if abc.present? %>
+                                       <% img =  useravatar(abc) %>
+                                        <div class="avatar">
+                                             <%= link_to(image_tag(img) , abc.user_name) %>
+                                        </div>
+                                        <div class="header">
+                                            <h5><%= abc.first_name.capitalize %> <%= abc.last_name.present? ? abc.last_name : '' %></h5>
+                                            <p class="timestamp"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</p>
+                                        </div>
+                                        <div class="text">
+                                            <p class="the_comment">
+										    <% cm.text.split.select {|w| %>
+												<% if  w[0] == "#" %>
+												<%=raw tag_links(w)%>
+												<% elsif w[0] == "@" %>    
+														<%=raw user_links(w)%>      
+												<% else %>    
+												<%= w %>    
+												<% end %>      
+										    <%  } %> </p>
+										    <% if @account.id == cm.account_id  %> 						
+											<button data-id="<%=  Base64.encode64(cm.id.to_s)   %>" class="close event-comment-delete"></button>			
+											<% end %>
+                                        </div>
+                                         <% end %>
+                                   
+                                    </div>                            
+                                    <% end %>
+                                    <% end %>
+            </div>
+            <div class="add_comment">
+                <textarea maxlength="255" placeholder="Start commenting here..."></textarea>
+                <button class="post_event_comment" type="button" data-id="<%= Base64.encode64(evnt.id.to_s) %>">Post Comment</button>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="eventkudos kudos" data-id="<%= Base64.encode64(evnt.id.to_s) %>">
+                <div class="<%= check_event_kudos(evnt.id.to_s) %>"></div>
+                <h3>Give Kudos</h3>
+            </div>
+            <div class="comment">
+                <div class="icon"></div>
+                <h3>Comment(<%= evnt.event_comment.present? ? evnt.event_comment.count : '' %>)</h3>
+            </div>
+            <!-- if( post belongs to user ){ -->
+            <!-- <div class="edit">
+                <div class="icon"></div>
+                <h3>Edit</h3>
+            </div> -->
+            <!-- } //end if -->
+            <div class="event_actions">   
+				<% attedr = check_if_event_attender(evnt.event_attender) %>       	
+            	<button class="attend <%= attedr.present? ? 'atnat' : '' %>" <%= attedr.present?  ? 'disabled' : '' %> data-type="add" title="Attending"   data-id="<%=  Base64.encode64(evnt.id.to_s)   %>">Attending </button>
+            	<button class="attend <%= !attedr.present? ? 'atnat' : '' %>" <%= !attedr.present? ? 'disabled' : '' %> data-type="del" title="Not Attending"   data-id="<%=  Base64.encode64(evnt.id.to_s)   %>"> Not Attending </button> 
+            </div>
+        </div>
+    </div>
+    <% end %>
+    <% end %>
+    <% end %>
 </div>
 
 <script type="text/javascript">
 $(function() {
+	
+	$(".eve_del").on("ajax:success", function(e, data, status, xhr)  {
+    $('.flash-message').html('<div class="alert alert-success"> Event deleted succesfully.</div>').show();
+    $(this).parent().parent('div .post').hide();
+     });
+    $(".eve_del").on("ajax:error", function(e, data, status, xhr)  {
+	 console.log(data);
+    $('.flash-message').html('<div class="alert alert-danger"> Please Try again.</div>').show();
+     });
+	
+	  $(document).on('click', '.eventkudos', function(e) {
+		  e.preventDefault();	
+		  e.stopPropagation()
+          var eventid = $(this).attr('data-id');
+          var classs = $(this).children('div').attr('class');
+          var that = $(this);
+	      $.ajax({
+          type: "POST",
+          url: "<%= create_event_kudos_path %>", //sumbits it to the given url of the form
+          data: {event_id: eventid},
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          }
+          }).success(function(data) {
+			  if (data == 1) {
+			    	$(that).children('div').toggleClass('icon icon-liked');			
+			  }	
+        });
+
+    });
+    
+      $(document).on('click', '.post_event_comment', function(e) {
+	    e.preventDefault();		  
+      var that = $(this);
+      console.log(globalVariableforComment);
+      var textnew = $(this).siblings('textarea').val(); 
+      var textold = $(this).siblings('textarea').val();
+      if (globalVariableforComment.length > 0 ) {
+       $.each(globalVariableforComment, function( key, valu ) {   
+         textnew  =    textnew.replace(valu.key, valu.value);
+         console.log(textnew);
+       });  
+     
+      }
+        var text = textnew!='' ? textnew : textold
+        if (text == '') {
+		  $(this).siblings('textarea').attr('placeholder',"Don't forget to type your comment");	
+          return false;
+        }
+        var event_id = $(this).attr('data-id');
+ 
+        $.ajax({
+          type: "POST",
+          url: '/create_comment_on_event/', //sumbits it to the given url of the form
+          data: {text: text, event_id: event_id},
+          dataType: "HTML",
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          }
+        }).success(function(data) {
+          $(".comment_container").append(data);
+         that.siblings('textarea').val('');
+         	var height = that.parent().parent().find('.comment_container').height() + that.parent().parent().find('.add_comment').height() + 37;
+			that.parent().parent().css('height',height).find('.add_comment textarea').attr('placeholder',"Start commenting here...").val('').focus();
+
+
+        });
+
+     
+
+    });
+    
+     // add member
+    $('.attend').on('click', function() {	
+      var id = $(this).attr('data-id');
+      var type = $(this).attr('data-type');
+      var that = this;
+      var mydata = {'id': id, 'type': type};
+      $.ajax({
+        type: "POST",
+        url: "/add_del_attending", //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,  
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {            
+			$(that).siblings().prop('disabled', false); 
+			$(that).siblings().removeClass('atnat');		        
+			$(that).prop('disabled', true);
+			$(that).addClass('atnat');
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    }); 
+    
+    // delete event comment
+	$(document).on('click','.event-comment-delete', function() {
+      if (confirm("Do you want to delete comment?")) {
+        var toid = $(this).attr('data-id');
+        var mydata = {'id': toid};
+        var that = this;
+        $.ajax({
+          type: "DELETE",
+          url: '/event_comment_delete/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: mydata,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#scont' + data).fadeOut();
+            $('.flash-message').html('<div class="alert alert-success"> Comment has been deleted successfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+    });
+    
     if(typeof Fit !== 'undefined'){
         $('#feed_container #feed .post .footer > div.comment').click(Fit.toggle_comments);
         $('#feed_container #feed .post .comment_section .post_comment').click(Fit.post_comment);

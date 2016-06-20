@@ -30,20 +30,20 @@
 	<% gspecial = Activity.all.map{|x| [x.name] + [x.id]} %>	
 		 <%= select_tag(:activity_ids, options_for_select(gspecial, @fitspot.activity_ids.present? ? @fitspot.activity_ids.map {|j| j} : ''), :class=>'form-control multi-select' ,multiple: true) %>
 		 
-		 
+	 <input type="hidden" name="id" value="<%= Base64.encode64(@fitspot.id.to_s) %> ">	 
   </div>   
-  
+<!--  
 <div class="pop-row">
  <%= f.label :text, 'When*' %>
-	 <input class="form-control" type="text" readonly name="fitspot[fitspot_date]" id="datepicker" value="<%= @fitspot.fitspot_date.strftime("%d-%m-%Y")  %> ">
+	 <input class="form-control" type="text" readonly name="fitspot[fitspot_date]" id="datepicker" value="">
           <input type="hidden" name="id" value="<%= Base64.encode64(@fitspot.id.to_s) %> ">
   </div>
 <div class="pop-row">
  <%= f.label :text, 'Time' %>
-	 <input class="form-control" type="text"  name="fitspot[fitspot_time]" id="timepickernew" value="<%= @fitspot.fitspot_time %>" >
+	 <input class="form-control" type="text"  name="fitspot[fitspot_time]" id="timepickernew" value="" >
 	 
   </div>
-
+-->
 
       <div class="modal-footer">
        <%= f.submit  'Submit',  :name => 'submit', :class =>'btn btn-primary' %>

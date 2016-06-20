@@ -11,6 +11,8 @@ class Account < ActiveRecord::Base
 	has_many :post, :dependent =>:delete_all
 	has_many :comment, :dependent =>:delete_all
 	has_many :kudo, :dependent =>:delete_all
+	has_many :event_kudo, :dependent =>:delete_all
+	has_many :event_comment, :dependent =>:delete_all
 	has_one :account_privacy, :dependent =>:delete
 	
 	has_many :friendships

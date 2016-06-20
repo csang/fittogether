@@ -1,594 +1,633 @@
 <!--- New --->	
  
-               <div class="collage">
-                        <div class="sub_collage">
-                            <div class="square">
-								<%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_one", :onsubmit=>'return before_submit()'}) do |f| %>
-								 <% if @account.id == @profileuser.id %>
-								<span class="cover-icon"></span>
-							  <input type="file" value="Change cover"  accept="image/*" id="cfone" data-id="1" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
-							   <input type="hidden" name="position" value=1>								
-								 <% end %>
-								 <% end %>
-								<% img = get_cover(1) %>
-								<div style="width:166.8px;height:166.8px;">							
-								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_one">
-								<%= image_tag(img.present? ? img.cover : '' , :id =>'position_one') %>
-								
-								</div>
-								</div>
-                            <div class="square">
-								 <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_two", :onsubmit=>'return before_submit()'}) do |f| %>
-								 <% if @account.id == @profileuser.id %>
-								 <span class="cover-icon"></span>
-							     <input type="file" value="Change cover" id="cftwo" data-id="2" accept="image/*" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
-							     <input type="hidden" name="position" value=2>								
-								 <% end %>
-								 <% end %>
-								<% img = get_cover(2) %>
-								 <div style="width:166.8px;height:166.8px;">
-							
-								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_two">
-								<%= image_tag(img.present? ? img.cover : '' , :id =>'position_two') %>
-							
-							</div>
-							</div>
-                            <div class="landscape">
-                             <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_three", :onsubmit=>'return before_submit()'}) do |f| %>
-								 <% if @account.id == @profileuser.id %>
-							  <span class="cover-icon"></span>
-							  <input type="file" value="Change cover" id="cfthree" data-id="3"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 150)" />
-							   <input type="hidden" name="position" value=3>								
-								 <% end %>
-								 <% end %>
-								 <% img = get_cover(3) %>
-								  <div style="width:340.6px;height:166.8px;">
-								
-								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_three">
-								<%= image_tag(img.present? ? img.cover : '', :id =>'position_three') %>
-								
-								 </div>
-								 </div>
-                        </div>
-                        <div class="sub_collage">
-                            <div class="big_square">
-                             <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_four", :onsubmit=>'return before_submit()'}) do |f| %>
-								 <% if @account.id == @profileuser.id %>
-								 <span class="cover-icon"></span>
-							  <input type="file" value="Change cover" id="cffour" data-id="4"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 300)" />
-							   <input type="hidden" name="position" value=4>								
-								 <% end %>
-								 <% end %>
-								 <% img = get_cover(4) %>
-									<div style="width:340.6px;height:340.6px;"> 
-									
-									<input type ="hidden" value="<%= img.present? ? img.position_offset : ''%>" id="offset_four">
-									<%= image_tag(img.present? ? img.cover : '' , :id =>'position_four') %>
-									
-									</div>
-								</div>
-                            <div class="square">
-								   <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_five", :onsubmit=>'return before_submit()'}) do |f| %>
-								 <% if @account.id == @profileuser.id %>
-								 <span class="cover-icon"></span>
-							  <input type="file" value="Change cover" id="cffive" data-id="5"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
-							   <input type="hidden" name="position" value=5>								
-								 <% end %>
-								 <% end %>
-								 <% img = get_cover(5) %>
-								 <div style="width:166.8px;height:166.8px;"> 
-								 
-									<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_five"> 		
-								<%= image_tag(img.present? ?img.cover : '' , :id =>'position_five') %>
-							
-								</div>
-								</div>
-                            <div class="square">
-                              <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_six", :onsubmit=>'return before_submit()'}) do |f| %>
-								 <% if @account.id == @profileuser.id %>
-								 <span class="cover-icon"></span>
-							  <input type="file" value="Change cover" id="cfsix" data-id="6"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
-							   <input type="hidden" name="position" value=6>								
-								 <% end %>
-								 <% end %>
-								 <% img = get_cover(6) %>
-								  <div style="width:166.8px;height:166.8px;"> 
-									
-										<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_six"> 
-									<%= image_tag(img.present? ? img.cover : '' , :id =>'position_six') %>
-								
-								</div>
-								</div>
-                        </div>
-                    </div>
-                    <div class="profile_bar">
-                        <div class="avatar">
-                          <% img =  useravatar(@profileuser)  %>
-						 <%= image_tag(img) %>	
-						 </div>
-                        <div class="profile_data" <% if @profileuser.user_type.to_i == 3  %> style="background-color: rgb(177, 26, 151)" <% end %> >
-                            <div class="personal_data">
-                             <% if @profileuser.last_name.present? %>
-							 <% lname = @profileuser.last_name %>
-							 <% else %>
-							 <%  lname = '' %>
-							 <% end %>
-                                <h1><%= @profileuser.first_name.capitalize + ' ' +  lname.capitalize  %></h1>
-                              
-                                 <% unless @account.id == @profileuser.id %>	
-								 <% if @account.pending_friends.present? %>					  
-								 <% @account.pending_friends.each do |friendship| %>		
+<div class="collage">
+    <div class="sub_collage">
+        <div class="square">
+            <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_one", :onsubmit=>'return before_submit()'}) do |f| %>
+             <% if @account.id == @profileuser.id %>
+            <span class="cover-icon"></span>
+          <input type="file" value="Change cover"  accept="image/*" id="cfone" data-id="1" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+           <input type="hidden" name="position" value=1>								
+             <% end %>
+             <% end %>
+            <% img = get_cover(1) %>
+            <div style="width:166.8px;height:166.8px;">							
+            <input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_one">
+            <%= image_tag(img.present? ? img.cover : '' , :id =>'position_one') %>
+            
+            </div>
+            </div>
+        <div class="square">
+             <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_two", :onsubmit=>'return before_submit()'}) do |f| %>
+             <% if @account.id == @profileuser.id %>
+             <span class="cover-icon"></span>
+             <input type="file" value="Change cover" id="cftwo" data-id="2" accept="image/*" class="cover_file" name="cover" title="(ideal image size : 159 X 250)" />
+             <input type="hidden" name="position" value=2>								
+             <% end %>
+             <% end %>
+            <% img = get_cover(2) %>
+             <div style="width:166.8px;height:166.8px;">
+        
+            <input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_two">
+            <%= image_tag(img.present? ? img.cover : '' , :id =>'position_two') %>
+        
+        </div>
+        </div>
+        <div class="landscape">
+         <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_three", :onsubmit=>'return before_submit()'}) do |f| %>
+             <% if @account.id == @profileuser.id %>
+          <span class="cover-icon"></span>
+          <input type="file" value="Change cover" id="cfthree" data-id="3"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 150)" />
+           <input type="hidden" name="position" value=3>								
+             <% end %>
+             <% end %>
+             <% img = get_cover(3) %>
+              <div style="width:340.6px;height:166.8px;">
+            
+            <input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_three">
+            <%= image_tag(img.present? ? img.cover : '', :id =>'position_three') %>
+            
+             </div>
+             </div>
+    </div>
+    <div class="sub_collage">
+        <div class="big_square">
+         <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_four", :onsubmit=>'return before_submit()'}) do |f| %>
+             <% if @account.id == @profileuser.id %>
+             <span class="cover-icon"></span>
+          <input type="file" value="Change cover" id="cffour" data-id="4"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 350 X 300)" />
+           <input type="hidden" name="position" value=4>								
+             <% end %>
+             <% end %>
+             <% img = get_cover(4) %>
+                <div style="width:340.6px;height:340.6px;"> 
+                
+                <input type ="hidden" value="<%= img.present? ? img.position_offset : ''%>" id="offset_four">
+                <%= image_tag(img.present? ? img.cover : '' , :id =>'position_four') %>
+                
+                </div>
+            </div>
+        <div class="square">
+               <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_five", :onsubmit=>'return before_submit()'}) do |f| %>
+             <% if @account.id == @profileuser.id %>
+             <span class="cover-icon"></span>
+          <input type="file" value="Change cover" id="cffive" data-id="5"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+           <input type="hidden" name="position" value=5>								
+             <% end %>
+             <% end %>
+             <% img = get_cover(5) %>
+             <div style="width:166.8px;height:166.8px;"> 
+             
+                <input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_five"> 		
+            <%= image_tag(img.present? ?img.cover : '' , :id =>'position_five') %>
+        
+            </div>
+            </div>
+        <div class="square">
+          <%= form_for( AccountCover.new, :remote => true, :multipart => true, :format => :json, :html => {id: "cover_form_six", :onsubmit=>'return before_submit()'}) do |f| %>
+             <% if @account.id == @profileuser.id %>
+             <span class="cover-icon"></span>
+          <input type="file" value="Change cover" id="cfsix" data-id="6"  accept="image/*" class="cover_file" name="cover" title="(ideal image size : 175 X 150)" />
+           <input type="hidden" name="position" value=6>								
+             <% end %>
+             <% end %>
+             <% img = get_cover(6) %>
+              <div style="width:166.8px;height:166.8px;"> 
+                
+                    <input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_six"> 
+                <%= image_tag(img.present? ? img.cover : '' , :id =>'position_six') %>
+            
+            </div>
+            </div>
+    </div>
+</div>
+<div class="profile_bar">
+<div class="avatar">
+  <% img =  useravatar(@profileuser)  %>
+ <%= image_tag(img) %>	
+ </div>
+<div class="profile_data" <% if @profileuser.user_type.to_i == 3  %> style="background-color: rgb(177, 26, 151)" <% end %> >
+    <div class="personal_data">
+     <% if @profileuser.last_name.present? %>
+     <% lname = @profileuser.last_name %>
+     <% else %>
+     <%  lname = '' %>
+     <% end %>
+        <h1><%= @profileuser.first_name.capitalize + ' ' +  lname.capitalize  %></h1>
+      
+         <% unless @account.id == @profileuser.id %>	
+         <% if @account.pending_friends.present? %>					  
+         <% @account.pending_friends.each do |friendship| %>		
 
-									<% if friendship.id == @profileuser.id %>	
-									  <button data-id="<%= Base64.encode64(friendship.id.to_s)%>" class="cancelfriend">Cancel Request</button>
-									  <button data-id="" class="addfriend" style="display:none;" >Add Friend</button>							         	
-									<% end %>
-								  <% end %>		
-								<% end %>		
+            <% if friendship.id == @profileuser.id %>	
+              <button data-id="<%= Base64.encode64(friendship.id.to_s)%>" class="cancelfriend">Cancel Request</button>
+              <button data-id="" class="addfriend" style="display:none;" >Add Friend</button>							         	
+            <% end %>
+          <% end %>		
+        <% end %>		
 
-								<% if !@friend.present? %>
-								  <% if @profileuser.user_type.to_i == 3 && @account.user_type.to_i == 3 %>
-									<p></p>
-								  <% else %>
-									<button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" class="addfriend">
-									  <%= if  @profileuser.user_type==3 
-										'Join' 
-										elsif @profileuser.user_type==2
-										'Follow'
-										else
-										'Add Friend'
-										end %>   
-									</button>
-								  <% end %>	
-								<button data-id="" class="cancelfriend" style="display:none;">Cancel Request</button>	
-								<% elsif @friend.approved== true %>								
-									 <% if  @profileuser.user_type==3 %>
-								   <button> Joined </button>		     
-								   <% elsif  @profileuser.user_type==2 %>
-								    <button> Following </button>	
-								  <% else %>
-									 <button> Friend </button>			
-								  <% end %>	     
-								 	
-								<% else %>								 
-									<!--<button><%= @profileuser.id == @friend.account_id ? 'Request Pending ' : 'Request Sent ' %></button>-->    
-								 	
-								<% end %>
-								<% end %>
-					
-								<% if @profileuser.user_type == 1 %>
-                                <p><%= @profileuser.profession.present? ? @profileuser.profession.name : ''  %> <%= @profileuser.company.present? ? 'at' + @profileuser.company.to_s  : '' %></p>
-                                <% end %>
-                            
-                                	<% if @profileuser.user_type == 2 %>                                	
-                                <p> Trainer <%= @profileuser.account_trainer.gym_id.present? ? 'at ' + get_gym_name(@profileuser.account_trainer.gym_id)  : '' %></p>
-                                <% end %>
-                                
-                            </div>
-                            <div class="statistics">
-                              
-                                			  <% if @profileuser.user_type.to_i == 2 %> 
-							<div class="rating-box trainer-rating"><div class="rating-inner"> <p>Average rating -</p>
-								<div id="star"></div>
-							  </div>
-							  <% if @account.id != @profileuser.id  %>
-								<div class="rating-inner last">
-								  <p>Your rating -</p>
-								  <div id="user_star"></div>
-								</div>
-							  <% end  %>                  </div>
-						  <% end  %>
-                                 <% if  @profileuser.user_type.to_i == 1 %>
-                                <div><h1>30</h1><h2>Challenges</h2></div>
-                                <div><h1>28</h1><h2>Goals Completed</h2></div>
-                                <% end %>
-                                
-                                  <% if  @profileuser.user_type.to_i == 3 %>
-                                  <% total_members = @profileuser.active_friends.count + @profileuser.passive_friends.count %>
-                                  <% str = Time.now.strftime("%A").downcase %>                                  
-                              <% if @profileuser.account_gym.timings.present? %>
-                             <div><h1><%= @profileuser.account_gym.timings[str + "_start"] %>-<%= @profileuser.account_gym.timings[str + "_end"] %></h1><h2>Open Today</h2></div>
-                             <% end %>
-                              <div><h1><%= total_members %></h1><h2>Members</h2></div>
-                                <% end %>
-                            </div>
-                        </div>
-                        <div class="profile_nav">
-                        <% if @account.id != @profileuser.id %>
-                            <div class="actions">
-                              <button class="message" data-toggle="modal" data-target="#messageForm">Message</button>
-                               <% if @profileuser.user_type !=3 %>
-                               <button class="message" data-toggle="modal" data-target="#challengeForm">Challenge</button>
-                               <% end %>                               
-                            </div>
-                         <% end %>   
-                         <div class="actions">
-                         <% if @profileuser.user_type ==3 %>
-                               <button>Schedule</button>
-                               <% end %>
-                         </div>      
+        <% if !@friend.present? %>
+          <% if @profileuser.user_type.to_i == 3 && @account.user_type.to_i == 3 %>
+            <p></p>
+          <% else %>
+            <button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" class="addfriend">
+              <%= if  @profileuser.user_type==3 
+                'Join' 
+                elsif @profileuser.user_type==2
+                'Add Personal Trainer'
+                else
+                'Add Friend'
+                end %>   
+            </button>
+          <% end %>	
+        <button data-id="" class="cancelfriend" style="display:none;">Cancel Request</button>	
+        <% elsif @friend.approved== true %>								
+             <% if  @profileuser.user_type==3 %>
+           <button> Joined </button>		     
+           <% elsif  @profileuser.user_type==2 %>
+            <button> Following </button>	
+          <% else %>
+             <button> Friend </button>			
+          <% end %>	     
+            
+        <% else %>								 
+            <!--<button><%= @profileuser.id == @friend.account_id ? 'Request Pending ' : 'Request Sent ' %></button>-->    
+            
+        <% end %>
+        <% end %>
+
+        <% if @profileuser.user_type == 1 %>
+        <p><%= @profileuser.profession.present? ? @profileuser.profession.name : ''  %> <%= @profileuser.company.present? ? 'at' + @profileuser.company.to_s  : '' %></p>
+        <% end %>
+    
+            <% if @profileuser.user_type == 2 %>                                	
+        <p> Trainer <%= @profileuser.account_trainer.gym_id.present? ? 'at ' + get_gym_name(@profileuser.account_trainer.gym_id)  : '' %></p>
+        <% end %>
+        
+    </div>
+    <div class="statistics">
+      
+                      <% if @profileuser.user_type.to_i == 2 %> 
+    <div class="rating-box trainer-rating"><div class="rating-inner"> <p>Average rating -</p>
+        <div id="star"></div>
+      </div>
+      <% if @account.id != @profileuser.id  %>
+        <div class="rating-inner last">
+          <p>Your rating -</p>
+          <div id="user_star"></div>
+        </div>
+      <% end  %>                  </div>
+  <% end  %>
+         <% if  @profileuser.user_type.to_i == 1 %>
+        <div><h1>30</h1><h2>Challenges</h2></div>
+        <div><h1>28</h1><h2>Goals Completed</h2></div>
+        <% end %>
+        
+          <% if  @profileuser.user_type.to_i == 3 %>
+          <% total_members = @profileuser.active_friends.count + @profileuser.passive_friends.count %>
+          <% str = Time.now.strftime("%A").downcase %>                                  
+      <% if @profileuser.account_gym.timings.present? %>
+     <div><h1><%= @profileuser.account_gym.timings[str + "_start"] %>-<%= @profileuser.account_gym.timings[str + "_end"] %></h1><h2>Open Today</h2></div>
+     <% end %>
+      <div><h1><%= total_members %></h1><h2>Members</h2></div>
+        <% end %>
+    </div>
+</div>
+<div class="profile_nav">
+<% if @account.id != @profileuser.id %>
+    <div class="actions">
+      <button class="message" data-toggle="modal" data-target="#messageForm">Message</button>
+       <% if @profileuser.user_type !=3 %>
+       <button class="message" data-toggle="modal" data-target="#challengeForm">Challenge</button>
+       <% end %>                               
+    </div>
+ <% end %>   
+ <div class="actions">
+ <% if @profileuser.user_type ==3 %>
+       <button>Schedule</button>
+       <% end %>
+ </div>      
 
 
 
 <script type="text/javascript">
-  
  
- 
-  $(document).ready(function() {
+ $(document).ready(function() {
+     //remove friend
+     $('.cancelfriend').on('click', function() {
+         var toid = $(this).attr('data-id');
 
+         $.ajax({
+             type: "DELETE",
+             url: '/cancelrequest/', //sumbits it to the given url of the form
+             dataType: "HTML",
+             data: {
+                 id: toid
+             },
+             beforeSend: function(xhr) {
+                 xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+             },
+             success: function(data) {
+                 $('.cancelfriend').hide();
+                 $('.addfriend').show();
+                 $('.addfriend').attr('data-id', data);
+                 $('.flash-message').html('<div class="alert alert-success"> Request Removed Succesfully</div>').show();
+             },
+             error: function(xhr, ajaxOptions, thrownError) {
+                 $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+                 console.log(thrownError)
 
-//remove friend
+             }
 
-    $('.cancelfriend').on('click', function() {
-      var toid = $(this).attr('data-id');
+         });
 
-      $.ajax({
-        type: "DELETE",
-        url: '/cancelrequest/', //sumbits it to the given url of the form
-        dataType: "HTML",
-        data: {id: toid},
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-        },
-        success: function(data) {
-          $('.cancelfriend').hide();
-          $('.addfriend').show();
-          $('.addfriend').attr('data-id', data);
-          $('.flash-message').html('<div class="alert alert-success"> Request Removed Succesfully</div>').show();
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
-          console.log(thrownError)
+     });
+     // add friend
+     $('#sendmessage').on('click', function(e) {
+         e.preventDefault();
+         CKEDITOR.instances['message_body'].updateElement();
 
-        }
-
-      });
-
-    });
-// add friend
-    $('#sendmessage').on('click', function(e) {
-      e.preventDefault();
-      CKEDITOR.instances['message_body'].updateElement();
-
-      if ($('#conversation_form').valid()) {
-        var sid = $(this).attr('data-sid');
-        var rid = $(this).attr('data-rip');
-        var bodytext = $('.bodyboxtextarea').val();
+         if ($('#conversation_form').valid()) {
+             var sid = $(this).attr('data-sid');
+             var rid = $(this).attr('data-rip');
+             var bodytext = $('.bodyboxtextarea').val();
 
 
 
-        $.ajax({
-          type: "POST",
-          url: '<%= messages_path %>', //sumbits it to the given url of the form
-          dataType: "HTML",
-          data: {sender_id: sid, recipient_id: rid, body: bodytext},
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-          },
-          success: function(data) {
-            $('#messageForm').modal('hide');
+             $.ajax({
+                 type: "POST",
+                 url: '<%= messages_path %>', //sumbits it to the given url of the form
+                 dataType: "HTML",
+                 data: {
+                     sender_id: sid,
+                     recipient_id: rid,
+                     body: bodytext
+                 },
+                 beforeSend: function(xhr) {
+                     xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+                 },
+                 success: function(data) {
+                     $('#messageForm').modal('hide');
 
-            $('.flash-message').html('<div class="alert alert-success"> Message Sent Succesfully</div>').show();
-          },
-          error: function(xhr, ajaxOptions, thrownError) {
-            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
-            console.log(thrownError)
+                     $('.flash-message').html('<div class="alert alert-success"> Message Sent Succesfully</div>').show();
+                 },
+                 error: function(xhr, ajaxOptions, thrownError) {
+                     $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+                     console.log(thrownError)
 
-          }
+                 }
 
-        });
-      }
+             });
+         }
 
-    });
-
-
-// add friend
-    $('.addfriend').on('click', function() {
-      var toid = $(this).attr('data-id');
-      $.ajax({
-        type: "POST",
-        url: '/addfriend/', //sumbits it to the given url of the form
-        dataType: "HTML",
-        data: {toid: toid},
-        beforeSend: function(xhr) {
-          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-        },
-        success: function(data) {
-          $('.addfriend').hide();
-          $('.cancelfriend').show();
-          $('.cancelfriend').attr('data-id', data);
-
-          $('.flash-message').html('<div class="alert alert-success"> Request Sent Succesfully</div>').show();
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
-          console.log(thrownError)
-
-        }
-
-      });
-
-    });
-
-    $('#challenge').on('click', function() {
-      if ($('#challenge_form').valid()) {
-        var rid = $(this).attr('data-rip');
-        var bodytext = $('.boxtextarea').val();
-        var categoryid = $('#category_id').val();
-        var rewardpoints = $('#reward_points').val();
-        var qty = $('#challenge_qty').val();
-        var valid_till = $('#datepicker').val();
+     });
 
 
-        $.ajax({
-          type: "POST",
-          url: '<%= challenge_path %>', //sumbits it to the given url of the form
-          dataType: "HTML",
-          data: {to_id: rid, category_id: categoryid, text: bodytext, reward_points: rewardpoints, qty: qty, valid_till: valid_till},
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-          },
-          success: function(data) {
-            $('#challengeForm').modal('hide');
-            $('.flash-message').html('<div class="alert alert-success"> Challenge Sent Succesfully</div>').show();
-          },
-          error: function(xhr, ajaxOptions, thrownError) {
-            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
-            console.log(thrownError)
+     // add friend
+     $('.addfriend').on('click', function() {
+         var toid = $(this).attr('data-id');
+         $.ajax({
+             type: "POST",
+             url: '/addfriend/', //sumbits it to the given url of the form
+             dataType: "HTML",
+             data: {
+                 toid: toid
+             },
+             beforeSend: function(xhr) {
+                 xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+             },
+             success: function(data) {
+                 $('.addfriend').hide();
+                 $('.cancelfriend').show();
+                 $('.cancelfriend').attr('data-id', data);
 
-          }
+                 $('.flash-message').html('<div class="alert alert-success"> Request Sent Succesfully</div>').show();
+             },
+             error: function(xhr, ajaxOptions, thrownError) {
+                 $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+                 console.log(thrownError)
 
-        });
-      }
+             }
 
-    });
+         });
+
+     });
+
+     $('#challenge').on('click', function() {
+         if ($('#challenge_form').valid()) {
+             var rid = $(this).attr('data-rip');
+             var bodytext = $('.boxtextarea').val();
+             var categoryid = $('#category_id').val();
+             var rewardpoints = $('#reward_points').val();
+             var qty = $('#challenge_qty').val();
+             var valid_till = $('#datepicker').val();
 
 
-    $('#star').raty({
-      readOnly: true,
-      half: true,
-      score: <%= @profileuser.average_rating %>,
-      path: '/assets'
-    });
+             $.ajax({
+                 type: "POST",
+                 url: '<%= challenge_path %>', //sumbits it to the given url of the form
+                 dataType: "HTML",
+                 data: {
+                     to_id: rid,
+                     category_id: categoryid,
+                     text: bodytext,
+                     reward_points: rewardpoints,
+                     qty: qty,
+                     valid_till: valid_till
+                 },
+                 beforeSend: function(xhr) {
+                     xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+                 },
+                 success: function(data) {
+                     $('#challengeForm').modal('hide');
+                     $('.flash-message').html('<div class="alert alert-success"> Challenge Sent Succesfully</div>').show();
+                 },
+                 error: function(xhr, ajaxOptions, thrownError) {
+                     $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+                     console.log(thrownError)
 
-    $('#user_star').raty({
-      half: true,
-      score: <%= @rating.score %>,
-      path: '/assets',
-      click: function(score, evt) {
-        $.ajax({
-          url: '/ratings/' + <%= @rating.id %>,
-          type: 'PATCH',
-          data: {score: score}
-        });
-      }
-    });
-    
-    // ajax form 
-    
-  $('body').on('change','.cover_file', function() {
-	var id = $(this).closest('form').attr('id');
-	var field_id = $(this).attr('id');
-	var pid = $(this).attr('data-id');
-	var imgs = $(this).parent().parent('div').children('div').children('img').attr('id');
-    bf = before_submit_image(field_id);
-    bf.then(function(){
-		console.log('Resolve..')
-		//=============
-		$("#" + id).ajaxSubmit({			
-	      type: "POST",
-          url: '<%= account_covers_path %>', //sumbits it to the given url of the form
-          dataType: "HTML",
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-          },
-          success: function(data) {
-		          $('#'+imgs).attr('src' , data );		          
-		          $('#'+imgs).dragncrop('destroy');
-				  $('#'+imgs).dragncrop({
-				  //position: {offset: [ofone[0],ofone[1]]},
-				  start: function(){  },
-				  drag: function(event, position){  },
-				  stop: function(e, position){
-					  update_offset(position.offset,pid)
-				  }
-				});		 
-         
-          },
-          error: function(xhr, ajaxOptions, thrownError) {
-            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
-            console.log(thrownError)
+                 }
 
-          }
+             });
+         }
 
-        }); 
-		
-		//===========
-	}, function(){
-		console.log('Reject..')
-		return false;
-	});
-	
-	
-     
-  });
-  
+     });
 
-  
-  });	  // end of document.ready  
-  
- var update_offset = function(position_offset ,position) {
-	 
-	 $.ajax({
-          type: "POST",
-          url: '<%= update_cover_offset_path %>', //sumbits it to the given url of the form
-          dataType: "HTML",
-          data: {position_offset: position_offset, position: position},
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
-          },
-          success: function(data) {
-				console.log('success')
-          },
-          error: function(xhr, ajaxOptions, thrownError) {
-          
-            console.log(thrownError)
 
-          }
+     $('#star').raty({
+         readOnly: true,
+         half: true,
+         score: <%= @profileuser.average_rating %>,
+         path: '/assets'
+     });
 
-        }); 
+     $('#user_star').raty({
+         half: true,
+         score: <%= @rating.score %>,
+         path: '/assets',
+         click: function(score, evt) {
+             $.ajax({
+                 url: '/ratings/' + <%= @rating.id %>,
+                 type: 'PATCH',
+                 data: {
+                     score: score
+                 }
+             });
+         }
+     });
+
+     // ajax form 
+
+     $('body').on('change', '.cover_file', function() {
+         var id = $(this).closest('form').attr('id');
+         var field_id = $(this).attr('id');
+         var pid = $(this).attr('data-id');
+         var imgs = $(this).parent().parent('div').children('div').children('img').attr('id');
+         bf = before_submit_image(field_id);
+         bf.then(function() {
+             console.log('Resolve..')
+                 //=============
+             $("#" + id).ajaxSubmit({
+                 type: "POST",
+                 url: '<%= account_covers_path %>', //sumbits it to the given url of the form
+                 dataType: "HTML",
+                 beforeSend: function(xhr) {
+                     xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+                 },
+                 success: function(data) {
+                     $('#' + imgs).attr('src', data);
+                     $('#' + imgs).dragncrop('destroy');
+                     $('#' + imgs).dragncrop({
+                         //position: {offset: [ofone[0],ofone[1]]},
+                         start: function() {},
+                         drag: function(event, position) {},
+                         stop: function(e, position) {
+                             update_offset(position.offset, pid)
+                         }
+                     });
+
+                 },
+                 error: function(xhr, ajaxOptions, thrownError) {
+                     $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+                     console.log(thrownError)
+
+                 }
+
+             });
+
+             //===========
+         }, function() {
+             console.log('Reject..')
+             return false;
+         });
+
+
+
+     });
+
+
+
+ }); // end of document.ready  
+
+ var update_offset = function(position_offset, position) {
+
+     $.ajax({
+         type: "POST",
+         url: '<%= update_cover_offset_path %>', //sumbits it to the given url of the form
+         dataType: "HTML",
+         data: {
+             position_offset: position_offset,
+             position: position
+         },
+         beforeSend: function(xhr) {
+             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+         },
+         success: function(data) {
+             console.log('success')
+         },
+         error: function(xhr, ajaxOptions, thrownError) {
+
+             console.log(thrownError)
+
+         }
+
+     });
  }
- 
-<% if @account.id == @profileuser.id %>
- 
-var offset_six =  document.getElementById("offset_six"); 
-if (offset_six != null) {
-var ofsix  = offset_six.value.split(',');
-} else {
-var ofsix  = "" ;	
-}	
-$('#position_six').dragncrop({
-  position: {offset: [ofsix[0],ofsix[1]]},
-  start: function(){  },
-  drag: function(event, position){  },
-  stop: function(e, position){
-	  update_offset(position.offset,6)
-  }
-}); 
- 	  
- 
-var offset_five =  document.getElementById("offset_five"); 
-if (offset_five != null) {
-var offive  = offset_five.value.split(',')
-}else {
-var offive  = ""
-}
-$('#position_five').dragncrop({
-  position: {offset: [offive[0],offive[1]]},
-  start: function(){  },
-  drag: function(event, position){  },
-  stop: function(e, position){
-	  update_offset(position.offset,5)
-  }
-}); 
- 
-var offset_four =  document.getElementById("offset_four"); 
-if (offset_five != null) {
-var of  = offset_four.value.split(',')
-}else {
-var of  = "";
-}
 
-$('#position_four').dragncrop({
-  position: {offset: [of[0],of[1]]},
-  start: function(){  },
-  drag: function(event, position){  },
-  stop: function(e, position){
-	  update_offset(position.offset,4)
-  }
-});
+ <% if @account.id == @profileuser.id %>
 
-var offset_three =  document.getElementById("offset_three"); 
-if (offset_three != null) {
-var ofthree  = offset_three.value.split(',')
-}else {
-var ofthree  = "";
-}
+ var offset_six = document.getElementById("offset_six");
+ if (offset_six != null) {
+     var ofsix = offset_six.value.split(',');
+ } else {
+     var ofsix = "";
+ }
+ $('#position_six').dragncrop({
+     position: {
+         offset: [ofsix[0], ofsix[1]]
+     },
+     start: function() {},
+     drag: function(event, position) {},
+     stop: function(e, position) {
+         update_offset(position.offset, 6)
+     }
+ });
 
-$('#position_three').dragncrop({
-  position: {offset: [ofthree[0],ofthree[1]]},
-  start: function(){  },
-  drag: function(event, position){  },
-  stop: function(e, position){
-	  update_offset(position.offset,3)
-  }
-});
-var offset_two =  document.getElementById("offset_two"); 
-if (offset_two != null) {
-var oftwo  = offset_two.value.split(',')
-} else {
-var oftwo  = ""	
-}
-$('#position_two').dragncrop({
-  position: {offset: [oftwo[0],oftwo[1]]},
-  start: function(){  },
-  drag: function(event, position){  },
-  stop: function(e, position){
-	  update_offset(position.offset,2)
-  }
-});
 
-var offset_one =  document.getElementById("offset_one"); 
-var ofone = "";
-if (offset_one != null) {
- ofone  = offset_one.value.split(',')
-}
+ var offset_five = document.getElementById("offset_five");
+ if (offset_five != null) {
+     var offive = offset_five.value.split(',')
+ } else {
+     var offive = ""
+ }
+ $('#position_five').dragncrop({
+     position: {
+         offset: [offive[0], offive[1]]
+     },
+     start: function() {},
+     drag: function(event, position) {},
+     stop: function(e, position) {
+         update_offset(position.offset, 5)
+     }
+ });
 
-console.log(ofone[0])
-console.log(ofone[1])
-$('#position_one').dragncrop({
-  position: {offset: [ofone[0],ofone[1]]},
-  start: function(){  },
-  drag: function(event, position){  },
-  stop: function(e, position){
-	  update_offset(position.offset,1)
-  }
-});
-<% else %>
+ var offset_four = document.getElementById("offset_four");
+ if (offset_five != null) {
+     var of = offset_four.value.split(',')
+ } else {
+     var of = "";
+ }
 
-var offset_six =  document.getElementById("offset_six"); 
-var ofsix  = "" ;	
-if (offset_six != null) {
-var ofsix  = offset_six.value.split(',');
-}
-$('#position_six').dragncrop({
-  position: {offset: [ofsix[0],ofsix[1]]}
-}); 
- 	  
- 
-var offset_five =  document.getElementById("offset_five"); 
-var offive = ""
-if (offset_five != null) {
-var offive  = offset_five.value.split(',')
-}
-$('#position_five').dragncrop({
-  position: {offset: [offive[0],offive[1]]}
-}); 
- 
-var offset_four =  document.getElementById("offset_four"); 
-var of = ""
-if (offset_four != null) {
-var of  = offset_four.value.split(',')
-}
-$('#position_four').dragncrop({
-  position: {offset: [of[0],of[1]]}
-});
+ $('#position_four').dragncrop({
+     position: {
+         offset: [of[0], of[1]]
+     },
+     start: function() {},
+     drag: function(event, position) {},
+     stop: function(e, position) {
+         update_offset(position.offset, 4)
+     }
+ });
 
-var offset_three =  document.getElementById("offset_three"); 
-var ofthree =""
-if (offset_three != null) {
-var ofthree  = offset_three.value.split(',')
-}
-$('#position_three').dragncrop({
-  position: {offset: [ofthree[0],ofthree[1]]}
-});
-var offset_two =  document.getElementById("offset_two"); 
-var oftwo  = ""
-if (offset_two != null) {
-var oftwo  = offset_two.value.split(',')
-}
-$('#position_two').dragncrop({
-  position: {offset: [oftwo[0],oftwo[1]]}
-});
+ var offset_three = document.getElementById("offset_three");
+ if (offset_three != null) {
+     var ofthree = offset_three.value.split(',')
+ } else {
+     var ofthree = "";
+ }
 
-var offset_one =  document.getElementById("offset_one"); 
-var ofone  = "";
-if (offset_two != null) {
-var ofone  = offset_one.value.split(',')
-}
-$('#position_one').dragncrop({
-  position: {offset: [ofone[0],ofone[1]]}
-  });
-<% end %>
+ $('#position_three').dragncrop({
+     position: {
+         offset: [ofthree[0], ofthree[1]]
+     },
+     start: function() {},
+     drag: function(event, position) {},
+     stop: function(e, position) {
+         update_offset(position.offset, 3)
+     }
+ });
+ var offset_two = document.getElementById("offset_two");
+ if (offset_two != null) {
+     var oftwo = offset_two.value.split(',')
+ } else {
+     var oftwo = ""
+ }
+ $('#position_two').dragncrop({
+     position: {
+         offset: [oftwo[0], oftwo[1]]
+     },
+     start: function() {},
+     drag: function(event, position) {},
+     stop: function(e, position) {
+         update_offset(position.offset, 2)
+     }
+ });
+
+ var offset_one = document.getElementById("offset_one");
+ var ofone = "";
+ if (offset_one != null) {
+     ofone = offset_one.value.split(',')
+ }
+
+ console.log(ofone[0])
+ console.log(ofone[1])
+ $('#position_one').dragncrop({
+     position: {
+         offset: [ofone[0], ofone[1]]
+     },
+     start: function() {},
+     drag: function(event, position) {},
+     stop: function(e, position) {
+         update_offset(position.offset, 1)
+     }
+ });
+ <% else %>
+
+ var offset_six = document.getElementById("offset_six");
+ var ofsix = "";
+ if (offset_six != null) {
+     var ofsix = offset_six.value.split(',');
+ }
+ $('#position_six').dragncrop({
+     position: {
+         offset: [ofsix[0], ofsix[1]]
+     }
+ });
+
+
+ var offset_five = document.getElementById("offset_five");
+ var offive = ""
+ if (offset_five != null) {
+     var offive = offset_five.value.split(',')
+ }
+ $('#position_five').dragncrop({
+     position: {
+         offset: [offive[0], offive[1]]
+     }
+ });
+
+ var offset_four = document.getElementById("offset_four");
+ var of = ""
+ if (offset_four != null) {
+     var of = offset_four.value.split(',')
+ }
+ $('#position_four').dragncrop({
+     position: {
+         offset: [of[0], of[1]]
+     }
+ });
+
+ var offset_three = document.getElementById("offset_three");
+ var ofthree = ""
+ if (offset_three != null) {
+     var ofthree = offset_three.value.split(',')
+ }
+ $('#position_three').dragncrop({
+     position: {
+         offset: [ofthree[0], ofthree[1]]
+     }
+ });
+ var offset_two = document.getElementById("offset_two");
+ var oftwo = ""
+ if (offset_two != null) {
+     var oftwo = offset_two.value.split(',')
+ }
+ $('#position_two').dragncrop({
+     position: {
+         offset: [oftwo[0], oftwo[1]]
+     }
+ });
+
+ var offset_one = document.getElementById("offset_one");
+ var ofone = "";
+ if (offset_two != null) {
+     var ofone = offset_one.value.split(',')
+ }
+ $('#position_one').dragncrop({
+     position: {
+         offset: [ofone[0], ofone[1]]
+     }
+ });
+ <% end %>
 
 </script>

@@ -1,143 +1,3 @@
- <script src="http://malsup.github.com/jquery.form.js"></script>
- 
-<% if false %>
-<div id="content" class="invite-inner">
-
-  <div class="group-top">
-    <%= image_tag(@fitspot.fitspot_image(:medium), :class =>'group_image') %>
-    <div class="group-detail">
-      <div class="group-left">
-        <h4><%=  @fitspot.fitspot_date.strftime("%b %d") %></h4>
-        <h4><%=  @fitspot.title.capitalize %></h4>
-
-      </div>
-      <div class="group-right">
-
-        <% if @fitspot.account_id == @account.id %>
-          <a href="javascript:void(0);" class="join" title="going">Going</a>    
-          <a href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#fitspotEditForm" title="edit">Edit</a>    
-
-        <% elsif @going.present?  %>
-          <a href="javascript:void(0);" class="join jnew"  data-type="cancel" title="Cancel Going" data-id="<%=  Base64.encode64(@fitspot.id.to_s) %>">Cancel</a>
-        <% else %>
-          <a href="javascript:void(0);" class="join jnew"  data-type="add" title="join" data-id="<%=  Base64.encode64(@fitspot.id.to_s)   %>">Join</a>
-        <% end  %>
-
-      </div>
-
-    </div>
-  </div>
-
-  <div class="group-tab">
-    <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#sectionA">Detail</a></li>
-      <% if @going.present? ||  @fitspot.account_id == @account.id %>
-        <li><a data-toggle="tab" href="#sectionB">Invite</a></li>
-      <% end %>
-
-    </ul>
-    <div class="tab-content">
-      <div id="sectionA" class="tab-pane fade in active">
-        <ul class="group-dtail">
-        
-          <li><span>Created for group :</span><%= @fitspot.group.present? ? @fitspot.group.title : '' %> </li>
-          <li><span>Date :</span> <%= @fitspot.fitspot_date.strftime("%d %b %Y ") %> </li>
-          <li><span>Time :</span> <%= @fitspot.fitspot_time.present? ? @fitspot.fitspot_time : 'N/A' %> </li>
-          <li><span>Location :</span> <%= @fitspot.location %> </li>       
-          <li><span>Description :</span> <%= @fitspot.description.present? ? @fitspot.description : 'N/A'  %> </li>
-        </ul>
-        <h3 class="group-detail-hding">Going</h3>
-        <ul class="group-imgs">
-        <% if @fitspot.account.present? %>
-          <% img = useravatar(@fitspot.account) %>
-          <li><%= link_to(image_tag(img), "/#{@fitspot.account.user_name}", {:class => 'grop-img'}) %>
-            <%= link_to(@fitspot.account.first_name.capitalize,  "/#{@fitspot.account.user_name}") %>
-          </li>
-        <% end %>  
-          <% @fitspot.fitspot_member.each do |fm|  %>
-            <% if fm.status == true %>
-              <% img = useravatar(fm.account) %>
-              <li><%= link_to(image_tag(img), "/#{fm.account.user_name}", {:class => 'grop-img'}) %>
-                <%= link_to(fm.account.first_name.capitalize,  "/#{fm.account.user_name}") %>
-              </li>
-            <% end %> 
-          <% end %> 
-        </ul>
-
-      </div>
-      <div id="sectionB" class="tab-pane fade">
-        <ul class="group-imgs-invite">
-          <% if @inviteable.present? %>
-
-            <% @inviteable.each do |fmc|  %>
-              <% if fmc.account_id != @account.id  %>
-
-                <% img = useravatar(fmc.account) %>
-                <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.account.user_name}") %></div>
-                
-                  <button data-id="<%= Base64.encode64(fmc.account.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
-              
-                <%= link_to(fmc.account.first_name.capitalize,  "/#{fmc.account.user_name}", {:class => 'bro-name'}) %>
-                </li>
-              <% end %> 
-            <% end %> 
-          <% end %> 
-          <% if  @account.active_friends.present? %>
-            <% @account.active_friends.each do |fmc|  %>
-
-              <%  if   @fitspot.account_id.to_i != fmc.id.to_i  %>
-                <%  if  !@goings.include? fmc.id   %>
-
-
-                  <% img = useravatar(fmc) %>
-                  <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.user_name}") %></div>
-                      
-                    <button data-id="<%= Base64.encode64(fmc.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
-                
-                  <%= link_to(fmc.first_name.capitalize,  "/#{fmc.user_name}" , {:class => 'bro-name'}) %>
-                  </li>
-
-                <% end %> 
-              <% end %> 
-            <% end %> 
-          <% end %> 
-
-          <% if  @account.passive_friends.present? %>
-            <% @account.passive_friends.each do |fmc|  %>
-              <%  if   @fitspot.account_id.to_i != fmc.id.to_i  %>
-                <%  if  !@goings.include? fmc.id  %>
-
-                  <% img = useravatar(fmc) %>
-                  <li><div class="imgside"><%= link_to(image_tag(img), "/#{fmc.user_name}") %></div>
-                
-                    <button data-id="<%= Base64.encode64(fmc.id.to_s)%>" data-fid="<%= Base64.encode64(@fitspot.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>
-             
-                  <%= link_to(fmc.first_name.capitalize,  "/#{fmc.user_name}" , {:class => 'bro-name'}) %>
-                  </li>
-
-                <% end %> 
-              <% end %> 
-            <% end %> 
-          <% end %> 
-
-
-
-
-
-
-          <% if !@inviteable.present? && !@account.passive_friends.present? && !@account.active_friends.present? %>
-            <li><p class="notification-msg">No more members to invite.</p></li>
-          <% end %> 
-        </ul>
-
-      </div>
-
-    </div>
-  </div>
-
-</div>
-<% end %>
-
 <div class="modal fade" id="fitspotEditForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" style="z-index: 5456666666000;">
     <div class="modal-content" >
@@ -276,9 +136,9 @@
           <a href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#fitspotEditForm" title="edit"><button>Edit</button></a>    
 
         <% elsif @going.present?  %>
-          <a href="javascript:void(0);" class="join jnew"  data-type="cancel" title="Cancel Going" data-id="<%=  Base64.encode64(@fitspot.id.to_s) %>"><button>Cancel</button></a>
+          <a href="javascript:void(0);" class="join jnew"  data-type="cancel" title="Unfollow" data-id="<%=  Base64.encode64(@fitspot.id.to_s) %>"><button>Unfollow</button></a>
         <% else %>
-          <a href="javascript:void(0);" class="join jnew"  data-type="add" title="join" data-id="<%=  Base64.encode64(@fitspot.id.to_s)   %>"><button>Join Fitspot</button></a>
+          <a href="javascript:void(0);" class="join jnew"  data-type="add" title="follow" data-id="<%=  Base64.encode64(@fitspot.id.to_s)   %>"><button>Follow</button></a>
         <% end  %>
         
                                 <p><%=  @fitspot.location %></p>
@@ -289,24 +149,21 @@
                             </div>
                         </div>
                         <div class="profile_nav">
-                            <div class="actions">
-                                
+                            <div class="actions">                                
                             <button data-toggle="modal" data-target="#checkinForm">Check-In</button>
-                              <span style="display:none;" class="gtype"><%=  @fitspot.group.present? &&  @fitspot.group.is_public ==true ? 'Public' : 'Private' %></span>
-                             <% if @fitspot.group && @fitspot.group.account_id == @account.id ||  @member.present? %>
-                            <button title="Already Joined <%= @fitspot.group.title %>">Joined</button>
-                            <% else %>
-                             <button class="join jgroup"  data-type="add" title="join <%= @fitspot.group.title %>" data-id="<%=  Base64.encode64(@fitspot.group_id.to_s)   %>">Join Group</button>
-                            <% end %>
+                            <button style="visibility:hidden" disabled>Join Group</button>                       
                             </div>
                             <div class="nav">
                                <!-- <a class="selected" href="#fit_feed">Fit Feed</a> -->
-                                <%= link_to('Fit Feed', fs_path(Base64.encode64(@fitspot.id.to_s), 'fit_feed'), :remote => true, :class => 'selected') %>
+                                <% cls = !params[:events].present? ? 'selected' : ''
+                                   cls2 = params[:events].present? ? 'selected' : ''
+                                 %>
+                                <%= link_to('Fit Feed', fs_path(Base64.encode64(@fitspot.id.to_s), 'fit_feed'), :remote => true, :class => cls) %>
                                 <%= link_to('About', fs_path(Base64.encode64(@fitspot.id.to_s), 'about'), :remote => true) %>
                                 <%= link_to('Photos', fs_path(Base64.encode64(@fitspot.id.to_s), 'photos'), :remote => true) %>
                                 <%= link_to('Videos', fs_path(Base64.encode64(@fitspot.id.to_s), 'videos'), :remote => true) %>
                                 <%= link_to('Activities', fs_path(Base64.encode64(@fitspot.id.to_s), 'activities'), :remote => true) %>
-                                <%= link_to('Events', fs_path(Base64.encode64(@fitspot.id.to_s), 'events'), :remote => true) %>
+                                <%= link_to('Events', fs_path(Base64.encode64(@fitspot.id.to_s), 'events'), :remote => true , :class => cls2) %>
                                 <%= link_to('Groups', fs_path(Base64.encode64(@fitspot.id.to_s), 'groups'), :remote => true) %>
                             </div>
                         </div>
@@ -316,38 +173,38 @@
                     <div class="events">
                         <div class="header">
                             <h2>Events</h2>
-                          <%  fitspot = fitspot_invitation %>  
+                          <%  event = event_invitation %>  
                             <a href="/fitspots/index" class="amount"> 
-								<% if fitspot.count > 0 %>
-								<%= fitspot.count  %>Invitations
+								<% if event.count > 0 %>
+								<%= event.count  %>Invitations
 								<% end %>                            
                             </a>
                             
                         </div>
                         <div class="list">
 						
-							<%  if fitspot.present? %>  
-							<% fitspot.each do |ft| %>
-							<% img = ft.fitspot.fitspot_image    %>
-                            <div>
-                                <div class="avatar"><h3><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %></h3></div>
-                                <div class="description">
-                                    <p class="date"><%= ft.fitspot.fitspot_date.strftime("%e %B ") %></p><br>
-                                    <p class="event"><%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %></p><br>
-                                    <p class="location"><%= ft.fitspot.location %></p><br>
-                                    <p class="actions">
-									<button class="attending" data-type="add" title="Attending" <%=  ft.fitspot.status == 1 ? 'disabled' : '' %>  data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>"> 
-									Attending</button>
-								<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.fitspot.id.to_s)   %>">Not Attending</button></p>
-                                </div>
-                            </div>
-                            <% end %>
+							<%  if event.present? %>  
+							<%  event.each do |ft| %>
+							<% img = ft.event.image    %>
+								<div>
+									<div class="avatar"><h3><%= image_tag(img) %></h3></div>
+									<div class="description">
+										<p class="date"><%= ft.event.event_date.strftime("%e %B ") %></p><br>
+										<p class="event"><%= ft.event.title.capitalize  %></p><br>
+										<p class="location"><%= ft.event.fitspot.location %></p><br>
+										<p class="actions">
+										<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.id.to_s)   %>"> 
+										Attending</button>
+									<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.id.to_s)   %>">Not Attending</button></p>
+									</div>
+								</div>
+								<% end %>
                             <% else %>
-                            <p> N/A </p>
+								<p> N/A </p>
                             <% end %>
                         </div>
                         <div class="see_all">
-                            <a href="#events">See All Events</a>
+                            <%= link_to('See All Events', fs_path(Base64.encode64(@fitspot.id.to_s), 'events'), :remote => true) %>
                         </div>
                     </div>
                     <div class="my_activities">
@@ -370,27 +227,31 @@
                              <%= link_to('See All', fs_path(Base64.encode64(@fitspot.id.to_s), 'activities'), :remote => true) %>
                         </div>
                     </div>
-                    <div class="groups">
+                    
+                   <!-- <div class="groups">
                         <div class="header">
                             <h2>Group</h2>
-                        </div>
-                  
+                        </div>                  
                         <div class="list">
                             <div>
                                 <div class="avatar">
-									<a href="/groups/<%= Base64.encode64(@fitspot.group.id.to_s) %>">
-										<%= image_tag( @fitspot.group.group_image) %>
+									<a href="#">
+										
 										</a></div>
                                 <div class="description">
-                                    <p class="name"> <%= @fitspot.group.title %></p><br>
+                                    <p class="name"> </p><br>
                                 </div>
-                            </div>
-                                                       
-                        </div>
-                    </div>
+                            </div>                                                       
+                        </div>                        
+                    </div> -->
+                    
                 </div>
                 <div id="feed_container">
-					<%= render(:partial => 'fit_feed') %>
+					<% if params[:events].present? %>
+						<%= render(:partial => 'events') %>
+					<% else %>	
+					   	<%= render(:partial => 'fit_feed') %>
+					<% end %>   	
     
 
 <script type="text/javascript">
@@ -415,15 +276,15 @@
           if (type == 'add') {
 
             $(that).attr('data-type', 'cancel');
-            $(that).attr('title', 'Cancel');
-            $(that).html('Cancel');
-            location.reload();
+            $(that).attr('title', 'Unfollow');
+            $(that).children('button').html('Unfollow');
+           // location.reload();
             //  $('.flash-message').html('<div class="alert alert-success"> You Succesfully Joined the Group.</div>').show();
           } else {
             $(that).attr('data-type', 'add');
-            $(that).attr('title', 'join');
-            $(that).html('Join');
-            $('.flash-message').html('<div class="alert alert-success"> You Succesfully Canceled Going.</div>').show();
+            $(that).attr('title', 'Unfollow');
+            $(that).children('button').html('follow');
+            $('.flash-message').html('<div class="alert alert-success"> You Succesfully Unfollow Fitspot.</div>').show();
           }
 
         },
@@ -596,9 +457,7 @@ $(".nav a").click(function() {
 
         }); 
  }   
-    
-    <% if @account.id == @fitspot.account.id %>
- 
+<% if @account.id == @fitspot.account.id %> 
 var offset_six =  document.getElementById("offset_six"); 
 if (offset_six != null) {
 var ofsix  = offset_six.value.split(',');
@@ -757,6 +616,26 @@ window.onload = function() {
         }
 
 </script>
+
+<!-- events-->
+
+<div class="modal fade" id="eventForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Event on : <%= @fitspot.title  %></h4>
+      </div>
+      <div class="modal-body">
+		<%= render(:partial => 'events/newevent') %>
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
 <!-- check in -->
 
 <div class="modal fade" id="checkinForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

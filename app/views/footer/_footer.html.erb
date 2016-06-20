@@ -186,6 +186,41 @@ if (chat_window != null) {
       }
 
     });
+    
+        // add member
+$('.attending').click( function () {
+	  var id = $(this).attr('data-id');
+      var type = $(this).attr('data-type');
+      var that = this;
+      var mydata = {'id': id, 'type': type};
+      $.ajax({
+        type: "POST",
+        url: "/add_del_attending", //sumbits it to the given url of the form
+        dataType: "HTML",
+        data: mydata,  
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+        },
+        success: function(data) {
+          if (type == 'add') {
+			//	$(that).prop('disabled', true);             
+			$(that).parent().parent().parent().hide();
+		
+          } else {
+             $(that).parent().parent().parent().hide();
+             
+          }
+
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+          console.log(thrownError)
+
+        }
+
+      });
+
+    }); 
   });
 
 

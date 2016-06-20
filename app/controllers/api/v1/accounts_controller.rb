@@ -1,30 +1,30 @@
 class Api::V1::AccountsController < Api::V1::BaseController
- 
+
  def index
-   account = Account.all    
+   account = Account.all
    render json: account
    end
-   
+
    def show
- 
-   account = Account.find(params[:id])    
+
+   account = Account.find(params[:id])
    render json: account
    end
-   
+
    def store
- 	#abort(request.env['omniauth.auth'].inspect)
-    issocial = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['isSocial']    
-    connection = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['connection']     
-       
+    abort(request.inspect)
+    issocial = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['isSocial']
+    connection = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['connection']
+
     if issocial && connection == "fitbit"
-			session[:oauth_token] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['access_token']  
-			session[:oauth_secret] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['access_token_secret']  
-			session[:uid] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id'] 			
-			render :json => request.env['omniauth.auth'] and return 
-	end	
-	
+			session[:oauth_token] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['access_token']
+			session[:oauth_secret] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['access_token_secret']
+			session[:uid] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id']
+			render :json => request.env['omniauth.auth'] and return
+	end
+
     session[:fit_id] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id']
-  
+
     if issocial
      	if connection == "twitter"
 				fullname = request.env['omniauth.auth']['info']['name'].split(' ')
@@ -43,11 +43,11 @@ class Api::V1::AccountsController < Api::V1::BaseController
 				authorization = Authorization.find_by_provider_and_uid(session[:provider], session[:fit_id])
 				if authorization
 				   render :json => authorization and return
-				else					
+				else
 				  user = Account.new :fit_id => session[:fit_id], :first_name => session[:first_name], :last_name => session[:last_name], :email => session[:email],:user_name => session[:user_name],:pic => session[:avatar]
 				  user.authorization.build :provider => session[:provider], :uid => session[:fit_id]
 				  user.save
-				  account_user = AccountUser.new :account_id => user.id   
+				  account_user = AccountUser.new :account_id => user.id
 				  account_user.save
 				  render :json => account_user and return
 				end
@@ -59,40 +59,40 @@ class Api::V1::AccountsController < Api::V1::BaseController
       account['fit_id'] = session[:fit_id]
       account['first_name'] = session[:account][:first_name]
       account['last_name'] = session[:account][:last_name]
-      account['user_name'] = session[:account][:username] 
-      account['email'] = session[:account][:email] 
+      account['user_name'] = session[:account][:username]
+      account['email'] = session[:account][:email]
       account['user_type'] = session[:account][:account_type].to_i
         if account.save
           case session[:account][:account_type].to_i
           when 2
             model = AccountTrainer.new
-          when 3  
+          when 3
             model = AccountGym.new
           else
            model = AccountUser.new
           end
-          model['account_id'] = account.id   
+          model['account_id'] = account.id
           model.save
             if session[:account][:account_type].to_i == 3
-               render :json => { "user" => model, "location" => "about"} and return 
-            else 
+               render :json => { "user" => model, "location" => "about"} and return
+            else
                 render :json => model and return
-            end    
+            end
         else
           render :json => { errors: "Invalid email or password" } and return
         end
       else
          render :json => user and return
-      end 
+      end
    end
-    
+
   end
-   
+
    def destroy
     account = Account.find_by(auth_token: params[:id])
     #account.generate_authentication_token!
     account.save
     head 204
   end
-  
+
 end

@@ -1,0 +1,21 @@
+
+<div id="seed">
+  <% if  @events.present? %>
+  <% @events.each do |es| %>
+   <% img = es.image    %>
+           <div class="posts">
+             <div class="posts-img">
+              <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(es.fitspot.id.to_s)}/events") %>
+              </div>
+             <div class="posts-content">
+               <h4><%= link_to(es.title.capitalize , "/fitspots/#{Base64.encode64(es.fitspot.id.to_s)}/events") %> <span class="time"> <%= es.event_date.strftime("%e %B ") %> <%= es.event_start_time %> - <%= es.event_end_time %>   </span></h4>
+               <p><%= es.description %></p>
+             </div>
+             <div class="clear"></div>
+           </div>
+           <% end %>
+           <% else %>
+  <h4 class="noti-heading">No Event Found.</h4>
+           <% end %>
+  
+</div>

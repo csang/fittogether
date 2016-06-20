@@ -2,18 +2,15 @@ class FitspotsController < ApplicationController
    before_filter :get_account
    
   
-  def index
-    
-    @fitspots = Fitspot.all
-    
+  def index    
+    @fitspots = Fitspot.all    
   end
 
-  def create
-	
-      gid = Base64.decode64(params[:fitspot][:group_id])      
-      @fitspot = Fitspot.create(fitspot_parm.merge(account_id: @account.id, :group_id => gid,  :activity_ids => params[:activity_ids]))
-  
+  def create	
+      #gid = Base64.decode64(params[:fitspot][:group_id])      
+      @fitspot = Fitspot.create(fitspot_parm.merge(account_id: @account.id,:activity_ids => params[:activity_ids]))  
       if @fitspot.save!
+=begin
         if params[:invite].present?
           group_member =  GroupMember.where(:group_id => gid)
           if group_member.present?
@@ -22,18 +19,16 @@ class FitspotsController < ApplicationController
             end
           end  
         end
-          flash[:notice] = "New Fitspot has been succesfully created."
-           redirect_to("/fitspots/" + Base64.encode64(@fitspot.id.to_s)) and return
+=end
+	   flash[:notice] = "New Fitspot has been succesfully created."
+	   redirect_to("/fitspots/" + Base64.encode64(@fitspot.id.to_s)) and return
       else		   
-        flash[:error] = @group.errors.full_messages  
-         redirect_to request.env['HTTP_REFERER'] and return
-      end 
-      
-   
+       flash[:error] = @fitspot.errors.full_messages  
+       redirect_to request.env['HTTP_REFERER'] and return
+      end        
   end
   
-  def edit
- 
+def edit 
   if params[:fitspot].present?
      cid = Base64.decode64(params[:id])		     
      @fitspot = Fitspot.where(:id => cid,:account_id =>@account.id).first
@@ -43,9 +38,7 @@ class FitspotsController < ApplicationController
    else
      redirect_to request.env['HTTP_REFERER'] and return
    end
-  end
-  
-  
+  end 
 end
 
   def show
@@ -72,13 +65,11 @@ end
          @member = GroupMember.where(:group_id => @fitspot.group_id, :account_id => @account.id).first
        
       flash[:error] =''
-      if !@fitspot.present? || !@fitspot.group.present?
-     
+      if !@fitspot.present?      
           redirect_to('/feed')
-      end 
-        
+      end         
         @profile = 'feed'
-    else 
+      else 
       redirect_to('/feed')
     end
   end
@@ -226,7 +217,7 @@ end
   
  private  
   def fitspot_parm
-    params.require(:fitspot).permit(:title, :description, :fitspot_image, :location, :fitspot_date, :fitspot_time)
+    params.require(:fitspot).permit(:title, :description, :fitspot_image, :location)
 
   end
    def checkin_params

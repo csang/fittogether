@@ -3,6 +3,14 @@ Rails.application.routes.draw do
  
  
  
+  post 'events/create'
+  match 'give_event_kudos', to: 'events#give_event_kudos', :via => [:post] , :as=>:create_event_kudos
+  match 'create_comment_on_event', to: 'events#create_comment_on_event', :via => [:post] , :as=>:give_comment_on_event
+  match 'event_comment_delete/', to: 'events#delete_event_comment', :via => [:delete] , :as => :event_comment_delete
+  match 'add_del_attending', to: 'events#add_del_attending', :via => [:post,:delete] , :as => :add_del_attending
+  get 'events/show'
+  match 'event_delete/:id', to: 'events#destroy', :via => [:delete] , :as => :event_delete
+
   get 'account_covers/new'
 
   get 'account_covers/create'
@@ -89,7 +97,7 @@ Rails.application.routes.draw do
   match 'fitspots/edit/(:id)', to: 'fitspots#edit',:via => [:patch,:get], :as=>:fitspots_edit
   match '/fitspot/:id/(:type)', to: 'fitspots#show', :via => [:get,:post] , :as => :fs 
   get 'fitspots/index'
-  get 'fitspots/:id', to: 'fitspots#show'  
+  get 'fitspots/:id/(:events)', to: 'fitspots#show'  
   post 'fitspots/create'
 
  
@@ -241,7 +249,10 @@ Rails.application.routes.draw do
     # resources :foods, only: [:index]
    
      namespace :v1   do 
-		  resources :accounts, :defaults => { :format => 'json' }   
+		    get 'accounts/store', controller: 'accounts', action: 'store',:defaults => { :format => 'json' } 	
+		    
+		 # resources :accounts, :defaults => { :format => 'json' }   
+		
 		  resources :feeds, :defaults => { :format => 'json' }  
 	      get 'feeds/get_posts/:account_id', controller: 'feeds', action: 'get_posts',:defaults => { :format => 'json' }  
 	      post 'feeds/create_post', controller: 'feeds', action: 'create_post',:defaults => { :format => 'json' }  
