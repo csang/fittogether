@@ -466,7 +466,7 @@ module ApplicationHelper
         end
      
          if member.account_privacy.present? 
-			 if member.account_privacy.account_id!= current_user.id  
+			 if member.account_privacy.account_id!= @account.id  
 			  privacy = {}			     						
 			  privacy[:privacy] = member.account_privacy 
 			  user.push(privacy)
@@ -485,7 +485,7 @@ module ApplicationHelper
          user.push(member)
          end
          if member.account_privacy.present? 
-			 if member.account_privacy.account_id!= current_user.id 
+			 if member.account_privacy.account_id!= @account.id  
 			  privacy = {}			     						
 			  privacy[:privacy] = member.account_privacy 
 			  user.push(privacy)
