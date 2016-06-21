@@ -451,66 +451,51 @@ module ApplicationHelper
     
   end
   
-  def get_friend_and_attender(profileuser, goings = nil)
- 
-  user = Array.new  
-	 if profileuser.passive_friends.present? 
-        profileuser.passive_friends.each do |member|
-      
-        if goings.present?
-			if  goings.include? member.id  
-			 user.push(member)
-			end
-        else 
-        user.push(member)
-        end
+  def get_friend_and_attender(profileuser, goings = nil) 
      
-         if member.account_privacy.present? 
-			 if member.account_privacy.account_id!= @account.id  
-			  privacy = {}			     						
-			  privacy[:privacy] = member.account_privacy 
-			  user.push(privacy)
-			end 
-		 end 
-       end 
-     end 
-     
-      if profileuser.active_friends.present? 
-         profileuser.active_friends.each do |member|
-         if goings.present?
-         if  goings.include? member.id  
-         user.push(member)
-         end
-         else 
-         user.push(member)
-         end
-         if member.account_privacy.present? 
-			 if member.account_privacy.account_id!= @account.id  
-			  privacy = {}			     						
-			  privacy[:privacy] = member.account_privacy 
-			  user.push(privacy)
-			 end 
-		 end 
-       end 
-     end 
+		if profileuser.passive_friends.present? 
+		   pf = profileuser.passive_friends.map(&:id)
+		end
+		if profileuser.active_friends.present? 
+			af=  profileuser.active_friends.map(&:id)
+		end
+        friend = pf
+		if !pf.nil? && !af.nil?  
+		 friend = pf + af 
+		elsif !af.nil? 
+		 friend = af 
+		end   
+    common_ids = goings & friend
+    return  Account.where(:id => common_ids) # return user's friends that are  attending event 
+   end
   
-   return user
-  end
-  
-  def check_if_event_attender(event_attender)
- 
-  if !event_attender.present? 
-	return false
-  end
-  id = event_attender.map(&:account_id)         
-  usr = id.include? @account.id ? @account.id : nil 
-  return usr.present? ? true : false 
-  
-  
-  end
- 
-    
-
+	def check_if_event_attender(event_attender) #to check if current user attending an event
+		  if !event_attender.present? 
+			return false
+		  end
+		  id = event_attender.map(&:account_id)         
+		  usr = id.include? @account.id ? @account.id : nil 
+		  return usr.present? ? true : false   
+	 end
+	 
+	 def suggested_friend(profileuser)
+	    pf , af = nil
+		if profileuser.passive_friends.present? 
+		 pf = profileuser.passive_friends.map(&:id)
+		end
+		if profileuser.active_friends.present? 
+		 af=  profileuser.active_friends.map(&:id)
+		end
+         friend = pf
+		if !pf.nil? && !af.nil?  
+		 friend = pf + af 
+		elsif !af.nil? 
+		 friend = af 
+		end 
+	 
+	 end
+	 
+	 
   end
   
 

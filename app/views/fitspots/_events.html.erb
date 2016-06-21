@@ -36,7 +36,7 @@
 					<%
           goings = Array.new
 		  evnt.event_attender.each do |fm|
-		   if fm.status == true 
+		   if fm.status == true  && fm.account.id != @account.id
 		   goings.push(fm.account.id)
 		   end
 		  end
@@ -51,8 +51,9 @@
         		<% if user.present? %>
         		<%  user.each do |usr| %>
         		<% if usr.present?  %>
-        			<div class="avatar">					
-        			<%= link_to(image_tag(usr[:avatar]), "/#{usr[:user_name]}") %>
+        			<div class="avatar">	
+					<% img = useravatar(usr) %>					
+        			<%= link_to(image_tag(img), "/#{usr[:user_name]}") %>
         			</div>
         		<% end %>
         		<% end %>
