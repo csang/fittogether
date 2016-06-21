@@ -452,7 +452,8 @@ module ApplicationHelper
   end
   
   def get_friend_and_attender(profileuser, goings = nil) 
-     
+         af = []
+         pf = []
 		if profileuser.passive_friends.present? 
 		   pf = profileuser.passive_friends.map(&:id)
 		end
@@ -479,7 +480,8 @@ module ApplicationHelper
 	 end
 	 
 	 def suggested_friend(profileuser)
-	    pf , af = nil
+	     af = []
+         pf = []
 		if profileuser.passive_friends.present? 
 		 pf = profileuser.passive_friends.map(&:id)
 		end
