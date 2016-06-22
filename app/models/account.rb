@@ -13,6 +13,7 @@ class Account < ActiveRecord::Base
 	has_many :kudo, :dependent =>:delete_all
 	has_many :event_kudo, :dependent =>:delete_all
 	has_many :event_comment, :dependent =>:delete_all
+	has_many :account_cover, :dependent =>:delete_all
 	has_one :account_privacy, :dependent =>:delete
 	
 	has_many :friendships

@@ -162,7 +162,7 @@
                                 <%= link_to('About', fs_path(Base64.encode64(@fitspot.id.to_s), 'about'), :remote => true) %>
                                 <%= link_to('Photos', fs_path(Base64.encode64(@fitspot.id.to_s), 'photos'), :remote => true) %>
                                 <%= link_to('Videos', fs_path(Base64.encode64(@fitspot.id.to_s), 'videos'), :remote => true) %>
-                                <%= link_to('Activities', fs_path(Base64.encode64(@fitspot.id.to_s), 'activities'), :remote => true) %>
+                                <%#= link_to('Activities', fs_path(Base64.encode64(@fitspot.id.to_s), 'activities'), :remote => true) %>
                                 <%= link_to('Events', fs_path(Base64.encode64(@fitspot.id.to_s), 'events'), :remote => true , :class => cls2) %>
                                 <%= link_to('Groups', fs_path(Base64.encode64(@fitspot.id.to_s), 'groups'), :remote => true) %>
                             </div>
@@ -224,7 +224,7 @@
                             <% end %>
                             </div>
                         <div class="see_all">                           
-                             <%= link_to('See All', fs_path(Base64.encode64(@fitspot.id.to_s), 'activities'), :remote => true) %>
+                             <%#= link_to('See All', fs_path(Base64.encode64(@fitspot.id.to_s), 'activities'), :remote => true) %>
                         </div>
                     </div>
                     

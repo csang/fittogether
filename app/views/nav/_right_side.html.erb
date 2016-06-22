@@ -138,29 +138,26 @@
                       <div class="suggested_friends">
                         <div class="header">
                             <h2>Suggested Friends</h2>
+                            <% usrs = suggested_friend(@account) %>
+                           
                         </div>
                         <div class="list">
+							 <% if usrs.present? %>
+							<% usrs.each do |usr| %>
                             <div>
-                                <div class="avatar"><a href="profile.html"><img alt="VW" title="Venus Williams" src="../public/img/profile/venuswilliams_avatar.png"></a></div>
+                                <div class="avatar">
+								<% img = useravatar(usr) %>	
+								<%= link_to(image_tag(img), "#{usr.user_name}") %>
+								</div>
                                 <div class="description">
-                                    <p class="name">Venus Williams</p>
-                                    <br><p class="location">Beverly Hills, CA</p>
+                                    <p class="name"><%= usr.first_name %> <%= usr.last_name.present? ? usr.last_name : '' %></p>
+                                    <br><p class="location"><%= get_city_name(usr.city_id) %>, <%= get_state_code(usr.city_id) %></p>
                                 </div>
                             </div>
-                            <div>
-                                <div class="avatar"><a href="profile.html"><img alt="AR" title="Aaron Rodgers" src="../public/img/profile/aaronrodgers_avatar.png"></a></div>
-                                <div class="description">
-                                    <p class="name">Aaron Rodgers</p>
-                                    <br><p class="location">Beverly Hills, CA</p>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="avatar"><a href="profile.html"><img alt="AL" title="Andrew Luck" src="../public/img/profile/andrewluck_avatar.png"></a></div>
-                                <div class="description">
-                                    <p class="name">Andrew Luck</p>
-                                    <br><p class="location">Beverly Hills, CA</p>
-                                </div>
-                            </div>
+                            <% end %>
+                            <% else %>
+                               <p> N/A </p>
+                            <% end %>
                         </div>
                     </div>
                     <% trainers = suggested_trainer %>

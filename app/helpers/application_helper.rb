@@ -480,20 +480,11 @@ module ApplicationHelper
 	 end
 	 
 	 def suggested_friend(profileuser)
-	     af = []
-         pf = []
-		if profileuser.passive_friends.present? 
-		 pf = profileuser.passive_friends.map(&:id)
-		end
-		if profileuser.active_friends.present? 
-		 af=  profileuser.active_friends.map(&:id)
-		end
-         friend = pf
-		if !pf.nil? && !af.nil?  
-		 friend = pf + af 
-		elsif !af.nil? 
-		 friend = af 
-		end 
+	 	
+        frnd = Friendship.find_by_sql("SELECT friend_id FROM friendships WHERE account_id IN (SELECT friend_id FROM friendships WHERE account_id=#{@account.id}) ").map(&:friend_id)   
+        accnt = Friendship.find_by_sql("SELECT account_id FROM friendships WHERE friend_id IN (SELECT account_id FROM friendships WHERE account_id=#{@account.id}) ").map(&:account_id)
+        ids = frnd + accnt
+        return Account.where(:id => ids)
 	 
 	 end
 	 

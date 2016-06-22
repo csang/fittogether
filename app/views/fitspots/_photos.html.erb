@@ -13,11 +13,11 @@
 			<div class="on_hover">
 				<span>28</span>
 			</div>			
-			<a data-target="#basicModal45" data-toggle="modal" href="#" class="album-img">
+			<a data-target="#basicModal<%= fc.id %>" data-toggle="modal" href="#" class="album-img">
                               <%= image_tag(fc.cover, size: '300 X 300' ) %>
                         </a>
 			
-			<div aria-hidden="true" aria-labelledby="basicModal" role="dialog" tabindex="-1" id="basicModal45" class="modal fade ">
+			<div aria-hidden="true" aria-labelledby="basicModal" role="dialog" tabindex="-1" id="basicModal<%= fc.id %>" class="modal fade ">
 			   <div class="modal-dialog">
 				<div class="modal-content">
 				 <div class="modal-body">

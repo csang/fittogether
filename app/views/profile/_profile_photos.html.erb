@@ -113,7 +113,7 @@
 
 			   
 				  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
-				  ton aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
+				  <button aria-label="Close" data-dismiss="modal" class="close" type="button"><span aria-hidden="true">×</span></button>
 					<div class="text-center">
 				        <% if img.image_content_type!='video/mp4' %>  
                               <img src="<%= img.image %>" height="600" widht="600">
@@ -136,6 +136,43 @@
 	<% end %>
 	<% end %>
 	<% end %>
+	<!-- this is for collage picutres -->
+	<div class="breadcrumbs">
+			<p><span>Collage Images</span></p>
+	</div>		
+	<div class="collection">
+     <% if @profileuser.account_cover.present? %>
+     <% @profileuser.account_cover.each do |fc| %>
+		<div class="photo album-hover ">
+			<div class="on_hover">
+				<span>28</span>
+			</div>			
+			<a data-target="#basicModal<%= fc.id %>" data-toggle="modal" href="#" class="album-img">
+                              <%= image_tag(fc.cover, size: '300 X 300' ) %>
+                        </a>
+			
+			<div aria-hidden="true" aria-labelledby="basicModal" role="dialog" tabindex="-1" id="basicModal<%= fc.id %>" class="modal fade ">
+			   <div class="modal-dialog">
+				<div class="modal-content">
+				 <div class="modal-body">
+
+			   
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<div class="text-center">
+                              <%= image_tag(fc.cover, size: '600 X 600')  %>
+						</div>
+				</div>
+            
+              </div>
+            </div>
+            </div>
+		</div>
+		<% end %>
+		<% else %>
+		<h2 class="notification-msg"> No images found. </h2>
+		<% end %>
+	</div>
+	
 </div>
 <!-- script src="https://code.jquery.com/jquery-1.10.2.min.js"></script -->
 <script>
