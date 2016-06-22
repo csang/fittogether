@@ -39,7 +39,7 @@
 									
 										<% if group.group_member.present? %>
 										<%  group.group_member.each do |ac| %>
-										<% if ac.status == true && ac.account.present? %>
+										<% if ac.account.present? %>
 										<% img = useravatar(ac.account) %>
 											<div class="avatar">        			
 											<%= link_to(image_tag(img), "/#{ac.account.user_name}") %>

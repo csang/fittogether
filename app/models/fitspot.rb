@@ -3,9 +3,9 @@ class Fitspot < ActiveRecord::Base
   geocoded_by :location
   belongs_to :account
   #belongs_to :group
-  has_many :fitspot_member
-  has_many :fitspot_cover
-  has_many :event
+  has_many :fitspot_member, :dependent =>:delete_all
+  has_many :fitspot_cover, :dependent =>:delete_all
+  has_many :event, :dependent =>:delete_all
   
   validates_presence_of :title
   validates_presence_of :location
