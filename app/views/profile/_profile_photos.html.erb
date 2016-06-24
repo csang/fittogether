@@ -6,12 +6,13 @@
 
 <% if albm.share_with == 'Private' || @account.id == albm.account_id %>
 
-	
+<div class="maindiv">	
 <div class="photos_sub_nav">
 		<div class="breadcrumbs">
 			<p><span>Album</span> ><span>
 			<% if @profileuser.id == @account.id %>
 			<%= link_to  albm.title.present? ? albm.title : 'untitled', showalbum_path(albm.id) %>
+			<%= link_to("<button class='comment-delete-album' title='Delete Album'>Delete Album</button>".html_safe, delete_album_path(albm.id), remote: true, :method =>"delete", :id => "dalbum", data: {confirm: 'Are you sure?'}) %>
 			<% else %>
 			<%=  albm.title.present? ? albm.title : 'untitled' %>
 			<% end %>
@@ -68,9 +69,10 @@
 		</div>
 		<% end %>
 	</div>
+	</div>
 	
 	<% elsif (albm.share_with == 'Friends' && check_if_friend(albm.account_id,@account.id) || (albm.share_with == 'Friends' && @account.id == albm.account_id))  || albm.share_with == 'Public'  %>
-
+<div class="maindiv">	
 	<div class="photos_sub_nav">
 		<div class="breadcrumbs">
 			<p><span>Album</span> ><span>
@@ -132,13 +134,16 @@
 		</div>
 		<% end %>
 	</div>
+	</div>
 	
 	<% end %>
 	<% end %>
 	<% end %>
 	<!-- this is for collage picutres -->
 	<div class="breadcrumbs">
-			<p><span>Collage Images</span></p>
+			 <% if @profileuser.account_cover.present? %>
+			 <p><span>Collage Images</span></p>
+			 <% end %>
 	</div>		
 	<div class="collection">
      <% if @profileuser.account_cover.present? %>
@@ -206,7 +211,17 @@
                 
            });
         
-        })       
+        })    
+        
+        $(function() {
+  $("#dalbum").on("ajax:success", function(e, data, status, xhr)  {
+       $(this).parent().parent().parent().parent().parent('div .maindiv').hide('slow');
+     });
+ $("#dalbum").on("ajax:error", function(e, data, status, xhr)  {
+
+    $('.flash-message').html('<div class="alert alert-danger"> Please Try again.</div>').show();
+     });   
+     });   
         
     </script>
 

@@ -3,3 +3,40 @@
         <h2>Photos</h2>
     </div>
 </div>
+
+<div class="photos_sub_nav">
+		</div>
+<div class="profile_photos_view">
+<div class="collection">
+     <% if @group.group_cover.present? %>
+     <% @group.group_cover.each do |fc| %>
+		<div class="photo album-hover ">
+			<div class="on_hover">
+				<span>28</span>
+			</div>			
+			<a data-target="#basicModal<%= fc.id %>" data-toggle="modal" href="#" class="album-img">
+                              <%= image_tag(fc.cover, size: '300 X 300' ) %>
+                        </a>
+			
+			<div aria-hidden="true" aria-labelledby="basicModal" role="dialog" tabindex="-1" id="basicModal<%= fc.id %>" class="modal fade ">
+			   <div class="modal-dialog">
+				<div class="modal-content">
+				 <div class="modal-body">
+
+			   
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<div class="text-center">
+                              <%= image_tag(fc.cover, width: '600', height: '600')  %>
+						</div>
+				</div>
+            
+              </div>
+            </div>
+            </div>
+		</div>
+		<% end %>
+		<% else %>
+		<h2 class="notification-msg"> No images found. </h2>
+		<% end %>
+	</div>
+	</div>
