@@ -28,7 +28,7 @@
 								 <% end %>
 								 <% end %>
 								<% img = get_fit_cover(1, @fitspot.id ) %>
-								<div style="width:166.8px;height:166.8px;">							
+								<div style="width:170px;height:166.8px;">							
 								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_one">
 								<%= image_tag(img.present? ? img.cover : '' , :id =>'position_one') %>
 								
@@ -44,7 +44,7 @@
 								 <% end %>
 								 <% end %>
 								<% img = get_fit_cover(2, @fitspot.id) %>
-								<div style="width:166.8px;height:166.8px;">
+								<div style="width:170px;height:166.8px;">
 							
 								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_two">
 								<%= image_tag(img.present? ? img.cover : '' , :id =>'position_two') %>
@@ -61,7 +61,7 @@
 								 <% end %>
 								 <% end %>
 								 <% img = get_fit_cover(3, @fitspot.id) %>
-								 <div style="width:340.6px;height:166.8px;">
+								 <div style="width:345.6px;height:167.8px;">
 								
 								<input type ="hidden" value="<%= img.present? ? img.position_offset : '' %>" id="offset_three">
 								<%= image_tag(img.present? ? img.cover : '', :id =>'position_three') %>

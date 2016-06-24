@@ -11,8 +11,9 @@
 		</div>
 	</div>
   <% if  @fitspots.present? %>
-  <% @fitspots.each do |fs| %>
-   <% img = fs.fitspot_image    %>
+  <% @fitspots.each do |fs| %> 
+  <% img =  get_fit_img(fs.id) %>
+  
            <div class="posts">
              <div class="posts-img">
               <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>

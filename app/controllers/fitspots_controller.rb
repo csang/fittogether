@@ -160,7 +160,8 @@ end
      
 	  check_in = FitspotCheckin.create(checkin_params.merge(account_id: @account.id))	
       if check_in.save!  
-        text = "#{@account.first_name} checked in at #{params[:location]}"
+        title = Fitspot.where(:id => params[:fitspot_id]).first
+        text = "#{@account.first_name} checked into #{title.title} fitspot at #{params[:location]}"
         @posts =  Post.create(:account_id=>@account.id,:text=>text,:status=>1,:share_with=> 'Public', :post_type => 'checkin' ,:group_id => params[:fitspot_id] )	         
         render :json => 1  and return     
       else

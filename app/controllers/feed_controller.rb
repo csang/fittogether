@@ -274,19 +274,19 @@ class FeedController < ApplicationController
   
   def delete_album
     #render :layout => false
-    if request.xhr?    
-    
-      @img =  Album.where(:id=>params[:id],:account_id=>@account_id)
-      @img.destroy
-	 
-      if img 
-        render :json => params[:id]  and return      
-      else
-        render :json => 0  and return     
-      end
-    
+    if request.xhr?      
+      img =  Album.where(:id=>params[:id],:account_id=>@account.id).first
+      if img.present? 	 
+		  if img.destroy 
+			render :json => params[:id]  and return      
+		  else
+			render :json => 0  and return     
+		  end
+	else
+     render :json => 0  and return    
     end
-  
+		redirect_to('/feed')
+	end
   end
   
      

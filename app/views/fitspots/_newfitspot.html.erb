@@ -26,7 +26,7 @@
     <div class="pop-row">
  <%= f.label :text, 'Activities' %>
 	<% gspecial = Activity.all.map{|x| [x.name] + [x.id]} %>
-		 <%= select_tag(:activity_ids, options_for_select(gspecial),multiple: true) %>
+		 <%= select_tag(:activity_ids, options_for_select(gspecial),multiple: true, 'class'=> 'form-control multi-select') %>
 		 
 		 
   </div>  

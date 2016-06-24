@@ -37,7 +37,7 @@ has_attached_file :video, :path => ":rails_root/app/assets/:attachment/:id/:base
 =end 
 def self.tagged_with(name)
   name = '#' + name
-   Post.where("text LIKE ?","%#{name}%")
+   Post.joins("LEFT JOIN `comments` ON `comments`.`post_id` = `posts`.`id` ").where("posts.text LIKE ? || comments.text LIKE ?  ","%#{name}%","%#{name}%" )
   
 end
 

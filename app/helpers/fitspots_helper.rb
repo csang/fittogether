@@ -27,4 +27,11 @@ module FitspotsHelper
      return FitspotCheckin.where("fitspot_id = ? AND  Date(created_at) = ?", id, Date.today).count
     
   end 	
+  
+  
+    def get_fit_img(id=nil)	
+	  acc = FitspotCover.where(:fitspot_id => id, :position => 1 ).first
+	  acc.present? ? acc.cover(:medium) : 'fitspot.png'	
+	end
+	
 end
