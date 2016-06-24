@@ -2,6 +2,7 @@ class Group < ActiveRecord::Base
   serialize :activity_ids, Array
   belongs_to :account
   has_many :group_member, :dependent =>:delete_all
+  has_many :group_cover, :dependent =>:delete_all
   has_many :post, :dependent =>:delete_all
   # has_many :fitspot
   

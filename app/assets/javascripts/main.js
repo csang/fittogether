@@ -467,8 +467,10 @@ Fit = {
 			var height = self.parent().prev().find('.comment_container').height() + self.parent().prev().find('.add_comment').height() + 37;
 			self.parent().prev().css('height',height).find('.add_comment textarea').focus();
 			self.parent().prev().find('.comment_container').scrollTop(self.parent().prev().find('.comment_container')[0].scrollHeight);
+			self.parent().parent('div .post').addClass('pop_listing');
 		}else{
 			self.parent().prev().css('height','0px');
+			self.parent().parent('div .post').removeClass('pop_listing');
 		}
 	},
 
@@ -520,6 +522,5 @@ $(document).ready(function(){
 	Nav.init();
 	Chat.init();
 	Fit.init();
-	
 
 	});

@@ -970,7 +970,7 @@ $(document).ready(function () {
       }
     });
 
- $(".search-comment").on('keyup', '.comment',function(e) {
+ $(".add_comment").on('keyup', 'textarea',function(e) {
   var that = this
     if ($(this).val().indexOf("@") != -1) {
       var ind = $(this).val().indexOf("@");

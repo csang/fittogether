@@ -1226,4 +1226,7 @@ aside#ads{
 img[src='']{
     display: none;
 }
+#profile_header .collage > .sub_collage > .square:first-child{width:170px; height:166.8px;}
+#profile_header .collage > .sub_collage > .square:first-child + .square{width:170px; height:166.8px;}
+#profile_header .collage > .sub_collage > .square + .landscape{width:345.6px;height:167.8px;}
 

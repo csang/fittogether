@@ -2657,7 +2657,7 @@ text-overflow: '';
 .photo.album-hover .close {
     margin: -22px -15px 0 0;
 }
-.post-dlt, .comment-delete {
+.post-dlt, .comment-delete, .comment-delete-album {
     background:url("chat-delete.png") no-repeat scroll 0 0;
     height: 13px;
     opacity: 0.5;
@@ -2667,7 +2667,8 @@ text-overflow: '';
     top: 22px;
     width: 11px;
 }
-.post-dlt:hover, .comment-delete:hover {
+.comment-delete-album{height:14px; box-shadow:none; right:100px; border:none; margin:-3px 0 0;}
+.post-dlt:hover, .comment-delete:hover, .comment-delete-album:hover {
     opacity: 1;
 }
 .bottom a {
@@ -3382,3 +3383,10 @@ a:hover, a:focus{text-decoration: none;}
     background-color: rgb(47, 131, 82);
     color: #fff;
 }
+
+#feed_container #feed .pop_listing{overflow:visible;}
+#feed_container #feed .pop_listing.post .comment_section{overflow:visible;}
+.pop_listing.post .arport2{width:100%; top:74%;}
+#feed_container #feed .pop_listing.post .arport2 li.trainers{margin:10px 2px;}
+#feed_container #feed .pop_listing .imageRound img{width:100%;}
+

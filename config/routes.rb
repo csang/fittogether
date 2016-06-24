@@ -156,6 +156,7 @@ Rails.application.routes.draw do
   post 'createalbum', to:'feed#create_album', :as=>:createalbum  
   get 'showalbum/:id', to:'feed#show_album', :as=>:showalbum  
   post 'update_album', to:'feed#update_album', :as=>:update_album  
+  match 'delete_album/:id', to:'feed#delete_album',:via => [:delete], :as=>:delete_album  
   get 'un_sync', to:'feed#un_sync', :as=>:un_sync  
   match 'send_feedback', to: 'feed#send_feedback', :via => [:post] , :as => :send_feedback
   match 'check_in', to: 'feed#check_in', :via => [:post] , :as => :check_in
@@ -249,7 +250,10 @@ Rails.application.routes.draw do
     # resources :foods, only: [:index]
    
      namespace :v1   do 
-		    get 'accounts/store', controller: 'accounts', action: 'store',:defaults => { :format => 'json' } 	
+		    post 'accounts/store', controller: 'accounts', action: 'store',:defaults => { :format => 'json' } 	
+		    post 'accounts/login', controller: 'accounts', action: 'login',:defaults => { :format => 'json' }  
+		    post 'accounts/signup', controller: 'accounts', action: 'signup',:defaults => { :format => 'json' }  
+
 		    
 		 # resources :accounts, :defaults => { :format => 'json' }   
 		
