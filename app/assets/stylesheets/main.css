@@ -3389,4 +3389,8 @@ a:hover, a:focus{text-decoration: none;}
 .pop_listing.post .arport2{width:100%; top:74%;}
 #feed_container #feed .pop_listing.post .arport2 li.trainers{margin:10px 2px;}
 #feed_container #feed .pop_listing .imageRound img{width:100%;}
-
+.change-profilePic{width:25px; height:25px; position:absolute; right:0px; bottom:0px;}
+.change-profilePic input{width:25px; height:25px; position:absolute; z-index:25; opacity:0; right:50px; bottom:7px;}
+.change-profilePic .cover-icon{right: 50px; bottom: 7px;}
+.profile-avtar .change-profilePic{display:none;}
+.profile-avtar:hover .change-profilePic{display:block;}

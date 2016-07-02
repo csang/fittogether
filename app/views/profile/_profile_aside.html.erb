@@ -242,7 +242,7 @@
 						},
 				success: function(data){				
 				//	$('#checkinForm').modal('hide');
-					window.location.reload();                                       },
+					window.location.href = "/feed"                                   },
 				error:	function (xhr, ajaxOptions, thrownError) {
 				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
 					console.log(thrownError)					

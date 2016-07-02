@@ -213,13 +213,14 @@
                                  $('.flash-message').html('');
                                },
                                success: function(data) {
-								location.reload();
+								 window.location.reload();
                                },
                                error: function(xhr, ajaxOptions, thrownError) {
                                  console.log(xhr)
+                                 window.location.reload();
                                }
                              });
-                         
+							
                            },
                            error: function(xhr, ajaxOptions, thrownError) {
                              console.log(xhr)
