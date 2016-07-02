@@ -138,7 +138,7 @@
                       <div class="suggested_friends">
                         <div class="header">
                             <h2>Suggested Friends</h2>
-                            <% usrs = suggested_friend(@account) %>
+                            <% usrs = suggested_friend(@account,3) %>
                            
                         </div>
                         <div class="list">
@@ -147,14 +147,19 @@
                             <div>
                                 <div class="avatar">
 								<% img = useravatar(usr) %>	
-								<%= link_to(image_tag(img), "#{usr.user_name}") %>
+								<%= link_to(image_tag(img), "/#{usr.user_name}") %>
 								</div>
                                 <div class="description">
                                     <p class="name"><%= usr.first_name %> <%= usr.last_name.present? ? usr.last_name : '' %></p>
                                     <br><p class="location"><%= get_city_name(usr.city_id) %>, <%= get_state_code(usr.city_id) %></p>
-                                </div>
-                            </div>
+                                </div>                              
+                            </div>                              
                             <% end %>
+                             <div class="see_all">     
+								   <% if usrs.count > 2 %>                      
+									<%= link_to  'Show More Option',"/#{@account.user_name}/suggested_friends"  %>
+								   <% end %>	
+								</div>
                             <% else %>
                                <p> N/A </p>
                             <% end %>

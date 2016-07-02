@@ -10,9 +10,82 @@ class Api::V1::AccountsController < Api::V1::BaseController
    account = Account.find(params[:id])
    render json: account
    end
+   
+   ## Saving the basic info
+   def basic_info
+   end
+   
+   ## After login, get the user details with userid 
+   def login
+		if  params[:fit_id]
+			accounts = Account.where("fit_id = ?", params[:fit_id]).first
+			if accounts.present?
+				render :json => { user: accounts } and return
+				else 
+				render :json => { errors: "Something went wrong" } and return
+			end
+		else 	
+			render :json => { errors: "Something went wrong" } and return
+		end	 
+   end
+   
+   def signup
+     connection = params[:connection]
+     if connection == 'social'
+		userId = params[:userId].split('|')
+		authorization = Authorization.find_by_provider_and_uid(params[:provider], userId)
+		if authorization
+				render :json => {success: "Sucessfully login"}  and return
+		else
+			account = Account.new
+			account['fit_id'] = userId[1]
+			account['first_name'] = params[:first_name]
+			account['pic'] = params[:pic]
+			account['user_name'] = params[:username]
+			account['email'] = params[:email]
+			if account.save
+					authorization = Authorization.new
+					authorization['provider'] = params[:provider] 
+					authorization['uid'] = userId[1]
+					authorization['account_id'] = account.id
+					authorization.save
+					account_user = AccountUser.new :account_id => account.id
+					account_user.save	
+				render :json => {success: "Sucessfully data saved"}  and return
+			else
+				render :json => { errors: "Invalid email or password" } and return
+			end
+		end
+     else
+		## saving signup user with social 
+		account = Account.new
+		userId = params[:userId].split('|')
+		account['fit_id'] = userId[1]
+		account['first_name'] = params[:first_name]
+		account['last_name'] = params[:last_name]
+		account['user_name'] = params[:username]
+		account['email'] = params[:email]
+		account['user_type'] = params[:user_type].to_i
+		 if account.save
+			case params[:user_type].to_i
+			when 2
+				model = AccountTrainer.new
+			when 3
+				model = AccountGym.new
+			else
+			model = AccountUser.new
+			end
+			model['account_id'] = account.id
+			model.save
+			render :json => {success: "Sucessfully data saved"}  and return
+		 else
+			render :json => { errors: "Invalid email or password" } and return
+		end
+     end
+   end
 
    def store
-    abort(request.inspect)
+
     issocial = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['isSocial']
     connection = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['connection']
 

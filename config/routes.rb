@@ -136,6 +136,7 @@ Rails.application.routes.draw do
   match 'send_invitations', to: 'invites#send_invitations', :via => [:post] , :as => :send_nvitations
 
   
+  match 'delete_account', to: 'settings#delete_account', :via => [:delete], :as => :delete_account
   match '/settings/check_user_data/', to: 'settings#check_user_data', :via => [:get,:post] 
   match 'get_gym_address', to: 'settings#get_gym_address', :via => [:get,:post], :as => :get_address 
   match 'set_remember/(:message)', to: 'callback#set_remember', :via => [:get,:post] , :as=>:set_rememberme
@@ -205,6 +206,7 @@ Rails.application.routes.draw do
   get ':id/members', to: 'profile#members'
   get ':id/trainers', to: 'profile#trainers'
   get ':id/notifications', to: 'profile#notifications'
+  get ':id/suggested_friends', to: 'profile#suggested_friends'
  
   match 'profile/new_friends_and_members', to: 'profile#new_friends_and_members',:via => [:get], :defaults => { :format => 'json' }
   match 'get_check_in_count', to: 'profile#get_check_in_count',:via => [:get, :post], :defaults => { :format => 'json' }, :as=>:get_check

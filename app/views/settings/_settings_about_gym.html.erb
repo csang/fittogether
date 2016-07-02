@@ -1,11 +1,10 @@
- <script>
-  
-   $(function() {
-                    $('.start').timepicker();
-                    $('.end').timepicker();
-                   
-                });
-            </script>
+ <script>  
+$(function() {
+$('.start').timepicker();
+$('.end').timepicker();
+ $(".address").geocomplete();
+});
+</script>
  
 <%= form_for @page,:url=>{:action=>'update_about_gym'},:html=>{:id => "update_about_gym"} do |f| %>
 
@@ -21,12 +20,12 @@
 		<div class="input">
 		 <% if @account_gyms.address.present? %>  
           <% @account_gyms.address.each { |x|  %>
-			<textarea name="address[]"><%= x %> </textarea>
+			<textarea class="address" name="address[]"><%= x %> </textarea>
 			<% } %>
 			   <%else%> 
-			   <textarea name="address[]"></textarea>
+			   <textarea class="address" name="address[]"></textarea>
 			   <% end %>
-			<button class="add add_address" type="button">+</button>
+			<!--<button class="add add_address" type="button">+</button>-->
 		</div>
 	</div>
   

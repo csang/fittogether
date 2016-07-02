@@ -86,7 +86,7 @@
 							<% end %>	
            <%= link_to(member.first_name, "/#{member['user_name']}") %>
              <% if @profileuser.id == @account.id %>
-			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend">Remove</button>
+			 <button data-id="<%= Base64.encode64(member.id.to_s)%>" class="rejectfriend"><%= member.user_type ==2 ? 'Unfollow' : 'Remove' %></button>
 			  <% end %>
            
                  <p class="profile-info"> (<%= if member.user_type==2 
@@ -110,7 +110,7 @@
 $(document).ready(function(){
 
 $('.rejectfriend').on('click', function() {
- if (confirm("Do you want to remove?")) {  
+ if (confirm("Are you sure?")) {  
 var toid = $(this).attr('data-id');
 var that = this;
 	$.ajax({

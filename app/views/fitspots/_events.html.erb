@@ -118,7 +118,8 @@
             </div> -->
             <!-- } //end if -->
             <div class="event_actions">   
-				<% attedr = check_if_event_attender(evnt.event_attender) %>       	
+				<% event_attender = EventAttender.attender(evnt.id) %>       	
+				<% attedr = check_if_event_attender(event_attender) %>       	
             	<button class="attend <%= attedr.present? ? 'atnat' : '' %>" <%= attedr.present?  ? 'disabled' : '' %> data-type="add" title="Attending"   data-id="<%=  Base64.encode64(evnt.id.to_s)   %>">Attending </button>
             	<button class="attend <%= !attedr.present? ? 'atnat' : '' %>" <%= !attedr.present? ? 'disabled' : '' %> data-type="del" title="Not Attending"   data-id="<%=  Base64.encode64(evnt.id.to_s)   %>"> Not Attending </button> 
             </div>

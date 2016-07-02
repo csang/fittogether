@@ -1,5 +1,4 @@
 <!--- New --->	
- 
 <div class="collage">
     <div class="sub_collage">
         <div class="square">
@@ -102,18 +101,25 @@
     </div>
 </div>
 <div class="profile_bar">
-<div class="avatar">
+<div class="avatar profile-avtar">
   <% img =  useravatar(@profileuser)  %>
  <%= image_tag(img) %>	
+  <% if @account.id == @profileuser.id %>
+ <form class="change-profilePic" novalidate="novalidate" method="post" enctype="multipart/form-data" action="update_avatar" accept-charset="UTF-8">
+	 <span class="cover-icon"></span>
+	 <input type="file" title="Change profile image" name="avatar" onchange="this.form.submit()" accept="image/*">         
+  </form>
+  <% end %>
  </div>
+   
 <div class="profile_data" <% if @profileuser.user_type.to_i == 3  %> style="background-color: rgb(177, 26, 151)" <% end %> >
     <div class="personal_data">
-     <% if @profileuser.last_name.present? %>
-     <% lname = @profileuser.last_name %>
+     <% lname = @profileuser.last_name.present? ? @profileuser.last_name : "" %>
+     <% if @profileuser.user_type == 3 %>
+		<h1><%= @profileuser.account_gym.name.present? ? @profileuser.account_gym.name.capitalize : @profileuser.first_name.capitalize + ' ' +  lname.capitalize %></h1>
      <% else %>
-     <%  lname = '' %>
+      <h1><%= @profileuser.first_name.capitalize + ' ' +  lname.capitalize  %></h1>
      <% end %>
-        <h1><%= @profileuser.first_name.capitalize + ' ' +  lname.capitalize  %></h1>
       
          <% unless @account.id == @profileuser.id %>	
          <% if @account.pending_friends.present? %>					  
@@ -163,7 +169,15 @@
             <% if @profileuser.user_type == 2 %>                                	
         <p> Trainer <%= @profileuser.account_trainer.gym_id.present? ? 'at ' + get_gym_name(@profileuser.account_trainer.gym_id)  : '' %></p>
         <% end %>
-        
+        <% if @profileuser.user_type == 3 %>   
+        <p><% if @profileuser.account_gym.address.present? %>
+        <% @profileuser.account_gym.address.each { |x|  %>
+			<%= x %> 
+			<span style="display:none;" id="loca"><%= x %> </span>
+			<% } %>        
+        </p>
+        <% end %>
+        <% end %>
     </div>
     <div class="statistics">
       
@@ -203,16 +217,41 @@
     </div>
  <% end %>   
  <div class="actions">
- <% if @profileuser.user_type ==3 %>
-       <button>Schedule</button>
+ <% if @profileuser.user_type == 3 && @profileuser.id != @account.id && @profileuser.account_gym.address.present? %>
+       <button id="chkin">CHECK-IN</button>
        <% end %>
  </div>      
-
-
 
 <script type="text/javascript">
  
  $(document).ready(function() {
+	 // checkin
+	 <% if @profileuser.user_type == 3 %>
+	 $('#chkin').on('click', function() {
+	
+		 var gymid = "<%= @profileuser.account_gym.id %>";   
+		 var location = $('#loca').text();   
+		 console.log(location)
+		 	$.ajax({
+				type: "POST",
+				url: '/check_in', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {account_gym_id:gymid, location:location},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+				//	$('#checkinForm').modal('hide');
+					window.location.reload();                                       },
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)					
+				}	
+			
+			});
+	    
+});
+<% end %>
      //remove friend
      $('.cancelfriend').on('click', function() {
          var toid = $(this).attr('data-id');
@@ -357,12 +396,14 @@
      $('#star').raty({
          readOnly: true,
          half: true,
+         hints: false,
          score: <%= @profileuser.average_rating %>,
          path: '/assets'
      });
 
      $('#user_star').raty({
          half: true,
+          hints: false,
          score: <%= @rating.score %>,
          path: '/assets',
          click: function(score, evt) {
@@ -629,5 +670,6 @@
      }
  });
  <% end %>
+ 
 
 </script>

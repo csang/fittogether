@@ -57,10 +57,12 @@
 				
     
       <div class="submit_container">
+	
         <button id="save_changes" type="submit">Save</button> 
          <%# if provider == 'auth0' %>      
             <button id="change_password" type="button">Change Password</button>   
          <%# end %>
+           <button type="button" class="btn-danger delete_user" style="background-color: #b33630" title="Once you delete your account, there is no going back. Please be certain.">Delete Your Account</button>	   
       </div>
       
     
@@ -84,7 +86,7 @@
         <label>Verify New Password:</label>
              <input type="password" name="verify_password">
        </div>
-      <div class="submit_container">
+      <div class="submit_container"> 
         <button id="save_password" type="button" >Save Password</button>
         <button id="cancel_password" type="button">Cancel</button>
       
@@ -169,6 +171,68 @@
     
     $("#imgInp").change(function(){
         readURL(this);
+    });
+    
+    // delete user account functionality
+  $('.delete_user').on('click', function() {
+      if (confirm('Are you sure you want to delete ?')) {
+        var provider =  "<%= provider = @account.authorization.present? ? @account.authorization.provider : 'auth0' %>";
+        var cData = {};
+        cData.client_id = clientid ;
+        cData.client_secret = secertid  ;
+        cData.grant_type = 'client_credentials';      
+             $.ajax({
+                  dataType: "json",
+                  type: 'DELETE',
+                  url: '<%= delete_account_path %>',
+                  beforeSend: function() {
+                    //$('.dataDiv').html('Loading....');
+                  },
+                  success: function(data) {
+				
+                    if (data == 0) {
+                      alert('There is some error, Please try again');
+                    } else {
+						 userid = provider +'|' + "<%= @account.fit_id %>";						 
+                         $.ajax({
+                           url: 'https://fittogetherzap.auth0.com/oauth/token',
+                           type: 'POST',
+                           contentType: 'application/json',
+                           dataType: 'json',
+                           data: JSON.stringify(cData),
+                           success: function(xhr, status) {
+                             newtoken = 'Bearer ' + xhr.access_token;                          
+                             $.ajax({
+                               url: 'https://fittogetherzap.auth0.com/api/users/'+userid,
+                               type: 'DELETE',
+                               contentType: 'application/json',
+                               dataType: 'json',
+                               data: JSON.stringify(cData),
+                               beforeSend: function(xhr) {
+                                 xhr.setRequestHeader('Authorization', newtoken);
+                                 $('.flash-message').html('');
+                               },
+                               success: function(data) {
+								location.reload();
+                               },
+                               error: function(xhr, ajaxOptions, thrownError) {
+                                 console.log(xhr)
+                               }
+                             });
+                         
+                           },
+                           error: function(xhr, ajaxOptions, thrownError) {
+                             console.log(xhr)
+                           },
+                         });
+                      }
+                  },
+                  error: function(xhr, ajaxOptions, thrownError) {
+                    console.log(xhr)
+                  }
+                });
+      }
+
     });
     
     	

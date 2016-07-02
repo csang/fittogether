@@ -321,6 +321,10 @@ class ProfileController < ApplicationController
 	
 		 
 	end
+	
+  def suggested_friends
+  
+  end
   
   
  
