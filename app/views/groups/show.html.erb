@@ -323,7 +323,7 @@
                                 <%= link_to('Photos', gp_path(Base64.encode64(@group.id.to_s), 'photos'), :remote => true) %>
                                 <%= link_to('Videos', gp_path(Base64.encode64(@group.id.to_s), 'videos'), :remote => true) %>
                                 <%= link_to('Members', gp_path(Base64.encode64(@group.id.to_s), 'members'), :remote => true) %>
-                                <%= link_to('Events', gp_path(Base64.encode64(@group.id.to_s), 'events'), :remote => true) %>
+                                <%#= link_to('Events', gp_path(Base64.encode64(@group.id.to_s), 'events'), :remote => true) %>
                               
                             </div>
                         </div>
@@ -354,21 +354,34 @@
                     <div class="events">
                         <div class="header">
                             <h2>Events</h2>
+                            <%  event = event_invitation %>  
                         </div>
                         <div class="list">
-                            <!--<div>
-                                <div class="avatar"><h3>13</h3></div>
+                           			<%  if event.present? %>  
+							<% event.each do |ft| %>
+							<% img = ft.event.image    %>
+                            <div>
+                                <div class="avatar"><h3><%= image_tag(img) %></h3></div>
                                 <div class="description">
-                                    <p class="date">November 13</p><br>
-                                    <p class="event">5K Run at Iron Mountain Trail</p><br>
-                                    <p class="location">San Diego, CA</p><br>
-                                    <p class="actions"><button>Attending</button><span>|</span><button>Not Attending</button></p>
+                                    <p class="date"><%= ft.event.event_date.strftime("%e %B ") %></p><br>
+                                    <p class="event">
+										<%= ft.event.title.capitalize  %>
+										</p><br>
+                                    <p class="location"><%= ft.event.fitspot.location %></p><br>
+                                    <p class="actions">
+									<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.id.to_s)   %>"> 
+										Attending</button>
+									<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.id.to_s)   %>">Not Attending</button></p>
                                 </div>
-                            </div>-->
+                            </div>
+                            <% end %>
+                            <% else %>
+                            <p> N/A </p>
+                            <% end %>
                             
-                        </div>
+                           </div>
                         <div class="see_all">
-                            <a href="">coming soon</a>
+                                   <%= link_to  'See All Events','/events/index'  %>
                         </div>
                     </div>
                     <div class="members">

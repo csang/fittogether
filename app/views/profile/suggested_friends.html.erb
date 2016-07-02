@@ -1,0 +1,24 @@
+<div id="seed">
+ <% usrs = suggested_friend(@account,20) %>
+  <% if  usrs.present? %>
+  <% usrs.each do |usr| %>
+   <% img = useravatar(usr) %>
+           <div class="posts">
+             <div class="posts-img">
+              <%= link_to(image_tag(img), "/#{usr.user_name}") %>
+              </div>
+             <div class="posts-content">
+               <h4>
+               <%= link_to(usr.first_name.capitalize  + " " +  (usr.last_name unless usr.last_name.nil? ) , "/#{usr.user_name}") %>
+               </h4>
+               <br><p class="location"><%= get_city_name(usr.city_id) %>, <%= get_state_code(usr.city_id) %></p>
+             </div>
+             <div class="clear"></div>
+           </div>
+           <% end %>
+           <% else %>
+				<h4 class="noti-heading">No Suggestions Found.</h4>
+           <% end %>
+  
+</div>
+

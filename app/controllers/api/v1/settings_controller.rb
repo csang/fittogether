@@ -143,20 +143,53 @@ class Api::V1::SettingsController < Api::V1::BaseController
   
   # update profile pic
   	def update_avatar
+  	#content = Base64.decode64(params['avatar'])
+  	account_id = '21'
+  	acc = Account.find(account_id)
+  	
+  	params[:avatar] = parse_image_data(params) if params[:avatar]
     
-    acc = Account.find(params[:account_id])
-    if acc.update_attribute(:avatar, params[:avatar])	
+    
+    acc.avatar = params[:avatar]
+  	 
+  	unless acc.valid?
+		abort(acc.errors.inspect)
+  	end
+  	
+  	abort(acc.inspect)
+  	 
+    if acc.save	
 		 render :json => 1
     else
 		 render :json => 0
-    end
-  end
-  
+   end
+  	
+  	
+  	
+  	
+  #  @tempfile = Tempfile.new('item_image')
+  # 
+  #
+  #  uploaded_file = ActionDispatch::Http::UploadedFile.new(
+  #    tempfile: @tempfile,
+  #    filename: params[:fileName]
+  #  )
+  #
+  # uploaded_file.content_type = params[:content_type]
+  #  uploaded_file
+
+  	#~ upload = ActionDispatch::Http::UploadedFile.new({
+  #~ :filename => params[:fileName],
+  #~ :content_type => 'image/jpeg',
+  #~ :tempfile => File.new("#{Rails.root}/test/fixtures/avatar.jpeg")
+#~ })
+
+end
   #basic info update
   def update_profile	
     acc = Account.find(params[:account_id])	
     if params[:mobile].present?
-      params[:mobile] = params[:mobile][0] + params[:mobile][1] + params[:mobile][2]
+      params[:mobile] = params[:mobile][0] == nil ? params[:mobile][0] + params[:mobile][1] + params[:mobile][2] : params[:mobile]
     else 
       params[:mobile] = ''
     end
@@ -264,6 +297,33 @@ class Api::V1::SettingsController < Api::V1::BaseController
   end
 
 
+
+ # This part is actually taken from http://blag.7tonlnu.pl/blog/2014/01/22/uploading-images-to-a-rails-app-via-json-api. I tweaked it a bit by manually setting the tempfile's content type because somehow putting it in a hash during initialization didn't work for me.
+  def parse_image_data(image_data)
+    @tempfile = Tempfile.new('item_image')
+    @tempfile.binmode
+    @tempfile.write Base64.decode64(image_data[:avatar])
+    @tempfile.rewind
+	
+    uploaded_file = ActionDispatch::Http::UploadedFile.new(
+      tempfile: @tempfile,
+      filename: image_data[:filename]
+      #filename: image_data[:filename]
+    )
+
+   #uploaded_file.content_type = image_data[:content_type]
+   uploaded_file.content_type = image_data[:content_type]
+    uploaded_file
+  end
+
+  def clean_tempfile
+    if @tempfile
+      @tempfile.close
+      @tempfile.unlink
+    end
+  end
+
  
 end #end of class
+
 

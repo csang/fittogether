@@ -19,6 +19,7 @@ class Event < ActiveRecord::Base
     :styles => { :medium => "730x250>", :thumb => "160x160>" }
  
   validates_attachment_content_type :image, :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, :message => 'File type is not allowed (only jpeg/png/gif images)'
+  
  
  
 end

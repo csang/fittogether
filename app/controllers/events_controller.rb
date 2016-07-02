@@ -13,7 +13,7 @@ before_action :get_account
             fitspot_member =  FitspotMember.where(:fitspot_id => fid)
              if fitspot_member.present?
                 fitspot_member.each do |gd|
-                EventAttender.create(:account_id => gd.account_id, :event_id => @event.id, :status =>false)
+                EventAttender.create(:account_id => gd.account_id, :event_id => @event.id, :status =>0)
             end
 		end  
 	  end
@@ -94,16 +94,16 @@ before_action :get_account
   def add_del_attending
    if request.xhr?     
      id = Base64.decode64(params[:id])   
-      if params[:type] =='add'         
-        @member = EventAttender.where(:event_id=> id,:account_id =>@account.id).first
-        if @member.present?
+     if params[:type] =='add'         
+        @member = EventAttender.where(:id=> id,:account_id =>@account.id).first
+         if @member.present?
           if  @member.update_attribute(:status, true)
              render :json => 1  and return     
          else
            render :json => 0  and return   
          end 	
         else
-        @member = EventAttender.create(:event_id=> id,:account_id =>@account.id, :status => true, :seen => true)		
+        @member = EventAttender.create(:id=> id,:account_id =>@account.id, :status => true, :seen => true)		
             if @member.save
               render :json => 1  and return     
             else
@@ -111,7 +111,7 @@ before_action :get_account
             end 	
         end  
      else
-        @member = EventAttender.where(:event_id=> id,:account_id =>@account.id).first
+        @member = EventAttender.where(:id=> id,:account_id =>@account.id).first
         if @member.present?
 			if @member.delete
 			 render :json => 1  and return     

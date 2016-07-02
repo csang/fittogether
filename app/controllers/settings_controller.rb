@@ -78,7 +78,7 @@ class SettingsController < ApplicationController
 	end
 	
  def update_avatar
-    #abort(@account.inspect)
+    #abort(params.inspect)
     @acc = Account.find(@account.id)
     if  @acc.update_attribute(:avatar, params[:avatar])	
 		redirect_to  action: "crop" and return
@@ -323,6 +323,19 @@ class SettingsController < ApplicationController
     end
     flash[:notice] = "Email settings has been updated successfully."
     redirect_to request.env['HTTP_REFERER'] and return
+  end
+  
+    # Delete a user
+  def delete_account
+    @user = Account.where(:fit_id => @account.fit_id).first
+    
+    respond_to do |format|
+      if @user.destroy
+        format.json { render :json=> 1 and return }
+      else
+        format.json { render :json=>'0' and return }
+      end 
+    end
   end
   
   
