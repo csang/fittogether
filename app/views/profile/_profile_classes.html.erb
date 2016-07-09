@@ -82,8 +82,11 @@ $(function() {
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
           },
           success: function(data) {
-			   $('.flash-message').html('<div class="alert alert-success"> success</div>').show();
-       		console.log(data);
+               if (2 == data) {
+			   $('.flash-message').html('<div class="alert alert-success">  You have successfully removed yourself to this class</div>').show();
+			   } else {
+			   $('.flash-message').html('<div class="alert alert-success">  You have successfully added yourself to this class</div>').show();
+			   }
           },
           error: function(xhr, ajaxOptions, thrownError) {
             $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();

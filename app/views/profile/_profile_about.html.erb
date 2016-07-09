@@ -28,10 +28,7 @@
           </li>
           <% if !@privacy.present?  %>
          
-           <li class="location">Lives in: <%= (@profileuser.city_id.present?) ? get_city_name(@profileuser.city_id) : ''  %><%= (@profileuser.state_id.present?) ? ", " + get_state_name(@profileuser.state_id) : ''  %>
-           <% if !@profileuser.city_id.present? && !@profileuser.state_id.present? %>
-             N/A
-           <% end  %>  
+           <li class="location">Lives in: <%= usr.user_location.present? ? usr.user_location : "N/A" %>
            </li>
             <li class="works">Works out at: <% if @profileuser.gym_id.present? %>  <%= link_to("<span>#{get_gym_name(@profileuser.gym_id)}</span>".html_safe, '/' + get_user_name(@profileuser.gym_id)) %> <% else %> N/A <% end %></li>
            <li class="birday">Birthday: <%=  (@profileuser.dob.present?) ? @profileuser.dob.to_s(:myformat) : 'N/A' %> </li>
@@ -40,10 +37,7 @@
             <% else %>
        
                 <% if @privacy.location.present? &&  @privacy.location==true  %>
-				 <li class="location">Lives in: <%= (@profileuser.city_id.present?) ? get_city_name(@profileuser.city_id) : ''  %><%= (@profileuser.state_id.present?) ? ", " + get_state_name(@profileuser.state_id) : ''  %></li>
-				 <% if !@profileuser.city_id.present? && !@profileuser.state_id.present? %>
-                              N/A
-                            <% end  %>  
+				 <li class="location">Lives in: <%= @profileuser.user_location.present? ? @profileuser.user_location : "N/A" %>
                     <% end %>
                 <% if @privacy.work.present? &&  @privacy.work==true  %>
 				  <li class="works">Works out at: <% if @profileuser.gym_id.present? %>  <%= link_to("<span>#{get_gym_name(@profileuser.gym_id)}</span>".html_safe, '/' + get_user_name(@profileuser.gym_id)) %> <% else %> N/A <% end %></li>

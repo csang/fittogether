@@ -1,11 +1,14 @@
 	 
                       <!-- Start: Text post -->
-                       <% @posts.each do |post| %>  
-                         <% last = post.account.last_name.present? ? post.account.last_name : ''; 	
-						    name = post.account.first_name + ' ' + last
-						    time = post.created_at %>
+                       <% @posts.each do |post| %>                           
 						  <% img =  useravatar(post.account) %>
-						  
+						  <% time = post.created_at %>
+						  <% last = post.account.last_name.present? ? post.account.last_name.capitalize : ''; %>
+						  <% if post.account.user_type == 3 %>						    
+						     <% name = post.account.account_gym.name.present? ? post.account.account_gym.name.capitalize : post.account.first_name.capitalize + ' ' +  last.capitalize %>
+						  <% else %>
+							 <% name = post.account.first_name.capitalize + ' ' + last %>
+						  <% end %>
                         <div class="post <%= post.post_type!='text' ? post.post_type : '' %> <%= post.account.user_type ==3 ? 'gym' :'' %>" id="<%= post.id %>">
                             <div class="header">
                            	<% if post.post_type =='challenge' %>	
@@ -32,6 +35,7 @@
                             <% end %>
                                </div>
                             <div class="content">
+							
 							<% if post.post_type =='challenge' %>	
 										<%=  get_challenge_body(post.group_id) %>    
 						    <% elsif post.post_type =='fitbit' %>
@@ -88,6 +92,24 @@
 								<%= image_tag(post.image(:medium)) %>		
 							  </div>
 							<% end %>
+								<% if post.post_type =='fitspot' %>	
+								                     <div class="visual">
+                                    <div class="image">
+										<% fitimg =   get_fit_cover(1,post.group_id) %>
+										<% if fitimg.present? %>
+									    <%= image_tag(fitimg.cover) %>                                        
+										<% else %>
+                                       <%= image_tag('fitspot.png') %>
+                                       <% end %>
+                                    </div><div class="map_visual">
+										<% location =  fitspot_location(post.group_id) %>
+                                       <input type="hidden" class="geopost" mapPlaceholder="placeholder_<%= post.id %>" value="<%=	location %>">
+                                    <div class="map" id="placeholder_<%= post.id %>" style="height:224px;">                                      
+                                    </div>
+                                    </div>
+                                </div>
+                                
+								<% end %>	
 							<% if post.post_type =='checkin' %> 
 								<div class="visual">		
 										
@@ -111,7 +133,12 @@
                                              <%= link_to(image_tag(img) , abc.user_name) %>
                                         </div>
                                         <div class="header">
+                                         <% if abc.user_type == 3 %>
+                                         <% last = abc.last_name.present? ? abc.last_name.capitalize : ''; %>
+                                            <h5><%= abc.account_gym.name.present? ? abc.account_gym.name.capitalize : abc.first_name.capitalize + ' ' +  last.capitalize %></h5>
+                                          <% else %>
                                             <h5><%= abc.first_name.capitalize %> <%= abc.last_name.present? ? abc.last_name : '' %></h5>
+                                          <% end %>  
                                             <p class="timestamp"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</p>
                                         </div>
                                         <div class="text">
@@ -155,11 +182,13 @@
                                     <h3>Comment <%= post.comment.present? ? "(#{post.comment.count})" : '' %></h3>
                                 </div>
                                 <!-- if( post belongs to user ){ -->
-                                	<% if @account.id == post.account_id && (post.post_type != "fitbit" || post.post_type != "challenge") %>     
+                                	<% if @account.id == post.account_id && (post.post_type != "fitbit" || post.post_type != "challenge" ) %>    
+                                	<%  if post.post_type != "fitspot" %>
                                 <div class="edit" data-toggle="modal" data-target="#postEditForm" data-id="<%= post.id %>" >
                                     <div class="icon"></div>
                                     <h3>Edit</h3>
                                 </div>
+                                <% end %>
                                 <% end %>
                                 <!-- } //end if -->
                             </div>

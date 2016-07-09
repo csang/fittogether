@@ -6,31 +6,10 @@
 <%  @activities.each do |activity| %>
 <% check = '' %>
 	<div class="input_container">
-	    <% if activity.name.to_s == "boot_camp" %>
-		  <div class="avatar activity boot_camp"></div>
-        <label>Boot Camp</label>
-		<% elsif activity.name =='cardio_circuit' %>
-		 <div class="avatar activity cardio_circuit"></div>
-            <label>Cardio Circuit</label>
-        	<% elsif activity.name =='pilates' %>
-		 <div class="avatar activity pilates"></div>
-            <label>Pilates</label>    
-		<% elsif activity.name =='running' %>
-         <div class="avatar activity running"></div>
-        <label>Running</label>
-		<% elsif activity.name =='spinning' %>
-		 <div class="avatar activity spinning"></div>
-            <label>Spinning</label>
-         	<% elsif activity.name =='swimming' %>   
-         <div class="avatar activity swimming"></div>
-            <label>Swimming</label> 
-            <% elsif activity.name =='tennis' %>  
-                <div class="avatar activity tennis"></div>
-            <label>Tennis</label>  
-            <% elsif activity.name =='yoga' %>  
-            <div class="avatar activity yoga"></div>
-            <label>Yoga</label>
-		<% end %>
+	   
+		  <div class="avatar activity <%= activity.slug %>"></div>
+         <label><%= activity.name %></label>
+	
 		  	<% if @accactivity.present? %>
 		<% if @accactivity['activity_id'].include? activity.id.to_s %>
 		<% check = 'checked' %> 

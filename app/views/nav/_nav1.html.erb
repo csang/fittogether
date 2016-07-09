@@ -10,7 +10,8 @@
 			</div>
 		   <% @countreq = @account.requested_friendships_seen.present? ? @account.requested_friendships_seen.count : '' %> 
 		   <% @countreqchallenge = @account.requested_challenges_seen.present? ? @account.requested_challenges_seen.count : '' %> 
-		   <% @cnt = @countreq.to_i + @cnt.to_i +  @fitspot_cont.to_i + @event_cont.to_i %>
+		   <% @follow_cont =  @follow.count == 0 ? '' : @follow.count unless !@follow.present? %>
+		   <% @cnt = @countreq.to_i + @cnt.to_i +  @fitspot_cont.to_i + @event_cont.to_i + @follow_cont.to_i %>
 	
 			<nav id="top_nav">
 			   <span class="new"> <%= @cnt == 0 ? '' : @cnt %> </span> 
@@ -26,11 +27,18 @@
 				<div class="profile_icon" title="Profile">
 					<div class="profile_list">
 						<div class="list">
-							<a  href="/<%= @account.user_name %>">My Profile</a>
+							<a  href="/<%= @account.user_name %>" class="user_first">My Profile</a>
 							<% if @account.user_type == 3 %>
-							<%= link_to('Gym Dashboard',dashboard_path()) %>
+							<%= link_to('Gym Dashboard',dashboard_path(), class: "user_second") %>
+							<% else %>							
+								<%= link_to('My Gym', "/#{my_gym}", class: "user_fourth") %>
+							<% end %>							
+							<% if @account.user_type == 1 %>
+								
+								<%= link_to('My Trainer', "/#{my_trainer}", class: "user_fifth") %>
 							<% end %>
-						</div>
+								<%= link_to('Settings', "/settings", class: "user_third") %>
+								</div>
 					</div>
 					<div id="dark_cover"></div>
 				</div>

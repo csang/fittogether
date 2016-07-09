@@ -47,9 +47,11 @@ display:none;
 </div>
       <div class="modal-body">
 		<div class="listing-hover row">
+		 <%  if @account.user_type != 1 %>
 			<div class="col-xs-12">
 				<label style="margin:0px 0 7px;">Between</label> 
             </div>
+          <% end %>  
 		</div>
         <div class="pop-row listing-hover row">
           

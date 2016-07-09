@@ -526,7 +526,8 @@
           integer = parseInt(Math.ceil(score), 10),
           star    = this.stars[integer - 1];
 
-        star.title = methods._getHint.call(this, score, evt);
+        //star.title = methods._getHint.call(this, score, evt);
+        star.title = "";
       }
     },
 

@@ -1,21 +1,22 @@
 	<div class="notification_list">
 							<div class="list">
 								<!-- Start: Notification -->
-							<!--	<div class="notification">
-									<div><div class="avatar"><img src="../../public/img/profile/venuswilliams_avatar.png" title="Venus Williams" alt="VW"></div></div
-									><div>
-										<h5>Venus Williams</h5>
-										<h6>Commented</h6>
-										<p>"I was too busy taking selfies to work out"</p>
-										<div class="actions">
-											<a href="">Reply</a>
-										</div>
-									</div><div>
-										<a href="../notifications"></a>
+		<% if @follow.present? %>	
+		   <% @follow.each do |follower| %>	
+		   <% if follower.account.present? %>			
+			<div class="notification">
+									<div><div class="avatar">
+									<% img = useravatar(follower.account) %>
+									<%= link_to(image_tag(img), "#{follower.account.user_name}") %>
+									</div></div><div>							
+										<h5><%= follower.account.first_name %> <%= follower.account.last_name unless !follower.	account.last_name.present?  %> </h5>
+										<p>"Starts following you."</p>										
 									</div>
-								</div>-->
-								
-								<!-- End: Notification -->
+								</div>
+		<% end %>						
+		<% end %>						
+		<% end %>						
+								<!-- End: Notification 
 								 
 							<%  if @fit_spot.present? %>  
 						   	<% @fit_spot.each do |ft| %>
@@ -130,7 +131,11 @@
 										  <%= link_to(image_tag(img), "/#{member.user_name}") %>
 										</div></div><div>
 											<h5><%= link_to(member.first_name, "/#{member['user_name']}") %></h5>
+											<% if @account.user_type!=3 %>
 											<h6>Added you as a friend</h6>
+											<% else %>
+											<h6>has asked to join your gym. Please confirm <%= member.first_name %> is a member</h6>
+											<% end %>
 											<div class="actions">
 											 <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" id="rejectfriend">Decline</a>
              <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" id="acceptfriend">Accept</a>

@@ -8,8 +8,12 @@ def friend_request
   if request.xhr?   
 	  from_id = @account.id	
 	  to_id = Base64.decode64(params[:toid]) # this is the id of the user you want to become friend with
-	
-	  friendable = Friendship.create(account_id: from_id, friend_id: to_id.to_i, approved: false)
+	  usr = Account.find_by_id(to_id)
+	  if usr.user_type == 2
+		friendable = Friendship.create(account_id: from_id, friend_id: to_id.to_i, approved: true)
+	  else
+	    friendable = Friendship.create(account_id: from_id, friend_id: to_id.to_i, approved: false)
+	  end 	
 	  
 	  if friendable 
 		render :json => params[:toid]  and return     
@@ -51,7 +55,7 @@ def friend_request_reject
 	  friendable.destroy 
 	  
 	   if friendable 
-		render :json => params[:toid]  and return      
+		render :json => params[:id]  and return      
 	  else
 		render :json => 0  and return     
 	  end

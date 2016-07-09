@@ -14,7 +14,7 @@ class UserMailer < ActionMailer::Base
     @type = type
     @msg = msg
     @name = name
-    mail(:to => contacts, :subject => current_user.first_name.capitalize + " mentioned you on FitTogehter.com")
+    mail(:to => contacts, :subject => current_user.first_name.capitalize + " mentioned you on FitTogether.com")
   end
   
   def new_rating(contacts, request, current_user, name, score)
@@ -22,7 +22,7 @@ class UserMailer < ActionMailer::Base
     @current_user = current_user
     @name = name
     @score = score
-    mail(:to => contacts, :subject => current_user.first_name.capitalize + " rated you on FitTogehter.com")
+    mail(:to => contacts, :subject => current_user.first_name.capitalize + " rated you on FitTogether.com")
   end
   
   
@@ -31,21 +31,21 @@ class UserMailer < ActionMailer::Base
     @current_user = current_user
     @name = name
     @review = review
-    mail(:to => contacts, :subject => current_user.first_name.capitalize + " reviewed you on FitTogehter.com")
+    mail(:to => contacts, :subject => current_user.first_name.capitalize + " reviewed you on FitTogether.com")
   end
   
    def new_appointment_request(contacts, request, current_user, user_event)
     @request = request
     @current_user = current_user
     @user_event = user_event  
-    mail(:to => contacts, :subject => "Appointment request on FitTogehter.com")
+    mail(:to => contacts, :subject => "Appointment request on FitTogether.com")
   end  
   
    def approve_appointment_request(contacts, request, current_user, user_event)
     @request = request
     @current_user = current_user
     @user_event = user_event  
-    mail(:to => contacts, :subject => current_user.first_name.capitalize + " approved appointment request on FitTogehter.com")
+    mail(:to => contacts, :subject => current_user.first_name.capitalize + " approved appointment request on FitTogether.com")
   end  
   
    def comment_on_post(contacts, request, current_user,  msg, name)
@@ -53,14 +53,14 @@ class UserMailer < ActionMailer::Base
     @current_user = current_user
      @msg = msg
     @name = name
-    mail(:to => contacts, :subject => current_user.first_name.capitalize + " commented on your post  on FitTogehter.com")
+    mail(:to => contacts, :subject => current_user.first_name.capitalize + " commented on your post  on FitTogether.com")
   end
   
    def fitspot_invitation(contacts, request, current_user, user_event)
     @request = request
     @current_user = current_user
     @user_event = user_event  
-    mail(:to => contacts, :subject => current_user.first_name.capitalize + " invited you for fitspot  on FitTogehter.com")
+    mail(:to => contacts, :subject => current_user.first_name.capitalize + " invited you for fitspot  on FitTogether.com")
   end  
 
 end

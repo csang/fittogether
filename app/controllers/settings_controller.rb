@@ -108,6 +108,7 @@ class SettingsController < ApplicationController
   
   
   def update_profile	
+  
     @acc = Account.find(@account.id)	
     if params[:mobile].present?
       mobile = params[:mobile][0] + params[:mobile][1] + params[:mobile][2]
@@ -118,6 +119,12 @@ class SettingsController < ApplicationController
       flash[:notice] = "User profile has been updated successfully."
     else 
       flash[:error] = "User profile could not be updated. Please try again."
+    end
+   
+    if params[:color].present?
+		 acc_gym = AccountGym.where(:account_id => @account.id).first
+	     acc_gym.update_attributes(:color => params[:color]) unless acc_gym.nil?
+		
     end
     redirect_to request.env['HTTP_REFERER'] and return
   end
@@ -169,7 +176,7 @@ class SettingsController < ApplicationController
     @acc = Account.find(@account.id)	
     result = @acc.update_attributes(:gender => params[:gender],:city_id => params[:city_id_0],:state_id => params[:state_id_0],:gym_id => params[:gym],
       :gym_location_id => params[:location], :industry_id => params[:industry], :profession_id => params[:profession], :relationship_id => params[:relationship],
-      :dob => params[:date][:year]+'-'+params[:date][:month]+'-'+params[:date][:day],:zipcode=>params[:zipcode],:company => params[:company],:reason_id => params[:reason],:goals => params[:goal],:belong => belong)	
+      :dob => params[:date][:year]+'-'+params[:date][:month]+'-'+params[:date][:day], :user_location=>params[:user_location] ,:zipcode=>params[:zipcode],:company => params[:company],:reason_id => params[:reason],:goals => params[:goal],:belong => belong)	
 	  if params['trainer_contacts'].present?
       @account_details = AccountUser.where(:account_id=>@account.id).first
       result_detail =  @account_details.update_attributes(:trainer_contacts => params[:trainer_contacts])  

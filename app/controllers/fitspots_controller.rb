@@ -7,9 +7,21 @@ class FitspotsController < ApplicationController
   end
 
   def create	
-      #gid = Base64.decode64(params[:fitspot][:group_id])      
+      #gid = Base64.decode64(params[:fitspot][:group_id])     
       @fitspot = Fitspot.create(fitspot_parm.merge(account_id: @account.id,:activity_ids => params[:activity_ids]))  
       if @fitspot.save!
+      name =""
+      if params[:activity_ids].present?    
+		  activity = Activity.where(:id => params[:activity_ids])
+		  names = activity.map{|x| [ "#" + x.name] }
+		  name = names.join(" , ")
+		  name = name.gsub(/\s+/, "")
+	  end	  
+	  fid = Base64.encode64(@fitspot.id.to_s)
+     
+       text = "#{name} at <a href='/fitspots/#{fid}'>#{@fitspot.title} </a>"
+       @posts =  Post.create(:account_id=>@account.id,:text=>text,:status=>1,:share_with=> 'Public', :post_type => 'fitspot' ,:group_id => @fitspot.id )	         
+       
 =begin
         if params[:invite].present?
           group_member =  GroupMember.where(:group_id => gid)

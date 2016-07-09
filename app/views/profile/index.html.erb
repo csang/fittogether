@@ -3,7 +3,15 @@
 	  <%= render(:partial => 'profile_aside') %>
               
                             <div class="nav pull-right">
-                              
+      <% if @profileuser.user_type.to_i == 3  %> 
+       <% if @profileuser.account_gym.color.present? %>
+		<style>
+		.selected {
+			    border-bottom: 4px solid <%= @profileuser.account_gym.color %>!important;
+			}
+		</style>
+       <% end %>                      
+       <% end %>                      
 					<%= @profile == 'profile_fit_feed' || @profile == '' ? link_to('Fit Feed'.html_safe, '' , html_options = {'class' => 'selected'}) : link_to('Fit Feed'.html_safe, "/#{@profileuser.user_name}") %>
 					<%= @profile == 'profile_about' ? link_to('About'.html_safe, "/#{@profileuser.user_name}/about", html_options = {'class' => 'selected'}) : link_to('About'.html_safe, "/#{@profileuser.user_name}/about") %>
 					<%= @profile == 'profile_photos' ? link_to('Photos & Videos'.html_safe, "/#{@profileuser.user_name}/photos", html_options = {'class' => 'selected'}) : link_to('Photos & Videos'.html_safe, "/#{@profileuser.user_name}/photos") %>

@@ -11,16 +11,17 @@ class Api::V1::SettingsController < Api::V1::BaseController
 	# update privacy settings
 	
   def update_privacy
-	
-    privacy = AccountPrivacy.where(:account_id=>params[:account_id]).first
+
+    privacy = AccountPrivacy.where(:account_id=>current_user.id).first
     if privacy.present?     	
+      #~ if privacy.update_attributes(:profile_pic => params[:profile_pic], :email => params[:email],:mobile => params[:mobile],:birthday => params[:birthday],:work => params[:work],:location => params[:location],:bio => params[:bio])	
       if privacy.update_attributes(privacy_params)	
    		 render :json => AccountPrivacy.find_by_id(privacy.id)
       else
 		 render :json => {errors: "Please Try again"} 
       end
     else
-      privace =  AccountPrivacy.create(privacy_params.merge(:account_id=>params[:account_id]))	
+      privace =  AccountPrivacy.create(privacy_params.merge(:account_id=>current_user.id))	
       if privace.present?
 		render :json => privace
       else
@@ -35,13 +36,13 @@ class Api::V1::SettingsController < Api::V1::BaseController
   
   def update_social_settings
  
-   result = Account.where(:id=>params[:account][:account_id]).first	
+   result = Account.where(:id=>current_user.id).first	
     if request.post?
-      if result.update_attributes(params.require(:account).permit(:fb_link, :tw_link, :google_link, :linked_link)) 
-       result = Account.where(:id=>params[:account][:account_id]).first
+      if result.update_attributes(params.permit(:fb_link, :tw_link, :google_link, :linked_link)) 
+       result = Account.where(:id=>current_user.id).first
       end
-		if params[:account][:account_type].present? && params[:account][:account_type].to_i == 2
-		  exit = AccountTrainer.where(:account_id=>params[:account][:account_id]).first 
+		if current_user.user_type.present? && current_user.user_type.to_i == 2
+		  exit = AccountTrainer.where(:account_id=>current_user.id).first 
 		  if exit.present?
 		   if exit.update_attributes( params.require(:account_trainers).permit(:gym_id, :fitness_discpline,:certs,:awards,:personal_training,:age,:bootcamp,:location_bootcamp,:group_training,:affiliate,:url,:train_user_type,:home_training))
 		     exit = AccountTrainer.where(:account_id=>params[:account][:account_id]).first 
@@ -143,48 +144,19 @@ class Api::V1::SettingsController < Api::V1::BaseController
   
   # update profile pic
   	def update_avatar
-  	#content = Base64.decode64(params['avatar'])
-  	account_id = '21'
-  	acc = Account.find(account_id)
-  	
-  	params[:avatar] = parse_image_data(params) if params[:avatar]
-    
-    
-    acc.avatar = params[:avatar]
-  	 
-  	unless acc.valid?
-		abort(acc.errors.inspect)
-  	end
-  	
-  	abort(acc.inspect)
-  	 
-    if acc.save	
-		 render :json => 1
-    else
-		 render :json => 0
-   end
-  	
-  	
-  	
-  	
-  #  @tempfile = Tempfile.new('item_image')
-  # 
-  #
-  #  uploaded_file = ActionDispatch::Http::UploadedFile.new(
-  #    tempfile: @tempfile,
-  #    filename: params[:fileName]
-  #  )
-  #
-  # uploaded_file.content_type = params[:content_type]
-  #  uploaded_file
+		account_id = '21'
+		acc = Account.find(account_id)
+		acc.avatar = params[:avatar]
+		unless acc.valid?
+			abort(acc.errors.inspect)
+		end
+		if acc.save	
+			 render :json => 1
+		else
+			 render :json => 0
+		end
 
-  	#~ upload = ActionDispatch::Http::UploadedFile.new({
-  #~ :filename => params[:fileName],
-  #~ :content_type => 'image/jpeg',
-  #~ :tempfile => File.new("#{Rails.root}/test/fixtures/avatar.jpeg")
-#~ })
-
-end
+	end
   #basic info update
   def update_profile	
     acc = Account.find(params[:account_id])	
@@ -215,7 +187,7 @@ end
 		     render :json => 'Please Try Again' and return
 		  end
 		else
-		  user_activities.create(:account_id=>params[:account_id],:activity_id => params[:activity])	
+		  user_activities = AccountActivity.create(:account_id=>params[:account_id],:activity_id => params[:activity])	
 		end
 		if user_activities
 		   render :json => user_activities and return
@@ -234,12 +206,12 @@ end
   
     def update_email_settings
 	
-    exist = AccountEmailSetting.where(:account_id=>params[:account_id]).first
+    exist = AccountEmailSetting.where(:account_id=>current_user.id).first
     if exist.present?
       ap = AccountEmailSetting.find(exist.id)	
       result = ap.update_attributes(email_setting_param)	
     else
-      result = AccountEmailSetting.create(email_setting_param.merge(:account_id=>params[:account_id]))	
+      result = AccountEmailSetting.create(email_setting_param.merge(:account_id=>current_user.id))	
     end
     if result
      render :json => result and return
@@ -248,27 +220,40 @@ end
     end  
    
   end
+ 
+  
+  
   # get all email settings
    def email_notification_settings
+   user_email = AccountEmailSetting.where(:account_id=>current_user.id).first	
      email_settings = EmailSetting.all()
-	 if email_settings.present?
-		render :json => email_settings and return 
-	 else
-		render :json => 0 and return
-	 end
+		if user_email.present?
+			render :json => {'email_settings' => email_settings, 'user_email' => user_email} and return
+		else  
+			if email_settings.present?
+			render :json => {'email_settings' => email_settings} and return
+			
+			else
+				render :json => 0 and return
+			end
+		end
 	end
 	
 	# get activiy 
 	
 	
 	def activities
-		@activities = Activity.all()
-		 if email_settings.present?
-			render :json => email_settings and return 
-		 else
-			render :json => 0 and return
-		 end
-	
+	user_activities = AccountActivity.where(:account_id=>current_user.id).first	
+	activities = Activity.all()
+	if user_activities.present?
+		render :json => {'activity_id' => user_activities['activity_id'], 'activities' => activities} and return 
+	else
+			if activities.present?
+			render :json => {'activities' => activities} and return
+			else
+				render :json => 0 and return
+			end
+		end
 	end
 	
 	# chk user name already exist
@@ -293,35 +278,11 @@ end
   end
   
   def privacy_params
-	params.permit(:profile_pic, :email, :mobile, :birthday, :work, :location, :bio)	
+ 
+  	params.permit(:profile_pic, :email, :mobile, :birthday, :work, :location, :bio)	
   end
 
 
-
- # This part is actually taken from http://blag.7tonlnu.pl/blog/2014/01/22/uploading-images-to-a-rails-app-via-json-api. I tweaked it a bit by manually setting the tempfile's content type because somehow putting it in a hash during initialization didn't work for me.
-  def parse_image_data(image_data)
-    @tempfile = Tempfile.new('item_image')
-    @tempfile.binmode
-    @tempfile.write Base64.decode64(image_data[:avatar])
-    @tempfile.rewind
-	
-    uploaded_file = ActionDispatch::Http::UploadedFile.new(
-      tempfile: @tempfile,
-      filename: image_data[:filename]
-      #filename: image_data[:filename]
-    )
-
-   #uploaded_file.content_type = image_data[:content_type]
-   uploaded_file.content_type = image_data[:content_type]
-    uploaded_file
-  end
-
-  def clean_tempfile
-    if @tempfile
-      @tempfile.close
-      @tempfile.unlink
-    end
-  end
 
  
 end #end of class
