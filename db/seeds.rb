@@ -54,14 +54,17 @@ Reason.create([
 ]);
 
 Activity.create([
-{ name: 'boot_camp'}, 
-{ name: 'cardio_circuit'}, 
-{ name: 'pilates'},
-{ name: 'running'}, 
-{ name: 'spinning'}, 
-{ name: 'swimming'}, 
-{ name: 'yoga'}, 
-{ name: 'tennis'}
+{ slug: 'boot_camp', name: 'Boot Camp'}, 
+{ slug: 'cardio_circuit', name: 'Cardio Circuit'}, 
+{ slug: 'pilates', name: 'Pilates'},
+{ slug: 'running', name: 'Running'}, 
+{ slug: 'spinning', name: 'Spinning'}, 
+{ slug: 'swimming', name: 'Swimming'}, 
+{ slug: 'yoga', name: 'Yoga'}, 
+{ slug: 'tennis', name: 'Tennis'},
+{ slug: 'weight_lifting', name: 'Weight Lifting'},
+{ slug: 'mountain_biking', name: 'Mountain Biking'},
+{ slug: 'road_biking', name: 'Road Biking'}
 ]);
 Privacy.create([
 { name: 'Profile Picture',slug: 'profile_pic'}, 

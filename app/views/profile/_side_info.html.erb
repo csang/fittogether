@@ -78,11 +78,12 @@
 							 <% @profileuser.account_activity.each do |activity| %>
 								<% if activity.activity_id.present?   %>
 								 <% activity.activity_id.each do |act| %>
-									<% value =  get_activity_name(act) %>
+									<% value =  get_activity_name(act, 'slug') %>
+									<% name =  get_activity_name(act, 'name') %>
                               <div>
                                 <div class="avatar activity <%= value %>"><h3></h3></div>
                                 <div class="description">
-                                    <p class="activity"><%= value.capitalize %></p><br>
+                                    <p class="activity"><%= name.capitalize %></p><br>
                                 </div>
                                
                             </div>
@@ -136,7 +137,7 @@
                                 <div class="avatar">  <%= link_to(image_tag(img), "/#{member['user_name']}") %></div>
                                 <div class="description">
                                     <p class="name"><%= link_to(member.first_name + name, "/#{member['user_name']}") %></p><br>
-                                    <p class="location"><%= get_city_name(member.city_id) %>, <%= get_state_code(member.city_id) %></p><br>
+                                    <p class="location"><%= member.user_location.present? ? member.user_location  : "N/A" %></p><br>
                                     <p class="availability">3 Timeslots Available</p>
                                 </div>
                             </div>

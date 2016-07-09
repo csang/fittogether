@@ -151,7 +151,7 @@
 								</div>
                                 <div class="description">
                                     <p class="name"><%= usr.first_name %> <%= usr.last_name.present? ? usr.last_name : '' %></p>
-                                    <br><p class="location"><%= get_city_name(usr.city_id) %>, <%= get_state_code(usr.city_id) %></p>
+                                    <br><p class="location"><%= usr.user_location.present? ? usr.user_location : "N/A" %></p>
                                 </div>                              
                             </div>                              
                             <% end %>
@@ -181,7 +181,7 @@
                                     <%= link_to(trainer.first_name, "/#{trainer.user_name}") %>
                                     
                                     </p><br>
-                                    <p class="location"><%= get_city_name(trainer.city_id) %>, <%= get_state_code(trainer.city_id) %></p>
+                                    <p class="location"><%= trainer.user_location.present? ? trainer.user_location : "N/A" %></p>
                                 </div>
                             </div>
                                <% end %>                          

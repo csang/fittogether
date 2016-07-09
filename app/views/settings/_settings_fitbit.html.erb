@@ -1,14 +1,14 @@
 
 	<!--<h2>Please select minimum of 4 activities</h2>-->
 <% if @account.linked? %>
- <div id="about">
+ <div id="fitbit">
 	<%= form_tag api_create_update_goal_path, :class => 'goal-setting about_form', :id => 'weekly_goal' do %>
-	<div class="input_container">
+	<div class="input_container input_fitbit">
 		<label>Select Goal Type</label>	
 			<%=  select_tag "type", options_for_select([ "steps", "distance" ]) %> 		
 		<div class="clear"></div>
 	</div>
-	<div class="input_container">
+	<div class="input_container input_fitbit">
 		<label>Value</label>	
 			<%= text_field_tag "value", nil, :class => 'form-control' %>
                     <h6 class="exten" style="display:none;">In miles</h6>

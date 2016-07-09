@@ -1,7 +1,7 @@
 class ProfileController < ApplicationController
 
 	before_action :get_account, :get_user
-	before_action :get_profile_user, except: [:search_people, :new_friends_and_members, :update_cover, :dashboard, :classes, :gym_admin_appointments, :gym_trainors, :gym_members, :get_check_in_count, :get_most_active_members]
+	before_action :get_profile_user, except: [:search_people, :new_friends_and_members, :update_cover, :dashboard, :classes, :gym_admin_appointments, :gym_trainors, :gym_members, :get_check_in_count, :get_most_active_members, :hide_notification]
     include ApplicationHelper
 	def index
 	    
@@ -12,9 +12,9 @@ class ProfileController < ApplicationController
 			#@posts = Post.where(:status=>1, :account_id =>@profileuser.id).order("id DESC")	
 			 frnds = get_frineds_ids(@profileuser.id)
 			if @profileuser.id != @account.id			
-			@posts = Post.where("status = ? AND share_with != ? AND account_id = ? ",1 ,"Private", @profileuser.id).order("id DESC").paginate(:page => params[:page], :per_page => 10)
+			@posts = Post.where("status = ? AND share_with != ? AND account_id = ? ",1 ,"Private", @profileuser.id).order("id DESC").paginate(:page => params[:page], :per_page => 20)
 			else
-			@posts = Post.where("status = ? AND account_id = ? ",1 , @profileuser.id).order("id DESC").paginate(:page => params[:page], :per_page => 10)
+			@posts = Post.where("status = ? AND account_id = ? ",1 , @profileuser.id).order("id DESC").paginate(:page => params[:page], :per_page => 20)
 			end
 			@friend = Friendship.where(:account_id => @account.id , :friend_id =>@profileuser.id).first 
 			if !@friend.present?
@@ -130,7 +130,7 @@ class ProfileController < ApplicationController
     if request.xhr?   
       cityid = City.select(:id).where("name Like ?", "%#{params[:search]}%").collect(&:id)
    
-      @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR  CONCAT_WS(' ', accounts.first_name, accounts.last_name) LIKE ?  OR lower(accounts.email)  LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ? OR zipcode LIKE ? OR city_id IN (?))", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%", "%#{params[:search]}%",cityid)
+      @user =Account.joins("LEFT JOIN account_gyms ON accounts.id = account_gyms.account_id").where("accounts.status = 1 AND accounts.id != #{@account.id} AND (lower(accounts.first_name) LIKE ? OR lower(accounts.last_name) LIKE ? OR  CONCAT_WS(' ', accounts.first_name, accounts.last_name) LIKE ?  OR lower(accounts.email)  LIKE ? OR lower(accounts.user_name) LIKE ? OR lower(account_gyms.name) LIKE ? OR zipcode LIKE ? OR user_location LIKE ?)", "%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%","%#{params[:search]}%", "%#{params[:search]}%","%#{params[:search]}%")
     
       @groups = Group.where("lower(title) LIKE ? " , "%#{params[:search]}%")
     
@@ -144,8 +144,7 @@ class ProfileController < ApplicationController
 	end 
 	
 		
-	def notifications
-	
+	def notifications	
 	
     if !@profileuser.present?
       redirect_to('/feed') and return
@@ -154,11 +153,13 @@ class ProfileController < ApplicationController
       redirect_to('/feed')	
     else
       friendable = Friendship.where(friend_id: @account.id) 
-      if friendable.present?
-        friendable.each do |ff|
-          ff.update_attributes(seen: true)
-        end
-      end	
+		  if friendable.present?
+		    if @account.user_type != 2
+				friendable.each do |ff|
+				  ff.update_attributes(seen: true)
+				end
+			end	
+		  end	
       get_group = Group.where(:account_id => @account.id).collect(&:id) 
       
       if get_group.present?
@@ -172,7 +173,7 @@ class ProfileController < ApplicationController
           ff.update_attributes(seen: true)
         end
       end	
-  
+      
       @fitspot = FitspotMember.where(:account_id => @account.id,:status => false)
       if @fitspot.present?
         @fitspot.each do |fs|
@@ -187,9 +188,9 @@ class ProfileController < ApplicationController
         @event.each do |fs|
           fs.update_attributes(seen: true)
         end
-      end   
-  
-  
+      end  
+      
+    
      # @profile = 'profile_notifications'
      # render 'index'
     end	
@@ -326,6 +327,19 @@ class ProfileController < ApplicationController
   
   end
   
+  def hide_notification # hide follow notification
+ 	   id = Base64.decode64(params[:id])
+	   flow = Friendship.find_by_id(id)
+		   if flow.present?
+				 if  flow.update_attributes(seen: true)
+					render :json=>'1' and return
+				 else
+				   	render :json=> flow.errors.full_messages  and return
+				 end
+		   end 
+		   render :json=>'0' and return
+	   
+  end 
   
  
 end

@@ -46,13 +46,18 @@ class ApplicationController < ActionController::Base
       @fit_spot = FitspotMember.where(:account_id => @account.id,:status => false)
       @event_attender = EventAttender.where(:account_id => @account.id,:status => false)
       
-       get_group = Group.where(:account_id => @account.id).collect(&:id) 
+      get_group = Group.where(:account_id => @account.id).collect(&:id) 
       if get_group.present?
         @joining_request = GroupMember.where("group_id NOT IN (?) && account_id = ? && status = ?  ", get_group, @account.id, false )
       else
         @joining_request = GroupMember.where("account_id = ? && status = ?  ", @account.id, false )
       end
-     
+     # for follow notification 
+     if @account.user_type == 2
+		@follow = Friendship.where(:friend_id => @account.id, :seen => false)	
+		
+     end
+    
   
   end
 

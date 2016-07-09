@@ -443,6 +443,18 @@ Fit = {
 		$(this).remove();
 		$('.over_cover').remove();
 	},
+	show_fitspot: function(e){
+		var self = $(this);
+		if(self.hasClass('selected')){
+			self.removeClass('selected');
+			$('#feed .post').show();
+		}else{
+			self.parent().find('div').removeClass('selected');
+			self.addClass('selected')
+			$('#feed .post:not(.fitspot)').hide();
+			$('#feed .post.fitspot').show();
+		}
+	},
 	toggle_notification_list: function(e){
 		var notifications = $('header #top_nav .notifications_icon .notification_list, header #top_nav .notifications_icon #dark_cover');
 		if(notifications.css('display') == "none"){

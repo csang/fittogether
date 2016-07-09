@@ -862,24 +862,9 @@ $(document).ready(function () {
     });
 
 
-    $(document).on('click', '.post_comment', function(e) {
-      var that = $(this);
-      console.log(globalVariableforComment);
-      var textnew = $(this).siblings('textarea').val(); 
-      var textold = $(this).siblings('textarea').val();
-      if (globalVariableforComment.length > 0 ) {
-       $.each(globalVariableforComment, function( key, valu ) {   
-         textnew  =    textnew.replace(valu.key, valu.value);
-         console.log(textnew);
-       });  
-     
-      }
-        var text = textnew!='' ? textnew : textold
-        if (text == '') {
-		  $(this).siblings('textarea').attr('placeholder',"Don't forget to type your comment");	
-          return false;
-        }
-        var postid = $(this).attr('data-id');
+   
+		
+      var create_comment = function(text, postid,that) {     
  
         $.ajax({
           type: "POST",
@@ -898,8 +883,46 @@ $(document).ready(function () {
 
         });
 
+		}
+	 $(document).on('click', '.post_comment', function(e) {	
+	  var that = $(this);
+      var textnew = $(this).siblings('textarea').val(); 
+      var textold = $(this).siblings('textarea').val();
+      if (globalVariableforComment.length > 0 ) {
+       $.each(globalVariableforComment, function( key, valu ) {   
+         textnew  =    textnew.replace(valu.key, valu.value);
+         console.log(textnew);
+       });  
      
-
+      }
+        var text = textnew!='' ? textnew : textold
+        if (text == '') {
+		  $(this).siblings('textarea').attr('placeholder',"Don't forget to type your comment");	
+          return false;
+        }
+        var postid = $(this).attr('data-id');
+		create_comment(text, postid, that);
+    });
+     $(document).on('keyup', '.comment', function(event) {	
+	  if(event.keyCode == 13) {
+	  var that = $(this).siblings("button")		
+	  var textnew = $(this).val(); 
+      var textold = $(this).val();
+      if (globalVariableforComment.length > 0 ) {
+       $.each(globalVariableforComment, function( key, valu ) {   
+         textnew  =    textnew.replace(valu.key, valu.value);
+         console.log(textnew);
+       });  
+     
+      }
+        var text = textnew!='' ? textnew : textold
+        if (text == '') {
+		  $(this).siblings('textarea').attr('placeholder',"Don't forget to type your comment");	
+          return false;
+        }
+        var postid = $(this).siblings("button").attr('data-id');
+		create_comment(text, postid,that);
+		}
     });
 
     var options = {

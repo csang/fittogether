@@ -112,7 +112,7 @@
   <% end %>
  </div>
    
-<div class="profile_data" <% if @profileuser.user_type.to_i == 3  %> style="background-color: rgb(177, 26, 151)" <% end %> >
+<div class="profile_data" <% if @profileuser.user_type.to_i == 3  %> style="background-color: <%= @profileuser.account_gym.color.present? ? @profileuser.account_gym.color : 'rgb(177, 26, 151)' %> " <% end %> >
     <div class="personal_data">
      <% lname = @profileuser.last_name.present? ? @profileuser.last_name : "" %>
      <% if @profileuser.user_type == 3 %>
@@ -147,6 +147,7 @@
             </button>
           <% end %>	
         <button data-id="" class="cancelfriend" style="display:none;">Cancel Request</button>	
+        <button data-id="" class="unfollowfriend" style="display:none;">Unfollow</button>	
         <% elsif @friend.approved== true %>								
              <% if  @profileuser.user_type==3 %>
            <button> Joined </button>		     
@@ -193,8 +194,8 @@
       <% end  %>                  </div>
   <% end  %>
          <% if  @profileuser.user_type.to_i == 1 %>
-        <div><h1>30</h1><h2>Challenges</h2></div>
-        <div><h1>28</h1><h2>Goals Completed</h2></div>
+        <div><h1><%= Challenge.involving(@profileuser).count %></h1><h2>Challenges</h2></div>
+        <div><h1>0</h1><h2>Goals Completed</h2></div>
         <% end %>
         
           <% if  @profileuser.user_type.to_i == 3 %>
@@ -221,10 +222,44 @@
        <button id="chkin">CHECK-IN</button>
        <% end %>
  </div>      
-
+<input type="hidden" value="<%= Base64.encode64(@profileuser.id.to_s) %>" id="profile_udk">
 <script type="text/javascript">
- 
+ $(window).load(function(){
+	  $("#star img").each(function() {
+		 $(this).attr("title","");
+		 })
+	})
  $(document).ready(function() {
+	 
+	 // unfollow
+	 $('.unfollowfriend').on('click', function() {
+		 if (confirm("Are you sure?")) {  
+		var toid = $("#profile_udk").val();
+		var that = this;
+			$.ajax({
+				type: "DELETE",
+				url: '/rejectrequest/', //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$('.unfollowfriend').hide();
+					$('.addfriend').show();
+					$('.addfriend').attr('data-id', data);									
+				
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+             }
+	    });
+	
 	 // checkin
 	 <% if @profileuser.user_type == 3 %>
 	 $('#chkin').on('click', function() {
@@ -337,10 +372,16 @@
              },
              success: function(data) {
                  $('.addfriend').hide();
+                 <% if @profileuser.user_type != 2 %>
                  $('.cancelfriend').show();
                  $('.cancelfriend').attr('data-id', data);
-
                  $('.flash-message').html('<div class="alert alert-success"> Request Sent Succesfully</div>').show();
+                 <% else %>
+                    $('.unfollowfriend').show();
+                 $('.unfollowfriend').attr('data-id', data);
+                 $('.flash-message').html('<div class="alert alert-success"> Followed Succesfully</div>').show();
+                 
+                 <% end %>
              },
              error: function(xhr, ajaxOptions, thrownError) {
                  $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();

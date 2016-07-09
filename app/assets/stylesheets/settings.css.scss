@@ -678,7 +678,7 @@ table, table tr td{
 }
 .mobile input {
     margin: 0 0 0 5px !important;
-    width: 139px !important;
+    width: 120px !important;
 }
 
 #basic label.error {
@@ -705,3 +705,5 @@ table, table tr td{
 #main_container form > div.wherelive select{width:132px;}
 #main_container form > div.location-lg.profes select{width:270px;}
 .trainer-heading{font-family: "Helvetica Neue","Helvetica","Arial";}
+#main_container #fitbit form > div.input_fitbit label{width:180px; text-align:right; margin:0 10px 5px 0px;}
+#main_container #fitbit form > div.input_fitbit .form-control{border-radius:0px!important;-moz-border-radius:0px!important; -webkit-border-radius:0px!important;}

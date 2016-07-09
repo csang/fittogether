@@ -176,7 +176,7 @@ Rails.application.routes.draw do
   get 'tags/:tag', to: 'feed#index', as: "tag"
 
   #post 'update_post', to: 'feed#update_post',:as=>:update_post
-  
+   match 'hide_notification', to: 'profile#hide_notification', :via => [:post] , :as => :hide_notification
 
   get 'settings/index'
   get 'settings', to: 'settings#index'
@@ -207,6 +207,7 @@ Rails.application.routes.draw do
   get ':id/trainers', to: 'profile#trainers'
   get ':id/notifications', to: 'profile#notifications'
   get ':id/suggested_friends', to: 'profile#suggested_friends'
+ 
  
   match 'profile/new_friends_and_members', to: 'profile#new_friends_and_members',:via => [:get], :defaults => { :format => 'json' }
   match 'get_check_in_count', to: 'profile#get_check_in_count',:via => [:get, :post], :defaults => { :format => 'json' }, :as=>:get_check

@@ -3,34 +3,12 @@
       <% @profileuser.account_activity.each do |activity| %>
       <% if activity.activity_id.present?   %>
           <% activity.activity_id.each do |act| %>
-           <% value =  get_activity_name(act) %>
+           <% name =  get_activity_name(act, 'name') %>
+           <% slug =  get_activity_name(act, 'slug') %>
           <div class="input_container activity_list">
-	    <% if value == "boot_camp" %>
-		  <div class="avatar activity boot_camp"></div>
-        <label>Boot Camp</label>
-		<% elsif value =='cardio_circuit' %>
-		 <div class="avatar activity cardio_circuit"></div>
-            <label>Cardio Circuit</label>
-        	<% elsif value =='pilates' %>
-		 <div class="avatar activity pilates"></div>
-            <label>Pilates</label>    
-		<% elsif value =='running' %>
-         <div class="avatar activity running"></div>
-        <label>Running</label>
-		<% elsif value =='spinning' %>
-		 <div class="avatar activity spinning"></div>
-            <label>Spinning</label>
-         	<% elsif value =='swimming' %>   
-         <div class="avatar activity swimming"></div>
-            <label>Swimming</label> 
-            <% elsif value =='tennis' %>  
-                <div class="avatar activity tennis"></div>
-            <label>Tennis</label>  
-            <% elsif value =='yoga' %>  
-            <div class="avatar activity yoga"></div>
-            <label>Yoga</label>
+		  <div class="avatar activity <%= slug %>"></div>
+        <label><%= name %></label>
 		
-		<% end %>
 		</div>
           <% end %>
            <% else %>    

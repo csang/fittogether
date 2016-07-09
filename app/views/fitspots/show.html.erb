@@ -151,7 +151,8 @@
                         <div class="profile_nav">
                             <div class="actions">                                
                             <button data-toggle="modal" data-target="#checkinForm">Check-In</button>
-                            <button style="visibility:hidden" disabled>Join Group</button>                       
+                            <!--<button style="visibility:hidden" disabled>Join Group</button> -->
+                             <button class="new_event" data-toggle="modal" data-target="#eventForm">Create Event</button>                       
                             </div>
                             <div class="nav">
                                <!-- <a class="selected" href="#fit_feed">Fit Feed</a> -->
@@ -215,9 +216,9 @@
                     <% if @fitspot.activity_ids.present? %>							
 						   <%  @fitspot.activity_ids.each do |id| %>  
 						        <div>
-                                <div class="avatar activity <%= get_activity_name(id) %>"><h3></h3></div>
+                                <div class="avatar activity <%= get_activity_name(id,'slug') %>"><h3></h3></div>
                                 <div class="description">
-                                    <p class="activity"><%= get_activity_name(id) %></p><br>
+                                    <p class="activity"><%= get_activity_name(id,'name') %></p><br>
                                 </div>
                             </div>
                             <% end %>

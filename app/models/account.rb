@@ -1,6 +1,8 @@
 class Account < ActiveRecord::Base
     attr_accessor :crop_x, :crop_y, :crop_w, :crop_h
-
+Paperclip.options[:content_type_mappings] = {
+  :jpeg => "text/plain"
+}
   serialize :goals, Array
 	has_one :account_user, :dependent => :delete
     has_one :account_trainer , :dependent => :delete
@@ -46,6 +48,7 @@ class Account < ActiveRecord::Base
   
   has_many :gym_class, :dependent =>:delete_all
    has_many :gym_class_trainer, :class_name => "gym_class", :foreign_key => "trainer_id"
+   has_many :checkin, :dependent =>:delete_all
   
   
 
@@ -63,9 +66,10 @@ class Account < ActiveRecord::Base
     :url => "/assets/:attachment/:id/:basename_:style.:extension",
     :styles => { :medium => "300x300>", :thumb => "160x160>", :large =>"500x500>"  },
     :processors => [:cropper]
-  
+
+  validates_attachment_content_type :avatar, :content_type =>  ["image/png", "image/jpg", "image/jpeg",  "application/octet-stream"],  :message => 'File type is not allowed (only jpeg/png/gif images'
  
-  validates_attachment_content_type :avatar, :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, :message => 'File type is not allowed (only jpeg/png/gif images)'
+#  validates_attachment_content_type :avatar, :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, :message => 'File type is not allowed (only jpeg/png/gif images)'
   # validates :avatar, presence: { message: 'Please select  image'  }
   
   has_attached_file :cover, 

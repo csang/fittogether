@@ -404,15 +404,33 @@ header #top_nav .profile_icon .profile_list .list a{
 	line-height: 28px;
 }
 
-header #top_nav .profile_icon .profile_list .list a:first-child::before{
+header #top_nav .profile_icon .profile_list .list a.user_first::before{
 	content: url(/images/global/my_profile.png);
 	display: block;
 	position: absolute;
 	left: 15px;
 }
 
-header #top_nav .profile_icon .profile_list .list a:last-child::before{
+header #top_nav .profile_icon .profile_list .list a.user_second::before{
 	content: url(/images/global/gym_dashboard.png);
+	display: block;
+	position: absolute;
+	left: 15px;
+}
+header #top_nav .profile_icon .profile_list .list a.user_third::before{
+	content: url(/images/global/user_setting.png);
+	display: block;
+	position: absolute;
+	left: 15px;
+}
+header #top_nav .profile_icon .profile_list .list a.user_fourth::before{
+	content: url(/images/global/user_gym.png);
+	display: block;
+	position: absolute;
+	left: 15px;
+}
+header #top_nav .profile_icon .profile_list .list a.user_fifth::before{
+	content: url(/images/global/user_trainer.png);
 	display: block;
 	position: absolute;
 	left: 15px;
@@ -2102,6 +2120,15 @@ aside#ads .ad{
 	background: url(/images/activity/snorkling.png) no-repeat;
 	background-position: center;
 }
+.avatar.activity.road_biking{
+	background: url(/images/activity/road_biking.png) no-repeat;
+	background-position: center;
+}
+.avatar.activity.weight_lifting{
+	background: url(/images/activity/weight_lifting.png) no-repeat;
+	background-position: center;
+	background-size:50px;
+}
 
 /*----------------------------------------------------
 					Covers
@@ -3394,3 +3421,331 @@ a:hover, a:focus{text-decoration: none;}
 .change-profilePic .cover-icon{right: 50px; bottom: 7px;}
 .profile-avtar .change-profilePic{display:none;}
 .profile-avtar:hover .change-profilePic{display:block;}
+
+/*  --- New */
+/*	Create Check-in	*/
+#create_checkin{
+	box-sizing: border-box;
+}
+
+#create_checkin .body{
+	height: 555px;
+	overflow: hidden;
+	overflow-y: auto; 
+}
+
+#create_checkin .footer{
+	text-align: right;
+	border-top: 1px solid #979797;
+	padding: 10px 0;
+}
+
+#create_checkin .footer button{
+	border-radius: 5px;
+	border: 1px solid transparent;
+	background-color: #2f8352;
+	color: #fff;
+	font-weight: bold;
+	font-size: 16px;
+	margin: 0 10px;
+}
+
+#create_checkin iframe{
+	height: 445px;
+}
+
+#create_checkin textarea{
+	resize: none;
+	height: 100px;
+	border: none;
+	width: 100%;
+	font-size: 16px;
+	padding: 10px;
+	border-top: 1px solid #979797;
+	box-sizing: border-box;
+}
+
+#create_checkin textarea:focus{
+	box-shadow: none;
+}
+
+/*	Create Post	*/
+#create_post{
+	height: auto;
+}
+
+#create_post, #create_post *{
+	box-sizing: border-box;
+}
+
+#create_post .header h2{
+	margin: 0;
+}
+
+#create_post .body .container{
+	position: relative;
+	text-align: center;
+	margin: 30px 0;
+}
+
+#create_post .body .container > *{
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#create_post .body .container .upload_photo,
+#create_post .body .container .upload_album{
+	width: 313px;
+	height: 205px;
+	border: 1px solid rgb(151,151,151);
+	background-color: rgb(216,216,216);
+	cursor: pointer;
+}
+
+#create_post .body .container .upload_photo{
+	background: url(../img/global/upload_photo.png) no-repeat center rgb(216,216,216);
+}
+
+#create_post .body .container .upload_album{
+	background: url(../img/global/create_album.png) no-repeat center rgb(216,216,216);
+}
+
+#create_post .body .container .upload_photo input,
+#create_post .body .container .upload_album input{
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+}
+
+#create_post .body .container .or{
+	width: 1px;
+	height: 275px;
+	background-color: rgb(151,151,151);
+	position: relative;
+	margin: 0 54px;
+}
+
+#create_post .body .container .or h3{
+	position: absolute;
+	background-color: #fff;
+	text-align: center;
+	width: 50px;
+	padding: 10px 0;
+	margin: 0;
+	left: -25px;
+	top: 112px;
+}
+
+#create_post #upload_photo .body .preview{
+	max-width: 597px;
+	max-height: 397px;
+	text-align: center;
+	border: 1px solid rgb(151,151,151);
+	background: url(../img/global/image_placeholder.png) no-repeat center rgb(216,216,216);
+	margin: 12px auto;
+	overflow: hidden;
+	overflow-y: auto;
+	position: relative;
+	text-align: center;
+}
+
+#create_post #upload_album .body .album_name{
+	text-align: center;
+	margin: 24px 0;
+}
+
+#create_post #upload_album .body .album_name label{
+	font-weight: bold;
+	font-size: 18px;
+	margin-right: 10px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#create_post #upload_album .body .album_name input{
+	width: 509px;
+	height: 36px;
+	padding: 10px;
+	font-size: 16px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+#create_post #upload_album .body .previews{
+	text-align: center;
+	max-width: 650px;
+	min-height: 136px;
+	max-height: 350px;
+	overflow: hidden;
+	overflow-y: auto;
+	margin: 24px auto;
+	border-top: 1px solid rgb(151,151,151);
+	border-bottom: 1px solid rgb(151,151,151);
+	padding-top: 3px;
+}
+
+#create_post #upload_album .body .previews .preview{
+	display: inline-block;
+	width: 208px;
+	height: 136px;
+	text-align: center;
+	border: 1px solid rgb(151,151,151);
+	background: url(../img/global/image_placeholder.png) no-repeat center rgb(216,216,216);
+	background-size: 66px;
+	margin: 3px 3px;
+	overflow: hidden;
+	overflow-y: auto;
+	position: relative;
+	text-align: center;
+}
+
+#create_post .body .preview img{
+	/*position: absolute;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*min-width: 100%;*/
+    min-height: 100%;
+    max-height: 100%;
+    height: 100%;
+    display: block;
+    margin: 0 auto;
+}
+
+#create_post #upload_photo .body .preview .loading_bar{
+    width: 500px;
+    height: 30px;
+    border: 1px solid #979797;
+    position: relative;
+    text-align: center;
+    color: #fff;
+    background-color: #000;
+    margin: 183px auto;
+    overflow: hidden;
+}
+
+#create_post #upload_album .body .preview .loading_bar{
+    width: 187px;
+    height: 30px;
+    border: 1px solid #979797;
+    position: relative;
+    text-align: center;
+    color: #fff;
+    background-color: #000;
+    margin: 95px auto 10px;
+    overflow: hidden;
+}
+
+#create_post .body .preview .loading_bar .progress{
+	width: 0%;
+	height: 30px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #2f8352;
+}
+
+#create_post .body .preview .loading_bar h3{
+	line-height: 30px;
+	font-size: 18px;
+	font-weight: bold;
+	margin: 0;
+	position: relative;
+}
+
+.input_container{
+	width: 640px;
+	border: 1px solid rgb(151,151,151);
+	border-radius: 5px;
+	background-color: rgb(250,250,250);
+	padding: 5px;
+	margin: 0 auto 33px;
+}
+
+.input_container textarea{
+	width: calc(100% - 12px);
+	height: 80px;
+	max-height: 800px;
+	border: 1px solid rgb(151,151,151);
+	border-radius: 5px;
+	font-weight: bold;
+	font-size: 14px;
+	padding: 10px 5px;
+	resize: vertical;
+}
+
+.input_container .actions{
+	width: calc(100% - 14px);
+	position: relative;
+	height: 28px;
+	white-space: nowrap;
+	margin: 7px;
+}
+
+.input_container .actions > div{
+	display: inline-block;
+	vertical-align: middle;
+	height: 100%;
+}
+
+.input_container .actions .share_with label,
+.input_container .actions .share_with select{
+	display: inline-block;
+	vertical-align: middle;
+	font-weight: bold;
+}
+
+.input_container .actions .share_with select{
+	height: 28px;
+	border: 2px solid rgb(47,131,82);
+	color: rgb(47,131,82);
+	border-radius: 5px;
+	max-width: 200px;
+	background-color: transparent;
+	font-size: 12px;
+
+}
+
+.input_container .actions .share_what{
+	position: absolute;
+	right: 0;
+}
+
+.input_container .actions .share_what button.image{
+	background: url(../img/global/picture.png) no-repeat;
+	background-position: center;
+	width: 40px;
+	padding: 2px 0 3px;
+	cursor: pointer;
+}
+
+.input_container .actions .share_what button.video{
+	background: url(../img/global/video.png) no-repeat;
+	background-position: center;
+	width: 40px;
+	padding: 2px 0 3px;
+	cursor: pointer;
+}
+
+.input_container .actions .share_what button.image input,
+.input_container .actions .share_what button.video input{
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.input_container .actions .share_what button{
+	background-color: transparent;
+	border: none;
+	font-size: 12px;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: rgb(47,131,82);
+	height: 32px;
+	display: inline-block;
+	vertical-align: middle;
+	cursor: pointer;
+	margin-left: 5px;
+	border-radius: 5px;
+}

@@ -8,7 +8,12 @@
                                              <%= link_to(image_tag(img) , abc.user_name) %>
                                         </div>
                                         <div class="header">
+                                             <% if abc.user_type == 3 %>
+                                         <% last = abc.last_name.present? ? abc.last_name.capitalize : ''; %>
+                                            <h5><%= abc.account_gym.name.present? ? abc.account_gym.name.capitalize : abc.first_name.capitalize + ' ' +  last.capitalize %></h5>
+                                          <% else %>
                                             <h5><%= abc.first_name.capitalize %> <%= abc.last_name.present? ? abc.last_name : '' %></h5>
+                                          <% end %>  
                                             <p class="timestamp"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</p>
                                         </div>
                                         <div class="text">

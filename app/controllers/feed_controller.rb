@@ -11,10 +11,10 @@ class FeedController < ApplicationController
     @profile = 'feed'
      frnds = get_frineds_ids(@account.id)
     if params[:tag]
-      @posts = Post.tagged_with(params[:tag]).paginate(:page => params[:page],:per_page => 10)        
+      @posts = Post.tagged_with(params[:tag]).paginate(:page => params[:page],:per_page => 20)        
     else
       #@posts = Post.where(:status=>1, :group_id => nil).order("id DESC")
-       @posts = Post.where("status = ? AND account_id = ? OR (account_id IN (?) AND share_with = ? ) OR share_with = ?   ",1 , @account.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 10)
+       @posts = Post.where("status = ? AND account_id = ? OR (account_id IN (?) AND share_with = ? ) OR share_with = ?   ",1 , @account.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 20)
     end  
     #abort(session[:oauth_token].inspect)
     if  session[:oauth_token].present?
@@ -360,10 +360,9 @@ class FeedController < ApplicationController
   end
   
   
-  def scrap_link
-
-   doc = Nokogiri::HTML(open(params[:lnk]))   
-   @title = doc.css('title').text
+  def scrap_link #to get link post
+   doc = Nokogiri::HTML(open(params[:lnk]))   #lnk is url
+   @title = doc.css('title').text # to get title to display on post
    contents = doc.search("meta[name='description']").map { |n| 
 	  n['content'] 
 	}
@@ -380,9 +379,6 @@ class FeedController < ApplicationController
 		format.js
     end 
 
-
-
-  
   end
   
    

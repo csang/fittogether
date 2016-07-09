@@ -18,7 +18,7 @@
 									</div>
                                 <div class="data">
                                     <p class="name"><%=  gm.first_name  %> <%=  gm.last_name.present? ?  gm.last_name : ''  %> </p><br>
-                                    <p class="location"><%= get_city_name( gm.city_id) %>, <%= get_state_code( gm.city_id) %></p><br>
+                                    <p class="location"><%= gm.user_location.present? ? gm.user_location :"N/A") %></p><br>
                                 </div>
                            	</div>
 				   <button data-id="<%= Base64.encode64(gm.id.to_s)%>" data-gid="<%= Base64.encode64(@group.id.to_s)%>" class="invite grouprequest" type="accept">Invite</button>

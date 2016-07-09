@@ -47,11 +47,12 @@ $(window).load(function(){
 			<label>Where do you live?*</label>
 					
 			<% states = State.all.map{|x| [x.name] + [x.state_code]} %>
-			<%= select_tag(:state_id_0, options_for_select(states ,@account.state_id)) %>
+			<% select_tag(:state_id_0, options_for_select(states ,@account.state_id)) %>
 			
 			
 			<% cities = City.all.map{|x| [x.name] + [x.id]} %>
-			<%= select_tag(:city_id_0, options_for_select(cities, @account.city_id)) %>	
+			<% select_tag(:city_id_0, options_for_select(cities, @account.city_id)) %>	
+			<input type="text" placeholder="your location" id="user_location" name="user_location" value="<%= @account.user_location %>">	
 				<!-- <label>ZIP</label> -->
 			<input type="text" placeholder="ZIP" name="zipcode" value="<%= @account.zipcode %>">		
 		</div>
@@ -75,7 +76,7 @@ $(window).load(function(){
 		   	       <div class="input_container">
 		   	           <label></label>     
                         <%  if @account.gym_id.present? %>
-                          <select name='location' id="location">
+                          <select name='location' id="locatio">
                             <option value="">Location</option>
                          <% gyddata =     getgymlocations(@account.gym_id) %>
                         <%      if gyddata.present?
@@ -137,7 +138,7 @@ $(window).load(function(){
 		<div class="input_container">
 			<label>What are your Fitness Goals?</label>
 			
-			<% goals = Goal.all.map{|x| [x.name] + [x.id]} %>
+			<% goals = Goal.all.map{|x| [x.name.capitalize] + [x.id]} %>
 			<%= select_tag(:goal, options_for_select(goals, @account.goals.map {|j| j}), multiple: true) %>
 				<!--<button class="add add_goal" type="button">+</button>-->
 		
@@ -145,7 +146,7 @@ $(window).load(function(){
 		<div class="input_container">
 			<label>Why are you here?</label>
 		
-			<% reason = Reason.all.map{|x| [x.name] + [x.id]} %>
+			<% reason = Reason.all.map{|x| [x.name.capitalize] + [x.id]} %>
 			<%= select_tag(:reason, options_for_select(reason, @account.reason_id)) %>
 			
 		</div>
@@ -154,11 +155,12 @@ $(window).load(function(){
 			<div class="input_container">
 			<label>Are you ok with the trainers contacting you?</label>
 			<div class="radio_button">
-			     <div class="radio <%= @account_details.trainer_contacts.to_i == 1 ? 'checked' :'' %>">
-				<p>YES</p><input type="radio" name="trainer_contacts" value="1" <%= @account_details.trainer_contacts.to_i == 1 ? 'checked' :'' %>>
+			
+			     <div class="radio <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 1 ? 'checked' :'' ) : '' %>">
+				<p>YES</p><input type="radio" name="trainer_contacts" value="1" <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 1 ? 'checked' :'' ) : '' %>>
 				</div>
-				<div class="radio <%= @account_details.trainer_contacts.to_i == 0 ? 'checked' :'' %>">
-				<p>NO</p><input type="radio" name="trainer_contacts" value="0"  <%= @account_details.trainer_contacts.to_i == 0 ? 'checked=checked' :'' %> >
+				<div class="radio <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 0 ? 'checked' :'') :'' %>">
+				<p>NO</p><input type="radio" name="trainer_contacts" value="0"  <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 0 ? 'checked=checked' :'') : '' %> >
 				</div>
 			</div>
 		

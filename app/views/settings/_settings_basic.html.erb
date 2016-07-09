@@ -48,6 +48,12 @@
           <input type="text" name="mobile[]" maxlength="3" value="<%= @account.mobile.to_s[0..2] %>"><input type="text" name="mobile[]" maxlength="3" value="<%= @account.mobile.to_s[3..5] %>"><input type="text" name="mobile[]" maxlength="4" value="<%= @account.mobile.to_s[6..9] %>" data-index="last">
       
       </div>
+      <% if @account.user_type == 3 %>
+      <div class="input_container">
+                            <label>Gym Branding:</label>
+                            <input type="color" value="<%= @account.account_gym.present? ?  @account.account_gym.color : "" %>" placeholder="#000000" name="color">
+                        </div>
+       <% end %>                 
        <% provider =  'auth0' %>
           
 				<% @account.authorization.each do |ac| %>

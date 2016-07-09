@@ -11,7 +11,7 @@
                <h4>
                <%= link_to(usr.first_name.capitalize  + " " +  (usr.last_name unless usr.last_name.nil? ) , "/#{usr.user_name}") %>
                </h4>
-               <br><p class="location"><%= get_city_name(usr.city_id) %>, <%= get_state_code(usr.city_id) %></p>
+               <br><p class="location"><%= usr.user_location.present? ? usr.user_location : "N/A" %></p>
              </div>
              <div class="clear"></div>
            </div>

@@ -56,7 +56,7 @@ class GymClassesController < ApplicationController
     attend = ClassAttendance.where(:gym_class_id => Base64.decode64(params[:gym_class_id]), :account_id => @account.id ).first
     if attend.present?
       if attend.destroy 
-        render :json => 1  and return      
+        render :json => 2  and return      
       else
         render :json => 0  and return     
       end

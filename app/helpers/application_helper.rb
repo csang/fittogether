@@ -56,10 +56,12 @@ module ApplicationHelper
     end
   end
   
-  def get_activity_name(id)
+  def get_activity_name(id, field)
     activityName = Activity.where(:id => id).first
-    return (activityName.present?) ?  activityName['name'] : false ; 
+    return (activityName.present?) ?  activityName["#{field}"] : false ; 
   end
+  
+  
    
   def get_gym_name(id)
     gymName = AccountGym.where(:id => id).first
@@ -451,21 +453,27 @@ module ApplicationHelper
     
   end
   
+  def friendship(profileuser)
+	
+  af = []
+  pf = []
+	if profileuser.passive_friends.present? 
+	   pf = profileuser.passive_friends.map(&:id)
+	end
+	if profileuser.active_friends.present? 
+		af=  profileuser.active_friends.map(&:id)
+	end
+	friend = pf
+	if !pf.nil? && !af.nil?  
+	 friend = pf + af 
+	elsif !af.nil? 
+	 friend = af 
+	end   
+  
+  end
+  
   def get_friend_and_attender(profileuser, goings = nil) 
-         af = []
-         pf = []
-		if profileuser.passive_friends.present? 
-		   pf = profileuser.passive_friends.map(&:id)
-		end
-		if profileuser.active_friends.present? 
-			af=  profileuser.active_friends.map(&:id)
-		end
-        friend = pf
-		if !pf.nil? && !af.nil?  
-		 friend = pf + af 
-		elsif !af.nil? 
-		 friend = af 
-		end   
+    friend = friendship(profileuser)   
     common_ids = goings & friend
     return  Account.where(:id => common_ids) # return user's friends that are  attending event 
    end
@@ -480,20 +488,7 @@ module ApplicationHelper
 	 end
 	 
 	 def suggested_friend(profileuser,limit)
-	 	 af = []
-         pf = []
-		if profileuser.passive_friends.present? 
-		   pf = profileuser.passive_friends.map(&:id)
-		end
-		if profileuser.active_friends.present? 
-			af=  profileuser.active_friends.map(&:id)
-		end
-        friend = pf
-		if !pf.nil? && !af.nil?  
-		 friend = pf + af 
-		elsif !af.nil? 
-		 friend = af 
-		end  
+	 	 friend = friendship(profileuser)
 		
         frnd = Friendship.find_by_sql("SELECT friend_id FROM friendships WHERE account_id IN (SELECT friend_id FROM friendships WHERE account_id=#{@account.id}) ").map(&:friend_id)   
         accnt = Friendship.find_by_sql("SELECT account_id FROM friendships WHERE friend_id IN (SELECT account_id FROM friendships WHERE account_id=#{@account.id}) ").map(&:account_id)
@@ -506,6 +501,35 @@ module ApplicationHelper
 			return Account.where.not(:id => friend).limit(limit)
         end
 	 
+	 end
+	 
+	 def my_gym
+		if @account.gym_id.present?		  
+		   gym =  AccountGym.find_by_id(@account.gym_id)
+		   if gym.present?
+		   user = Account.select('user_name').where(:id => gym.account_id).first
+		   return user.present? ? user.user_name : ""
+		   end
+	   else
+	    return "about"
+	   end 
+	
+	 end
+	 
+	 def my_trainer
+	   friend = friendship(@account)
+	   if friend.present?
+		 my_trainer = Account.where(:id =>friend, :user_type =>2).last
+		 if my_trainer.present?
+			return my_trainer.user_name
+		 end
+	   end
+	   
+	 end
+	 
+	 def fitspot_location(id)
+		place = Fitspot.select("location").where(:id => id).first
+		return place.present? ? place.location : ""
 	 end
 	 
 	 

@@ -6,6 +6,29 @@
                     </div>
                     
                     <div id="feed">
+                    	<% if @follow.present? %>	
+						   <% @follow.each do |follower| %>	
+						   <% if follower.account.present? %>			
+							<div class="notification">
+													<div>
+													<div class="avatar">
+													<% img = useravatar(follower.account) %>
+													<%= link_to(image_tag(img), "#{follower.account.user_name}") %>
+													</div>
+												</div>
+													  <div class="text">
+														<p>	<%= follower.account.first_name.capitalize %> <%= follower.account.last_name.capitalize unless !follower.	account.last_name.present?  %> 
+														"Starts following you."
+														</p>										
+													</div>
+													 <div class="actions">
+                                <p>
+                                <a href="javascript:void(0)" data-id="<%= Base64.encode64(follower.id.to_s)%>" class="follow">Hide</a>
+                                </p></div>
+												</div>
+						<% end %>						
+						<% end %>						
+						<% end %>		
 						 <!-- fitspot request notificato -->
 							<%  if @fitspot.present? %>  
 						   	<% @fitspot.each do |ft| %>
@@ -329,6 +352,31 @@ var that = this;
 			});
 	    
 	    });
+	    
+	    $(document).on('click','.follow', function() {
+			var toid = $(this).attr('data-id');
+			var that = this;
+	    	$.ajax({
+				type: "POST",
+				url: "<%= hide_notification_path() %>", //sumbits it to the given url of the form
+				dataType: "HTML",
+				data: {id:toid},
+				beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+						},
+				success: function(data){				
+					$(that).parent().parent().parent('div .notification').fadeOut();
+					
+					},
+				error:	function (xhr, ajaxOptions, thrownError) {
+				$('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+					console.log(thrownError)
+					
+				}	
+			
+			});
+	    
+	    })
           
 	    
 	    }); // end of document ready

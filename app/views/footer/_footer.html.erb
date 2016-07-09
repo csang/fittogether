@@ -477,6 +477,16 @@ $('.attending').click( function () {
 		$that.trigger("geocode");
 	});
 	
+	// fitpost
+		$('.fitpost').each(function(i, v){
+		
+		var $that = $(this);
+		$that.geocomplete({ 
+			map: '#'+$that.attr('mapPlaceholder')			
+		});	
+		$that.trigger("geocode");
+	});
+	
 	
 
 </script>
