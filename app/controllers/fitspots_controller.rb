@@ -13,9 +13,8 @@ class FitspotsController < ApplicationController
       name =""
       if params[:activity_ids].present?    
 		  activity = Activity.where(:id => params[:activity_ids])
-		  names = activity.map{|x| [ "#" + x.name] }
-		  name = names.join(" , ")
-		  name = name.gsub(/\s+/, "")
+		  names = activity.map{|x| [ "#" + x.name.gsub(/\s+/, "")] }
+		  name = names.join(" , ")		
 	  end	  
 	  fid = Base64.encode64(@fitspot.id.to_s)
      
