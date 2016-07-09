@@ -52,7 +52,7 @@ $(window).load(function(){
 			
 			<% cities = City.all.map{|x| [x.name] + [x.id]} %>
 			<% select_tag(:city_id_0, options_for_select(cities, @account.city_id)) %>	
-			<input type="text" placeholder="your location" id="user_location" name="user_location" value="<%= @account.user_location %>">	
+			<input type="text" placeholder="your location" class="location-id" id="user_location" name="user_location" value="<%= @account.user_location %>">	
 				<!-- <label>ZIP</label> -->
 			<input type="text" placeholder="ZIP" name="zipcode" value="<%= @account.zipcode %>">		
 		</div>
