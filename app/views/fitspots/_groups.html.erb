@@ -19,10 +19,10 @@
 						<%= image_tag(group.group_image(:thumb)) %>
 						 </div>
 						<div class="data">
-							<a href="../group"><h3 class="name"><%= group.title.capitalize %></h3></a>
+							<a href="/groups/<%= Base64.encode64(group.id.to_s) %>"><h3 class="name"><%= group.title.capitalize %></h3></a>
 							<span class="gtype"><%=  group.is_public ==true ? 'Public' : 'Private' %></span>
 							<p class="member_count"> <% cnt = group.group_member.count  %>
-							  <%= cnt +1 %>Member(s)</p>
+							  <%= cnt +1 %> Member(s)</p>
 						</div>
 					</div>
            <!-- <button class="close"></button> -->

@@ -37,14 +37,14 @@ class ApplicationController < ActionController::Base
 		@cnt = GroupMember.where("account_id = ? && status = ? && seen =?  ",@account.id ,false, false ).count
 	end    
      @cnt =  @cnt == 0 ? '' : @cnt     
-     @event_cont = EventAttender.where(:account_id => @account.id,:status => false, :seen => false ).count     
+     @event_cont = EventAttender.joins(:event).where("event_attenders.account_id = ? AND event_attenders.status =? AND events.account_id !=?", @account.id, false, @account.id).count     
      @event_cont =  @event_cont == 0 ? '' : @event_cont
      # event count
      @fitspot_cont = FitspotMember.where(:account_id => @account.id,:status => false, :seen => false ).count     
      @fitspot_cont =  @fitspot_cont == 0 ? '' : @fitspot_cont
      # for notification
       @fit_spot = FitspotMember.where(:account_id => @account.id,:status => false)
-      @event_attender = EventAttender.where(:account_id => @account.id,:status => false)
+      @event_attender = EventAttender.joins(:event).where("event_attenders.account_id = ? AND event_attenders.status =? AND events.account_id !=?", @account.id, false, @account.id)
       
       get_group = Group.where(:account_id => @account.id).collect(&:id) 
       if get_group.present?

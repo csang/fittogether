@@ -125,7 +125,12 @@ var link_share = function(lnk) {
       return false;
     }
   });
-
+   $(".posttext").click(function(e) {
+   if (isUrlValid($(this).val())) {
+		link_share($(this).val())	
+	}
+   
+   });
   $(".posttext").keyup(function(e) {
  
 	if (isUrlValid($(this).val())) {

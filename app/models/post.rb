@@ -4,6 +4,8 @@ belongs_to :account
 belongs_to :group
 has_many :comment,  :dependent =>:delete_all
 has_many :kudo,  :dependent =>:delete_all
+belongs_to :fitspot,:foreign_key => :group_id, :class_name => 'Fitspot'
+         
 
 =begin
 has_many :taggings

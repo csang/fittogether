@@ -7,6 +7,7 @@ class FeedController < ApplicationController
  
 
   def index
+  
     @data = (session[:account].present?) ? session[:account] : nil;
     @profile = 'feed'
      frnds = get_frineds_ids(@account.id)
@@ -14,9 +15,24 @@ class FeedController < ApplicationController
       @posts = Post.tagged_with(params[:tag]).paginate(:page => params[:page],:per_page => 20)        
     else
       #@posts = Post.where(:status=>1, :group_id => nil).order("id DESC")
-       @posts = Post.where("status = ? AND account_id = ? OR (account_id IN (?) AND share_with = ? ) OR share_with = ?   ",1 , @account.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 20)
+       @posts = Post.where("posts.status = ? AND posts.account_id = ? OR (posts.account_id IN (?) AND posts.share_with = ? ) OR posts.share_with = ?   ",1 , @account.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 20)
     end  
-    #abort(session[:oauth_token].inspect)
+=begin
+    @posts.each  do |post|
+		if post.post_type == "checkin" or post.post_type == "fitspot"
+			if post.fitspot.present? 
+				 if !post.fitspot.location.include? @account.user_location
+					@posts.reject{}
+				end	
+			end
+	
+		end
+    end
+   abort(@posts.count.inspect)
+=end
+  
+	
+
     if  session[:oauth_token].present?
       session[:connect] ='yes'
       @acc = Account.find(@account.id)
@@ -24,7 +40,7 @@ class FeedController < ApplicationController
         if @acc.update_attributes(:uid =>session[:uid],:oauth_token =>  session[:oauth_token], :access_secret =>session[:oauth_secret])
           flash[:notice] = "User connected with fitbit ."
           activity_date = 'today'
-          act = Fitbit::Activity.fetch_all_on_date(@account, activity_date)
+          act = fitb(@account, activity_date)
           set_fitbit(act) # add data to table
           session.delete(:oauth_token)
         else 
@@ -86,10 +102,13 @@ class FeedController < ApplicationController
       @comments =  Comment.create(:account_id=>@account.id,:text=>params[:text],:post_id=>params[:post],:status=>1)
       if @comments.save!
         post = Post.find(params[:post])
-        set = email_settings(post.account.id, 'comment_on_post')
-        if set.present? || set == 123 
-        UserMailer.comment_on_post(post.account.email,request, @account, params[:text] ,post.account.first_name ).deliver
-        end
+        if post.account.id != @account.id
+         set = email_settings(post.account.id, 'comment_on_post')
+         if set.present? || set == 123 
+         UserMailer.comment_on_post(post.account.email,request, @account, params[:text] ,post.account.first_name ).deliver
+         end
+        end 
+        
           respond_to do |format|
           if params[:gid].present? 
             @groupadminid = params[:gid]
@@ -348,7 +367,8 @@ class FeedController < ApplicationController
 	  check_in = Checkin.create(checkin_params.merge(account_id: @account.id))	
       if check_in.save!  
          id = AccountGym.find(params[:account_gym_id])
-         hrf =  "<a href=" + id.account.user_name + "> Gym </a>"
+         name = id.name.present? ? id.name.capitalize : "Gym"
+         hrf =  "<a href=" + id.account.user_name + "> #{name} </a>"
          text = "#{@account.first_name} checked in for #{hrf} at #{params[:location]}"
 			@posts =  Post.create(:account_id=>@account.id,:text=>text,:status=>1,:share_with=> 'Public', :post_type => 'checkin'  )	         
        

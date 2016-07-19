@@ -33,8 +33,7 @@
 <% end %> 
 
 <!-- Start: Challenge post -->
-<% chal =  Challenge.last %>
-<% if chal.present? %>
+
 <div class="preview">
 <div class="post challenge">
     <div class="header">
@@ -42,27 +41,31 @@
             <div class="avatar"><a href=""><div class="img"></div></a></div>
             <div class="data">
 				
-			    <a href=""><h3 class="name"><%= chal.category.name %> Challenge</h3></a>
-                <p class="challenge"><%= chal.category.name %></p>
+			    <a href=""><h3 class="name"><%# chal.category.name %> Challenge</h3></a>
+                <p class="challenge"><%# chal.category.name %></p>
             </div>
         </div>
         <div class="rivals">
             <div class="user">
-            
-				<% img = useravatar(chal.sender) %>
-				<% img2 = useravatar(chal.recipient) %>
-				 <%= link_to(image_tag(img), "/#{chal.sender.user_name}") %>
+         				<% img = useravatar(@account) %>				
+				 <%= link_to(image_tag(img), "/#{@account.user_name}") %>
 					</div>
             <div><p>VS</p></div>
             <div class="opponent">
-				 <%= link_to(image_tag(img2), "/#{chal.recipient.user_name}") %></div>
+				 <% if @profileuser.present? %>
+					 <% img2 = useravatar(@profileuser) %>
+					 <%= link_to(image_tag(img2), "/#{@profileuser.user_name}") %>
+				 <% else %>
+					 <%= image_tag("", :alt => "?") %>
+				 <% end %>	 
+		  </div>
         </div>
     </div>
     <div class="content">
         <div class="left">
             <div class="container">
                 <div class="background">
-                   <%= image_tag(chal.sender.avatar(:medium)) %>
+                   <%= image_tag(@account.avatar(:medium)) %>
                     <div class="cover"></div>
                 </div>
                 <div class="data">
@@ -70,14 +73,18 @@
                        
                     </div>
                     <div class="user">
-                        <h2><%= chal.sender.first_name %><br><%= chal.sender.last_name %></h2>
+                        <h2><%= @account.first_name %><br><%= @account.last_name.present? ? @account.last_name : "" %></h2>
                     </div>
                 </div>
             </div>
         </div><div class="right">
             <div class="container">
                 <div class="background">
-				     <%= image_tag(chal.recipient.avatar(:medium)) %>
+					 <% if @profileuser.present? %>
+							<%= image_tag(@profileuser.avatar(:medium)) %>
+				   	  <% else %>
+					 <%= image_tag("", :alt => "?") %>
+				    <% end %> 
                     <div class="cover"></div>
                 </div>
                 <div class="data">
@@ -85,13 +92,17 @@
                        
                     </div>
                     <div class="user">
-                        <h2><%= chal.recipient.first_name %><br><%= chal.recipient.last_name %></h2>
+						 <% if @profileuser.present? %>
+                        <h2><%= @profileuser.first_name %><br><%= @profileuser.last_name.present? ? @profileuser.last_name : "" %></h2>
+                        <% else %>
+					<h1>?</h1>
+                        <% end %>
                     </div>
                 </div>
             </div>
         </div><div class="vs"></div></div>
 </div>
 </div>
-<% end  %>
+
 <!-- End: Challenge post -->
 

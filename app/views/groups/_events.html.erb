@@ -1,22 +1,133 @@
 <div class="header">
     <div class="title">
-        <h2>Events <span>4</span></h2>
+         <h2>Events <span><%=  @group.event.present? ?   @group.event.count : '' %></span></h2>
     </div>
     <div class="actions">
-        <button class="new_event">New Event</button>
+        <button class="new_event" data-toggle="modal" data-target="#eventForms">New Event</button>
     </div>
 </div>
 
 <div id="feed" class="group">
-	<!-- Start: Event post -->
-  <h1>Coming Soon</h1>
+	<% if @group.event.present?  %>
+	<%  abc = @group.event.sort.reverse  %>
+	<%  abc.each do |evnt|  %>
+	<%  if evnt.event_date > Date.today  %>
+	<div class="post event">
+        <div class="header">
+            <div class="user">
+                <div class="avatar"><h3><%= image_tag(evnt.image) %></h3></div>
+                <div class="data">
+                    <h3 class="date"><%= evnt.event_date.strftime('%B %d') %> <%= evnt.event_start_time %>-<%= evnt.event_end_time %></h3>
+                    <h3 class="event"><%= evnt.title %></h3>
+                    <h3 class="event"><%= evnt.fitspot.location %></h3>
+                   </div>
+            </div>
+            <% if evnt.account_id == @account.id %>
+               <%= link_to('<button class="close"></button>'.html_safe , event_delete_path(evnt.id),method: :delete, :remote => true, :class => 'eve_del' ) %>
+            <% end %>
+        </div>
+        <div class="content">
+            <div class="content">
+	            <p></p><%= evnt.description %></p>
+	        </div>
+        </div>
+        <div class="attending_friends">
+        	<div class="title">
+					<%
+          goings = Array.new
+		  evnt.event_attender.each do |fm|
+		   if fm.status == true  && fm.account.id != @account.id
+		   goings.push(fm.account.id)
+		   end
+		  end
+		  	%>
+	
+        	<% user = goings.present? ? get_friend_and_attender(@account, goings) : nil %>
+        		<p>You have <span><%= user.present? ? user.count : 'no' %></span> Friends who are attending</p>
+        	</div>
+        
+        	<div class="friends">
+        		<!--  -->
+        		<% if user.present? %>
+        		<%  user.each do |usr| %>
+        		<% if usr.present?  %>
+        			<div class="avatar">	
+					<% img = useravatar(usr) %>					
+        			<%= link_to(image_tag(img), "/#{usr[:user_name]}") %>
+        			</div>
+        		<% end %>
+        		<% end %>
+        		<% end %>
+        		<!--  -->
+        	</div>
+        </div>
+        <div class="comment_section" style="height: 0px;">
+            <div class="comment_container">				
+				    <% if evnt.event_comment.present? %>
+					<% evnt.event_comment.each do |cm| %>
+                                    <div class="comment" id="scont<%= cm.id  %>">
+                                     <% abc =  get_user_detail(cm.account_id) %>
+                                       <% if abc.present? %>
+                                       <% img =  useravatar(abc) %>
+                                        <div class="avatar">
+                                             <%= link_to(image_tag(img) , abc.user_name) %>
+                                        </div>
+                                        <div class="header">
+                                            <h5><%= abc.first_name.capitalize %> <%= abc.last_name.present? ? abc.last_name : '' %></h5>
+                                            <p class="timestamp"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</p>
+                                        </div>
+                                        <div class="text">
+                                            <p class="the_comment">
+										    <% cm.text.split.select {|w| %>
+												<% if  w[0] == "#" %>
+												<%=raw tag_links(w)%>
+												<% elsif w[0] == "@" %>    
+														<%=raw user_links(w)%>      
+												<% else %>    
+												<%= w %>    
+												<% end %>      
+										    <%  } %> </p>
+										    <% if @account.id == cm.account_id  %> 						
+											<button data-id="<%=  Base64.encode64(cm.id.to_s)   %>" class="close event-comment-delete"></button>			
+											<% end %>
+                                        </div>
+                                         <% end %>
+                                   
+                                    </div>                            
+                                    <% end %>
+                                    <% end %>
+            </div>
+            <div class="add_comment">
+                <textarea maxlength="255" placeholder="Start commenting here..."></textarea>
+                <button class="post_event_comment" type="button" data-id="<%= Base64.encode64(evnt.id.to_s) %>">Post Comment</button>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="eventkudos kudos" data-id="<%= Base64.encode64(evnt.id.to_s) %>">
+                <div class="<%= check_event_kudos(evnt.id.to_s) %>"></div>
+                <h3>Give Kudos</h3>
+            </div>
+            <div class="comment">
+                <div class="icon"></div>
+                <h3>Comment(<%= evnt.event_comment.present? ? evnt.event_comment.count : '' %>)</h3>
+            </div>
+            <!-- if( post belongs to user ){ -->
+            <!-- <div class="edit">
+                <div class="icon"></div>
+                <h3>Edit</h3>
+            </div> -->
+            <!-- } //end if -->
+            <div class="event_actions">   
+				<% event_attender = EventAttender.attender(evnt.id) %>       	
+				<% attedr = check_if_event_attender(event_attender) %>       	
+            	<button class="attend <%= attedr.present? ? 'atnat' : '' %>" <%= attedr.present?  ? 'disabled' : '' %> data-type="add" title="Attending"   data-id="<%=  Base64.encode64(evnt.id.to_s)   %>">Attending </button>
+            	<button class="attend <%= !attedr.present? ? 'atnat' : '' %>" <%= !attedr.present? ? 'disabled' : '' %> data-type="del" title="Not Attending"   data-id="<%=  Base64.encode64(evnt.id.to_s)   %>"> Not Attending </button> 
+            </div>
+        </div>
+    </div>
+    <% end %>
+    <% end %>
+    <% end %>
 </div>
+<%= render partial: "events/event_js" %>
 
-<script type="text/javascript">
-$(function() {
-    if(typeof Fit !== 'undefined'){
-        $('#feed_container #feed .post .footer > div.comment').click(Fit.toggle_comments);
-        $('#feed_container #feed .post .comment_section .post_comment').click(Fit.post_comment);
-    }
-});
-</script>

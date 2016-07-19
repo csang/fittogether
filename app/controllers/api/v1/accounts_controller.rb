@@ -17,10 +17,17 @@ class Api::V1::AccountsController < Api::V1::BaseController
    
    ## After login, get the user details with userid 
    def login
+   width_original = width_large = height ='';
 		if  params[:fit_id]
 			accounts = Account.where("fit_id = ?", params[:fit_id]).first
+			
 			if accounts.present?
-				render :json => { user: accounts } and return
+				if accounts.avatar.present? 
+					width_original  = accounts.avatar_geometry(:original).width 
+					width_large = accounts.avatar_geometry(:large).width 
+					height = accounts.avatar_geometry(:large).height
+				end
+				render :json => { user: accounts, width_original: width_original, width_large: width_large,  height: height} and return
 				else 
 				render :json => { errors: "Something went wrong" } and return
 			end
@@ -43,6 +50,7 @@ class Api::V1::AccountsController < Api::V1::BaseController
 			account['pic'] = params[:pic]
 			account['user_name'] = params[:username]
 			account['email'] = params[:email]
+			account['user_type'] = params[:user_type]
 			if account.save
 					authorization = Authorization.new
 					authorization['provider'] = params[:provider] 
@@ -65,7 +73,7 @@ class Api::V1::AccountsController < Api::V1::BaseController
 		account['last_name'] = params[:last_name]
 		account['user_name'] = params[:username]
 		account['email'] = params[:email]
-		account['user_type'] = params[:user_type].to_i
+		account['user_type'] = 1
 		 if account.save
 			case params[:user_type].to_i
 			when 2

@@ -1,5 +1,5 @@
 class FitspotsController < ApplicationController
-   before_filter :get_account
+   before_filter :get_account #check and get logged in user details
    
   
   def index    
@@ -59,21 +59,16 @@ end
       @fitspot = Fitspot.where(:id => id).first        
       @going = FitspotMember.where(:fitspot_id => id, :account_id => @account.id, :status => true).first
       @goings = FitspotMember.where(:fitspot_id => id).collect(&:account_id)
-    
+      @inviteable ,@inviteables = nil ,nil
       if @goings.present?
-      @inviteable = GroupMember.where("group_id = ? && account_id NOT IN (?)" ,@fitspot.group_id, @goings)
-      @inviteables = GroupMember.where("group_id = ? && account_id NOT IN (?)" ,@fitspot.group_id, @goings).collect(&:account_id)
-      else
-       @inviteable = GroupMember.where("group_id = ? " ,@fitspot.group_id)
-       @inviteables = GroupMember.where("group_id = ? " ,@fitspot.group_id).collect(&:account_id)
+      @inviteable = GroupMember.where(" account_id NOT IN (?)" , @goings)
+      @inviteables = GroupMember.where("account_id NOT IN (?)" , @goings).collect(&:account_id)
       end
-      
-        #@groups = GroupMember.where("account_id !=? ",  @account.id).group('group_id')
-        @groups = GroupMember.find_by_sql("SELECT * FROM `group_members` WHERE `group_id` NOT IN 
-        (SELECT `group_id` FROM `group_members`WHERE `account_id` = #{@account.id})")
-		
-        @posts = Post.where(:status=>1, :group_id => id).order("id DESC")
-         @member = GroupMember.where(:group_id => @fitspot.group_id, :account_id => @account.id).first
+      # @groups = GroupMember.find_by_sql("SELECT * FROM `group_members` WHERE `group_id` NOT IN 
+      #  (SELECT `group_id` FROM `group_members`WHERE `account_id` = #{@account.id})")
+	  @groups = @fitspot.event.reject{|s| !s.group_id.present? }
+	  @posts = Post.where(:status=>1, :group_id => id).order("id DESC")
+      @member = nil
        
       flash[:error] =''
       if !@fitspot.present?      

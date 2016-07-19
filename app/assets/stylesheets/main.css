@@ -830,7 +830,7 @@ select{
 	max-height: 800px;
 	border: 1px solid rgb(151,151,151);
 	border-radius: 5px!important; -moz-border-radius: 5px!important; -webkit-border-radius: 5px!important;
-	font-weight: bold;
+	/*font-weight: bold; */
 	font-size: 14px;
 	padding: 10px 5px;
 	resize: vertical;
@@ -921,7 +921,6 @@ select{
 #feed_container #feed{
 	margin: 10px 2px;
 	width:100%;
-	white-space:normal;
 }
 #feed_container #feed.group,
 #feed_container #feed.fitspot{
@@ -3411,7 +3410,7 @@ a:hover, a:focus{text-decoration: none;}
     color: #fff;
 }
 
-#feed_container #feed .pop_listing{overflow:visible;}
+#feed_container #feed .pop_listing{overflow:hidden;}
 #feed_container #feed .pop_listing.post .comment_section{overflow:visible;}
 .pop_listing.post .arport2{width:100%; top:74%;}
 #feed_container #feed .pop_listing.post .arport2 li.trainers{margin:10px 2px;}

@@ -138,7 +138,14 @@
 									</div>
 								</div>
 								<div class="text">
-									<p><%= link_to(member.first_name, "/#{member['user_name']}") %> added you as a friend</p>
+									
+									<p><%= link_to(member.first_name, "/#{member['user_name']}") %> 
+									<% if @account.user_type!=3 %>
+									added you as a friend.
+									<% else %>
+									has asked to join your gym. Please confirm <%= member.first_name %> is a member.
+									<% end %>
+									</p>
 								</div>
 								<div class="actions">
 									<p> <a href="javascript:void(0)" data-id="<%= Base64.encode64(member.id.to_s)%>" id="rejectfriend">Decline</a>|

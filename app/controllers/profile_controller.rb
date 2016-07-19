@@ -183,7 +183,7 @@ class ProfileController < ApplicationController
       
       # event seen update
       
-      @event = EventAttender.where(:account_id => @account.id,:status => false)
+      @event = EventAttender.joins(:event).where("event_attenders.account_id = ? AND event_attenders.status =? AND events.account_id !=?", @account.id, false, @account.id)
       if @event.present?
         @event.each do |fs|
           fs.update_attributes(seen: true)

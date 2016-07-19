@@ -7,7 +7,8 @@
 	<div class="post event">
         <div class="header">
             <div class="user">
-                <!--<div class="avatar"><h3>18</h3></div>-->
+           <% img = get_fit_img(@fitspot.id) %>
+               <div class="avatar"><%= image_tag(img) %></div>
                 <div class="data">                    
                     <h3 class="event"><%=  @fitspot.title.capitalize %> </h3>
                     <h3 class="location"><%=  @fitspot.location %></h3>
