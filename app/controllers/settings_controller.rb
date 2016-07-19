@@ -177,8 +177,10 @@ class SettingsController < ApplicationController
       :gym_location_id => params[:location], :industry_id => params[:industry], :profession_id => params[:profession], :relationship_id => params[:relationship],
       :dob => params[:date][:year]+'-'+params[:date][:month]+'-'+params[:date][:day], :user_location=>params[:user_location] ,:zipcode=>params[:zipcode],:company => params[:company],:reason_id => params[:reason],:goals => params[:goal],:belong => belong)	
 	  if params['trainer_contacts'].present?
-      @account_details = AccountUser.where(:account_id=>@account.id).first
+      account_details = AccountUser.where(:account_id=>@account.id).first
+      if account_details.present?
       result_detail =  @account_details.update_attributes(:trainer_contacts => params[:trainer_contacts])  
+      end
     end
     if (result || result_detail )
         flash[:notice] = "About settings has been updated successfully."
