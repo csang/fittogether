@@ -274,8 +274,12 @@ module ApplicationHelper
   end
   
   def suggested_fitspot
-  
-	fitspots = Fitspot.where('account_id != ?', @account.id).limit(3)
+    if @account.user_location.present?
+    
+    fitspots = Fitspot.where('account_id != ? && (location LIKE ? OR location LIKE ? OR location LIKE ? )', @account.id, "%#{@account.user_location}","%#{@account.user_location.split.last}","%#{@account.user_location.split.first}").order(" id Desc").limit(3)
+    else
+	fitspots = Fitspot.where('account_id != ?', @account.id).order("id Desc").limit(3)
+	end
 	return fitspots
   end
   
@@ -284,7 +288,7 @@ module ApplicationHelper
 	return trainer
   end
   
-  def event_invitation
+  def event_invitation # return event invitation to user
    event = EventAttender.where(:account_id => @account.id,:status => false).joins(:event).where("Date(event_date) >= ?",Date.today)
    return event
   end
@@ -494,11 +498,12 @@ module ApplicationHelper
         accnt = Friendship.find_by_sql("SELECT account_id FROM friendships WHERE friend_id IN (SELECT account_id FROM friendships WHERE account_id=#{@account.id}) ").map(&:account_id)
         ids = frnd + accnt
         ids = ids - friend
+       
         if ids.present?       
-			return Account.where(:id => ids).limit(limit)
+			return Account.where("id IN (?) && user_type != ? && user_type != ?" , ids, 2, 3).limit(limit)
         else  
         friend.push(@account.id)       
-			return Account.where.not(:id => friend).limit(limit)
+			return Account.where("id NOT IN (?) && user_type != ? && user_type != ?", friend,2,3).limit(limit)
         end
 	 
 	 end
@@ -531,6 +536,17 @@ module ApplicationHelper
 		place = Fitspot.select("location").where(:id => id).first
 		return place.present? ? place.location : ""
 	 end
+	 
+	def eff_event_invitation # return event  to user
+	
+	if @account.user_location.present?
+		event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) AND fitspots.location LIKE ? ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id), "%#{@account.user_location}%").group("events.id").limit(3)
+	else
+		event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id)).group("events.id").limit(3)
+	end
+		return event
+  end
+  
 	 
 	 
   end

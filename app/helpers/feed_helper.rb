@@ -65,6 +65,20 @@ module FeedHelper
 		  end  
   end
   end
+  
+  def fitb(user, date)
+  
+   activity_objects = []
+    if user.present? && user.oauth_token.present? && user.access_secret.present?
+   
+      activities = user.fitbit_data.activities_on_date(date)
+     # abort(activities.inspect)
+     # activity_objects = activities.map {|a| Fitbit::Activity.new(a, user.unit_measurement_mappings) }
+     activity_objects = activities
+    end
+    activity_objects
+  
+  end
 
  
 end

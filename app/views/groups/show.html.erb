@@ -1,180 +1,3 @@
-<% if false %>
-	<div id="seed">
-
-  <div class="group-top">
-    <%= image_tag(@group.group_image(:medium), :class =>'group_image') %>
-    <div class="group-detail">
-      <div class="group-left">
-        <h4><%=  @group.title %></h4>
-        <span class="gtype"><%=  @group.is_public ==true ? 'Public' : 'Private' %></span>
-      </div>
-      <div class="group-right">
-      
-        <% if @group.account_id == @account.id %>
-          <a href="javascript:void(0);" class="join" title="joined">Joined</a>
-           <a href="javascript:void(0)" data-toggle="modal" class="goal-btn" data-target="#groupEditForm" title="edit">Edit</a>    
-        <% elsif @member.present? && @member.status == true %>
-          <a href="javascript:void(0);" class="join jnew"  data-type="leave" title="leave group" data-id="<%=  Base64.encode64(@group.id.to_s) %>">Leave Group</a>
-        <% elsif @member.present? && @member.status == false %>
-          <a href="javascript:void(0);" class="join jnew"  data-type="leave" title="Click to Cancel" data-id="<%=  Base64.encode64(@group.id.to_s) %>">Pending</a>
-      <% else %>
-          <a href="javascript:void(0);" class="join jnew"  data-type="add" title="join" data-id="<%=  Base64.encode64(@group.id.to_s)   %>">Join</a>
-        <% end  %>
-
-      </div>
-
-    </div>
-  </div>
-  <%  if @group.account_id == @account.id || (@member.present? && @member.status ==true) %>
-    <div class="comment_view_bg grounp-bg">
-      <div class="comment_view">
-        <%= render(:partial => 'group_feed_share') %>
-      </div>
-    </div>
-  <% end %>
-  <div class="group-tab">
-    <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#sectionA">Posts</a></li>
-      <li><a data-toggle="tab" href="#sectionB">Members</a></li>
-      <li><a data-toggle="tab" href="#sectionC">Fitspots</a></li>
-    </ul>
-    <div class="tab-content">
-      <div id="sectionA" class="tab-pane fade in active">
-        <%  if @group.account_id == @account.id || ((@member.present? && @member.status ==true) || @group.is_public ==true) %>
-        <% @posts.each do |post| %>
-          <div class="posts" id="<%= post.id %>">
-
-            <%	
-            @name = post.account.first_name.capitalize + ' ' + post.account.last_name
-            @time = post.created_at %>
-
-
-            <% img =  useravatar(post.account) %>
-            <div class="posts-img">
-              <%= link_to(image_tag(img), "/#{ post.account.user_name}") %>
-            </div>
-            <div class="posts-content">
-              <h4><%=  @name %> <span class="time"> <%= time_ago_in_words(@time) %> ago</span></h4>
-              <% if @account.id == post.account_id || @account.id == @group.account_id %>
-              <a data-gid="<%=  Base64.encode64(@group.account_id.to_s) %>" data-id="<%=  Base64.encode64(post.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="post-dlt">DELETE</a>
-             <% end %>
-              <p><% post.text.split.select {|w| %>
-       <% if  w[0] == "#" %>
-      <%=raw tag_links(w)%>
-      <% else %>    
-        <%= w %>    
-      <% end %>      
-      <%  } %> </p>
-            </div>
-            <% if post.image.present? %>		
-              <div class="post-img">
-                <%= image_tag(post.image(:medium)) %>		
-              </div>
-
-            <% end %>
-            <% if post.video.present? %>		
-              <div class="data-img">
-
-                <video id='video'  controls width="300" height="300">
-                  <source src='<%= post.video %>' type='video/mp4'/>
-                  Your browser does not support the video .
-                </video>
-
-              </div>
-
-            <% end %>
-            <div class="sub-comments" id="cmt<%= post.id %>">
-
-              <% post.comment.each do |cm| %>
-                <div class="posts-sub-content" id="scont<%= cm.id %>">
-                  <% abc =  get_user_detail(cm.account_id) %>
-                  <% if abc.present? %>
-                    <div class="posts-img">
-                      <% img =  useravatar(abc) %>
-                      <%= image_tag(img) %>
-
-                    </div>
-                    <div class="posts-content">
-                      <h4>
-                        <a href="<%= abc.user_name %>" >
-                          <%= abc.first_name.capitalize %> <%= abc.last_name.present? ? abc.last_name : '' %>
-                        </a>
-                        <span class="time"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</span>
-                      </h4>
-                     <% if @account.id == cm.account_id || @account.id == @group.account_id %>
-                     <a data-gid="<%=  Base64.encode64(@group.account_id.to_s) %>" class="comment-delete" data-id="<%=  Base64.encode64(cm.id.to_s)   %>" title="Delete" href="javascript:void(0);" class="">DELETE</a>
-                    <% end %>
-                    <% end %>
-
-                    <p> <% cm.text.split.select {|w| %>
-       <% if  w[0] == "#" %>
-      <%=raw tag_links(w)%>
-      <% else %>    
-        <%= w %>    
-      <% end %>      
-      <%  } %> </p>
-                  </div>
-                </div>
-              <% end %>
-            
-
-            </div>
-             <%  if @group.account_id == @account.id || (@member.present? && @member.status ==true) %>
-            <div class="bottom">
-              <a class="add_comment" href="javascript:void(0);">Comment</a>
-            </div>
-            <div style="display: none;" class="comment_box">
-              <textarea class="comment" data-gid="<%= @group.account_id %>" data-id="<%= post.id %>" style="resize: none"></textarea>
-            </div>
-            <% end %>
-          </div>
-        <%  end %>
-          <% end %>
-
-      </div>
-      <div id="sectionB" class="tab-pane fade">
-
-        <ul class="group-imgs">
-          <% img = useravatar(@group.account) %>
-          <li><%= link_to(image_tag(img), "/#{@group.account.user_name}", {:class => 'grop-img'}) %><%= link_to(@group.account.first_name.capitalize ,  "/#{@group.account.user_name}") %></li>
-          
-<% if @group.group_member.present? %>
-            <%  @group.group_member.each do |ac| %>
-            <% if ac.status == true && ac.account.present? %>
-              <% img = useravatar(ac.account) %>
-              <li><%= link_to(image_tag(img), "/#{ac.account.user_name}", {:class => 'grop-img'}) %><%= link_to(ac.account.first_name.capitalize,  "/#{ac.account.user_name}") %></li>
-           <% end %>
-  <% end %>
-          <% end %>
-        </ul>
-      </div>
-      
-         <div id="sectionC" class="tab-pane fade">
-            <% if @group.account_id == @account.id %>
-           <h3 class="event-title"><a  href="javascript:void(0)" data-toggle="modal" class="goal-btn creat-event" data-target="#fitspotForm"> Create FitSpot</a> Events</h3>
-            <% end %>
-  <% @group.fitspot.each do |fs|   %>
-  <% if fs.account.present? %>
-         <% img = useravatar(fs.account)    %>
-           <div class="posts">
-             <div class="posts-img">
-              <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
-              </div>
-             <div class="posts-content">
-               <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>  <span class="time"> <%= fs.fitspot_date.strftime("%B %e ") %>  <%= fs.fitspot_time.present? ? 'at ' + fs.fitspot_time : '' %>   </span></h4>
-               <p><%= fs.description %></p>
-             </div>
-           </div>
-           <% end %>
-       <% end %>
-         </div>
-    </div>
-  </div>
-
-</div>
-<% end %>
-<!--- New Code -->
-
 <div id="profile_header">
                    <div class="collage">
                         <div class="sub_collage">
@@ -318,14 +141,17 @@
                                <%= link_to('<button>Invite Friends</button>'.html_safe, gp_path(Base64.encode64(@group.id.to_s), 'invite'), :remote => true) %>
                             </div>
                             <div class="nav">
-                               <%= link_to('Fit Feed', gp_path(Base64.encode64(@group.id.to_s), 'fit_feed'), :remote => true, :class => 'selected') %>
+                     
+                            <% cls = !params[:type].present? ? 'selected' : ''
+                                   cls2 = params[:type].present? ? 'selected' : ''
+                                 %>
+                               <%= link_to('Fit Feed', gp_path(Base64.encode64(@group.id.to_s), 'fit_feed'), :remote => true, :class => cls) %>
                                 <%= link_to('About', gp_path(Base64.encode64(@group.id.to_s), 'about'), :remote => true) %>
                                 <%= link_to('Photos', gp_path(Base64.encode64(@group.id.to_s), 'photos'), :remote => true) %>
                                 <%= link_to('Videos', gp_path(Base64.encode64(@group.id.to_s), 'videos'), :remote => true) %>
                                 <%= link_to('Members', gp_path(Base64.encode64(@group.id.to_s), 'members'), :remote => true) %>
-                                <%#= link_to('Events', gp_path(Base64.encode64(@group.id.to_s), 'events'), :remote => true) %>
-                              
-                            </div>
+                                <%= link_to('Events', gp_path(Base64.encode64(@group.id.to_s), 'events'), :remote => true , :class => cls2) %>
+                              </div>
                         </div>
                     </div>
                 </div>
@@ -666,6 +492,10 @@
 
         }); 
  }
+ $(".nav a").click(function() {
+    $(this).addClass('selected').siblings().removeClass('selected');
+
+    });
  
     $('#sendmessage').on('click', function(e) {
       e.preventDefault();
@@ -963,4 +793,20 @@ $('#position_one').dragncrop({
       </div>
     </div>
   </div>
+</div>
+
+<!-- events-->
+
+<div class="modal fade" id="eventForms" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content" >
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Event </h4>
+      </div>
+      <div class="modal-body">
+		<%= render(:partial => 'events/new_event_by_group') %>
+    </div>
+  </div>
+</div>
 </div>

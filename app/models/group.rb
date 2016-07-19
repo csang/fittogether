@@ -4,6 +4,7 @@ class Group < ActiveRecord::Base
   has_many :group_member, :dependent =>:delete_all
   has_many :group_cover, :dependent =>:delete_all
   has_many :post, :dependent =>:delete_all
+  has_many :event, :dependent =>:delete_all
   # has_many :fitspot
   
   validates_presence_of :title

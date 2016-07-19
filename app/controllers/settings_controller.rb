@@ -120,13 +120,12 @@ class SettingsController < ApplicationController
     else 
       flash[:error] = "User profile could not be updated. Please try again."
     end
-   
-    if params[:color].present?
-		 acc_gym = AccountGym.where(:account_id => @account.id).first
-	     acc_gym.update_attributes(:color => params[:color]) unless acc_gym.nil?
-		
+   	 acc_gym = AccountGym.where(:account_id => @account.id).first	
+
+    if params[:color].present? && params[:color].present?	   
+		  acc_gym.update_attributes(:color => params[:color],:font_color => params[:font_color]) unless acc_gym.nil?	
     end
-    redirect_to request.env['HTTP_REFERER'] and return
+     redirect_to request.env['HTTP_REFERER'] and return
   end
   
   def update_privacy

@@ -110,6 +110,7 @@ Rails.application.routes.draw do
   post 'groups/create'
   match '/groups/:id/(:type)', to: 'groups#show', :via => [:get,:post] , :as => :gp 
   get 'groups/index'
+  get 'groups/:id/(:events)', to: 'groups#show'
   match 'groups/edit/(:id)', to: 'groups#edit',:via => [:patch,:get], :as=>:groups_edit
   
   match 'update_group_cover_offset/', :to=>'groups#update_cover_offset',:via => [:post] ,  :as => :update_group_cover_offset
@@ -280,12 +281,16 @@ Rails.application.routes.draw do
 	      post 'settings/update_about_gym', controller: 'settings', action: 'update_about_gym',:defaults => { :format => 'json' }
 	      post 'settings/update_about_trainers', controller: 'settings', action: 'update_about_trainers',:defaults => { :format => 'json' }
 	      post 'settings/update_avatar', controller: 'settings', action: 'update_avatar',:defaults => { :format => 'json' }
+	      post 'settings/update_crop', controller: 'settings', action: 'update_crop',:defaults => { :format => 'json' }
 	      post 'settings/update_profile', controller: 'settings', action: 'update_profile',:defaults => { :format => 'json' }
 	      
 	      match 'settings/get_update_activity', controller: 'settings', action: 'get_update_activity', :via =>[:get, :post] , :defaults =>  { :format => 'json' }
 	      post 'settings/update_email_settings', controller: 'settings', action: 'update_email_settings',  :defaults =>  { :format => 'json' }
 	      get 'settings/email_notification_settings', controller: 'settings', action: 'email_notification_settings',  :defaults =>  { :format => 'json' }
 	      get 'settings/check_user_data', controller: 'settings', action: 'check_user_data',  :defaults =>  { :format => 'json' }
+	      get 'settings/get_about_options', controller: 'settings', action: 'get_about_options',  :defaults =>  { :format => 'json' }
+	      get 'settings/get_about_gym_option', controller: 'settings', action: 'get_about_gym_option',  :defaults =>  { :format => 'json' }
+	      get 'settings/get_main_gym', controller: 'settings', action: 'get_main_gym',  :defaults =>  { :format => 'json' }
 	      # profile routings
 	      get 'profiles/index', controller: 'profiles', action: 'index',:defaults => { :format => 'json' }
 	      get 'profiles/about', controller: 'profiles', action: 'about',:defaults => { :format => 'json' }

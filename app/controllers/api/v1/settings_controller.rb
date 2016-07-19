@@ -44,8 +44,8 @@ class Api::V1::SettingsController < Api::V1::BaseController
 		if current_user.user_type.present? && current_user.user_type.to_i == 2
 		  exit = AccountTrainer.where(:account_id=>current_user.id).first 
 		  if exit.present?
-		   if exit.update_attributes( params.require(:account_trainers).permit(:gym_id, :fitness_discpline,:certs,:awards,:personal_training,:age,:bootcamp,:location_bootcamp,:group_training,:affiliate,:url,:train_user_type,:home_training))
-		     exit = AccountTrainer.where(:account_id=>params[:account][:account_id]).first 
+		   if exit.update_attributes( params.permit(:gym_id, :fitness_discpline,:certs,:awards,:personal_training,:age,:bootcamp,:location_bootcamp,:affiliate,:url,:train_user_type,:home_training))
+		     exit = AccountTrainer.where(:account_id=>current_user.id).first 
 		   end
 		  end
 		end
@@ -74,11 +74,14 @@ class Api::V1::SettingsController < Api::V1::BaseController
 	
 	  if request.post?
 		  belong = params[:belong]=="y" ? 1 :0
-		  acc = Account.find(params[:account_id])	
+		   acc = Account.find(current_user.id)	
 		  
-		  result = acc.update_attributes(:gender => params[:gender],:city_id => params[:city_id_0],:state_id => params[:state_id_0],:gym_id => params[:gym],
-		  :gym_location_id => params[:location], :industry_id => params[:industry], :profession_id => params[:profession], :relationship_id => params[:relationship],
-		  :dob => params[:date][:year]+'-'+params[:date][:month]+'-'+params[:date][:day],:zipcode=>params[:zipcode],:company => params[:company],:reason_id => params[:reason],:goals => params[:goal],:belong => belong)	
+		  #~ result = acc.update_attributes(:gender => params[:gender],:gym_id => params[:gym],
+		  #~ :gym_location_id => params[:location], :industry_id => params[:industry], :profession_id => params[:profession], :relationship_id => params[:relationship],
+		  #~ :dob => params[:date][:year]+'-'+params[:date][:month]+'-'+params[:date][:day],:zipcode=>params[:zipcode],:company => params[:company],:reason_id => params[:reason],:goals => params[:goal],:belong => belong)
+		  	
+		  result = acc.update_attributes(:gender => params[:gender],:gym_id => params[:gym], :industry_id => params[:industry], :profession_id => params[:profession], :relationship_id => params[:relationship], :zipcode=>params[:zipcode],:company => params[:company],:reason_id => params[:reason],:goals => params[:goal], :belong => belong, :dob => params[:birth_format], :user_location => params[:user_location])	
+		
 			
 				#abort(result.errors.inspect)
 		  if params['trainer_contacts'].present?
@@ -113,9 +116,11 @@ class Api::V1::SettingsController < Api::V1::BaseController
 		  timing['friday_end'] =params[:friday_end]
 		  timing['saturday_start'] =params[:saturday_start] 
 		  timing['saturday_end'] =params[:saturday_end]
-	  
-		  account_details = AccountGym.where(:account_id=>params[:account_id]).first
-		  res = account_details.update_attributes(:name => params[:name], :address =>params[:address], :specialties => params[:specialty], :franchise => params[:franchise], :groupclasses => params[:groupclasses], :dancetypes => params[:dancetype], :train_client_at_your_gym => params[:train_client_at_your_gym], :fee => params[:fee], :amenities => params[:amenity], :timings => timing)
+		  user_address = params[:address].split(",")
+		  
+		  account_details = AccountGym.where(:account_id=>current_user.id).first
+		  #~ res = account_details.update_attributes(:name => params[:name], :address =>user_address, :specialties => params[:specialty], :franchise => params[:franchise], :groupclasses => params[:groupclasses], :dancetypes => params[:dancetype], :train_client_at_your_gym => params[:train_client_at_your_gym], :fee => params[:fee], :amenities => params[:amenity], :timings => timing)
+		  res = account_details.update_attributes(:name => params[:name], :address =>user_address, :specialties => params[:specialty], :franchise => params[:franchise], :groupclasses => params[:groupclasses], :train_client_at_your_gym => params[:train_client_at_your_gym], :amenities => params[:amenity], :timings => timing)
 			 if res
 			   render :json => 1
 			  else 
@@ -144,7 +149,7 @@ class Api::V1::SettingsController < Api::V1::BaseController
   
   # update profile pic
   	def update_avatar
-		account_id = '21'
+		account_id = '1';
 		acc = Account.find(account_id)
 		acc.avatar = params[:avatar]
 		unless acc.valid?
@@ -255,11 +260,46 @@ class Api::V1::SettingsController < Api::V1::BaseController
 			end
 		end
 	end
+	def get_about_options
+		result = Account.where(:id=>current_user.id).first
+		industries = Industry.all()
+		professions = Profession.all()
+		relationship = Relationship.all()
+		goal = Goal.all()
+		
+		reason = Reason.all()
+		render :json => {'industries' => industries, 'professions' => professions, 'relationship' => relationship, 'goal'=> goal, 'reason' => reason, 'account' =>  result} and return
+		
+	end 
+ 
+	def get_about_gym_option
+	account_gym = AccountGym.where(:account_id=>current_user.id).first
+	 specialty = Specialty.all()
+	 amenity = Amenity.all()
+	render :json => {'specialty' => specialty, 'amenity' => amenity, 'account_gym' =>  account_gym} and return
+	end
 	
+	
+	def get_main_gym
+		user_gym = AccountTrainer.where(:account_id=>current_user.id).first
+		account_gym = AccountGym.all()
+		render :json => {'account_gym' =>  account_gym, 'user_gym' => user_gym} and return
+	end
+	
+	#Get update_crop avatar 
+	def update_crop	
+		@account = Account.where(:id=>current_user.id).first
+		if @account.update_attributes(:crop_x => params[:crop_x], :crop_y =>params[:crop_y],:crop_w =>params[:crop_w],:crop_h =>params[:crop_h])
+		@account.reprocess_avatar
+			 render :json => 1
+		else
+			render :json => 0
+		end
+	end
+	 
 	# chk user name already exist
 	
 	def check_user_data 
- 
      if Account.where(:user_name => params[:username]).present?
         result = 'success'
       else
@@ -282,6 +322,9 @@ class Api::V1::SettingsController < Api::V1::BaseController
   	params.permit(:profile_pic, :email, :mobile, :birthday, :work, :location, :bio)	
   end
 
+ def crop_params
+    params.permit(:crop_x, :crop_y, :crop_w, :crop_h)
+  end
 
 
  

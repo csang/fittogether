@@ -2,6 +2,7 @@ class Event < ActiveRecord::Base
 
   belongs_to :account
   belongs_to :fitspot
+  belongs_to :group
   has_many :event_comment, :dependent =>:delete_all
   has_many :event_kudo, :dependent =>:delete_all
   has_many :event_attender, :dependent =>:delete_all

@@ -53,6 +53,12 @@
                             <label>Gym Branding:</label>
                             <input type="color" value="<%= @account.account_gym.present? ?  @account.account_gym.color : "" %>" placeholder="#000000" name="color">
                         </div>
+        
+          <div class="input_container">
+                            <label>Font color:</label>
+                        
+                            <input type="color" value="<%= @account.account_gym.present? ?  @account.account_gym.font_color : "" %>" placeholder="#000000" name="font_color">
+                        </div>                
        <% end %>                 
        <% provider =  'auth0' %>
           

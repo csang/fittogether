@@ -122,46 +122,33 @@
      <% end %>
       
          <% unless @account.id == @profileuser.id %>	
-         <% if @account.pending_friends.present? %>					  
-         <% @account.pending_friends.each do |friendship| %>		
-
-            <% if friendship.id == @profileuser.id %>	
-              <button data-id="<%= Base64.encode64(friendship.id.to_s)%>" class="cancelfriend">Cancel Request</button>
-              <button data-id="" class="addfriend" style="display:none;" >Add Friend</button>							         	
-            <% end %>
-          <% end %>		
-        <% end %>		
-
-        <% if !@friend.present? %>
-          <% if @profileuser.user_type.to_i == 3 && @account.user_type.to_i == 3 %>
-            <p></p>
-          <% else %>
-            <button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" class="addfriend">
-              <%= if  @profileuser.user_type==3 
-                'Join' 
-                elsif @profileuser.user_type==2
-                'Follow'
-                else
-                'Add Friend'
-                end %>   
-            </button>
-          <% end %>	
-        <button data-id="" class="cancelfriend" style="display:none;">Cancel Request</button>	
-        <button data-id="" class="unfollowfriend" style="display:none;">Unfollow</button>	
-        <% elsif @friend.approved== true %>								
-             <% if  @profileuser.user_type==3 %>
-           <button> Joined </button>		     
-           <% elsif  @profileuser.user_type==2 %>
-            <button> Following </button>	
-          <% else %>
-             <button> Friend </button>			
-          <% end %>	     
-            
-        <% else %>								 
-            <!--<button><%= @profileuser.id == @friend.account_id ? 'Request Pending ' : 'Request Sent ' %></button>-->    
-            
-        <% end %>
-        <% end %>
+			 <% if !@friend.present? %>
+				  <% if @profileuser.user_type.to_i == 3 && @account.user_type.to_i == 3 %>
+					<p></p>
+				  <% else %>
+					<button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" sata="sfd" class="addfriend">
+					  <%= if  @profileuser.user_type==3 
+						'Join Gym' 
+						elsif @profileuser.user_type==2
+						'Follow'
+						else
+						'Add Friend'
+						end %>   
+					</button>
+				  <% end %>	
+			   <button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>" class="unfollowfriend" style="display:none;"></button>
+			
+			<% else %>	
+			   <button data-id="<%= Base64.encode64(@profileuser.id.to_s) %>"  data="ssd" style="display:none;" class="addfriend"></button>								
+				<% if  @profileuser.user_type==3 %>
+					<button data-id="<%=  Base64.encode64(@profileuser.id.to_s) %>" class="unfollowfriend">Leave Gym</button>			     
+				<% elsif  @profileuser.user_type==2 %>
+					<button data-id="<%=  Base64.encode64(@profileuser.id.to_s) %>" class="unfollowfriend">Unfollow</button>	
+				<% else %>
+				   <button data-id="<%=  Base64.encode64(@profileuser.id.to_s) %>" class="unfollowfriend">Unfriend</button>		
+				<% end %>	         
+			<% end %>
+		<% end %>
 
         <% if @profileuser.user_type == 1 %>
         <p><%= @profileuser.profession.present? ? @profileuser.profession.name : ''  %> <%= @profileuser.company.present? ? 'at' + @profileuser.company.to_s  : '' %></p>
@@ -247,7 +234,14 @@
 				success: function(data){				
 					$('.unfollowfriend').hide();
 					$('.addfriend').show();
-					$('.addfriend').attr('data-id', data);									
+					$('.addfriend').attr('data-id', data);	
+					 <% if @profileuser.user_type == 2 %>
+                      $('.addfriend').text("follow");
+                     <% elsif @profileuser.user_type == 3 %>                
+                      $('.addfriend').text("Join Gym");
+                     <% else %>
+                      $('.addfriend').text("Add Friend");
+                     <% end %>								
 				
 					},
 				error:	function (xhr, ajaxOptions, thrownError) {
@@ -372,15 +366,14 @@
              },
              success: function(data) {
                  $('.addfriend').hide();
-                 <% if @profileuser.user_type != 2 %>
-                 $('.cancelfriend').show();
-                 $('.cancelfriend').attr('data-id', data);
-                 $('.flash-message').html('<div class="alert alert-success"> Request Sent Succesfully</div>').show();
-                 <% else %>
-                    $('.unfollowfriend').show();
+                 $('.unfollowfriend').show();
                  $('.unfollowfriend').attr('data-id', data);
-                 $('.flash-message').html('<div class="alert alert-success"> Followed Succesfully</div>').show();
-                 
+                 <% if @profileuser.user_type == 2 %>
+                    $('.unfollowfriend').text("Unfollow");
+                  <% elsif @profileuser.user_type == 3 %>                
+                    $('.unfollowfriend').text("Leave Gym");
+                  <% else %>
+                     $('.unfollowfriend').text("Unfriend");
                  <% end %>
              },
              error: function(xhr, ajaxOptions, thrownError) {
@@ -714,3 +707,10 @@
  
 
 </script>
+<% if @profileuser.user_type == 3 %>
+  <style>
+   .profile_data h1, .profile_data h2, .profile_data p{
+	   color: <%= @profileuser.account_gym.font_color.present? ? @profileuser.account_gym.font_color : "#fff" %>!important;
+	   }
+   </style>
+<% end %>   

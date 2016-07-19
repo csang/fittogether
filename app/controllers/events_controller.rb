@@ -6,23 +6,38 @@ before_action :get_account
   end
   
   def create   
-     fid = Base64.decode64(params[:event][:fitspot_id])      
-      @event = Event.create(event_parm.merge(account_id: @account.id, :fitspot_id => fid))  
+   
+      fid = Base64.decode64(params[:event][:fitspot_id])   
+      gid = params[:event][:group_id].present? ? Base64.decode64(params[:event][:group_id]) : nil  
+      params[:event][:event_date] = DateTime.strptime(params[:event][:event_date] ,'%m-%d-%Y')   
+    
+      @event = Event.create(event_parm.merge(account_id: @account.id, :fitspot_id => fid, :group_id => gid))  
       if @event.save!
 		 if params[:invite].present?
             fitspot_member =  FitspotMember.where(:fitspot_id => fid)
              if fitspot_member.present?
                 fitspot_member.each do |gd|
                 EventAttender.create(:account_id => gd.account_id, :event_id => @event.id, :status =>0)
-            end
-		end  
+				end
+		     end		
+            if params[:event][:group_id].present?
+				group_member =  GroupMember.where(:group_id => gid)
+				if group_member.present?
+					group_member.each do |gd|
+					EventAttender.create(:account_id => gd.account_id, :event_id => @event.id, :status =>0)
+					end            
+				end
+		  end  
 	  end
-            flash[:notice] = "New Fitspot has been succesfully created."    
-            redirect_to("/fitspots/" + params[:event][:fitspot_id] + "/events")	and return
+            flash[:notice] = "New Event has been succesfully created."    
       else		   
-         flash[:error] = @event.errors.full_messages    
-         redirect_to("/fitspots/" + params[:event][:fitspot_id] + "events")  and return         
+		 flash[:error] = @event.errors.full_messages   		
       end      
+       if params[:event][:group_id].present?
+		  redirect_to("/groups/" + params[:event][:group_id] + "/events")	and return
+		 else
+		  redirect_to("/fitspots/" + params[:event][:fitspot_id] + "/events")  and return   
+		 end      
   end
   
    def give_event_kudos # add delete kudos
@@ -95,7 +110,7 @@ before_action :get_account
    if request.xhr?     
      id = Base64.decode64(params[:id])   
      if params[:type] =='add'         
-        @member = EventAttender.where(:id=> id,:account_id =>@account.id).first
+        @member = EventAttender.where(:event_id=> id,:account_id =>@account.id).first
          if @member.present?
           if  @member.update_attribute(:status, true)
              render :json => 1  and return     
@@ -103,7 +118,7 @@ before_action :get_account
            render :json => 0  and return   
          end 	
         else
-        @member = EventAttender.create(:id=> id,:account_id =>@account.id, :status => true, :seen => true)		
+        @member = EventAttender.create(:event_id=> id,:account_id =>@account.id, :status => true, :seen => true)		
             if @member.save
               render :json => 1  and return     
             else
@@ -111,7 +126,7 @@ before_action :get_account
             end 	
         end  
      else
-        @member = EventAttender.where(:id=> id,:account_id =>@account.id).first
+        @member = EventAttender.where(:event_id=> id,:account_id =>@account.id).first
         if @member.present?
 			if @member.delete
 			 render :json => 1  and return     
@@ -119,7 +134,7 @@ before_action :get_account
 			 render :json => 0  and return   
 			end 
 		else
-			 render :json => 0  and return   	
+		  	 render :json => 0  and return   	
 		end		
      end
         
@@ -132,7 +147,7 @@ before_action :get_account
   
    private
    def event_parm
-    params.require(:event).permit(:title, :description, :event_image,  :event_date, :event_start_time , :event_end_time)
+    params.require(:event).permit(:title, :description, :event_image,  :event_date, :event_start_time , :event_end_time, :group_id)
   end
   
 end

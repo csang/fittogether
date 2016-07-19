@@ -452,7 +452,9 @@ Fit = {
 			self.parent().find('div').removeClass('selected');
 			self.addClass('selected')
 			$('#feed .post:not(.fitspot)').hide();
+			$('#feed .post:not(.checkin)').hide();
 			$('#feed .post.fitspot').show();
+			$('#feed .post.checkin').show();
 		}
 	},
 	toggle_notification_list: function(e){
