@@ -53,7 +53,11 @@ Paperclip.options[:content_type_mappings] = {
   
 
   def average_rating
-        raty.sum(:score) / raty.count
+  ar = raty.reject { |n|
+			n.score.to_i == 0.0
+			 }
+	
+        raty.sum(:score) / ar.count
   end
 
   def friends

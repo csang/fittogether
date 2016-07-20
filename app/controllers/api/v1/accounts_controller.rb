@@ -22,12 +22,17 @@ class Api::V1::AccountsController < Api::V1::BaseController
 			accounts = Account.where("fit_id = ?", params[:fit_id]).first
 			
 			if accounts.present?
+				authorization = Authorization.where("uid = ?", accounts.id).first
+				
 				if accounts.avatar.present? 
 					width_original  = accounts.avatar_geometry(:original).width 
 					width_large = accounts.avatar_geometry(:large).width 
 					height = accounts.avatar_geometry(:large).height
 				end
-				render :json => { user: accounts, width_original: width_original, width_large: width_large,  height: height} and return
+					if authorization.present?
+						render :json => { user: accounts, width_original: width_original, width_large: width_large,  height: height, social: '1'} and return
+					end
+					render :json => { user: accounts, width_original: width_original, width_large: width_large,  height: height} and return
 				else 
 				render :json => { errors: "Something went wrong" } and return
 			end

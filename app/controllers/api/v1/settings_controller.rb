@@ -4,8 +4,9 @@ class Api::V1::SettingsController < Api::V1::BaseController
 
   # privacy settings
    def privacy
+    user_privacy = AccountPrivacy.where(:account_id=>current_user.id).first
     privacies = Privacy.all()    
-	render :json => privacies
+	render :json => {'privacies' => privacies, 'user_privacy' => user_privacy}
   end
 	
 	# update privacy settings
@@ -149,8 +150,8 @@ class Api::V1::SettingsController < Api::V1::BaseController
   
   # update profile pic
   	def update_avatar
-		account_id = '1';
-		acc = Account.find(account_id)
+	
+		acc = Account.find(current_user.id)
 		acc.avatar = params[:avatar]
 		unless acc.valid?
 			abort(acc.errors.inspect)
@@ -182,17 +183,17 @@ class Api::V1::SettingsController < Api::V1::BaseController
     #update activity
    def get_update_activity
    
-   user_activities = AccountActivity.where(:account_id=>params[:account_id]).first	
+   user_activities = AccountActivity.where(:account_id=>current_user.id).first	
    if request.post? 
 		if user_activities.present?
 		  ap = AccountActivity.find(user_activities.id)	
 		  if ap.update_attributes(:activity_id => params[:activity])	
-		      user_activities = AccountActivity.where(:account_id=>params[:account_id]).first	
+		      user_activities = AccountActivity.where(:account_id=>current_user.id).first	
 		  else
 		     render :json => 'Please Try Again' and return
 		  end
 		else
-		  user_activities = AccountActivity.create(:account_id=>params[:account_id],:activity_id => params[:activity])	
+		  user_activities = AccountActivity.create(:account_id=>current_user.id,:activity_id => params[:activity])	
 		end
 		if user_activities
 		   render :json => user_activities and return
@@ -282,8 +283,13 @@ class Api::V1::SettingsController < Api::V1::BaseController
 	
 	def get_main_gym
 		user_gym = AccountTrainer.where(:account_id=>current_user.id).first
+		account = Account.where(:id=>current_user.id).first
 		account_gym = AccountGym.all()
-		render :json => {'account_gym' =>  account_gym, 'user_gym' => user_gym} and return
+		if current_user.user_type.present? && current_user.user_type.to_i == 2
+			render :json => {'account_gym' =>  account_gym, 'user_gym' => user_gym, 'account' => account} and return
+		else
+			render :json => {'account_gym' =>  account_gym, 'account' => account} and return
+		end 
 	end
 	
 	#Get update_crop avatar 
@@ -300,14 +306,18 @@ class Api::V1::SettingsController < Api::V1::BaseController
 	# chk user name already exist
 	
 	def check_user_data 
-     if Account.where(:user_name => params[:username]).present?
-        result = 'success'
+	account = Account.where(:user_name =>  params[:username]).first
+     if Account.where(:user_name =>  params[:username]).present?
+		if account.id!= current_user.id
+			result = 1
+        else 
+			  result = 0
+        end
       else
-        result = 'error'
+        result = 0
       end 
-			render :json => {
-        :data => result
-      }
+      render :json => result and return
+      
    
    end
 	

@@ -14,8 +14,8 @@
                                  </div>
                                 <div class="description">
                                     <p class="gym"><%= get_gym_name(my_gym.id) %></p><br>
-                                    <p class="location"><%= my_gym.city.name %>, FL</p><br>
-                                    <p class="checkins">8 Check ins</p>
+                                    <p class="location"><%= my_gym.account_gym.address.present? ? my_gym.account_gym.address[0] : 'N/A' %></p><br>
+                                    <p class="checkins"><%= get_gym_checkin(@profileuser.id, my_gym.account_gym.id) %> Check ins</p>
                                 </div>
                             </div>                        
                         </div>
@@ -37,7 +37,7 @@
                                 </div>
                                 <div class="description">
                                     <p class="name"><%= my_trainer.first_name + ' '+ ( my_trainer.last_name.present? ? my_trainer.last_name : '') %></p><br>
-                                    <p class="location"><%= my_trainer.city.name %>, CA</p>
+                                    <p class="location"><%= my_trainer.user_location.present? ? my_trainer.user_location : 'N/A'  %></p>
                                 </div>
                             </div>
                         </div>
