@@ -64,7 +64,8 @@ module ApplicationHelper
   
    
   def get_gym_name(id)
-    gymName = AccountGym.where(:id => id).first
+ 
+    gymName = AccountGym.where(:account_id => id).first
     return (gymName.present?) ?  gymName['name'] : 'N/A' ; 
   end
    
@@ -545,6 +546,12 @@ module ApplicationHelper
 		event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id)).group("events.id").limit(3)
 	end
 		return event
+  end
+  
+    def get_gym_checkin(user_id, id)
+ 
+    return Checkin.where(:account_id => user_id, :account_gym_id => id).count
+ 
   end
   
 	 
