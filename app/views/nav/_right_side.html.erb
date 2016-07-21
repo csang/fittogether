@@ -147,7 +147,7 @@
 										<%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> 
 									</p><br>
                                     <p class="location"><%= fs.location %></p><br>
-                                    <p class="checkins"><%= fs.fitspot_member.count %> Check ins</p>
+                                    <p class="checkins"><%= fitspot_count(fs.id) %> Check ins</p>
                                 </div>
                             </div>
                             <% end %>                     
@@ -173,7 +173,10 @@
 								<%= link_to(image_tag(img), "/#{usr.user_name}") %>
 								</div>
                                 <div class="description">
-                                    <p class="name"><%= usr.first_name %> <%= usr.last_name.present? ? usr.last_name : '' %></p>
+                                    <p class="name">
+										<% name = usr.first_name + " " + (usr.last_name.present? ? usr.last_name : '') %>
+										  <%= link_to( name , "/#{usr.user_name}") %>
+                                    </p>
                                     <br><p class="location"><%= usr.user_location.present? ? usr.user_location : "N/A" %></p>
                                 </div>                              
                             </div>                              

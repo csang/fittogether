@@ -35,8 +35,10 @@ class FeedController < ApplicationController
 
     if  session[:oauth_token].present?
       session[:connect] ='yes'
+
       @acc = Account.find(@account.id)
       if @acc.present?
+      
         if @acc.update_attributes(:uid =>session[:uid],:oauth_token =>  session[:oauth_token], :access_secret =>session[:oauth_secret])
           flash[:notice] = "User connected with fitbit ."
           activity_date = 'today'
