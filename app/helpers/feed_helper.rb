@@ -59,10 +59,18 @@ module FeedHelper
 		  if !@fit.present?
 			 Fitbit.create(:account_id => @account.id, :steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])
 			  
-			  Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+			  if Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+				puts "done"
+			  else
+			  	puts "error"
+			  end
 			 else       
 			 @fit.update_attributes(:steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>@activities['summary']['caloriesOut'])
-			 Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+			if  Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+			   puts "done"
+			else
+			   puts "error"
+			end
 		  end  
   end
   end
@@ -77,7 +85,7 @@ module FeedHelper
      # activity_objects = activities.map {|a| Fitbit::Activity.new(a, user.unit_measurement_mappings) }
      activity_objects = activities
     end
-    activity_objects
+   return activity_objects
   
   end
 
