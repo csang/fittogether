@@ -22,28 +22,29 @@
         <% @msg = true %>
 <li class="<%= @type %> profile_data" id="<%= message.id %>">
 <% if message.account.present? %>
-<div class="imageRound">
-<% img = useravatar(message.account) %>
-<%= image_tag(img) %>
-</div>
-<div class="chatboxmessagecontent user-name">
-<span class="chat-time">
-<time datetime="<%= message.created_at %>" title="<%= message.created_at.strftime("%d %b %Y at %I:%M%p") %>">
-  <%= message.created_at.strftime("%H:%M %p") %>
-</time>
-</span>
-<h2><%= message.account.first_name %></h2>
-<p><%= raw  message.body %></p>
+		<div class="imageRound">
+		<% img = useravatar(message.account) %>
+		<%= image_tag(img) %>
+		</div>
+			<div class="chatboxmessagecontent user-name">
+				<span class="chat-time">
+				<time datetime="<%= message.created_at %>" title="<%= message.created_at.strftime("%d %b %Y at %I:%M%p") %>">
+				  <%= message.created_at.strftime("%H:%M %p") %>
+				</time>
+				</span>
+				<h2><%= message.account.first_name %></h2>
+				<p><%= raw  message.body %></p>
+				<button data-id="<%= @type +'-' + Base64.encode64(message.id.to_s) %>" class="del chat-delete"> Delete</button>
+			</div>
 
-<button data-id="<%= @type +'-' + Base64.encode64(message.id.to_s) %>" class="del chat-delete"> Delete</button>
-</div>
+	<% else %>
+	<% @msg = false %>
+	<% end %>
 </li> 	
-<% else %>
-<% @msg = false %>
 <% end %>
+
 <% end %>
 </ul>
-<% end %>
 </div>
 <% end %>
 <% if @messages.present? && @msg.present?  %>
