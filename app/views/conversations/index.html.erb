@@ -14,34 +14,36 @@
         <% kont =  countaliveconversation(con.id) %>
          <% if kont > 0 %>
             <% 	@receiver = interlocutor(con) %>
+            <% 	if @receiver.present? %>
 
             
               <li id="cv_<%= con.id %>">
                 <div class="imageRound">	
-                     <% if con.conversation_type != 1 %> 
-                  <% img = useravatar(@receiver) %>                
-                  <%= image_tag(img) %>
-                  <% else %>
-                     <%= image_tag('group.jpg') %>
-                  <% end %>
+						 <% if con.conversation_type != 1 %> 
+					  <% img = useravatar(@receiver) %>                
+					  <%= image_tag(img) %>
+					  <% else %>
+						 <%= image_tag('group.jpg') %>
+					  <% end %>
                 </div>
                 <div class="user-name">
-                  <% if con.conversation_type != 1 %> 
-                  <h2><%= link_to("<h3>#{@receiver.first_name} </h3>".html_safe, "/#{@receiver.user_name}") %>
-                     <% else %>
-                    <%= get_firstname_of_members(con.id)  %>
-                    <% end %>
+					  <% if con.conversation_type != 1 %> 
+					  <h2><%= link_to("<h3>#{@receiver.first_name} </h3>".html_safe, "/#{@receiver.user_name}") %>
+						 <% else %>
+						<%= get_firstname_of_members(con.id)  %>
+						<% end %>
                   </h2>
                   
                   <div class="messageList msgLink" style="cursor:pointer;"  >
                     <a href="<%= conversations_path(Base64.encode64(con.id.to_s)) %>"> <%= raw  getmessage(con.id) %></a>
                   </div>
                 </div>
+                  </li>
               <% end %>
-
             <% end %>
             <% end %>
-          </li>
+            <% end %>
+        
         </ul>
       </div>
     </div>
