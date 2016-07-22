@@ -109,10 +109,15 @@ def get_profile_user
      if !@profileuser.present?
 			redirect_to('/feed')
      else
-     @rating = Rating.where(trainer_id: @profileuser.id, account_id: @account.id).first 
-    unless @rating 
-      @rating = Rating.create(trainer_id: @profileuser.id, account_id: @account.id, score: 0) 
-    end
+		 @rating = Rating.where(trainer_id: @profileuser.id, account_id: @account.id).first 
+		unless @rating 
+		  @rating = Rating.create(trainer_id: @profileuser.id, account_id: @account.id, score: 0) 
+		end
+		
+			@friend = Friendship.where(:account_id => @account.id , :friend_id =>@profileuser.id).first 
+			if !@friend.present?
+				@friend = Friendship.where(:account_id => @profileuser.id  , :friend_id =>@account.id).first 
+			end		
      end
    
 end  

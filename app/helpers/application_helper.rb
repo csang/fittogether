@@ -318,7 +318,7 @@ module ApplicationHelper
   
   def my_favorite_fitspot(id)
   
-   fitspot = FitspotMember.where(:account_id => id,:status => false)
+   fitspot = FitspotMember.where(:account_id => id)
    return fitspot
   
   end
@@ -548,11 +548,17 @@ module ApplicationHelper
 		return event
   end
   
-    def get_gym_checkin(user_id, id)
- 
-    return Checkin.where(:account_id => user_id, :account_gym_id => id).count
- 
-  end
+    def get_gym_checkin(user_id, id) #count checkin gym 
+		return Checkin.where(:account_id => user_id, :account_gym_id => id).count 
+    end
+    
+    def get_gym_trainors_from_settings(gym_id)
+    
+    trainers =  AccountTrainer.where(:gym_id => gym_id )
+      account_ids =  trainers.present? ? trainers.map(&:account_id) : nil
+    return Account.where(:id => account_ids)
+    
+    end
   
 	 
 	 

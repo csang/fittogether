@@ -153,6 +153,15 @@ $(document).ready(function () {
             'register_username': {
                 required: true,
                 userRegex:true,
+                remote: {
+                url: "/settings/check_user_name/",
+                data: {                   
+                    username: function () {
+                        return $('#username').val();
+                    }
+                },
+                type: "POST"
+				},
                 minlength:3,
                 maxlength:25
             },
@@ -183,7 +192,8 @@ $(document).ready(function () {
                 required: 'Please enter last name'
             },
             'register_username': {
-                required: 'Please enter user name'
+                required: 'Please enter user name',
+                remote: 'User name already exist'
             },
             'register_email': {
                 required: 'Please enter email',

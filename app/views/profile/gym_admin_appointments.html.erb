@@ -1,4 +1,4 @@
-<% train = get_gym_trainors(@profileuser) %>
+<% train = get_gym_trainors_from_settings(@account.account_gym.id) %>
   <% arr = train.map{|x| [x.first_name] + [x.id]} %>
 <div id="appointments">
 	<div class="header">

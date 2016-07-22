@@ -9,20 +9,15 @@ class ProfileController < ApplicationController
     if !@profileuser.present?
 			redirect_to('/feed')
     else
-			#@posts = Post.where(:status=>1, :account_id =>@profileuser.id).order("id DESC")	
-			 frnds = get_frineds_ids(@profileuser.id)
-			if @profileuser.id != @account.id			
-			@posts = Post.where("status = ? AND share_with != ? AND account_id = ? ",1 ,"Private", @profileuser.id).order("id DESC").paginate(:page => params[:page], :per_page => 20)
-			else
-			@posts = Post.where("status = ? AND account_id = ? ",1 , @profileuser.id).order("id DESC").paginate(:page => params[:page], :per_page => 20)
-			end
-			@friend = Friendship.where(:account_id => @account.id , :friend_id =>@profileuser.id).first 
-			if !@friend.present?
-        @friend = Friendship.where(:account_id => @profileuser.id  , :friend_id =>@account.id).first 
-			end	
-		
-			@profile = 'profile_fit_feed'
-		end
+			
+	  frnds = get_frineds_ids(@profileuser.id)
+	  if @profileuser.id != @account.id			
+		@posts = Post.where("status = ? AND share_with != ? AND account_id = ? ",1 ,"Private", @profileuser.id).order("id DESC").paginate(:page => params[:page], :per_page => 20)
+	  else
+		@posts = Post.where("status = ? AND account_id = ? ",1 , @profileuser.id).order("id DESC").paginate(:page => params[:page], :per_page => 20)
+	   end	
+		@profile = 'profile_fit_feed'
+	  end
    
   
 	end
@@ -115,8 +110,10 @@ class ProfileController < ApplicationController
 	end
 	
 	def trainers
-	
-	    @trainers = get_gym_trainors
+	    @trainers = nil
+	    if @profileuser.user_type = 3
+			@trainers = get_gym_trainors_from_settings(@profileuser.account_gym.id)
+	    end
 		@profile = 'profile_trainers'
 		render 'index'
 	end

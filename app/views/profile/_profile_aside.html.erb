@@ -116,7 +116,7 @@
     <div class="personal_data">
      <% lname = @profileuser.last_name.present? ? @profileuser.last_name : "" %>
      <% if @profileuser.user_type == 3 %>
-		<h1><%= @profileuser.account_gym.name.present? ? @profileuser.account_gym.name.capitalize : @profileuser.first_name.capitalize + ' ' +  lname.capitalize %></h1>
+		<h1><%= @profileuser.account_gym.name.present? ? @profileuser.account_gym.name : @profileuser.first_name.capitalize + ' ' +  lname.capitalize %></h1>
      <% else %>
       <h1><%= @profileuser.first_name.capitalize + ' ' +  lname.capitalize  %></h1>
      <% end %>

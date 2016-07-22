@@ -6,7 +6,7 @@
       <% if @profileuser.user_type.to_i == 3  %> 
        <% if @profileuser.account_gym.color.present? %>
 		<style>
-		.selected {
+		.profile_nav .selected {
 			    border-bottom: 4px solid <%= @profileuser.account_gym.color %>!important;
 			}
 		</style>

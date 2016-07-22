@@ -139,6 +139,7 @@ Rails.application.routes.draw do
   
   match 'delete_account', to: 'settings#delete_account', :via => [:delete], :as => :delete_account
   match '/settings/check_user_data/', to: 'settings#check_user_data', :via => [:get,:post] 
+  match '/settings/check_user_name/', to: 'settings#check_user_name', :via => [:get,:post] 
   match 'get_gym_address', to: 'settings#get_gym_address', :via => [:get,:post], :as => :get_address 
   match 'set_remember/(:message)', to: 'callback#set_remember', :via => [:get,:post] , :as=>:set_rememberme
   match 'create_comment', to: 'feed#create_comment', :via => [:post] , :as=>:create_comment
