@@ -70,29 +70,32 @@ class Api::V1::AccountsController < Api::V1::BaseController
 			end
 		end
      else
-		## saving signup user with social 
-		account = Account.new
-		userId = params[:userId].split('|')
-		account['fit_id'] = userId[1]
-		account['first_name'] = params[:first_name]
-		account['last_name'] = params[:last_name]
-		account['user_name'] = params[:username]
-		account['email'] = params[:email]
-		account['user_type'] = 1
-		 if account.save
-			case params[:user_type].to_i
-			when 2
-				model = AccountTrainer.new
-			when 3
-				model = AccountGym.new
+		@user =  Account.where("fit_id = ?", params[:fit_id]).first
+		 if @user.blank?
+			## saving signup user with social 
+			account = Account.new
+			userId = params[:userId].split('|')
+			account['fit_id'] = userId[1]
+			account['first_name'] = params[:first_name]
+			account['last_name'] = params[:last_name]
+			account['user_name'] = params[:username]
+			account['email'] = params[:email]
+			account['user_type'] = 1
+			if account.save
+				case params[:user_type].to_i
+				when 2
+					model = AccountTrainer.new
+				when 3
+					model = AccountGym.new
+				else
+				model = AccountUser.new
+				end
+				model['account_id'] = account.id
+				model.save
+				render :json => {success: "Sucessfully data saved"}  and return
 			else
-			model = AccountUser.new
+				render :json => { errors: "Invalid email or password" } and return
 			end
-			model['account_id'] = account.id
-			model.save
-			render :json => {success: "Sucessfully data saved"}  and return
-		 else
-			render :json => { errors: "Invalid email or password" } and return
 		end
      end
    end

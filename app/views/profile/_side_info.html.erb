@@ -44,12 +44,13 @@
                     </div>
                     <% end %>
                     <% end %>
-                    <% my_fav_fitspot = my_favorite_fitspot(@profileuser.id) %>
-                   	<%  if my_fav_fitspot.present? %>  
+                
                     <div class="suggested_fitspots">
                         <div class="header">
                             <h2>My Favorite Fitspots</h2>
                         </div>
+                            <% my_fav_fitspot = my_favorite_fitspot(@profileuser.id) %>
+                   	<%  if my_fav_fitspot.present? %>  
                         <div class="list">
 						
 							<% my_fav_fitspot.each do |ft| %>
@@ -66,9 +67,18 @@
                         </div>
                         <div class="see_all">
                               <%= link_to  'See All Fitspot','/fitspots/index'  %>
-                        </div>
+                        </div>                        
+                         <% else %>
+                         <div class="list">
+                            <div class="description">
+								 <p class="location">
+								Not following any fitspot.
+								</p>
+                            </div>
+                         </div>
+                         <% end %>
                     </div>
-                    <% end %>
+                   
                     	<% if @profileuser.user_type != 3 %>
                     <div class="my_activities">
                         <div class="header">
@@ -128,7 +138,7 @@
                             <h2>Trainers</h2>
                         </div>
                         <div class="list">
-						<% trainers =	get_gym_trainors(@profileuser) %>
+						<% trainers =	get_gym_trainors_from_settings(@profileuser.account_gym.id) %>
 						<% if trainers.present? %>
 						<% trainers.each do |member| %>
 						<% img = useravatar(member) %>

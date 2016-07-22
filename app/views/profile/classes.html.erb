@@ -1,7 +1,10 @@
 <div id="classes">
  <% gspecial = Specialty.all.map{|x| [x.name] + [x.id]} %>
- <% train = get_gym_trainors(@profileuser) %>
+ <% train = get_gym_trainors_from_settings(@account.account_gym.id) %>
+ <% arr = Array.new %> 
+<% if train.present?  %> 
   <% arr = train.map{|x| [x.first_name] + [x.id]} %>
+<% end %>  
 	<div class="header">
 		<h3>Classes</h3>
 		<button>New Class</button>

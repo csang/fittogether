@@ -1,6 +1,6 @@
 class SettingsController < ApplicationController
     
-	before_action :get_account
+	before_action :get_account , except: [:check_user_name]
 	helper_method :isprivate
 	helper_method :is_email, :is_visible
 	
@@ -346,6 +346,18 @@ class SettingsController < ApplicationController
     end
   end
   
+    def check_user_name
+    if request.xhr?
+     respond_to do |format|
+		  if Account.where(:user_name => params[:username]).present?
+		    format.json { render :json=> "false" and return }
+		  else 
+		   format.json { render :json=> "true" and return }
+		  end 
+	 end		
+    end
+    # render nothing: true 
+  end
   
   private
   

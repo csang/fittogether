@@ -2,11 +2,10 @@
 
 <div class="input_container">
     <label>Main gym you train</label>
-   
-      <select name="account_trainers[gym_id]">
-        <option value="1" <%= (@account_trainers.present? && @account_trainers['gym_id'] == 1) ? 'selected' :'' %>>Health Home</option>
-        <option value="2" <%= (@account_trainers.present? && @account_trainers['gym_id'] == 2) ? 'selected' :'' %>>Health Club</option>
-      </select>
+      <% gym = AccountGym.all.map{|x| [x.name] + [x.id]} %>
+		
+    <%= select_tag("account_trainers[gym_id]", options_for_select(gym, @account_trainers['gym_id'].present? ? @account_trainers['gym_id'] : "")) %>
+      
     </div>
 <div class="input_container">
     <label>What fitness disciplines do you specialize in?</label>
