@@ -26,9 +26,9 @@ class CallbackController < ApplicationController
 		end    
 	            
     end
-    
+ 
     if issocial
-     	if connection == "twitter"
+        	if connection == "twitter"
 				fullname = request.env['omniauth.auth']['info']['name'].split(' ')
 				session[:first_name] = fullname[0]
 				session[:last_name] = fullname[1]
@@ -43,6 +43,10 @@ class CallbackController < ApplicationController
 				session[:provider] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['provider']
       
 				@authorization = Authorization.find_by_provider_and_uid(session[:provider], session[:fit_id])
+				if !@authorization.present?
+				   @authorization = Account.find_by email: session[:email].strip 
+				end
+				
 				if @authorization
 				   redirect_to('/feed')
 				else
@@ -55,8 +59,12 @@ class CallbackController < ApplicationController
 				 redirect_to('/feed') and return
 				end
     else  # for other users
-      @user =  Account.find_by fit_id: session[:fit_id]
       session[:account] = request.env['omniauth.auth']['extra']['raw_info']
+      session[:email] = session[:account][:email].strip
+      @user =  Account.find_by fit_id: session[:fit_id]
+      if !@user.present?
+		@user =  Account.find_by email: session[:account][:email].strip
+      end
       if @user.blank?
       @account = Account.new
       @account['fit_id'] = session[:fit_id]

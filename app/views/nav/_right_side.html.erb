@@ -174,7 +174,7 @@
 								</div>
                                 <div class="description">
                                     <p class="name">
-										<% name = usr.first_name + " " + (usr.last_name.present? ? usr.last_name : '') %>
+										<% name = usr.first_name.capitalize + " " + (usr.last_name.present? ? usr.last_name : '') %>
 										  <%= link_to( name , "/#{usr.user_name}") %>
                                     </p>
                                     <br><p class="location"><%= usr.user_location.present? ? usr.user_location : "N/A" %></p>

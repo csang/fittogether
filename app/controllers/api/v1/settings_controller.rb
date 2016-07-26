@@ -59,6 +59,17 @@ class Api::V1::SettingsController < Api::V1::BaseController
     
   end  
   
+  
+     # Delete a user
+  def delete_account
+    @user = Account.where(:fit_id => current_user.fit_id).first
+      if @user.destroy
+		render :json => 1
+      else
+        render :json => 0
+      end 
+  end
+  
   # show about
   	def show_about_settings
   

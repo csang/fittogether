@@ -9,7 +9,10 @@ class ApplicationController < ActionController::Base
    
     @act ||= Account.find_by remember_token: (cookies[:auth_token]) if cookies[:auth_token]    
     if !@act.present?
-  	@act = Account.find_by fit_id: session[:fit_id]
+		@act = Account.find_by fit_id: session[:fit_id]
+		if !@act.present?
+		   @act = Account.find_by email: session[:email]	   
+		end
   	end
   	if @act.present? && @act.status == 0
   	    session.clear
@@ -22,6 +25,11 @@ class ApplicationController < ActionController::Base
     if !@account.present?
   	@account = Account.where(:status=>1).find_by fit_id: session[:fit_id]
   	end
+  	
+  	if !@account.present?
+  	@account = Account.where(:status=>1).find_by email: session[:email]
+  	end
+  	
   	
   	@account_type = (session[:account].present?) ? session[:account]['account_type'] : nil;
   	if !@account.present?
