@@ -70,11 +70,11 @@ class Api::V1::AccountsController < Api::V1::BaseController
 			end
 		end
      else
-		@user =  Account.where("fit_id = ?", params[:fit_id]).first
+		userId = params[:userId].split('|')
+		@user =  Account.where("fit_id = ?",  userId[1]).first
 		 if @user.blank?
 			## saving signup user with social 
 			account = Account.new
-			userId = params[:userId].split('|')
 			account['fit_id'] = userId[1]
 			account['first_name'] = params[:first_name]
 			account['last_name'] = params[:last_name]
@@ -96,7 +96,10 @@ class Api::V1::AccountsController < Api::V1::BaseController
 			else
 				render :json => { errors: "Invalid email or password" } and return
 			end
+			else 
+			render :json => {success: "sdsdsdsd"}  and return
 		end
+		
      end
    end
 

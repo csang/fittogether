@@ -285,7 +285,8 @@ module ApplicationHelper
   end
   
    def suggested_trainer  
-	trainer = Account.where('id != ? AND user_type =?', @account.id,2).limit(3)
+     friend = friendship(@account)
+	trainer = Account.where('id != ? AND user_type =? and id NOT IN (?)', @account.id,2,friend).limit(3)
 	return trainer
   end
   
@@ -477,6 +478,25 @@ module ApplicationHelper
   
   end
   
+  def pending_friendship(profileuser)
+	
+  af = []
+  pf = []
+	if profileuser.pending_friends.present? 
+	   pf = profileuser.pending_friends.map(&:id)
+	end
+	if profileuser.requested_friendships.present? 
+		af=  profileuser.pending_friends.map(&:id)
+	end
+	friend = pf
+	if !pf.nil? && !af.nil?  
+	 friend = pf + af 
+	elsif !af.nil? 
+	 friend = af 
+	end   
+  
+  end
+  
   def get_friend_and_attender(profileuser, goings = nil) 
     friend = friendship(profileuser)   
     common_ids = goings & friend
@@ -494,16 +514,27 @@ module ApplicationHelper
 	 
 	 def suggested_friend(profileuser,limit)
 	 	 friend = friendship(profileuser)
+	 	 pending_friend = pending_friendship(profileuser)	  
+	 	 friend = friend + pending_friend
 		
         frnd = Friendship.find_by_sql("SELECT friend_id FROM friendships WHERE account_id IN (SELECT friend_id FROM friendships WHERE account_id=#{@account.id}) ").map(&:friend_id)   
         accnt = Friendship.find_by_sql("SELECT account_id FROM friendships WHERE friend_id IN (SELECT account_id FROM friendships WHERE account_id=#{@account.id}) ").map(&:account_id)
-        ids = frnd + accnt
+        ids = frnd + accnt     
         ids = ids - friend
-       
+        friend.push(@account.id)    
+      
         if ids.present?       
-			return Account.where("id IN (?) && user_type != ? && user_type != ?" , ids, 2, 3).limit(limit)
-        else  
-        friend.push(@account.id)       
+			user =  Account.where("id IN (?) && user_type != ? && user_type != ?" , ids, 2, 3).limit(limit)
+			if user.present?
+				return user
+			else
+			    if profileuser.user_location.present?
+			  		return Account.where("id NOT IN (?) && user_type != ? && user_type != ? && (user_location LIKE ? OR user_location LIKE ? OR user_location LIKE ? )", friend,2,3, "%#{profileuser.user_location}","%#{profileuser.user_location.split.last}","%#{profileuser.user_location.split.first}").limit(limit)
+				else
+					return Account.where("id NOT IN (?) && user_type != ? && user_type != ?", friend,2,3).limit(limit)
+				end
+			end			
+        else              
 			return Account.where("id NOT IN (?) && user_type != ? && user_type != ?", friend,2,3).limit(limit)
         end
 	 

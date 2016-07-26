@@ -4,6 +4,7 @@ class GymClassesController < ApplicationController
   end
 
   def create  
+       params[:class_date] = DateTime.strptime(params[:class_date] ,'%m-%d-%Y')   
        @create = GymClass.create(class_params.merge(:account_id => @account.id))
       if @create.save!
           render :json => 1 and return     
@@ -15,8 +16,9 @@ class GymClassesController < ApplicationController
   
   def classes_count_for_date  
 	  if request.xhr?  
-	   @count_as_time = GymClass.where("account_id = ? AND  Date(class_date) = ?", @account.id, Date.parse(params[:date])).select("COUNT(gym_classes.class_time) AS total, gym_classes.* ").group("class_time")
-	   @total_count = GymClass.where("account_id = ? AND  Date(class_date) = ?", @account.id, Date.parse(params[:date])).count
+	   params[:date] = DateTime.strptime(params[:date] ,'%m-%d-%Y') 
+	   @count_as_time = GymClass.where("account_id = ? AND  Date(class_date) = ?", @account.id, params[:date]).select("COUNT(gym_classes.class_time) AS total, gym_classes.* ").group("class_time")
+	   @total_count = GymClass.where("account_id = ? AND  Date(class_date) = ?", @account.id, params[:date]).count
 	  
 	   respond_to do |format|
 		format.js
@@ -29,7 +31,7 @@ class GymClassesController < ApplicationController
 	  if request.xhr?
 	  date = Date.today
 		  if params[:date].present?
-		  date = Date.parse(params[:date])
+		  date = DateTime.strptime(params[:date] ,'%m-%d-%Y') 
 		  end  
 	  @gym_class = GymClass.where("account_id = ?  AND specialty_id = ? AND trainer_id = ? AND  Date(class_date) = ?", @account.id,params[:specialties],params[:trainers], date)
 	   respond_to do |format|

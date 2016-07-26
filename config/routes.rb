@@ -292,6 +292,7 @@ Rails.application.routes.draw do
 	      get 'settings/get_about_options', controller: 'settings', action: 'get_about_options',  :defaults =>  { :format => 'json' }
 	      get 'settings/get_about_gym_option', controller: 'settings', action: 'get_about_gym_option',  :defaults =>  { :format => 'json' }
 	      get 'settings/get_main_gym', controller: 'settings', action: 'get_main_gym',  :defaults =>  { :format => 'json' }
+	      match 'delete_account', to: 'settings#delete_account', :via => [:delete], :as => :delete_account
 	      # profile routings
 	      get 'profiles/index', controller: 'profiles', action: 'index',:defaults => { :format => 'json' }
 	      get 'profiles/about', controller: 'profiles', action: 'about',:defaults => { :format => 'json' }

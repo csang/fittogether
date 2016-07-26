@@ -14,7 +14,7 @@
 		<div class="time_container">
 			<div class="header">
 				<p>Today</p>
-				<input type="text" class="callender rgtcld" id="datepicker" placeholder="<%= Time.now.strftime("%d-%m-%Y") %>">
+				<input type="text" class="callender rgtcld" id="datepicker" placeholder="<%= Time.now.strftime("%m-%d-%Y") %>">
 			</div>
 			<div class="list" id="classes_count">
 				<div class="option selected"><p>All<span><%= @gym_class.count %></span></p></div>
