@@ -15,7 +15,7 @@ class FeedController < ApplicationController
       @posts = Post.tagged_with(params[:tag]).paginate(:page => params[:page],:per_page => 20)        
     else
       #@posts = Post.where(:status=>1, :group_id => nil).order("id DESC")
-       @posts = Post.where("posts.status = ? AND posts.account_id = ? OR (posts.account_id IN (?) AND posts.share_with = ? ) AND posts.share_with = ?   ",1 , @account.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 20)
+       @posts = Post.where("posts.status = ? AND posts.account_id = ? OR (posts.account_id IN (?) AND posts.share_with = ? ) or posts.share_with = ?   ",1 , @account.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 20)
     end  
 =begin
     @posts.each  do |post|
