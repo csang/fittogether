@@ -194,14 +194,35 @@
 										<p class="event"><%= ft.event.title.capitalize  %></p><br>
 										<p class="location"><%= ft.event.fitspot.location %></p><br>
 										<p class="actions">
-										<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.id.to_s)   %>"> 
+										<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.event.id.to_s)   %>"> 
 										Attending</button>
-									<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.id.to_s)   %>">Not Attending</button></p>
+									<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.event.id.to_s)   %>">Not Attending</button></p>
 									</div>
 								</div>
 								<% end %>
                             <% else %>
-								<p> N/A </p>
+						     
+                            	<%  events = eff_event_invitation %> 
+									<%  if events.present? %>  
+									<% events.each do |ft| %>
+									<% img = ft.image    %>
+									<div>
+										<div class="avatar"><h3><%= image_tag(img) %></h3></div>
+										<div class="description">
+											<p class="date"><%= ft.event_date.strftime("%e %B ") %></p><br>
+											<p class="event">
+												<%= ft.title.capitalize  %>
+												</p><br>
+											<p class="location"><%= ft.fitspot.location %></p><br>
+											<p class="actions">
+											<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.id.to_s)   %>"> 
+												Attending</button>
+										
+										</div>
+									</div>
+									<% end %>
+									<% end %>
+								
                             <% end %>
                         </div>
                         <div class="see_all">
