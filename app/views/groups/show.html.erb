@@ -263,7 +263,13 @@
                 </div>
                 
                 <div id="feed_container" ><!-- Start: Home Feed -->
-<%= render(:partial => 'fit_feed') %>
+
+<% if params[:type].present? && params[:type] =="events"  %>
+				
+						<%= render(:partial => 'events') %>
+<% else %>	
+	<%= render(:partial => 'fit_feed') %>
+<% end %>   	
 <!-- End: Home Feed -->
 
 
