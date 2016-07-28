@@ -55,7 +55,7 @@ class Api::V1::AccountsController < Api::V1::BaseController
 			account['pic'] = params[:pic]
 			account['user_name'] = params[:username]
 			account['email'] = params[:email]
-			account['user_type'] = params[:user_type]
+			account['user_type'] =1
 			if account.save
 					authorization = Authorization.new
 					authorization['provider'] = params[:provider] 
@@ -80,7 +80,7 @@ class Api::V1::AccountsController < Api::V1::BaseController
 			account['last_name'] = params[:last_name]
 			account['user_name'] = params[:username]
 			account['email'] = params[:email]
-			account['user_type'] = 1
+			account['user_type'] = params[:user_type]
 			if account.save
 				case params[:user_type].to_i
 				when 2
