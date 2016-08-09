@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   	@account = Account.where(:status=>1).find_by fit_id: session[:fit_id]
   	end
   	
-  	if !@account.present?
+  	if !@account.present? && session[:email].present?
   	@account = Account.where(:status=>1).find_by email: session[:email]
   	end
   	
