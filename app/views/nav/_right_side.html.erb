@@ -76,7 +76,7 @@
                             	<%  event = event_invitation %>                             	
                             <a href="/fitspots/index" class="amount"> 
 								<% if event.count > 0 %>
-								<%= event.count  %>Invitation<%=s event.count > 1 ? "s" : "" %>
+								<%= event.count  %>Invitation<%= event.count > 1 ? "s" : "" %>
 								<% end %>                            
                             </a>
                             
