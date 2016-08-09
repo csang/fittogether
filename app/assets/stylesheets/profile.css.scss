@@ -1195,6 +1195,60 @@ color: #FFFFFF;}
 	line-height: 22px;
 }
 
+#photos{
+	white-space: normal;
+	margin: 50px 0;
+}
+
+#photos .album .title h2{
+	margin: 0;
+	padding: 10px 0 10px 5px;
+}
+
+#photos .album .photos > div{
+	display: inline-block;
+	vertical-align: top;
+	max-width: 24%;
+	min-width: 24%;
+	width: 24%;
+	height: 140px;
+	background-repeat: no-repeat;
+	background-position: center;
+	outline-color: #000;
+	outline-width: 1px;
+    outline-style: solid;
+    overflow: hidden;
+	background-color: #000;
+	text-align: center;
+}
+
+#photos .album .photos > div img{
+	height: 100%;
+}
+
+#photos .album .photos_collage > div{
+	display: inline-block;
+	vertical-align: top;
+	max-width: 24%;
+	min-width: 24%;
+	width: 24%;
+	height: 140px;
+	background-repeat: no-repeat;
+	background-position: center;
+	outline-color: #000;
+	outline-width: 1px;
+    outline-style: solid;
+    overflow: hidden;
+	background-color: #000;
+	text-align: center;
+}
+
+#photos .album .photos_collage > div img{
+	height: 100%;
+}
+
+
+
 /*----------------------------------------------------
 					Overrides
 ----------------------------------------------------*/

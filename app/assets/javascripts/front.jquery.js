@@ -896,41 +896,43 @@ $(document).ready(function () {
 		}
 	 $(document).on('click', '.post_comment', function(e) {	
 	  var that = $(this);
-      var textnew = $(this).siblings('textarea').val(); 
-      var textold = $(this).siblings('textarea').val();
+      var textnew = $(this).siblings('div .jqueryHashtags').find('textarea').val(); 
+      var textold = $(this).siblings('div .jqueryHashtags').find('textarea').val();
       if (globalVariableforComment.length > 0 ) {
        $.each(globalVariableforComment, function( key, valu ) {   
          textnew  =    textnew.replace(valu.key, valu.value);
-         console.log(textnew);
        });  
      
       }
         var text = textnew!='' ? textnew : textold
-        if (text == '') {
-		  $(this).siblings('textarea').attr('placeholder',"Don't forget to type your comment");	
+        if ('' == text) {
+		  $(this).siblings('div .jqueryHashtags').find('textarea').attr('placeholder',"Don't forget to type your comment");	
           return false;
         }
         var postid = $(this).attr('data-id');
 		create_comment(text, postid, that);
     });
+    
+    // on enter update commment
      $(document).on('keyup', '.comment', function(event) {	
 	  if(event.keyCode == 13) {
-	  var that = $(this).siblings("button")		
+		  
+	  var that = $(this).parent().parent().siblings("button")		
 	  var textnew = $(this).val(); 
       var textold = $(this).val();
-      if (globalVariableforComment.length > 0 ) {
+       if (globalVariableforComment.length > 0 ) {
        $.each(globalVariableforComment, function( key, valu ) {   
          textnew  =    textnew.replace(valu.key, valu.value);
-         console.log(textnew);
+    
        });  
      
       }
         var text = textnew!='' ? textnew : textold
         if (text == '') {
-		  $(this).siblings('textarea').attr('placeholder',"Don't forget to type your comment");	
+		  $(this).attr('placeholder',"Don't forget to type your comment");	
           return false;
         }
-        var postid = $(this).siblings("button").attr('data-id');
+        var postid =$(this).parent().parent().siblings("button").attr('data-id');
 		create_comment(text, postid,that);
 		}
     });
@@ -975,7 +977,7 @@ $(document).ready(function () {
     });
 
 
-    $(document).on('click','.comment-delete', function() {
+    $(document).on('click','.comment-delete', function() { // delete post comment
       if (confirm("Do you want to delete comment?")) {
         var toid = $(this).attr('data-id');
 
@@ -1002,15 +1004,53 @@ $(document).ready(function () {
         });
       }
     });
+    
+        $(document).on('click','.comment-delete-album', function() { //
+      if (confirm("Do you want to delete comment?")) {
+        var toid = $(this).attr('data-id');
 
- $(".add_comment").on('keyup', 'textarea',function(e) {
+        var mydata = {'id': toid};
+        var that = this;
+        $.ajax({
+          type: "DELETE",
+          url: '/delete_album_comment/', //sumbits it to the given url of the form
+          dataType: "HTML",
+          data: mydata,
+          beforeSend: function(xhr) {
+            xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+          },
+          success: function(data) {
+            $('#scont' + data).fadeOut();
+            $('.flash-message').html('<div class="alert alert-success"> Comment has been deleted successfully</div>').show();
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+            $('.flash-message').html('<div class="alert alert-danger"> Please Try again</div>').show();
+            console.log(thrownError)
+
+          }
+
+        });
+      }
+    });
+
+ $(".add_comment").on('keyup', 'textarea',function(event) {
   var that = this
-    if ($(this).val().indexOf("@") != -1) {
-      var ind = $(this).val().indexOf("@");
-      var keywords = $(this).val().substr(ind + 1);
-     
-      if (keywords != '') {
-
+   var backway = $(this).val().split(" ").pop();
+    if (backway.indexOf("@") != -1) {
+      var ind = backway.indexOf("@");
+      var keywords = backway.substr(ind + 1);
+   
+     /*
+       if (event.keyCode != 50) {
+		  var words = $(this).val().split(' ');
+            var lastWord = words[words.length - 1];
+            console.log(lastWord);
+            
+		  if (keywords.contains(" ")) {
+			return false;
+			}
+	  }	*/
+      if (keywords != '' && event.keyCode != 32) {
         $.ajax({
           type: "POST",
           url: '/search_user/' + keywords + '/type/ /' + 'post', //sumbits it to the given url of the form
@@ -1019,9 +1059,8 @@ $(document).ready(function () {
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
           },
           success: function(data) {
-         
-            $(that).siblings('.arport2').show()
-            $(that).siblings('.arport2').html(data)
+             $(that).parent().parent().parent().children('.arport2').show()
+            $(that).parent().parent().parent().children('.arport2').html(data)
 
 
           },

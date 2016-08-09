@@ -25,7 +25,8 @@ has_attached_file :image,
   def is_type_of_image?
     image.content_type =~ %r(image)
   end
- 
+  
+ has_many :album_images_comment,  :dependent =>:delete_all
  
  
 end

@@ -14,6 +14,12 @@ class ApplicationController < ActionController::Base
 		   @act = Account.find_by email: session[:email]	   
 		end
   	end
+  	if @act.present? && @act.email_verified == false
+  	    session.clear
+  	    flash[:notice] = "Please verify your email address."
+  	 	 redirect_to ('/login') and return
+  	end 
+  	
   	if @act.present? && @act.status == 0
   	    session.clear
   	    flash[:notice] = "Your account is deactivated. Kindly contact admin."

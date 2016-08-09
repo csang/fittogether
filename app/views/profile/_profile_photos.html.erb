@@ -1,9 +1,108 @@
 
+<div class="header">
+    <div class="title">
+        <h2>Photos</h2>
+    </div>
+</div>
+<div id="photos">
+	
+<% @album.each do |albm| %>
+<% if albm.album_images.count > 0 %>
+<% if albm.share_with == 'Private' || @account.id == albm.account_id %>
+	<div class="album">
+		<div class="title">
+			<h2>			
+			<% if @profileuser.id == @account.id %>
+			<%= link_to  albm.title.present? ? albm.title : 'untitled', showalbum_path(albm.id) %>
+			<%= link_to("<button class='comment-delete-album' title='Delete Album'>Delete Album</button>".html_safe, delete_album_path(albm.id), remote: true, :method =>"delete", :id => "dalbum", data: {confirm: 'Are you sure?'}) %>
+			<% else %>
+			<%=  albm.title.present? ? albm.title : 'untitled' %>
+			<% end %>
+			</h2>
+		
+		</div>
+		<div class="photos">
+			<% albm.album_images.each do |img| %>
+			<div>
+				  <% if img.image_content_type!='video/mp4' %>                       
+                              <img src="<%= img.image %>"  id="<%= img.id %>">
+                   <% else %>           				
+				 <video id='video'  controls width="161" height="146">
+                              <source src='<%= img.image %>' type='video/mp4' id="<%= img.id %>"/>
+                              Your browser does not support the video .
+                            </video>   
+				<% end %>
+			</div>
+			
+		<% end %>	
+		</div>
+	</div>
+<% elsif (albm.share_with == 'Friends' && check_if_friend(albm.account_id,@account.id) || (albm.share_with == 'Friends' && @account.id == albm.account_id))  || albm.share_with == 'Public'  %>	
+<div class="album">
+		<div class="title">
+					<h2>				
+			<% if @profileuser.id == @account.id %>
+			<%= link_to  albm.title.present? ? albm.title : 'untitled', showalbum_path(albm.id) %>
+			<%= link_to("<button class='comment-delete-album' title='Delete Album'>Delete Album</button>".html_safe, delete_album_path(albm.id), remote: true, :method =>"delete", :id => "dalbum", data: {confirm: 'Are you sure?'}) %>
+			<% else %>
+			<%=  albm.title.present? ? albm.title : 'untitled' %>
+			<% end %>
+			</h2>
+		
+		</div>
+		<div class="photos">
+			<% albm.album_images.each do |img| %>
+			<div>
+				  <% if img.image_content_type!='video/mp4' %>                       
+                              <img src="<%= img.image %>" id="<%= img.id %>">
+                   <% else %>           				
+				 <video id='video'  controls width="161" height="146">
+                              <source src='<%= img.image %>' type='video/mp4'  id="<%= img.id %>"/>
+                              Your browser does not support the video .
+                            </video>   
+				<% end %>
+			</div>
+		<% end %>	
+		</div>
+	</div>
+<% end %>
+<% end %>
+<% end %>
+<div class="album">
+		<div class="title">
+					<h2>				
+		<% if @profileuser.account_cover.present? %>
+		Collage Images
+		<% end %>
+			</h2>
+		
+		</div>
+		<div class="photos_collage">
+		<% if @profileuser.account_cover.present? %>
+			<% @profileuser.account_cover.each do |fc| %>
+			<div>        
+                   <%= image_tag(fc.cover) %>
+			</div>
+		<% end %>	
+		<% end %>	
+		</div>
+	</div>
+	
+</div>
+
+<script type="text/javascript">
+
+$('#photos .album .photos img').click(Fit.view_picture_post_album);
+$('#photos .album .photos_collage img').click(Fit.view_picture_post_collage);
+
+</script>
+<% if false %>
+<!--- origional -->
+
 <div class="profile_photos_view">
 
 <% @album.each do |albm| %>
 <% if albm.album_images.count > 0 %>
-
 <% if albm.share_with == 'Private' || @account.id == albm.account_id %>
 
 <div class="maindiv">	
@@ -179,6 +278,7 @@
 	</div>
 	
 </div>
+<% end %>
 <!-- script src="https://code.jquery.com/jquery-1.10.2.min.js"></script -->
 <script>
         $(document).ready(function(){        

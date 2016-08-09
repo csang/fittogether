@@ -10,3 +10,11 @@ $('#feed').append('<%= j render(:partial => 'feed') %>');
 
 
 
+$('.geopost').each(function(i, v){
+		
+		var $that = $(this);
+		$that.geocomplete({ 
+			map: '#'+$that.attr('mapPlaceholder')			
+		});	
+		$that.trigger("geocode");
+	});

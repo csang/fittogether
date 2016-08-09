@@ -223,6 +223,7 @@ module ApplicationHelper
 		 acc[:user_name] = account.user_name
 		 acc[:pic] = account.pic
 		 acc[:avatar] = account.avatar		
+		 acc[:user_type] = account.user_type		
 		  return acc
 	 end	 	
     
@@ -291,9 +292,25 @@ module ApplicationHelper
   end
   
   def event_invitation # return event invitation to user
-   event = EventAttender.where(:account_id => @account.id,:status => false).joins(:event).where("Date(event_date) >= ?",Date.today)
+   event = EventAttender.where(:account_id => @account.id,:status => false).joins(:event).where("Date(event_date) >= ?",Date.today).limit(3)
    return event
   end
+  
+  def event_attending_new # return event attending to user
+   event = EventAttender.where(:account_id => @account.id,:status => true).joins(:event).where("Date(event_date) >= ?",Date.today).limit(3)
+   return event
+  end
+  
+  	def eff_event_invitation # return event  suggested
+  	#abort(@account.user_location.inspect)
+	
+	if @account.user_location.present?
+		event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) AND fitspots.location LIKE ? ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id), "%#{@account.user_location}%").group("events.id").limit(3)
+	else
+		event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id)).group("events.id").limit(3)
+	end
+		return event
+   end
   
   # get trainer as method name suggested 
     def my_trainer_or_gym(profileuser, type)  
@@ -569,15 +586,7 @@ module ApplicationHelper
 		return place.present? ? place.location : ""
 	 end
 	 
-	def eff_event_invitation # return event  to user
-	
-	if @account.user_location.present?
-		event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) AND fitspots.location LIKE ? ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id), "%#{@account.user_location}%").group("events.id").limit(3)
-	else
-		event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id)).group("events.id").limit(3)
-	end
-		return event
-  end
+
   
     def get_gym_checkin(user_id, id) #count checkin gym 
 		return Checkin.where(:account_id => user_id, :account_gym_id => id).count 

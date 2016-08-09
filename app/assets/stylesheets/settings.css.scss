@@ -319,7 +319,13 @@ header .settings_nav nav a.selected{
 	color: rgb(47,131,82);
 	line-height: 15px;
 }
-
+#main_container .input_container{
+	box-sizing: border-box;
+	width: 100%;
+	border: none;
+	background-color: transparent;
+	margin: 0;
+}
 /*------------------------------------------------------
 		Basic
 ------------------------------------------------------*/

@@ -202,14 +202,13 @@ $('.attending').click( function () {
           xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
         },
         success: function(data) {
-          if (type == 'add') {
-			//	$(that).prop('disabled', true);             
-			$(that).parent().parent().parent().hide();
-		
-          } else {
-             $(that).parent().parent().parent().hide();
-             
-          }
+     
+			$(that).prop('disabled', true);             
+			//$(that).parent().parent().parent().hide();
+			$(that).addClass("selected");
+			$(that).siblings("button").removeClass("selected");3
+			$(that).siblings("button").prop('disabled', false);     
+
 
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -468,14 +467,7 @@ $('.attending').click( function () {
     return null;
   }
   
-  	$('.geopost').each(function(i, v){
-		
-		var $that = $(this);
-		$that.geocomplete({ 
-			map: '#'+$that.attr('mapPlaceholder')			
-		});	
-		$that.trigger("geocode");
-	});
+  	
 	
 	// fitpost
 		$('.fitpost').each(function(i, v){

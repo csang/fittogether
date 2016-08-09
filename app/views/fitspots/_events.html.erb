@@ -1,6 +1,10 @@
 <div class="header">
     <div class="title">
-        <h2>Events <span><%=  @fitspot.event.present? ?   @fitspot.event.count : '' %></span></h2>
+    <% ar =  @fitspot.event.reject { |n|
+			n.event_date <= Date.today
+			 }
+	%>		 
+        <h2>Events <span><%=  ar.count %></span></h2>
     </div>
     <div class="actions">
         <button class="new_event" data-toggle="modal" data-target="#eventForm">New Event</button>
@@ -8,10 +12,12 @@
 </div>
 
 <div id="feed" class="group">
+<% i = 0 %>
 <% if @fitspot.event.present?  %>
 	<%  abc = @fitspot.event.sort.reverse  %>
 	<%  abc.each do |evnt|  %>
-	<%  if evnt.event_date > Date.today  %>
+	<%  if evnt.event_date >= Date.today && i < 3 %>
+	<% i += 1 %>
 	<div class="post event">
         <div class="header">
             <div class="user">

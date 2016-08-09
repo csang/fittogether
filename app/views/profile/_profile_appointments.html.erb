@@ -9,7 +9,7 @@
       <span class="event-color" style="background:#2f8352;"></span>
       <p>Approved</p>
     </div>
-    <button>Create New Appointment</button>
+    <button id="thisisit" >Create New Appointment</button>
   </div>
 
   <div id="calendar"></div>
@@ -67,6 +67,13 @@
                 <textarea class="form-control" id="newUserEventDescription" name="user_event[description]"></textarea>
               </div>
             </div>
+             <div class="form-group">
+              <label class="col-xs-3 control-label">When:</label>
+              <div class="col-xs-9" id="when">
+               <span class="newUserEventStartDate"></span>
+              </div>
+              <div class="col-xs-9" id="text_id" style="display:none"><span class="">You can select different date & time by clicking on below calander </span></div>
+            </div>
             <div class="form-group">
               <div class="col-xs-5 col-xs-offset-3">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -98,6 +105,62 @@
       </div>
     </div>
   </div>
+  
+  <!-- new form -->
+  
+    <div class="modal fade" id="createUserAppModal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog">
+           <div class="modal-content hideMe" id="EventEditFormSection" >
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title"><span id="actionTitle">Create New </span><b id="SelectedEventTitle"></b> <span>Appointment</span></h4>
+        </div>
+
+        <div class="modal-body">
+          <!-- The form is placed inside the body of modal -->
+          <form id="createUserEventForm" method="post" class="form-horizontal">
+            <input type="hidden" value="<%= @account.id %>" name="user_event[account_id]" />
+            <input type="hidden" value="<%= @profileuser.id %>" name="user_event[trainor_id]" />
+            <input type="hidden" id="newUserEventId" value="0" name="user_event[id]" />
+            <input type="hidden" id="newUserEventEventId" value="0" name="user_event[event_id]" />
+       
+            <input type="hidden" id="newUserEventStartDate" value="" name="user_event[start_date]" />
+            <input type="hidden" id="newUserEventEndDate" value="" name="user_event[end_date]" />
+            <div class="form-group">
+              <label class="col-xs-3 control-label">Title:</label>
+              <div class="col-xs-9">
+                <input type="text" class="form-control" id="newUserEventTitle" name="user_event[title]" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-3 control-label">Description:</label>
+              <div class="col-xs-9">
+                <textarea class="form-control" id="newUserEventDescription" name="user_event[description]"></textarea>
+              </div>
+            </div>
+             <div class="form-group">
+              <label class="col-xs-3 control-label">When:</label>
+              <div class="col-xs-9">
+               <span class="newUserEventStartDate"></span>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-xs-5 col-xs-offset-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-warning close-modal" data-dismiss="modal" id="svcancel">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+  
+  <!-- end -->
 
 </div>
 <style>
@@ -106,13 +169,32 @@
     margin: 0 auto;
   }
 </style>
+<script>
+$('#thisisit').click(function() {	  
+	 <% if @profileuser.user_type == 2  %>      
+	    var CurrentDate = moment().add(4, 'hours');
+	     $('.hideMe').hide();
+        $('#EventEditFormSection').slideDown(); 
+         $('#newUserEventStartDate').val(CurrentDate.format());   
+        var d = moment(CurrentDate).format('MMMM Do h:mm a');
+        var h = moment(CurrentDate).format('h:mm a') ;        
+        $('.newUserEventStartDate').text(d);
+        $('#newUserEventEndDate').val(CurrentDate.format()); 
+         $("#text_id").show(); 
+        $('#createUserEventModal').modal('show');
+        <% end %>     
 
+
+});
+
+
+
+</script>
 <script>
   $(function() {
-   var accountid = '<%= @account.id %>';
+   var accountid = '<%= @account.id %>'; 
  
-    $('#calendar').fullCalendar({
-  
+    $('#calendar').fullCalendar({  
       header: {
         left: 'prev,next today',
         center: 'title',
@@ -122,16 +204,22 @@
       defaultDate: new Date(),
       selectable: true,
       selectHelper: false,
-      dayClick: function(start, jsEvent, view) {
-        <% if @profileuser.user_type == 2  %>
+      select: function(start, endDate, jsEvent, view) {
+	 <% if @profileuser.user_type == 2  %>
+		       $("#text_id").hide(); 
         if ( new Date(start).getTime() >= new Date().getTime() - 86400000) {     
         $('.hideMe').hide();
         $('#EventEditFormSection').slideDown();
         $('#actionTitle').html("Create New ");
         $('#newUserEventTitle, #newUserEventDescription').val("");
         $('#newUserEventId').val('0');
-        $('#newUserEventStartDate').val(start.format());
-        $('#newUserEventEndDate').val(start.format());        
+        $('#newUserEventStartDate').val(start.format());   
+        var d = moment(start).format('MMMM Do h:mm a');
+        var h = moment(endDate).format('h:mm a') ;
+        
+        $('.newUserEventStartDate').text(d  + "-" + h );
+        $('#newUserEventEndDate').val(endDate.format());        
+       // $('.newUserEventEndDate').text(start.format());        
         $('#createUserEventModal').modal('show');
         }
         <% end %>
@@ -146,6 +234,7 @@
       
       if ( new Date(calEvent.start).getTime() >= new Date().getTime() - 86400000 ) {     
        if (accountid == calEvent.account_id  || accountid == calEvent.trainer_id) {
+		          $("#text_id").hide(); 
        $('#actionTitle').html("Edit ");
         $('#newUserEventId').val(calEvent.id);
             $('#newUserEventTitle').val(calEvent.title);
@@ -206,6 +295,7 @@
               $('.close-modal').click();
               $('#createUserEventForm').modal('hide');
                $('#EventEditFormSection').modal('hide');
+                      $("#text_id").hide(); 
             }
           }
         });

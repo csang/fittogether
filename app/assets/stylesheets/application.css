@@ -986,12 +986,10 @@ ul.chating li:hover .chat-edit{opacity:1;}
 .noti-heading, .conver-left h2.noti-heading{ color: #4cae4c; font-size: 17px; padding: 20px 0; text-align: center;}
 .modal-backdrop{display:none;}
 .notification-msg{text-align: center;font-size: 17px;color: #2F8352;margin: 20px 0 0;}
-.about_form select option, select option, .selection option{padding:1px 5px;}
-.event-indication{display:inline-block; vertical-align:top; text-align:left; padding:15px 0 20px; width:100%;font-family: "Helvetica Neue","Helvetica","Arial";clear: both;}
+.about_form select option, select option, .selection option{padding:1px 5px;}.event-indication{display:inline-block; vertical-align:top; text-align:left; padding:15px 0 20px; width:100%;font-family: "Helvetica Neue","Helvetica","Arial";clear: both;}
 .event-indication > *{display: inline-block;vertical-align: middle !important;}
 .event-indication button{float: right;background-color: transparent;border: 1px solid #24854E;border-radius: 27px;font-weight: bold;color: #24854E;font-size: 14px;height: 27px;padding: 0 10px;}
-.event-indication button:hover{color: #fff;background-color: #24854E;}
-.event-box{display:inline-block; vertical-align:top; margin-right:20px; font-size:15px; }
+.event-indication button:hover{color: #fff;background-color: #24854E;}.event-box{display:inline-block; vertical-align:top; margin-right:20px; font-size:15px; }
 span.event-color{border:1px solid #fff; width:16px; height:16px; float:left;}
 .event-box p{padding:0px 0 0 23px; font-weight: normal;}
 .requirement{float:right; margin:22px 54px 0 0;}
@@ -1074,6 +1072,9 @@ footer .chat_bar .chat .box.available-chat .textbox textarea{padding:3px 8px; he
 footer h3{margin:0px; font-size:13px;}
 footer .box-list .header h4{margin:0px; font-size:14px;}
 .pac-container{z-index:9999;}
+.align-table{display:table; width:100%; height:100%; vertical-align:middle;}
+.align-vertical{display:table-cell;vertical-align:middle;}
+
 /* ================================== new  css end ========================================================================================*/
 @media screen and (max-width: 1279px){
 	/*#container{

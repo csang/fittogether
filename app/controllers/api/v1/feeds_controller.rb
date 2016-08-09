@@ -1,19 +1,81 @@
 
 class Api::V1::FeedsController < Api::V1::BaseController
-
-   
+before_action :authenticate_with_token!
+ include ActionView::Helpers::DateHelper  
+ include ActionView::Helpers::NumberHelper
+include ApplicationHelper
 
   def get_posts
-	
-    frnds = get_frineds_ids(params[:account_id])
+
+    frnds = get_frineds_ids(current_user.id)
     if params[:tag]
       posts = Post.tagged_with(params[:tag])      
     else
-      posts = Post.where("status = ? AND account_id = ? OR (account_id IN (?) AND share_with = ? ) OR share_with = ?   ",1 , params[:account_id], frnds, "Friends", "Public").order("id DESC")
-    end  
-   render json: posts
+    post_count = Post.where("posts.status = ? AND posts.account_id = ? OR (posts.account_id IN (?) AND posts.share_with = ? ) AND posts.share_with = ?   ",1 , current_user.id, frnds, "Friends", "Public").order("id DESC").count
+       posts = Post.where("posts.status = ? AND posts.account_id = ? OR (posts.account_id IN (?) AND posts.share_with = ? ) AND posts.share_with = ?   ",1 , current_user.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 5)
+      
+    end 
    
-
+    all_post = Array.new 
+    	  posts.each do |post|
+		    user = get_user_array(post.account) 
+		    acc = {}          						
+		    acc[:post] = post		    
+		    acc[:user] = user
+		    acc[:comment] = {}	
+		    acc[:challenges] = {}		
+		    acc[:challengeto] = {}	
+		    acc[:fitspot] = {}	
+		    acc[:fitbit] = {}	
+		    acc[:fitspotcover] = {}	
+		    acc[:time] = {}	
+		    acc[:fitbits_steps] = {}	
+		    acc[:comment][:user] = {}	
+		    acc[:comment][:time] = {}	
+		    acc[:time] =  time_ago_in_words(post.created_at) 	
+		    
+		  
+				 case post.post_type
+					when "challenge"
+					
+						acc[:challenges] =  Challenge.where(:id=> post.group_id).first 	
+						accounts =  Account.where(:id=> acc[:challenges][:to_id]).first  
+						challengeto = get_user_array(accounts) 
+						acc[:challengeto] = challengeto
+					when "fitspot"
+					
+						acc[:fitspotcover] = FitspotCover.where(:fitspot_id => post.group_id, :position => 1 ).first
+						acc[:fitspotcover].present? ? acc[:fitspotcover] : ''
+						acc[:fitspot] = Fitspot.where(:account_id=> post.account_id).first
+					when "fitbit"
+					
+						acc[:fitbit] = Fitbit.where(:account_id => post.account_id).first
+						
+						acc[:fitbits_steps] = number_to_human( acc[:fitbit].steps, :format => '%n%u', :units => { :thousand => 'K' })
+						
+					else
+					
+				end
+				
+				
+		    	   
+	           if post.comment.present?	          
+				post.comment.each do |come|
+				  acc[:comment][come.id] = come		
+				  acc[:comment][:time][come.id] = time_ago_in_words(come.created_at) 	
+				   user = get_user_array(come.account)
+		           acc[:comment][:user][come.id] = user			
+				end	
+				
+				
+				
+			end 	
+		       all_post.push(acc)  	#push hash into array
+end 
+    #abort(all_post.inspect)
+    
+    #created_at = time_ago_in_words(posts.created_at) 
+    render :json => {'posts' => all_post, 'post_count' => post_count}
   end
   
   def show
@@ -136,11 +198,12 @@ end
 
 # comment on post
 def create_comment
-    
-   
-      comments =  Comment.create(:account_id=>params[:account_id],:text=>params[:text],:post_id=>params[:post_id],:status=>1)
+
+      comments =  Comment.create(:account_id=>current_user.id,:text=>params[:text],:post_id=>params[:post_id],:status=>1)
+      time = time_ago_in_words(comments.created_at)
+      commented_by =  Account.where(:id=>comments.account_id).first	
       if comments.save!
-       render :json => comments
+      render :json => {'comments' => comments, 'commented_by' => commented_by, 'time' => time}
 =begin
         post = Post.find(params[:post])
         set = email_settings(post.account.id, 'comment_on_post')
@@ -212,11 +275,30 @@ end
 	  
   end
   
+  def give_kudos # add delete kudos
+   
+		  post_id = params[:post_id]     
+		  kudos =  Kudo.where(:post_id=>post_id, :account_id=> current_user.id).first   
+		  if kudos.present? && kudos.destroy 
+			  render :json => 1  and return    
+		  else
+			  kudos = Kudo.create(:post_id=>post_id, :account_id=> current_user.id)
+			  if kudos 
+			  	 render :json => 1  and return    
+			  else
+			      flash[:error] = kudos.errors.full_messages.first
+			  end  
+		  end
+
+  
+  end
   
    private
   def feedback_params
     params.permit(:category_id, :feedback)
   end
+  
+  
   
 end #end of class
 

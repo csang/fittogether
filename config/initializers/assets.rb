@@ -21,6 +21,7 @@ Rails.application.config.assets.precompile += %w( gym.css )
 Rails.application.config.assets.precompile += %w( notificatons.css )
 Rails.application.config.assets.precompile += %w( signup.css )
 Rails.application.config.assets.precompile += %w( main.css )
+Rails.application.config.assets.precompile += %w( jquery.hashtags.css )
 
 Rails.application.config.assets.precompile += %w( jquery.js )
 Rails.application.config.assets.precompile += %w( jquery_ujs.js )

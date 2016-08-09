@@ -42,9 +42,9 @@ class FeedController < ApplicationController
         if @acc.update_attributes(:uid =>session[:uid],:oauth_token =>  session[:oauth_token], :access_secret =>session[:oauth_secret])
           flash[:notice] = "User connected with fitbit ."
           activity_date = 'today'
-          act = fitb(@account, activity_date)
-          set_fitbit(act) # add data to table
-          session.delete(:oauth_token)
+          fitb(@acc, activity_date)
+         # set_fitbit(act) # add data to table
+         # session.delete(:oauth_token)
         else 
           flash[:error] = "Please try again."
         end
@@ -371,7 +371,7 @@ class FeedController < ApplicationController
          id = AccountGym.find(params[:account_gym_id])
          name = id.name.present? ? id.name.capitalize : "Gym"
          hrf =  "<a href=" + id.account.user_name + "> #{name} </a>"
-         text = "#{@account.first_name} checked in for #{hrf} at #{params[:location]}"
+         text = "#{@account.first_name} checked in to #{hrf} at #{params[:location]}"
 			@posts =  Post.create(:account_id=>@account.id,:text=>text,:status=>1,:share_with=> 'Public', :post_type => 'checkin'  )	         
        
         render :json => 1  and return     
@@ -391,6 +391,13 @@ class FeedController < ApplicationController
 	@contents = contents.join(" ")
 	@author = doc.search("author")
 	@img = doc.at_xpath("//img[@width > 50 ]/@src ")
+	if !@img.present?
+		doc.search('img').each do |img|
+		   if img.present?
+			@img = img['src']
+		   end	
+		end
+	end	  
 	if @img.present?	
 		@image =  @img	
 		unless @img[/\Ahttp:\/\//] || @img[/\Ahttps:\/\//]
@@ -403,6 +410,105 @@ class FeedController < ApplicationController
 
   end
   
+    def refresh_fitbit #call from refresh button on right side bar
+     if request.xhr?  
+      activity_objects = []
+		if @account.present? && @account.oauth_token.present?
+   		  client = @account.fitbit_data
+   		  #activities = client.activity_time_series(resource: 'calories', start_date: Date.today)
+   		  activities = client.daily_activity_summary("today")
+   		  if activities.present?    
+			  puts activities['goals']['caloriesOut']
+			  puts activities['summary']['caloriesOut']
+			  puts activities['goals']['steps']
+			  puts activities['goals']['distance']
+		
+			  @fit = Fitbit.where(:account_id => @account.id).first
+			    if !@fit.present?
+			       Fitbit.create(:account_id => @account.id, :steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])  
+			   else       
+				  @fit.update_attributes(:steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])		
+		       end  
+		       if Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+				  render :json => 1  and return    
+				  else
+					  render :json => 0  and return    
+				  end			  
+         end  
+       end 		
+	 end
+	 end
+	 
+	 # create comment for album
+	 
+	 def create_comment_on_album_image
+    #render :layout => false
+ 
+    if request.xhr?    
+   
+      @comments =  AlbumImagesComment.create(:account_id=>@account.id,:text=>params[:text],:album_image_id=>params[:id])
+      if @comments.save!
+        post = AlbumImage.where(:id => params[:id]).first
+        post = Album.where(:id => post.album_id).first
+        if post.account_id != @account.id
+         set = email_settings(post.account.id, 'comment_on_post')
+         if set.present? || set == 123 
+         UserMailer.comment_on_post(post.account.email,request, @account, params[:text] ,post.account.first_name ).deliver
+         end
+        end 
+        
+          respond_to do |format|
+              params[:text].split.select {|w|         
+              if  w[0] == "@" 
+                wrd = full_name(w)
+                id = Base64.decode64(w)
+                params[:text][w] = wrd
+                  if is_number?(id)
+                  @user = Account.find(id)
+                  met = email_settings(id, 'mentioned_in')
+					  if met.present? || met == 123 
+					  UserMailer.mentioned_in(@user.email,request, @account,'Comment', params[:text] ,@user.first_name ).deliver
+					  end
+                  end
+              end 
+            }
+            @comment =  AlbumImagesComment.find(@comments.id)
+            format.js {  render 'create_comment' }
+        
+        end
+      else		   
+        render :json => @comments.errors.full_messages  and return     
+      end    
+    end
+
+    
+  end
+  
+   def get_comment_on_album_image
+		if request.xhr?   		
+		@comments = AlbumImagesComment.where(:album_image_id => params[:id]) 	  
+		respond_to do |format|    
+		  format.js 
+		end  		
+		end
+  end
+  
+  def delete_album_comment
+    
+    if request.xhr?    
+      id = Base64.decode64(params[:id])          
+        @cmt = AlbumImagesComment.where(:id=>id, :account_id => @account.id).first
+      if @cmt.destroy 
+        render :json => id  and return      
+      else
+        render :json => 0  and return     
+      end
+    
+    end
+    
+  end
+	 
+	
    
   private
   def feedback_params

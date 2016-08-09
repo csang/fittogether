@@ -51,11 +51,11 @@ module FeedHelper
 	
     if activities.present?    
       activities['goals']['caloriesOut']
-      activities['summary']['caloriesOut']
-      activities['goals']['steps']
-
+	  activities['summary']['caloriesOut']
+	  activities['goals']['steps']
+	  activities['goals']['distance']
       @fit = Fitbit.where(:account_id => @account.id).first
-	 
+
 		  if !@fit.present?
 			 Fitbit.create(:account_id => @account.id, :steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])
 			  
@@ -65,7 +65,7 @@ module FeedHelper
 			  	puts "error"
 			  end
 			 else       
-			 @fit.update_attributes(:steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>@activities['summary']['caloriesOut'])
+			 @fit.update_attributes(:steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])
 			if  Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
 			   puts "done"
 			else
@@ -75,17 +75,14 @@ module FeedHelper
   end
   end
   
-  def fitb(user, date)
-  
+  def fitb(user, date) #get activities form fitbit 
    activity_objects = []
-    if user.present? && user.oauth_token.present? && user.access_secret.present?
-   
-      activities = user.fitbit_data.activities_on_date(date)
-     # abort(activities.inspect)
-     # activity_objects = activities.map {|a| Fitbit::Activity.new(a, user.unit_measurement_mappings) }
-     activity_objects = activities
+  # abort(user.inspect)
+   if user.present? && user.oauth_token.present? 
+      activities = user.fitbit_data.daily_activity_summary("today")     
+      activity_objects = activities
     end
-   return activity_objects
+   set_fitbit(activity_objects)
   
   end
 

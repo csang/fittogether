@@ -3,15 +3,16 @@
                 <div id="side_info">
                     <div class="fitbit_activity">
                         <div class="header">
-                            <h2>This Week</h2>
+                            <h2>FitBit</h2>
                             <!-- sync with --->
-                            <% if @account.linked? or session[:oauth_secret].present? %>
-							<% session.delete(:oauth_secret) %>
-							<a class="sync-info" style="display:inline-block;" title="fitibit" href="<%= un_sync_path %>" >
-							<div class="fitbit_logo_unsync"></div></a>
+                            <% if @account.linked? || session[:oauth_token].present? %>
+								<%= link_to('Referesh', refresh_fitbit_path(), :remote => true, :method => "get", :class=>'refresh-btn') %>
+								<% session.delete(:oauth_token) %>
+								<a class="sync-info" style="display:inline-block;" title="fitibit" href="<%= un_sync_path %>" >
+								<div class="fitbit_logo_unsync"></div></a>
 							<% else %>
-							<a style="display:inline-block;" href="#login-popup" target="_blank" title="fitibit" contype="fitbit" class='login-popup fitbit sync-info' >   
-							<div class="fitbit_logo"></div></a>
+								<a style="display:inline-block;" href="#login-popup" target="_blank" title="fitibit" contype="fitbit" class='login-popup fitbit sync-info' >   
+								<div class="fitbit_logo"></div></a>
 							<% end  %>
 							
                          
@@ -43,7 +44,7 @@
                             <div>
                                 <div class="avatar"><h3><%= image_tag(img)%></h3></div>
                                 <div class="description">
-                                    <p class="date"><%= DateTime.parse(app.start_date).strftime("%e %B @ %I:%M %p ") %> </p><br>
+                                    <p class="date"><%= DateTime.parse(app.start_date).strftime("%B %e @ %I:%M %p ") %> </p><br>
                                     <p class="event"><%= app.title %> </p><br>
                                     <p class="with"><%= app.account.first_name %></p><br>
                                     <a href="/<%= app.trainer.user_name   %>/appointments">Change</a>
@@ -58,7 +59,7 @@
                             <div>
                                 <div class="avatar"><h3><%= image_tag(img)%></h3></div>
                                 <div class="description">
-                                    <p class="date"><%= DateTime.parse(app.start_date).strftime("%e %B @ %I:%M %p ") %> </p><br>
+                                    <p class="date"><%= DateTime.parse(app.start_date).strftime("%B %e @ %I:%M %p ") %> </p><br>
                                     <p class="event"><%= app.title %> </p><br>
                                     <p class="with"><%= app.trainer.first_name %></p><br>
                                     <a href="/<%= app.trainer.user_name   %>/appointments">Change</a>
@@ -70,39 +71,76 @@
                     </div>
                     <div class="events">
                         <div class="header">
-                            <h2>Events</h2>
-                             
+                            <h2>Events</h2>                         
                             	
-                            	<%  event = event_invitation %>  
+                            	<%  event = event_invitation %>                             	
                             <a href="/fitspots/index" class="amount"> 
 								<% if event.count > 0 %>
-								<%= event.count  %>Invitations
+								<%= event.count  %>Invitation<%=s event.count > 1 ? "s" : "" %>
 								<% end %>                            
                             </a>
                             
                         </div>
-                        <div class="list">
-						
-							<%  if event.present? %>  
-							<% event.each do |ft| %>
-							<% img = ft.event.image    %>
-                            <div>
-                                <div class="avatar"><h3><%= image_tag(img) %></h3></div>
-                                <div class="description">
-                                    <p class="date"><%= ft.event.event_date.strftime("%e %B ") %></p><br>
-                                    <p class="event">
-										<%= ft.event.title.capitalize  %>
-										</p><br>
-                                    <p class="location"><%= ft.event.fitspot.location %></p><br>
-                                    <p class="actions">
-									<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.event.id.to_s)   %>"> 
-										Attending</button>
-									<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.event.id.to_s)   %>">Not Attending</button></p>
-                                </div>
+                        <div class="filter">
+                            <div class="pill_button">
+                                <button data-filter="suggested" class="active">Suggested</button>
+                                <button data-filter="attending" class="">Attending</button>
+                                <button data-filter="invited">Invited</button>
                             </div>
+                        </div>
+                        <div class="list invited" style="display:none;">
+						<!-- invitation -->
+							<%  if event.present? %>  
+								<% event.each do |ft| %>
+								<% img = ft.event.image    %>
+								<div>
+									<div class="avatar"><h3><%= image_tag(img) %></h3></div>
+									<div class="description">
+										<p class="date"><%= ft.event.event_date.strftime("%B %e") %></p><br>
+										<p class="event">
+											<%= ft.event.title.capitalize  %>
+											</p><br>
+										<p class="location"><%= ft.event.fitspot.location %></p><br>
+										<p class="actions">
+										<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.event.id.to_s)   %>"> 
+											Attending</button>
+										<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.event.id.to_s)   %>">Not Attending</button></p>
+									</div>
+								</div>
+								<% end %>
+								<% else %>
+								<p class="location"> No invitations found</p>
                             <% end %>
-                            <% else %>
+                           </div> 
+                            <!-- attending -->
+                            <div class=" list attendings" style="display:none;">
+                            <%  event_attending = event_attending_new() %>  
+                            <%  if event_attending.present? %>  
+								<% event_attending.each do |ft| %>
+								<% img = ft.event.image    %>
+								<div>
+									<div class="avatar"><h3><%= image_tag(img) %></h3></div>
+									<div class="description">
+										<p class="date"><%= ft.event.event_date.strftime("%B %e") %></p><br>
+										<p class="event">
+											<%= ft.event.title.capitalize  %>
+											</p><br>
+										<p class="location"><%= ft.event.fitspot.location %></p><br>
+										<p class="actions">
+										<button class="attending selected" disabled data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.event.id.to_s)   %>"> 
+											Attending</button>
+										<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.event.id.to_s)   %>">Not Attending</button></p>	
+										
+									</div>
+								</div>
+								<% end %>
+								<% else %>
+								<p class="location"> You are not attending any event </p>
+                            <% end %>
+                            </div>
+                            <!-- suggested -->
                            
+                           <div class="list suggested">
                             	<%  events = eff_event_invitation %> 
 									<%  if events.present? %>  
 									<% events.each do |ft| %>
@@ -110,7 +148,7 @@
 									<div>
 										<div class="avatar"><h3><%= image_tag(img) %></h3></div>
 										<div class="description">
-											<p class="date"><%= ft.event_date.strftime("%e %B ") %></p><br>
+											<p class="date"><%= ft.event_date.strftime("%B %e") %></p><br>
 											<p class="event">
 												<%= ft.title.capitalize  %>
 												</p><br>
@@ -122,9 +160,10 @@
 										</div>
 									</div>
 									<% end %>
+									<% else %>
+									<p class="location"> No suggested events </p>
 									<% end %>
-								
-                            <% end %>
+						
                             
                            </div>
                         <div class="see_all">
@@ -147,7 +186,8 @@
 										<%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> 
 									</p><br>
                                     <p class="location"><%= fs.location %></p><br>
-                                    <p class="checkins"><%= fitspot_count(fs.id) %> Check ins</p>
+                                    <% chkin_cont = fitspot_count(fs.id) %>
+                                    <p class="checkins"><%= chkin_cont %> Check in<%= chkin_cont > 1 ? "s" : "" %></p>
                                 </div>
                             </div>
                             <% end %>                     
@@ -183,11 +223,11 @@
                             <% end %>
                              <div class="see_all">     
 								   <% if usrs.count > 2 %>                      
-									<%= link_to  'Show More Option',"/#{@account.user_name}/suggested_friends"  %>
+									<%= link_to  'Show More Options',"/#{@account.user_name}/suggested_friends"  %>
 								   <% end %>	
 								</div>
                             <% else %>
-                               <p> N/A </p>
+                               <p> No suggested friends. </p>
                             <% end %>
                         </div>
                     </div>
@@ -230,6 +270,16 @@
       }
     });
   });
+  
+  $(function() {
+  $(".refresh-btn").on("ajax:success", function(e, data, status, xhr)  {
+	//$('.flash-message').html('<div class="alert alert-success"> Class added succesfully.</div>').show();
+	window.location.reload();
+  });
+  $(".refresh-btn").on("ajax:error", function(e, data, status, xhr)  {
+   $('.flash-message').html('<div class="alert alert-danger"> Fitbit is busy. Please try after some time</div>').show();
+  });
+ });
 
   
  

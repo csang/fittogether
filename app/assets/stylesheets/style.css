@@ -55,7 +55,7 @@
 .commentData h3 a{color:#000;}
 .coment-top{display:inline-block; width:95%; vertical-align:top; padding:0 5% 2px 0;}
 .feed-comment-dlt{background: url("chat-delete.png") no-repeat;bottom: 5px;height: 13px; opacity: 0.5;position: absolute;right: 4px;text-indent: -9999px;width: 11px;}
-.post-delete, .comment-delete, .event-comment-delete{ background: url("/../images/global/close.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0)!important;
+.post-delete, .comment-delete, .event-comment-delete, .comment-delete-album{ background: url("/../images/global/close.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0)!important;
     border: medium none;
     border-radius: 16px;
     cursor: pointer;

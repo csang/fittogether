@@ -15,7 +15,8 @@
                                 <div class="description">
                                     <p class="gym"><%= get_gym_name(my_gym.id) %></p><br>
                                     <p class="location"><%= my_gym.account_gym.address.present? ? my_gym.account_gym.address[0] : 'N/A' %></p><br>
-                                    <p class="checkins"><%= get_gym_checkin(@profileuser.id, my_gym.account_gym.id) %> Check ins</p>
+                                    <% gym_checkin=  get_gym_checkin(@profileuser.id, my_gym.account_gym.id) %>
+                                    <p class="checkins"><%= gym_checkin %> Check in<% gym_checkin > 0 ? "s" : "" %></p>
                                 </div>
                             </div>                        
                         </div>
@@ -66,13 +67,13 @@
                          <% end %>                         
                         </div>
                         <div class="see_all">
-                              <%= link_to  'See All Fitspot','/fitspots/index'  %>
+                              <%= link_to  'See All Fitspots','/fitspots/index'  %>
                         </div>                        
                          <% else %>
                          <div class="list">
                             <div class="description">
 								 <p class="location">
-								Not following any fitspot.
+								Not following any fitspots.
 								</p>
                             </div>
                          </div>

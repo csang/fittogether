@@ -2,7 +2,7 @@ module Authenticable
 
 
   def current_user
-    @account ||= Account.find_by(fit_id: request.headers['Authorization'])
+      @account ||= Account.find_by(fit_id: request.headers['Authorization'])
   end
   
   def authenticate_with_token!

@@ -326,7 +326,21 @@ Html_template = {
 	'<div class="preview">'+
 	'</div>'+
 	'<div class="create"><button>Create Challenge</button></div>'+
-	'</div>'
+	'</div>',
+	view_picture: '<div id="view_picture" class="over_cover"><div class="header"><p>Picture</p><button type="button" class="close">X</button></div><div class="body"><div class="image"><img src="" ><div class="prev"></div><div class="next"></div></div><div class="comments"></div><textarea placeholder="Add comment..."></textarea></div><div class="footer"><button class="green_btn">Post</button></div></div>',
+	view_picture_without_comment: '<div id="view_picture" class="over_cover"><div class="header"><p>Picture</p><button type="button" class="close">X</button></div><div class="body"><div class="image"><img src="" ><div class="prev"></div><div class="next"></div></div><div class="comments"></div></div></div>',
+	comment: '<div class="comment">'+
+                                        '<div class="avatar">'+
+                                            '<a href="profile.html"><img src="../public/img/profile/aaronrodgers_avatar.png" title="Aaron Rodgers" alt="AR"></a>'+
+                                        '</div>'+
+                                        '<div class="header">'+
+                                            '<h5>Aaron Rodgers</h5>'+
+                                            '<p class="timestamp">Today at 12:07am</p>'+
+                                        '</div>'+
+                                        '<div class="text">'+
+                                            '<p class="the_comment">We are announing that we will now be open later hours for everyone that wants to work out late. We are now open from 5AM to 12AM Every day! We are very excited to now offer later times for everyone! Trainers will also take appointments for during our new hours! Walk In apointments are only availible from 5AM to 9PM. Thank you hope you enjoy our new hours!</p>'+
+                                        '</div>'+
+                                    '</div>',
 }
 
 
@@ -363,22 +377,7 @@ Fit = {
 		var count = 180;
 		$('#list_of_friends .header p').text(friends.length+' Friends');
 		
-		/* var friends = [{'full_name':'Maria Sharapova','initials':'MS','avatar':'../public/img/profile/mariasharapova_avatar.png'},
-		{'full_name':'Venus Williams','initials':'VW','avatar':'../public/img/profile/venuswilliams_avatar.png'},
-		{'full_name':'Aaron Rodgers','initials':'AR','avatar':'../public/img/profile/aaronrodgers_avatar.png'},
-		{'full_name':'Andrew Luck','initials':'AL','avatar':'../public/img/profile/andrewluck_avatar.png'},
-		{'full_name':'Drew Brees','initials':'DB','avatar':'../public/img/profile/drewbrees_avatar.png'},
-		{'full_name':'Paul George','initials':'PG','avatar':'../public/img/profile/paulgeorge_avatar.png'},
-		{'full_name':'Peyton Manning','initials':'PM','avatar':'../public/img/profile/peytonmanning_avatar.png'},
-		{'full_name':'Richard Simmons','initials':'RS','avatar':'../public/img/profile/richardsimmons_avatar.png'},
-		{'full_name':'Maria Sharapova','initials':'MS','avatar':'../public/img/profile/mariasharapova_avatar.png'},
-		{'full_name':'Venus Williams','initials':'VW','avatar':'../public/img/profile/venuswilliams_avatar.png'},
-		{'full_name':'Aaron Rodgers','initials':'AR','avatar':'../public/img/profile/aaronrodgers_avatar.png'},
-		{'full_name':'Andrew Luck','initials':'AL','avatar':'../public/img/profile/andrewluck_avatar.png'},
-		{'full_name':'Drew Brees','initials':'DB','avatar':'../public/img/profile/drewbrees_avatar.png'},
-		{'full_name':'Paul George','initials':'PG','avatar':'../public/img/profile/paulgeorge_avatar.png'},
-		{'full_name':'Peyton Manning','initials':'PM','avatar':'../public/img/profile/peytonmanning_avatar.png'},
-		{'full_name':'Richard Simmons','initials':'RS','avatar':'../public/img/profile/richardsimmons_avatar.png'}] */
+
 		$('#list_of_friends .list').empty();
         $.each(friends,function( index , val) {	
 		  var html = '<a href="/' + val.user_name +'" ><div class="friend"><div class="avatar"><img src="'+val.avatar+'" alt="'+val.initials+'" title="'+val.full_name+'"></div><p>'+val.full_name+'</p></a></div>';
@@ -487,6 +486,119 @@ Fit = {
 			self.parent().parent('div .post').removeClass('pop_listing');
 		}
 	},
+	close_popup: function(e){
+		$('body > #dark_cover').remove();
+		$('.over_cover').remove();
+	},
+  
+	view_picture_post: function(e){
+		var id = $(this).parent().parent().parent('div .post').attr("id");
+		var html = $(this).parent().parent().parent('div .post').find(".comment_container").html();
+		Fit.show_dark_cover();
+		var img = $(this).attr('src');
+		$('body').append(Html_template.view_picture).find('#view_picture .header button.close').click(Fit.close_popup);
+		$('body #view_picture .body img').attr('src',img);
+		$('body #view_picture .body .comments').append(html).scrollTop($('body #view_picture .body .comments').height());
+		$('#view_picture .footer button').click(Fit.add_picture_comment);
+		$('#view_picture .footer button').attr("data-id",id);
+	},
+	add_picture_comment: function(e){
+		if($('#view_picture textarea').val().length > 0){
+			var post_id = $(this).attr("data-id");
+			$.ajax({
+			  type: "POST",
+			  url: '/create_comment/', //sumbits it to the given url of the form
+			  data: {text: $('#view_picture textarea').val(), post: post_id},
+			  dataType: "HTML",
+			  beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			  }).success(function(data) {
+				$('body #view_picture .body .comments').append(data).scrollTop($('body #view_picture .body .comments').height());
+				$('#view_picture textarea').val('');
+				$('#'+post_id).find(".comment_container").append(data)
+			});
+		}
+	},
+	my_comment: function(message){
+		var comment = '<div class="comment">'+
+                        '<div class="avatar">'+
+                            '<a href="profile.html"><img src="../public/img/profile/mariasharapova_avatar.png" title="Maria Sharapova" alt="MS"></a>'+
+                        '</div>'+
+                        '<div class="header">'+
+                            '<h5>Maria Sharapova</h5>'+
+                            '<p class="timestamp">Just now</p>'+
+                        '</div>'+
+                        '<div class="text">'+
+                            '<p class="the_comment">'+message+'</p>'+
+                        '</div>'+
+                    '</div>';
+		return comment;
+	},
+	update_pill_button: function(e){
+		var self = $(this);
+		self.siblings("button").removeClass('active');
+		self.addClass('active');
+		console.log(self.attr('data-filter'))
+		if(self.attr('data-filter') == 'attending'){
+			$('#side_info .events .attendings').show();
+			$('#side_info .events .invited').hide();
+			$('#side_info .events .suggested').hide()
+		}else if(self.attr('data-filter') == 'invited'){
+			$('#side_info .events  .invited').show();
+			$('#side_info .events  .attendings').hide();
+			$('#side_info .events  .suggested').hide()
+		} else {
+			$('#side_info .events .invited').hide();
+			$('#side_info .events .attendings').hide();
+			$('#side_info .events .suggested').show()
+		}
+	},
+	view_picture_post_album: function(e){
+		var id = $(this).attr("id");
+		$.ajax({
+			  type: "GET",
+			  url: '/get_comment_on_album_image/' +id, //sumbits it to the given url of the form
+			  dataType: "HTML",
+			  beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			  }).success(function(data) {
+				$('body #view_picture .body .comments').append(data).scrollTop($('body #view_picture .body .comments').height());
+			});
+		Fit.show_dark_cover();
+		var img = $(this).attr('src');
+		$('body').append(Html_template.view_picture).find('#view_picture .header button.close').click(Fit.close_popup);
+		$('body #view_picture .body img').attr('src',img);
+		//$('body #view_picture .body .comments').append(html).scrollTop($('body #view_picture .body .comments').height());
+		$('#view_picture .footer button').click(Fit.add_picture_comment_album);
+		$('#view_picture .footer button').attr("data-id",id);
+	},
+	add_picture_comment_album: function(e){
+		if($('#view_picture textarea').val().length > 0){
+			var id = $(this).attr("data-id");
+			$.ajax({
+			  type: "POST",
+			  url: '/create_comment_on_album_image/', //sumbits it to the given url of the form
+			  data: {text: $('#view_picture textarea').val(), id: id},
+			  dataType: "HTML",
+			  beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			  }).success(function(data) {
+				$('body #view_picture .body .comments').append(data).scrollTop($('body #view_picture .body .comments').height());
+				$('#view_picture textarea').val('');				
+			});
+		}
+	},
+	
+		view_picture_post_collage: function(e){		
+		Fit.show_dark_cover();
+		var img = $(this).attr('src');
+		$('body').append(Html_template.view_picture_without_comment).find('#view_picture .header button.close').click(Fit.close_popup);
+		$('body #view_picture .body img').attr('src',img);
+		
+	},
 
 		init: function(){
 	
@@ -502,9 +614,11 @@ Fit = {
 		$('#feed_container .header .actions button.challenge').click(Fit.challenge);
 		//$('#feed_container #feed .post .footer > div.comment').click(Fit.toggle_comments);
 		$(document).on('click','#feed_container #feed .post .footer > div.comment',Fit.toggle_comments);
+		$('#feed_container .post.photo .content img').click(Fit.view_picture_post);
 		
 		$('header #top_nav .profile_icon').click(Fit.toggle_profile_list);
 		$('header #top_nav .notifications_icon').click(Fit.toggle_notification_list);
+		$('.pill_button > button').click(Fit.update_pill_button);
 		
 	}
 

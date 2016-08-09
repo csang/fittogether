@@ -180,51 +180,40 @@
                     <div class="events">
                         <div class="header">
                             <h2>Events</h2>
-                            <%  event = event_invitation %>  
+                          
                         </div>
                         <div class="list">
-                           			<%  if event.present? %>  
-							<% event.each do |ft| %>
-							<% img = ft.event.image    %>
-                            <div>
-                                <div class="avatar"><h3><%= image_tag(img) %></h3></div>
-                                <div class="description">
-                                    <p class="date"><%= ft.event.event_date.strftime("%e %B ") %></p><br>
-                                    <p class="event">
-										<%= ft.event.title.capitalize  %>
-										</p><br>
-                                    <p class="location"><%= ft.event.fitspot.location %></p><br>
-                                    <p class="actions">
-									<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.id.to_s)   %>"> 
-										Attending</button>
-									<span>|</span><button class="attending" data-type="not" title="Not Attending" data-id="<%=  Base64.encode64(ft.id.to_s)   %>">Not Attending</button></p>
-                                </div>
-                            </div>
-                            <% end %>
-                              <% else %>
-						     
-                            	<%  events = eff_event_invitation %> 
-									<%  if events.present? %>  
-									<% events.each do |ft| %>
+                           				<% if @group.event.present?  %>
+							<%  abc = @group.event.sort.reverse  %>
+							<%  i = 0  %>
+							<%  abc.each do |ft|  %>
+							<% if i < 3 %>
+							<%  if ft.event_date >= Date.today  %>
 									<% img = ft.image    %>
 									<div>
 										<div class="avatar"><h3><%= image_tag(img) %></h3></div>
 										<div class="description">
-											<p class="date"><%= ft.event_date.strftime("%e %B ") %></p><br>
+											<p class="date"><%= ft.event_date.strftime("%B %e ") %></p><br>
 											<p class="event">
 												<%= ft.title.capitalize  %>
 												</p><br>
 											<p class="location"><%= ft.fitspot.location %></p><br>
 											<p class="actions">
-											<button class="attending" data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.id.to_s)   %>"> 
+												<% event_attender = EventAttender.attender(ft.id) %>       	
+												<% attedr = check_if_event_attender(event_attender) %>       	
+											<button class="attending <%= attedr.present? ? 'selected' : '' %>" <%= attedr.present?  ? 'disabled' : '' %> data-type="add" title="Attending"   data-id="<%=  Base64.encode64(ft.id.to_s)   %>"> 
 												Attending</button>
+												
+												<span>|</span>
+										    <button data-id="<%=  Base64.encode64(ft.id.to_s)  %>" title="Not Attending" data-type="not" class="attending <%= !attedr.present? ? 'selected' : '' %>">Not Attending</button>		
 										
 										</div>
 									</div>
+									<%  i += 1  %>
 									<% end %>
-									<% end %>
-								
-                            <% end %>
+								<% end %>
+							<% end %>
+						<% end %>
                            </div>
                         <div class="see_all">
                                    <%= link_to  'See All Events','/events/index'  %>

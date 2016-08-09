@@ -145,15 +145,27 @@ var link_share = function(lnk) {
 	}
    
    });
-  $(".posttext").keyup(function(e) {
+  $(".posttext").keyup(function(event) {
  
 	if (isUrlValid($(this).val())) {
 		link_share($(this).val())	
 	}	
-    if ($(this).val().indexOf("@") != -1) {
-      var ind = $(this).val().indexOf("@");
-      var keywords = $(this).val().substr(ind + 1);
-      if (keywords != '') {
+	 var backway = $(this).val().split(" ").pop();
+    if (backway.indexOf("@") != -1) {
+      var ind = backway.indexOf("@");
+      var keywords = backway.substr(ind + 1);
+     /*
+      if (event.keyCode != 50) {
+		  var words = $(this).val().split(' ');
+            var lastWord = words[words.length - 1];
+            console.log(lastWord);
+            
+		  if (keywords.contains(" ")) {
+			return false;
+			}
+	  }	
+	  */
+      if (keywords != '' && event.keyCode != 32) {
         $.ajax({
           type: "POST",
           url: '/search_user/' + keywords + '/type/ /' + 'post', //sumbits it to the given url of the form
@@ -176,5 +188,8 @@ var link_share = function(lnk) {
     $('.arport').fadeOut()
     }
   });
+   $(document).ready(function() {
+    $("textarea").hashtags();
+ });
 </script>                       
                   

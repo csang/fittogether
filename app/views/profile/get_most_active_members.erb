@@ -9,7 +9,7 @@
 					<%= image_tag(img) %>
                     </div>
                     <div class="name"><p><%= am.account.first_name %></p></div>
-                    <div class="count"><p> <%= am.total %> Check Ins</p></div>
+                    <div class="count"><p> <%= am.total %> Check In<% am.total > 1 ? "s" : "" %></p></div>
                 </li>
                 <% a += 1 %>
                 <% end %>               

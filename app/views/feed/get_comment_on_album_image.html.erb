@@ -1,0 +1,37 @@
+
+						<% @comments.each do |cm| %>
+						 <div class="comment" id="scont<%= cm.id  %>">
+                                     <% abc =  get_user_detail(cm.account_id) %>
+                                       <% if abc.present? %>
+                                       <% img =  useravatar(abc) %>
+                                        <div class="avatar">
+                                             <%= link_to(image_tag(img) , abc.user_name) %>
+                                        </div>
+                                        <div class="header">
+                                             <% if abc.user_type == 3 %>
+                                         <% last = abc.last_name.present? ? abc.last_name.capitalize : ''; %>
+                                            <h5><%= abc.account_gym.name.present? ? abc.account_gym.name.capitalize : abc.first_name.capitalize + ' ' +  last.capitalize %></h5>
+                                          <% else %>
+                                            <h5><%= abc.first_name.capitalize %> <%= abc.last_name.present? ? abc.last_name : '' %></h5>
+                                          <% end %>  
+                                            <p class="timestamp"><% cm.created_at.strftime("%B %e at %l:%M") %> <%= time_ago_in_words(cm.created_at)  %> ago</p>
+                                        </div>
+                                        <div class="text">
+                                            <p class="the_comment">
+										    <% cm.text.split.select {|w| %>
+												<% if  w[0] == "#" %>
+												<%=raw tag_links(w)%>
+												<% elsif w[0] == "@" %>    
+														<%=raw user_links(w)%>      
+												<% else %>    
+												<%= w %>    
+												<% end %>      
+										    <%  } %> </p>
+										    <% if @account.id == cm.account_id  %> 						
+											<button data-id="<%=  Base64.encode64(cm.id.to_s)   %>" class="close comment-delete-album"></button>			
+											<% end %>
+                                        </div>
+                                         <% end %>
+                                         </div>
+                          <% end %>
+				

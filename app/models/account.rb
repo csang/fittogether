@@ -18,6 +18,7 @@ Paperclip.options[:content_type_mappings] = {
 	has_many :account_cover, :dependent =>:delete_all
 	has_one :account_privacy, :dependent =>:delete
 	has_one :class_attendance, :dependent =>:delete
+	has_many :fitbit, :dependent =>:delete_all
 	
 	has_many :friendships
   has_many :albums, :dependent =>:delete_all
@@ -87,22 +88,32 @@ Paperclip.options[:content_type_mappings] = {
 	def account_info
 		'sweet'
 	end
-  def linked?
-    oauth_token.present? && access_secret.present?
+	
+   def linked?
+    oauth_token.present? 
 	end
   
   
   def fitbit_data
 	
     raise "Account is not linked with a Fitbit account" unless linked?
-    @client ||= Fitgem::Client.new(
-      :consumer_key => 'c661f3ba999e4314ab3d58dce5d612a7',
-      :consumer_secret => '90eb02b4ada24d51ada8b0c383793471',
+       @client ||=  FitgemOauth2::Client.new(
+      token: oauth_token,
+      client_id: "229GQM",
+      client_secret: '90eb02b4ada24d51ada8b0c383793471',
+      user_id: uid
+    )
+=begin 
+    @client ||= FitgemOauth2::Client.new(
+     # :client_id => 'c661f3ba999e4314ab3d58dce5d612a7',
+      :client_id => '229GQM',
+      :client_secret => '90eb02b4ada24d51ada8b0c383793471',
       :token => oauth_token,
-      :secret => access_secret,
+     # :secret => access_secret,
       :user_id => uid,
       :ssl => true
     )
+=end
   end
 	
   def unit_measurement_mappings
@@ -149,7 +160,47 @@ Paperclip.options[:content_type_mappings] = {
     avatar.reprocess!
   end
  
-
+ 
+  # cron method
+	 def self.cron_fitbit #call from refresh button on right side bar
+    puts "cron"
+      activity_objects = []
+      acc = Fitbit.all
+      if acc.present?    
+		  acc.each do |usr|	
+		 	if usr.account.present? && usr.account.oauth_token.present?			
+			client ||=  FitgemOauth2::Client.new(
+			  token: usr.account.oauth_token,
+			  client_id: "229GQM",
+			  client_secret: '90eb02b4ada24d51ada8b0c383793471',
+			  user_id: usr.account.uid
+			)
+			
+		    	#  client = usr.account.fitbit_data			
+			  #activities = client.activity_time_series(resource: 'calories', start_date: Date.today)
+				  activities = client.daily_activity_summary("today")   		  
+				  if activities.present?    
+					  puts activities['goals']['caloriesOut']
+					  puts activities['summary']['caloriesOut']
+					  puts activities['goals']['steps']
+					  puts activities['goals']['distance']
+				
+					  @fit = Fitbit.where(:account_id => usr.account.id).first
+						if !@fit.present?
+						   Fitbit.create(:account_id => usr.account.id, :steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])  
+					   else       
+						  @fit.update_attributes(:steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])		
+					   end  
+						  if Post.create(:account_id=>usr.account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+							 puts "done " 
+						  else
+							 puts "not done " 
+						  end			  
+				 end  
+			end 		
+		  end 		
+     end 		
+end
 	
   
 end

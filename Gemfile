@@ -54,4 +54,6 @@ gem "omnicontacts"
 gem 'puma'
 gem 'geocoder'
 gem 'nokogiri'
+gem 'fitgem_oauth2'
+gem 'whenever', :require => false
 

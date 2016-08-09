@@ -3,7 +3,6 @@ class CallbackController < ApplicationController
     # example request.env['omniauth.auth'] in https://github.com/auth0/omniauth-auth0#auth-hash
     # id_token = session[:userinfo]['credentials']['id_token']
     # store the user profile in session and redirect to root
-	#abort(request.env['omniauth.auth'].inspect)
     issocial = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['isSocial']    
     connection = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['connection']    
    
@@ -16,6 +15,7 @@ class CallbackController < ApplicationController
 			redirect_to('/feed') and return	
 	end	
     session[:fit_id] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id']
+    session[:email_verified] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id']
     if session[:remember_me].present?
     remember_token = Account.encrypt("#{Time.now.utc}")
      @user = Account.find_by_fit_id(session[:fit_id])    
@@ -51,7 +51,7 @@ class CallbackController < ApplicationController
 				   redirect_to('/feed')
 				else
 					
-				  user = Account.new :fit_id => session[:fit_id], :first_name => session[:first_name], :last_name => session[:last_name], :email => session[:email],:user_name => session[:user_name],:pic => session[:avatar]
+				  user = Account.new :fit_id => session[:fit_id], :first_name => session[:first_name], :last_name => session[:last_name], :email => session[:email],:user_name => session[:user_name],:pic => session[:avatar], :email_verified => true
 				  user.authorization.build :provider => session[:provider], :uid => session[:fit_id]
 				  user.save
 				  @accountUser = AccountUser.new :account_id => user.id   
@@ -65,36 +65,48 @@ class CallbackController < ApplicationController
       if !@user.present?
 		@user =  Account.find_by email: session[:account][:email].strip
       end
+      
+      if @user.present? && session[:email_verified] == true
+		  if @user.email_verified == false	
+			@user.update_attribute(:email_verified, session[:email_verified])	
+		  end	
+      end
+      
+      
+      
       if @user.blank?
-      @account = Account.new
-      @account['fit_id'] = session[:fit_id]
-      @account['first_name'] = session[:account][:first_name]
-      @account['last_name'] = session[:account][:last_name]
-      @account['user_name'] = session[:account][:username] 
-      @account['email'] = session[:account][:email] 
-      @account['user_type'] = session[:account][:account_type].to_i
-        if @account.save
-          case session[:account][:account_type].to_i
-          when 2
-            @model = AccountTrainer.new
-          when 3  
-            @model = AccountGym.new
-          else
-           @model = AccountUser.new
-          end
-          @model['account_id'] = @account.id   
-          @model.save
-        if session[:account][:account_type].to_i == 3
-               redirect_to('/about') and return 
-            else 
-               redirect_to('/feed') and return
-            end
-        else
-          redirect_to('/login')  and return
-        end
-      else
-        redirect_to('/feed') and return
-      end 
+		  @account = Account.new
+		  @account['fit_id'] = session[:fit_id]
+		  @account['first_name'] = session[:account][:first_name]
+		  @account['last_name'] = session[:account][:last_name]
+		  @account['user_name'] = session[:account][:username] 
+		  @account['email'] = session[:account][:email] 
+		  @account['user_type'] = session[:account][:account_type].to_i
+		  if session[:email_verified] == true
+			@account['email_verified'] = session[:email_verified] 
+		  end
+				if @account.save
+					  case session[:account][:account_type].to_i
+					  when 2
+						@model = AccountTrainer.new
+					  when 3  
+						@model = AccountGym.new
+					  else
+					   @model = AccountUser.new
+					  end
+				  @model['account_id'] = @account.id   
+				  @model.save
+					if session[:account][:account_type].to_i == 3
+						   redirect_to('/about') and return 
+						else 
+						   redirect_to('/feed') and return
+						end
+					else
+					  redirect_to('/login')  and return
+					end
+				  else
+				redirect_to('/feed') and return
+			  end 
    end
     
   end

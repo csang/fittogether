@@ -1,8 +1,4 @@
 Rails.application.routes.draw do
-
- 
- 
- 
   post 'events/create'
   match 'give_event_kudos', to: 'events#give_event_kudos', :via => [:post] , :as=>:create_event_kudos
   match 'create_comment_on_event', to: 'events#create_comment_on_event', :via => [:post] , :as=>:give_comment_on_event
@@ -145,6 +141,7 @@ Rails.application.routes.draw do
   match 'create_comment', to: 'feed#create_comment', :via => [:post] , :as=>:create_comment
   match 'give_kudos', to: 'feed#give_kudos', :via => [:post] , :as=>:create_kudos
   match 'create_post', to: 'feed#create_post', :via => [:post] , :as=>:create_post
+  match 'refresh_fitbit', to: 'feed#refresh_fitbit', :via => [:post, :get] , :as=>:refresh_fitbit
   match 'search_people/:search', to: 'profile#search_people', :via => [:post] , :as=>:searchpeople
   match 'addfriend', to: 'friendships#friend_request', :via => [:post] , :as => :addfriend
   match 'cancelrequest', to: 'friendships#friend_request_cancel', :via => [:delete] , :as => :cancelrequest
@@ -154,7 +151,10 @@ Rails.application.routes.draw do
   match 'deleteimage/(:imgid)', to: 'feed#delete_image', :via => [:delete] , :as => :deleteimage
   match 'deletepost', to: 'feed#delete_post', :via => [:delete] , :as => :deletepost
   match 'editpost', to: 'feed#edit_post', :via => [:put] , :as => :editpost
-  match 'deletecomment/', to: 'feed#delete_comment', :via => [:delete] , :as => :deletecomment
+  match 'deletecomment/', to: 'feed#delete_comment', :via => [:delete] , :as => :deletecomment 
+  match 'delete_album_comment/', to: 'feed#delete_album_comment', :via => [:delete] , :as => :delete_album_comment 
+  match 'create_comment_on_album_image', to: 'feed#create_comment_on_album_image', :via => [:post] , :as=>:create_comment_on_album_image
+  match 'get_comment_on_album_image/:id', to:'feed#get_comment_on_album_image',:via => [:get], :as=>:get_comment_on_album_image  
   
   post 'createalbum', to:'feed#create_album', :as=>:createalbum  
   get 'showalbum/:id', to:'feed#show_album', :as=>:showalbum  
@@ -164,7 +164,7 @@ Rails.application.routes.draw do
   match 'send_feedback', to: 'feed#send_feedback', :via => [:post] , :as => :send_feedback
   match 'check_in', to: 'feed#check_in', :via => [:post] , :as => :check_in
   match 'scrap_link', to: 'feed#scrap_link', :via => [:post] , :as => :scrap_link
-  
+  get '/cron_fitbit', to:'feed#cron_fitbit', :as=>:cron_fitbit  
    match 'fitspot_check_in', to: 'fitspots#fitspot_check_in', :via => [:post] , :as => :fitspot_check_in
   
   
@@ -262,8 +262,9 @@ Rails.application.routes.draw do
 		    
 		 # resources :accounts, :defaults => { :format => 'json' }   
 		
-		  resources :feeds, :defaults => { :format => 'json' }  
-	      get 'feeds/get_posts/:account_id', controller: 'feeds', action: 'get_posts',:defaults => { :format => 'json' }  
+		  #resources :feeds, :defaults => { :format => 'json' }  
+	      get 'feeds/get_posts/', controller: 'feeds', action: 'get_posts',:defaults => { :format => 'json' }  
+	      match 'feeds/give_kudos', controller: 'feeds', action: 'give_kudos',:via =>[:get, :post], :defaults => { :format => 'json' }  
 	      post 'feeds/create_post', controller: 'feeds', action: 'create_post',:defaults => { :format => 'json' }  
 	      post 'feeds/destroy_post', controller: 'feeds', action: 'destroy_post',:defaults => { :format => 'json' }
 	      post 'feeds/create_album', controller: 'feeds', action: 'create_album',:defaults => { :format => 'json' }
