@@ -10,14 +10,14 @@
  <%= f.label :text, 'Description' %>
 	<%= f.text_area :description, class: " boxtextarea form-control", maxlength: 150 %>
   </div>
-<!--
+
 <div class="pop-row">
-<label>Image <span class="small">(ideal image size : 730 X 250)</span></label>
+<label>Avatar <span class="small"></span></label>
 	<%= f.file_field :fitspot_image %>
  
    <label for="fitspot_img" generated="true" class="errors fimgerror" style="display:none;">Image width must be greater than  730 pixels.</label>
   </div>
-  -->
+
    <input class="form-control" type="hidden"  name="fitspot[group_id]" value="">
 <div class="pop-row">
  <%= f.label :text, 'Location*' %>
@@ -55,7 +55,7 @@
 <script>
   window.imgVar2 = true;
   $(' #fitspot_fitspot_image').change(function() {
-   
+   return true;
     var fr = new FileReader;
     
     fr.onload = function() {
@@ -78,7 +78,7 @@
     });
     
     function validateFitspotImageWidth() {
-
+	return true;
      if (!$('#fitspot_fitspot_image').val()) //check empty input filed
       {
         

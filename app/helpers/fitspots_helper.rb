@@ -34,4 +34,9 @@ module FitspotsHelper
 	  acc.present? ? acc.cover(:medium) : 'fitspot.png'	
 	end
 	
+	 def get_fit_medium(id=nil)	
+	  acc = Fitspot.where(:id => id).first
+	  acc.present? ? acc.fitspot_image(:medium) : 'fitspot.png'	
+	end
+	
 end

@@ -11,15 +11,15 @@
  <%= f.label :text, 'Description' %>
 	<%= f.text_area :description, class: "boxtextarea form-control", maxlength: 150 %>
   </div>
-<!--
+
 <div class="pop-row">
 
-  <label>Image <span class="small">(ideal image size : 730 X 250)</span></label>
+  <label>Avatar <span class="small"></span></label>
 	<%= f.file_field :fitspot_image , :id=>"fitspot_edit_image" %>
   <label for="fitspot_img" generated="true" class="errors feimgerror" style="display:none;">Image width must be greater than  730 pixels.</label>
  
   </div>
-  -->
+ 
 <div class="pop-row">
  <%= f.label :text, 'Location*' %>
 	<%= f.text_field :location, id: "geocomplete", class: " form-control", maxlength: 150 %>
@@ -54,6 +54,7 @@
 <script>
   window.imgVar3 = true;
   $(' #fitspot_edit_image').change(function() {
+  return true;
    
     var fr = new FileReader;
     
@@ -77,6 +78,7 @@
     });
     
     function validateFitspotEditImageWidth() {
+    return true;
 
      if (!$('#fitspot_edit_image').val()) //check empty input filed
       {

@@ -96,12 +96,18 @@
 								<% if post.post_type =='fitspot' %>	
 								                     <div class="visual">
                                     <div class="image">
-										<% fitimg =   get_fit_cover(1,post.group_id) %>
-										<% if fitimg.present? %>
-									    <%= image_tag(fitimg.cover) %>                                        
-										<% else %>
-                                       <%= image_tag('fitspot.png') %>
-                                       <% end %>
+										
+										<% img =   get_fit_medium(post.group_id) %>
+										<% if img.present? %>
+											<%= image_tag(img) %>
+										<% else %> 
+											<% fitimg =   get_fit_cover(1,post.group_id) %>
+												<% if fitimg.present? %>
+												<%= image_tag(fitimg.cover) %>                                        
+												<% else %>
+											   <%= image_tag('fitspot.png') %>
+											   <% end %>
+										 <% end %>  
                                     </div><div class="map_visual">
 										<% location =  fitspot_location(post.group_id) %>
                                        <input type="hidden" class="geopost" mapPlaceholder="placeholder_<%= post.id %>" value="<%=	location %>">

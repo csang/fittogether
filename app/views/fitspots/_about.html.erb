@@ -8,7 +8,11 @@
         <div class="header">
             <div class="user">
            <% img = get_fit_img(@fitspot.id) %>
+               <% if @fitspot.fitspot_image.present? %>
+				 <div class="avatar"><%= image_tag(@fitspot.fitspot_image(:thumb)) %></div>
+               <% else %>
                <div class="avatar"><%= image_tag(img) %></div>
+               <% end %>
                 <div class="data">                    
                     <h3 class="event"><%=  @fitspot.title.capitalize %> </h3>
                     <h3 class="location"><%=  @fitspot.location %></h3>

@@ -948,7 +948,8 @@ $(document).ready(function () {
         $("#video").val('');
         $(".posttext").val('');
         $('.post_type').remove();
-        $('.lnk').html('')
+        $('.lnk').html('');
+        $('.hashtag').empty();
       },
       error: function(xhr, ajaxOptions, thrownError) {
         console.log(JSON.stringify(xhr, null, 4));

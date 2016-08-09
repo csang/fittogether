@@ -15,7 +15,7 @@ class Fitspot < ActiveRecord::Base
     :path => ":rails_root/app/assets/images/:attachment/:id/:basename_:style.:extension",
     :url => "/assets/:attachment/:id/:basename_:style.:extension",
     :default_url => "group.jpg",
-    :styles => { :medium => "730x250>", :thumb => "160x160>" }
+    :styles => { :medium => "300x250>", :thumb => "100x100>" }
  
   validates_attachment_content_type :fitspot_image, :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, :message => 'File type is not allowed (only jpeg/png/gif images)'
  
