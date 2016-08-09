@@ -15,7 +15,7 @@ class CallbackController < ApplicationController
 			redirect_to('/feed') and return	
 	end	
     session[:fit_id] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id']
-    session[:email_verified] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['user_id']
+    session[:email_verified] = request.env['omniauth.auth']['extra']['raw_info']['identities'][0]['email_verified']
     if session[:remember_me].present?
     remember_token = Account.encrypt("#{Time.now.utc}")
      @user = Account.find_by_fit_id(session[:fit_id])    
