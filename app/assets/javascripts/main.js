@@ -541,14 +541,48 @@ Fit = {
 		self.addClass('active');
 		console.log(self.attr('data-filter'))
 		if(self.attr('data-filter') == 'attending'){
+				$.ajax({
+			  type: "GET",
+			  url: '/event_attending/', //sumbits it to the given url of the form
+			  dataType: "HTML",
+			  beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			  }).success(function(data) {
+				$('div .attendings').html("");
+				$('div .attendings').append(data);
+			});
 			$('#side_info .events .attendings').show();
 			$('#side_info .events .invited').hide();
 			$('#side_info .events .suggested').hide()
 		}else if(self.attr('data-filter') == 'invited'){
+			$.ajax({
+			  type: "GET",
+			  url: '/event_invitation/invited', //sumbits it to the given url of the form
+			  dataType: "HTML",
+			  beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			  }).success(function(data) {
+				$('div .invited').html("");
+				$('div .invited').append(data);
+			});
+			
 			$('#side_info .events  .invited').show();
 			$('#side_info .events  .attendings').hide();
 			$('#side_info .events  .suggested').hide()
 		} else {
+				$.ajax({
+			  type: "GET",
+			  url: '/event_suggested/', //sumbits it to the given url of the form
+			  dataType: "HTML",
+			  beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			  }).success(function(data) {
+				$('div .suggested').html("");
+				$('div .suggested').append(data);
+			});
 			$('#side_info .events .invited').hide();
 			$('#side_info .events .attendings').hide();
 			$('#side_info .events .suggested').show()
