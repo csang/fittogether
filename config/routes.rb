@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   match 'add_del_attending', to: 'events#add_del_attending', :via => [:post,:delete] , :as => :add_del_attending
   get 'events/show'
   match 'event_delete/:id', to: 'events#destroy', :via => [:delete] , :as => :event_delete
+  match 'event_invitation/:type', to: 'events#event_invitation', :via => [:get] , :as=>:event_invitation
+  match 'event_attending', to: 'events#event_attending', :via => [:get] , :as=>:event_attending
+  match 'event_suggested', to: 'events#event_suggested', :via => [:get] , :as=>:event_suggested
 
   get 'account_covers/new'
 
