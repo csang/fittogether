@@ -140,10 +140,38 @@ before_action :get_account
         
    else
       redirect_to('/feed')	 
-   end
-    
+   end    
     
   end
+  
+   def event_invitation # return event invitation to user
+	@event = EventAttender.where(:account_id => @account.id,:status => false).joins(:event).where("Date(event_date) >= ?",Date.today).limit(3)    
+	 respond_to do |format|
+		format.js
+    end 
+   end
+   
+   def event_attending # return event attending to user
+	  @event = EventAttender.where(:account_id => @account.id,:status => true).joins(:event).where("Date(event_date) >= ?",Date.today).limit(3)
+		  respond_to do |format|
+		format.js
+    end 	
+   end
+   
+    def event_suggested # return event  suggested
+  
+	if @account.user_location.present?
+		@event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) AND fitspots.location LIKE ? ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id), "%#{@account.user_location}%").group("events.id").limit(3)
+	else
+		@event = Event.joins(:event_attender, :fitspot).where("Date(event_date) >= ? AND events.account_id != ? AND event_attenders.event_id NOT IN (?) ",Date.today, @account.id, EventAttender.where(:account_id =>@account.id).map(&:event_id)).group("events.id").limit(3)
+	end
+
+	respond_to do |format|
+		format.js
+    end 
+		
+   end
+  
   
    private
    def event_parm

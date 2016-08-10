@@ -72,7 +72,8 @@
               <div class="col-xs-9" id="when">
                <span class="newUserEventStartDate"></span>
               </div>
-              <div class="col-xs-9" id="text_id" style="display:none"><span class="">You can select different date & time by clicking on below calander </span></div>
+              <div class="col-xs-9" id="text_id" style="display:none">
+				  <span class=""><input id="mydate" name="event_date" readonly placeholder="select date"> </span>   <span class=""><input placeholder="select time" id="timepicker" name="event_time" > </span></div>
             </div>
             <div class="form-group">
               <div class="col-xs-5 col-xs-offset-3">
@@ -170,6 +171,26 @@
   }
 </style>
 <script>
+	$('#timepicker').timepicker();
+
+	$("#mydate").datepicker( {
+	defaultDate: new Date(),
+	minDate: 1,
+    dateFormat: 'mm/dd/yy',
+	 onSelect: function(dateText, inst) {
+        var date = $(this).val();
+        var time = $("#timepicker").val();
+        var dateObj = date;
+         if (time != "") {
+			 var timeString = time.replace("am", "").replace("pm","");
+		     dateObj = new Date(date + ' ' + timeString);	
+		 }	
+	    var new_date = moment(dateObj).format();
+	    $("#newUserEventStartDate").val(new_date);
+	   
+       
+	}
+});
 $('#thisisit').click(function() {	  
 	 <% if @profileuser.user_type == 2  %>      
 	    var CurrentDate = moment().add(4, 'hours');
@@ -178,7 +199,7 @@ $('#thisisit').click(function() {
          $('#newUserEventStartDate').val(CurrentDate.format());   
         var d = moment(CurrentDate).format('MMMM Do h:mm a');
         var h = moment(CurrentDate).format('h:mm a') ;        
-        $('.newUserEventStartDate').text(d);
+        //$('.newUserEventStartDate').text(d);
         $('#newUserEventEndDate').val(CurrentDate.format()); 
          $("#text_id").show(); 
         $('#createUserEventModal').modal('show');
