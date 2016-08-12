@@ -159,6 +159,10 @@ Rails.application.routes.draw do
   match 'create_comment_on_album_image', to: 'feed#create_comment_on_album_image', :via => [:post] , :as=>:create_comment_on_album_image
   match 'get_comment_on_album_image/:id', to:'feed#get_comment_on_album_image',:via => [:get], :as=>:get_comment_on_album_image  
   
+  match 'delete_cover_comment/', to: 'feed#delete_cover_comment', :via => [:delete] , :as => :delete_cover_comment 
+  match 'create_comment_on_cover', to: 'feed#create_comment_on_cover', :via => [:post] , :as=>:create_comment_on_cover
+  match 'get_comment_on_cover/:id', to:'feed#get_comment_on_cover',:via => [:get], :as=>:get_comment_on_cover
+  
   post 'createalbum', to:'feed#create_album', :as=>:createalbum  
   get 'showalbum/:id', to:'feed#show_album', :as=>:showalbum  
   post 'update_album', to:'feed#update_album', :as=>:update_album  
@@ -269,6 +273,7 @@ Rails.application.routes.draw do
 	      get 'feeds/get_posts/', controller: 'feeds', action: 'get_posts',:defaults => { :format => 'json' }  
 	      match 'feeds/give_kudos', controller: 'feeds', action: 'give_kudos',:via =>[:get, :post], :defaults => { :format => 'json' }  
 	      post 'feeds/create_post', controller: 'feeds', action: 'create_post',:defaults => { :format => 'json' }  
+	      post 'feeds/scrap_link', controller: 'feeds', action: 'scrap_link',:defaults => { :format => 'json' }  
 	      post 'feeds/destroy_post', controller: 'feeds', action: 'destroy_post',:defaults => { :format => 'json' }
 	      post 'feeds/create_album', controller: 'feeds', action: 'create_album',:defaults => { :format => 'json' }
 	      get 'feeds/show_album/:id/:account_id', controller: 'feeds', action: 'show_album',:defaults => { :format => 'json' }

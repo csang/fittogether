@@ -103,6 +103,7 @@ Paperclip.options[:content_type_mappings] = {
       client_secret: '90eb02b4ada24d51ada8b0c383793471',
       user_id: uid
     )
+   # access_token = @client.reconnect(current_user.token, current_user.secret)
 =begin 
     @client ||= FitgemOauth2::Client.new(
      # :client_id => 'c661f3ba999e4314ab3d58dce5d612a7',

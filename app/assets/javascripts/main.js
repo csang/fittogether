@@ -627,11 +627,42 @@ Fit = {
 	},
 	
 		view_picture_post_collage: function(e){		
+		var id = $(this).attr("id");	
+			$.ajax({
+			  type: "GET",
+			  url: '/get_comment_on_cover/' +id, //sumbits it to the given url of the form
+			  dataType: "HTML",
+			  beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			  }).success(function(data) {
+				$('body #view_picture .body .comments').append(data).scrollTop($('body #view_picture .body .comments').height());
+			});
 		Fit.show_dark_cover();
 		var img = $(this).attr('src');
-		$('body').append(Html_template.view_picture_without_comment).find('#view_picture .header button.close').click(Fit.close_popup);
+		$('body').append(Html_template.view_picture).find('#view_picture .header button.close').click(Fit.close_popup);
 		$('body #view_picture .body img').attr('src',img);
+		$('#view_picture .footer button').click(Fit.add_picture_comment_collage);
+		$('#view_picture .footer button').attr("data-id",id)
 		
+	},
+	
+   add_picture_comment_collage: function(e){
+		if($('#view_picture textarea').val().length > 0){
+			var id = $(this).attr("data-id");
+			$.ajax({
+			  type: "POST",
+			  url: '/create_comment_on_cover/', //sumbits it to the given url of the form
+			  data: {text: $('#view_picture textarea').val(), id: id},
+			  dataType: "HTML",
+			  beforeSend: function(xhr) {
+				xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+			  }
+			  }).success(function(data) {
+				$('body #view_picture .body .comments').append(data).scrollTop($('body #view_picture .body .comments').height());
+				$('#view_picture textarea').val('');				
+			});
+		}
 	},
 
 		init: function(){

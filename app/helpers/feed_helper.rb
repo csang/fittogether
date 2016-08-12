@@ -50,14 +50,13 @@ module FeedHelper
   def set_fitbit(activities)
 	
     if activities.present?    
-      activities['goals']['caloriesOut']
-	  activities['summary']['caloriesOut']
-	  activities['goals']['steps']
-	  activities['goals']['distance']
+     cal = activities['summary']['caloriesOut'].present? ? activities['summary']['caloriesOut'] :'N/A'
+			  step = activities["activities"][0]["steps"].present? ? activities["activities"][0]["steps"] :'N/A'
+			  distance =activities["activities"][0]["distance"].present? ? activities["activities"][0]["distance"] :'N/A'
       @fit = Fitbit.where(:account_id => @account.id).first
 
 		  if !@fit.present?
-			 Fitbit.create(:account_id => @account.id, :steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])
+			 Fitbit.create(:account_id => @account.id, :steps =>activities["activities"][0]["steps"], :calories =>activities['goals']['caloriesOut'], :distance =>activities["activities"][0]["distance"], :summary_calories =>activities['summary']['caloriesOut'])
 			  
 			  if Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
 				puts "done"
@@ -65,8 +64,26 @@ module FeedHelper
 			  	puts "error"
 			  end
 			 else       
-			 @fit.update_attributes(:steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])
-			if  Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+			 @fit.update_attributes(:steps =>activities["activities"][0]["steps"], :calories =>activities['goals']['caloriesOut'], :distance =>activities["activities"][0]["distance"], :summary_calories =>activities['summary']['caloriesOut'])
+			   text = "<div class='segment'>
+                                    <div class='box calories'>
+                                         <h1>#{cal} </h1>
+                                        <h2>Calories</h2>
+                                    </div>
+                                </div>
+                                <div class='segment'>
+                                    <div class='box miles'>
+                                        <h1>#{distance.round(2)} </h1>
+                                        <h2>Miles</h2>
+                                    </div>
+                                </div>
+                                <div class='segment'>
+                                    <div class='box steps'>
+                                        <h1>#{step}</h1>
+                                        <h2>Steps</h2>
+                                    </div>
+                                </div>"
+			if  Post.create(:account_id=>@account.id,:text=>text, :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
 			   puts "done"
 			else
 			   puts "error"

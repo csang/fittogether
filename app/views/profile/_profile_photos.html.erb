@@ -81,7 +81,7 @@
 		<% if @profileuser.account_cover.present? %>
 			<% @profileuser.account_cover.each do |fc| %>
 			<div>        
-                   <%= image_tag(fc.cover) %>
+                   <%= image_tag fc.cover, :id => fc.id   %>
 			</div>
 		<% end %>	
 		<% end %>	

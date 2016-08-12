@@ -23,6 +23,7 @@ has_attached_file :cover,
   :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, 
   :message => 'File type is not allowed (only jpeg/png/gif images)'   
   
+   has_many :account_cover_comment,  :dependent =>:delete_all
  
  end
   

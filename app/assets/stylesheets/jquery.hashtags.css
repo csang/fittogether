@@ -30,7 +30,7 @@
 
 .jqueryHashtags .hashtag{
 	background:#389e62;
-	
+	opacity: 0.4;
 	font-size:14px;
 	white-space: pre-wrap;
 	word-break: break-word;

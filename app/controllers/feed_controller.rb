@@ -312,20 +312,14 @@ class FeedController < ApplicationController
   
      
   def un_sync
-    @acc = Account.find(@account.id)
-  
+    @acc = Account.find(@account.id)  
 		if @acc.present?
 			if @acc.update_attributes(:oauth_token => nil, :access_secret => nil)
-        @fb =  Fitbit.where(:account_id=>@account.id).first 
-        if @fb.present? 
-          @fb.destroy
-        end
-			  flash[:notice] = "Successfully disconnected  with fitbit ."
-			   
-			else 
-			  flash[:error] = "Please try again."
-			end
-    end	
+			   flash[:notice] = "Successfully disconnected  with fitbit ."
+		    else
+		        flash[:error] = "Please try again."
+		    end	    
+        end	
     redirect_to('/feed')
   end  
   
@@ -411,32 +405,55 @@ class FeedController < ApplicationController
   end
   
     def refresh_fitbit #call from refresh button on right side bar
-     if request.xhr?  
-      activity_objects = []
+     #if request.xhr?  
+      activities = []
 		if @account.present? && @account.oauth_token.present?
    		  client = @account.fitbit_data
    		  #activities = client.activity_time_series(resource: 'calories', start_date: Date.today)
    		  activities = client.daily_activity_summary("today")
+   		  #puts activities["activities"][0]["distance"]
+   		 #puts activities["activities"][0]["steps"]
+   		 #abort(activities.inspect)
    		  if activities.present?    
-			  puts activities['goals']['caloriesOut']
-			  puts activities['summary']['caloriesOut']
-			  puts activities['goals']['steps']
-			  puts activities['goals']['distance']
+			
+			 cal = activities['summary']['caloriesOut'].present? ? activities['summary']['caloriesOut'] :'N/A'
+			  step = activities["activities"][0]["steps"].present? ? activities["activities"][0]["steps"] :'N/A'
+			  distance =activities["activities"][0]["distance"].present? ? activities["activities"][0]["distance"] :'N/A'
+			 
 		
 			  @fit = Fitbit.where(:account_id => @account.id).first
 			    if !@fit.present?
-			       Fitbit.create(:account_id => @account.id, :steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])  
-			   else       
-				  @fit.update_attributes(:steps =>activities['goals']['steps'], :calories =>activities['goals']['caloriesOut'], :distance =>activities['goals']['distance'], :summary_calories =>activities['summary']['caloriesOut'])		
+			       Fitbit.create(:account_id => @account.id, :steps =>activities["activities"][0]["steps"], :calories =>activities['goals']['caloriesOut'], :distance =>activities["activities"][0]["distance"], :summary_calories =>activities['summary']['caloriesOut'])  
+			   else   
+			   puts activities["activities"][0]["distance"]    
+				  @fit.update_attributes(:steps =>activities["activities"][0]["steps"], :calories =>activities['goals']['caloriesOut'], :distance =>activities["activities"][0]["distance"], :summary_calories =>activities['summary']['caloriesOut'])		
 		       end  
-		       if Post.create(:account_id=>@account.id,:text=>'Fitbit', :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
+		       text = "<div class='segment'>
+                                    <div class='box calories'>
+                                         <h1>#{cal} </h1>
+                                        <h2>Calories</h2>
+                                    </div>
+                                </div>
+                                <div class='segment'>
+                                    <div class='box miles'>
+                                        <h1>#{distance.round(2)} </h1>
+                                        <h2>Miles</h2>
+                                    </div>
+                                </div>
+                                <div class='segment'>
+                                    <div class='box steps'>
+                                        <h1>#{step}</h1>
+                                        <h2>Steps</h2>
+                                    </div>
+                                </div>"
+		       if Post.create(:account_id=>@account.id,:text=>text, :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
 				  render :json => 1  and return    
 				  else
 					  render :json => 0  and return    
 				  end			  
          end  
        end 		
-	 end
+	# end
 	 end
 	 
 	 # create comment for album
@@ -498,6 +515,73 @@ class FeedController < ApplicationController
     if request.xhr?    
       id = Base64.decode64(params[:id])          
         @cmt = AlbumImagesComment.where(:id=>id, :account_id => @account.id).first
+      if @cmt.destroy 
+        render :json => id  and return      
+      else
+        render :json => 0  and return     
+      end
+    
+    end
+    
+  end
+  
+  
+   def create_comment_on_cover
+    #render :layout => false
+ 
+    if request.xhr?    
+   
+      @comments =  AccountCoverComment.create(:account_id=>@account.id,:text=>params[:text],:account_cover_id=>params[:id])
+      if @comments.save!
+        post = AccountCover.where(:id => params[:id]).first
+        if post.account_id != @account.id
+         set = email_settings(post.account.id, 'comment_on_post')
+         if set.present? || set == 123 
+         UserMailer.comment_on_post(post.account.email,request, @account, params[:text] ,post.account.first_name ).deliver
+         end
+        end 
+        
+          respond_to do |format|
+              params[:text].split.select {|w|         
+              if  w[0] == "@" 
+                wrd = full_name(w)
+                id = Base64.decode64(w)
+                params[:text][w] = wrd
+                  if is_number?(id)
+                  @user = Account.find(id)
+                  met = email_settings(id, 'mentioned_in')
+					  if met.present? || met == 123 
+					  UserMailer.mentioned_in(@user.email,request, @account,'Comment', params[:text] ,@user.first_name ).deliver
+					  end
+                  end
+              end 
+            }
+            @comment =  AccountCoverComment.find(@comments.id)
+            format.js {  render 'create_comment' }
+        
+        end
+      else		   
+        render :json => @comments.errors.full_messages  and return     
+      end    
+    end
+
+    
+  end
+  
+   def get_comment_on_cover
+		if request.xhr?   		
+		@comments = AccountCoverComment.where(:account_cover_id => params[:id]) 	  
+		respond_to do |format|    
+		  format.js 
+		end  		
+		end
+  end
+  
+  def delete_cover_comment
+    
+    if request.xhr?    
+      id = Base64.decode64(params[:id])          
+        @cmt = AccountCoverComment.where(:id=>id, :account_id => @account.id).first
       if @cmt.destroy 
         render :json => id  and return      
       else

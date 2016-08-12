@@ -9,6 +9,7 @@ has_attached_file :cover,
 
   # the styles to be used by paperclip resizing
   def styles
+  {:large => "600x450#"}
    if position == 1 || position == 2
        { :medium => "175x150#" }
   elsif position == 3

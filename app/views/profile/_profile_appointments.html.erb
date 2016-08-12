@@ -67,14 +67,34 @@
                 <textarea class="form-control" id="newUserEventDescription" name="user_event[description]"></textarea>
               </div>
             </div>
-             <div class="form-group">
-              <label class="col-xs-3 control-label">When:</label>
-              <div class="col-xs-9" id="when">
+            <div class="form-group" id="when">
+              <label class="col-xs-3 control-label when">When:</label>
+              <div class="col-xs-9" >
                <span class="newUserEventStartDate"></span>
-              </div>
-              <div class="col-xs-9" id="text_id" style="display:none">
-				  <span class=""><input id="mydate" name="event_date" readonly placeholder="select date"> </span>   <span class=""><input placeholder="select time" id="timepicker" name="event_time" > </span></div>
+              </div>          
             </div>
+            <div id="text_id" style="display:none">
+				 <div class="form-group">
+				  <label class="col-xs-3 control-label">Start:</label>             
+				  <div class="col-xs-9" >
+					  <div class="row">
+						  <div class="col-xs-6"><input id="mydate" class="form-control" name="event_date" readonly placeholder="select start date"> </div>  
+						  <div class="col-xs-6"><input class="form-control" placeholder="select start time" id="timepicker" name="event_time" > </div>
+					  </div>	  
+					  </div>	  
+				</div>
+				
+				 <div class="form-group">
+				  <label class="col-xs-3 control-label">End:</label>
+				   <div class="col-xs-9">
+					   <div class="row">
+						  <div class="col-xs-6"><input class="form-control" id="end_date" name="event_date" readonly placeholder="select end date"> </div>   
+						  <div class="col-xs-6"><input class="form-control" placeholder="select end time" id="timepicker2" name="event_end_time" > </div>
+						</div>  
+					</div>  
+				</div>
+            </div>
+            
             <div class="form-group">
               <div class="col-xs-5 col-xs-offset-3">
                 <button type="submit" class="btn btn-primary">Save</button>
@@ -171,13 +191,51 @@
   }
 </style>
 <script>
-	$('#timepicker').timepicker();
+	$('#timepicker').timepicker({
+		defaultTime : 'now',		
+        });
+     $('#timepicker').on("change", function(){
+		 var element = $(this).val();
+		 var ele =element.replace("am", "").replace("pm", "")
+		 console.log(element);
+         $("#timepicker2").timepicker('option','min',element);
+		var date = $("#mydate").val();
+        var time = ele;
+        var dateObj = date;
+         if (time != "") {
+		     dateObj = new Date(date + ' ' + ele);	
+		 }	
+	    var new_date = moment(dateObj).format();
+	    $("#newUserEventStartDate").val(new_date);	 
+           
+           
+	});
+	   
+	$('#timepicker2').timepicker();
+	    $('#timepicker2').on("change", function(){
+		 var element = $(this).val();
+		 var ele =element.replace("am", "").replace("pm", "")
+		var date = $("#end_date").val();
+        var time = ele;
+        var dateObj = date;
+         if (time != "") {
+		     dateObj = new Date(date + ' ' + ele);	
+		 }	
+	    var new_date = moment(dateObj).format();
+	    $("#newUserEventEndDate").val(new_date);	 
+           
+           
+	});
+	
+		
+   		
 
 	$("#mydate").datepicker( {
 	defaultDate: new Date(),
-	minDate: 1,
+	minDate: 'today',
     dateFormat: 'mm/dd/yy',
 	 onSelect: function(dateText, inst) {
+		$("#end_date").datepicker("option", "minDate", dateText);  
         var date = $(this).val();
         var time = $("#timepicker").val();
         var dateObj = date;
@@ -190,17 +248,56 @@
 	   
        
 	}
-});
+}).datepicker("setDate", new Date());
+
+$("#end_date").datepicker( {
+	defaultDate: new Date(),
+	minDate: 'today',
+    dateFormat: 'mm/dd/yy',
+	 onSelect: function(dateText, inst) {
+        var date = $(this).val();
+        var time = $("#timepicker2").val();
+        var dateObj = date;
+         if (time != "") {
+			 var timeString = time.replace("am", "").replace("pm","");
+		     dateObj = new Date(date + ' ' + timeString);	
+		 }	
+	    var new_date = moment(dateObj).format();
+	    $("#newUserEventEndDate").val(new_date);
+	   
+       
+	}
+}).datepicker("setDate", new Date());
+
 $('#thisisit').click(function() {	  
 	 <% if @profileuser.user_type == 2  %>      
 	    var CurrentDate = moment().add(4, 'hours');
 	     $('.hideMe').hide();
         $('#EventEditFormSection').slideDown(); 
-         $('#newUserEventStartDate').val(CurrentDate.format());   
-        var d = moment(CurrentDate).format('MMMM Do h:mm a');
-        var h = moment(CurrentDate).format('h:mm a') ;        
-        //$('.newUserEventStartDate').text(d);
-        $('#newUserEventEndDate').val(CurrentDate.format()); 
+        $('.newUserEventStartDate').hide(); 
+        $('#when').hide(); 
+        
+        var time = $("#timepicker").val();
+        var time2 = $("#timepicker2").val();
+        
+        var date = $("#mydate").val();
+        var date2 = $("#end_date").val();
+         var dateObj = date;
+         if (time != "") {
+			 var timeString = time.replace("am", "").replace("pm","");
+		     dateObj = new Date(date + ' ' + timeString);	
+		 }	
+		  var new_date = moment(dateObj).format();
+		  
+		 var dateObj2 = date2;
+         if (time != "") {
+			 var timeString = time2.replace("am", "").replace("pm","");
+		     dateObj2 = new Date(date + ' ' + timeString);	
+		 }	
+		  var new_date2 = moment(dateObj2).format(); 
+             
+        $('#newUserEventStartDate').val(new_date);
+        $('#newUserEventEndDate').val(new_date2); 
          $("#text_id").show(); 
         $('#createUserEventModal').modal('show');
         <% end %>     
@@ -231,6 +328,7 @@ $('#thisisit').click(function() {
         if ( new Date(start).getTime() >= new Date().getTime() - 86400000) {     
         $('.hideMe').hide();
         $('#EventEditFormSection').slideDown();
+        $('.newUserEventStartDate').slideDown();
         $('#actionTitle').html("Create New ");
         $('#newUserEventTitle, #newUserEventDescription').val("");
         $('#newUserEventId').val('0');
@@ -251,17 +349,32 @@ $('#thisisit').click(function() {
         url: "/get_user_appointment/" + '<%= @account.id %>' +"/" + '<%= @profileuser.id %>'
       },
       eventClick:function(calEvent, jsEvent, view) {
-      console.log(accountid +'/'+ calEvent.trainer_id)
+     // console.log(accountid +'/'+ calEvent.trainer_id)
       
       if ( new Date(calEvent.start).getTime() >= new Date().getTime() - 86400000 ) {     
        if (accountid == calEvent.account_id  || accountid == calEvent.trainer_id) {
-		          $("#text_id").hide(); 
-       $('#actionTitle').html("Edit ");
-        $('#newUserEventId').val(calEvent.id);
+			//console.log(calEvent)
+		 $("#text_id").show(); 
+		 $('#when').hide(); 
+         $('#actionTitle').html("Edit ");
+         $('#newUserEventId').val(calEvent.id);
             $('#newUserEventTitle').val(calEvent.title);
             $('#newUserEventEventId').val(calEvent.event_id);
-            $('#newUserEventStartDate').val(calEvent._start);
-            $('#newUserEventEndDate').val(calEvent._end);
+            $('#newUserEventStartDate').val(moment(calEvent._start).format());
+             var strt = moment(calEvent._start).format("MM/D/YYYY");
+             var strt_time = moment(calEvent._start).format("hh:mm a");
+            $("#mydate").val(strt);
+            $("#timepicker").val(strt_time);
+             if (calEvent._end == null){            
+				$("#end_date").val(strt);
+				$("#timepicker2").val(strt_time);
+			}else {
+			 var end = moment(calEvent._end).format("MM/D/YYYY");
+			 var end_time = moment(calEvent._end).format("hh:mm a");
+             $("#end_date").val(end);
+             $("#timepicker2").val(end_time);
+			}
+            $('#newUserEventEndDate').val(moment(calEvent._end).format());
             $('#newUserEventDescription').val(calEvent.description);
             $('#SelectedUserEventTitle').html(calEvent.title);
             $('#SelectedUserEventDesc').html(calEvent.description);

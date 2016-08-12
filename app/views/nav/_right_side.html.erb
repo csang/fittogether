@@ -6,7 +6,7 @@
                             <h2>FitBit</h2>
                             <!-- sync with --->
                             <% if @account.linked? || session[:oauth_token].present? %>
-								<%= link_to('Referesh', refresh_fitbit_path(), :remote => true, :method => "get", :class=>'refresh-btn') %>
+								<%= link_to('Refresh', refresh_fitbit_path(), :remote => true, :method => "get", :class=>'refresh-btn') %>
 								<% session.delete(:oauth_token) %>
 								<a class="sync-info" style="display:inline-block;" title="fitibit" href="<%= un_sync_path %>" >
 								<div class="fitbit_logo_unsync"></div></a>
@@ -23,7 +23,7 @@
                                 <h3>Calories</h3>
                             </div>
                             <div class="miles">
-                                <h1><%= @account.fitbit.present? ? number_with_delimiter(@account.fitbit.distance) : 'N/A'  %></h1>
+                                <h1><%= @account.fitbit.present? ? number_with_delimiter(@account.fitbit.distance.round(2)) : 'N/A'  %></h1>
                                 <h3>Miles</h3>
                             </div>
                             <div class="steps">
@@ -289,11 +289,11 @@
   
   $(function() {
   $(".refresh-btn").on("ajax:success", function(e, data, status, xhr)  {
-	//$('.flash-message').html('<div class="alert alert-success"> Class added succesfully.</div>').show();
+	
 	window.location.reload();
   });
   $(".refresh-btn").on("ajax:error", function(e, data, status, xhr)  {
-   $('.flash-message').html('<div class="alert alert-danger"> Fitbit is busy. Please try after some time</div>').show();
+   $('.flash-message').html('<div class="alert alert-danger"> Your fitbit token has been expired.Please sync with fitbit again.</div>').show();
   });
  });
 

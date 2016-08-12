@@ -4,6 +4,7 @@ before_action :authenticate_with_token!
  include ActionView::Helpers::DateHelper  
  include ActionView::Helpers::NumberHelper
 include ApplicationHelper
+require 'nokogiri'
 
   def get_posts
 
@@ -47,6 +48,7 @@ include ApplicationHelper
 						acc[:fitspotcover] = FitspotCover.where(:fitspot_id => post.group_id, :position => 1 ).first
 						acc[:fitspotcover].present? ? acc[:fitspotcover] : ''
 						acc[:fitspot] = Fitspot.where(:account_id=> post.account_id).first
+						
 					when "fitbit"
 					
 						acc[:fitbit] = Fitbit.where(:account_id => post.account_id).first
@@ -112,7 +114,8 @@ end
   def create_post
   
      
-    posts =  Post.create(:account_id=>params[:account_id],:text=>params[:posttextnew],:image=>params[:photo],:video=>params[:video], :status=>1,:share_with=>params[:feed][:share_with])	        
+    #posts =  Post.create(:account_id=>current_user.id,:text=>params[:posttextnew],:image=>params[:photo],:video=>params[:video], :status=>1,:share_with=>params[:feed][:share_with])	        
+    posts =  Post.create(:account_id=>current_user.id,:text=>params[:posttextnew],:image=>params[:photo],:video=>params[:video], :status=>1, :post_type => params[:post_type])	        
            
        if posts.save!    
 			
@@ -274,6 +277,26 @@ end
       end 	
 	  
   end
+  
+  def scrap_link #to get link post
+   doc = Nokogiri::HTML(open(params[:link]))   #lnk is url
+   #@title = doc.css('title').text # to get title to display on post
+   contents = doc.search("meta[name='description']").map { |n| 
+	  n['content'] 
+	}
+	@contents = contents.join(" ")
+	@author = doc.search("author")
+	@img = doc.at_xpath("//img[@width > 50 ]/@src ")
+	if @img.present?	
+		@image =  @img	
+		unless @img[/\Ahttp:\/\//] || @img[/\Ahttps:\/\//]
+			@image = params[:link] + '/' + @img
+		end
+    end
+     render :json => {'link' => params[:link], 'contents' => contents, 'author' => @author, 'image' => @image}
+
+  end
+  
   
   def give_kudos # add delete kudos
    

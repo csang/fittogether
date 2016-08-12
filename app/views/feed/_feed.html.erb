@@ -41,25 +41,7 @@
 										<%=  get_challenge_body(post.group_id) %>    
 						    <% elsif post.post_type =='fitbit' %>
                              
-                                <div class="segment">
-                                    <div class="box calories">
-                                    <% fitbit = get_fitbit(post.account_id) %>
-                                        <h1><%=  fitbit.present? ? fitbit.calories : "N/A"  %> </h1>
-                                        <h2>Calories</h2>
-                                    </div>
-                                </div>
-                                <div class="segment">
-                                    <div class="box miles">
-                                        <h1><%=  fitbit.present? ? fitbit.distance : "N/A"  %></h1>
-                                        <h2>Miles</h2>
-                                    </div>
-                                </div>
-                                <div class="segment">
-                                    <div class="box steps">
-                                        <h1><%=  fitbit.present? ? number_to_human( fitbit.steps, :format => '%n%u', :units => { :thousand => 'K' }) : "N/A"  %></h1>
-                                        <h2>Steps</h2>
-                                    </div>
-                                </div>
+							<%=  post.text.html_safe %>
                             <% elsif post.post_type =='link' %>    
 							<%=  post.text.html_safe %>
                             <% else %>

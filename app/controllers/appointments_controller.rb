@@ -20,6 +20,7 @@ class AppointmentsController < ApplicationController
               event["title"] =  ue.title 
               event["backgroundColor"] = ue.status==1 ? 'light blue' : '#2f8352'
               event["start"] = ue.start_date
+              event["end"] = ue.end_date
               event["account_id"] = ue.account_id
               event["trainer_id"] = ue.trainor_id
               event["status"] = ue.status
@@ -48,6 +49,7 @@ class AppointmentsController < ApplicationController
             res["event_id"] = id
             res["user_id"] = @user_event.account_id
             res["start"] = @user_event.start_date
+            res["end"] = @user_event.end_date
            # res["start"] = @user_event.start_date.strftime("%Y-%m-%dT%H:%M:%S")
            met = email_settings(@user_event.trainer.id, 'new_appointment_request')
            if met.present? || met == 123 

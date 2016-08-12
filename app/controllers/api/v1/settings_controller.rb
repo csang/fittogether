@@ -122,8 +122,8 @@ class Api::V1::SettingsController < Api::V1::BaseController
 		  timing['tuesday_end'] =params[:tuesday_end] 
 		  timing['wednesday_start'] =params[:wednesday_start] 
 		  timing['wednesday_end'] =params[:wednesday_end] 
-		  timing['thrusday_start'] =params[:thrusday_start] 
-		  timing['thrusday_end'] =params[:thrusday_end]
+		  timing['thursday_start'] =params[:thursday_start] 
+		  timing['thursday_end'] =params[:thursday_end]
 		  timing['friday_start'] =params[:friday_start] 
 		  timing['friday_end'] =params[:friday_end]
 		  timing['saturday_start'] =params[:saturday_start] 
@@ -131,8 +131,10 @@ class Api::V1::SettingsController < Api::V1::BaseController
 		  user_address = params[:address].split(",")
 		  
 		  account_details = AccountGym.where(:account_id=>current_user.id).first
+		  
 		  #~ res = account_details.update_attributes(:name => params[:name], :address =>user_address, :specialties => params[:specialty], :franchise => params[:franchise], :groupclasses => params[:groupclasses], :dancetypes => params[:dancetype], :train_client_at_your_gym => params[:train_client_at_your_gym], :fee => params[:fee], :amenities => params[:amenity], :timings => timing)
 		  res = account_details.update_attributes(:name => params[:name], :address =>user_address, :specialties => params[:specialty], :franchise => params[:franchise], :groupclasses => params[:groupclasses], :train_client_at_your_gym => params[:train_client_at_your_gym], :amenities => params[:amenity], :timings => timing)
+		  
 			 if res
 			   render :json => 1
 			  else 
