@@ -394,6 +394,7 @@ $('#thisisit').click(function() {
     });
 
     $('#createUserEventForm').validate({
+		ignore: ":hidden",
       rules: {
         'user_event[title]': {
           required: true,         
@@ -401,6 +402,9 @@ $('#thisisit').click(function() {
         },
         'user_event[description]': {
           maxlength: 200
+        },
+        'event_time': {
+         required: true,     
         }
       },
       messages: {
@@ -410,6 +414,8 @@ $('#thisisit').click(function() {
         },
         'user_event[description]': {
           maxlength: 'Event description can be maximum of 200 characters.'
+        },'event_time': {
+           required: 'Please enter start time.',
         }
       },
       submitHandler: function(form) {
