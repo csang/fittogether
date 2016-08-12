@@ -108,7 +108,7 @@
 </div>
  <% if @profileuser.user_type ==1 || @profileuser.user_type ==2 %>   
  <div class="profile_analytics">
-      <div class="fitpoints">
+     <!-- <div class="fitpoints">
         <div class="a_header">
           <h3>Reward Points</h3>
         </div>
@@ -146,7 +146,7 @@
             <h2><%=  @allchalenge.present? ? @allchalenge - @chal : '' %></h2>
           </div>
         </div>
-      </div>
+      </div>-->
       <div class="fitbit">
         <div class="a_header">
           <h3>FitBit</h3>
@@ -163,7 +163,7 @@
           </div>
           <div>
             <h4>Distance</h4>
-            <h2><%= @profileuser.fitbit.present? ? @profileuser.fitbit.distance : '0'  %><span>M</span></h2>
+            <h2><%= @profileuser.fitbit.present? ? @profileuser.fitbit.distance.round(2) : '0'  %><span>M</span></h2>
           </div>
         </div>
       </div>
