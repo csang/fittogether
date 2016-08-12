@@ -4,7 +4,7 @@
 									<div>
 										<div class="avatar">
 										<% if img.present? %>
-											<h3><%= image_tag(img) %></h3>
+										<%= image_tag(img) %>
 											<% else %>
 											<h3><%= ft.event_date.strftime("%e") %></h3>
 											<% end %>

@@ -191,7 +191,13 @@
 							<%  if ft.event_date >= Date.today  %>
 									<% img = ft.image    %>
 									<div>
-										<div class="avatar"><h3><%= image_tag(img) %></h3></div>
+										<div class="avatar">
+										<% if img.present? %> 
+										<%= image_tag(img) %>
+										<% else %>
+										  <h3><%= ft.event_date.strftime("%e") %></h3>
+										<% end %>
+										</div>
 										<div class="description">
 											<p class="date"><%= ft.event_date.strftime("%B %e ") %></p><br>
 											<p class="event">

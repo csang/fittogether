@@ -175,7 +175,7 @@ before_action :get_account
   
    private
    def event_parm
-    params.require(:event).permit(:title, :description, :event_image,  :event_date, :event_start_time , :event_end_time, :group_id)
+    params.require(:event).permit(:title, :description, :image,  :event_date, :event_start_time , :event_end_time, :group_id)
   end
   
 end

@@ -15,7 +15,13 @@
 	<div class="post event">
         <div class="header">
             <div class="user">
-                <div class="avatar"><h3><%= image_tag(evnt.image) %></h3></div>
+                <div class="avatar">
+                 <% if evnt.image.present? %>
+					<%= image_tag(evnt.image(:thumb)) %>
+                <% else %>
+					<h3><%= evnt.event_date.strftime("%e") %></h3>
+                <% end %>
+                </div>
                 <div class="data">
                     <h3 class="date"><%= evnt.event_date.strftime('%B %d') %> <%= evnt.event_start_time %>-<%= evnt.event_end_time %></h3>
                     <h3 class="event"><%= evnt.title %></h3>

@@ -17,7 +17,7 @@ class Event < ActiveRecord::Base
     :path => ":rails_root/app/assets/images/:attachment/:id/:basename_:style.:extension",
     :url => "/assets/:attachment/:id/:basename_:style.:extension",
     :default_url => "group.jpg",
-    :styles => { :medium => "730x250>", :thumb => "160x160>" }
+    :styles => { :medium => "730x250>", :thumb => "50x50>" }
  
   validates_attachment_content_type :image, :content_type => /^image\/(jpg|jpeg|pjpeg|png|x-png|gif)$/, :message => 'File type is not allowed (only jpeg/png/gif images)'
   
