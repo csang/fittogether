@@ -887,6 +887,7 @@ $(document).ready(function () {
         }).success(function(data) {
           $("#cmt" + postid + " .comment_container").append(data);
           $("#" + postid).removeClass("ovel");
+          $('.hashtag').empty();
          that.siblings('textarea').val('');
          	var height = that.parent().parent().find('.comment_container').height() + that.parent().parent().find('.add_comment').height() + 37;
 			that.parent().parent().css('height',height).find('.add_comment textarea').attr('placeholder',"Start commenting here...").val('').focus();
