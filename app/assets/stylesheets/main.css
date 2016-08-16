@@ -3913,3 +3913,4 @@ a:hover, a:focus{text-decoration: none;}
 }
 .refresh-btn{border:1px solid rgb(47, 131, 82); color: rgb(47, 131, 82);border-radius: 50px; font-size:12px; position:relative; left:100px; top:10px; display:inline-block; padding:2px 7px;}
 .link_container .data .source, .link_container .data .title{overflow: hidden; height:48px;}
+.ovel{overflow:visible!important;}

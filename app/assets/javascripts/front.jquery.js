@@ -886,6 +886,7 @@ $(document).ready(function () {
           }
         }).success(function(data) {
           $("#cmt" + postid + " .comment_container").append(data);
+          $("#" + postid).removeClass("ovel");
          that.siblings('textarea').val('');
          	var height = that.parent().parent().find('.comment_container').height() + that.parent().parent().find('.add_comment').height() + 37;
 			that.parent().parent().css('height',height).find('.add_comment textarea').attr('placeholder',"Start commenting here...").val('').focus();
@@ -915,6 +916,8 @@ $(document).ready(function () {
     
     // on enter update commment
      $(document).on('keyup', '.comment', function(event) {	
+		var id = $(this).attr("data-id")
+		$("#" + id).addClass("ovel");
 	  if(event.keyCode == 13) {
 		  
 	  var that = $(this).parent().parent().siblings("button")		
