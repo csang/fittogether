@@ -30,21 +30,20 @@ $(window).load(function(){
 	<%= form_for @page, :url=>{:action=>'update_about'}, :html=>{:class=>'about_form', :id=>'abt'} do |f| %>
 
 		<div class="input_container">
-			<label>Your Gender*:</label>
+			<label>Your Gender:</label>
 			<div class="radio_button">
 		<div class="radio <%= @account.gender =="m" ? 'checked' :'' %>" >
                     <p>Male</p>
                     <input type="radio" name="gender" value="m" <%= @account.gender =="m" ? 'checked' :'' %> >
 				<label for="gender" generated="true" class="error"></label>
-				</div>
-				<div class="radio <%= @account.gender =="f" ? 'checked' :'' %>">
+				</div><div class="radio <%= @account.gender =="f" ? 'checked' :'' %>">
 				<p>Female</p>
 				<input type="radio" name="gender" value="f" <%= @account.gender =="f" ? 'checked' :'' %> >
 				</div>
 			</div>
 		</div>
 		<div class="input_container location wherelive">
-			<label>Where do you live?*</label>
+			<label>Where do you live?</label>
 					
 			<% states = State.all.map{|x| [x.name] + [x.state_code]} %>
 			<% select_tag(:state_id_0, options_for_select(states ,@account.state_id)) %>
@@ -56,25 +55,24 @@ $(window).load(function(){
 				<!-- <label>ZIP</label> -->
 			<input type="text" placeholder="ZIP" name="zipcode" value="<%= @account.zipcode %>">		
 		</div>
-		<div class="input_container">
-			<label>Do you belong to a Gym?*</label>
+		<!--<div class="input_container">
+			<label>To what Gym do you belong?</label>
 				<div class="radio_button">
 				<div class="radio <%= @account.belong.to_i == 1 ? 'checked' :'' %>">
 					<p>YES</p><input type="radio" name="belong" value="y" checked id="yesgym" <%= @account.belong.present? ? 'checked' :'' %> >
-					</div>
-					<div class="radio <%= @account.belong.to_i == 1 ? '' :'checked' %>">
+					</div><div class="radio <%= @account.belong.to_i == 1 ? '' :'checked' %>">
 					<p>NO</p><input type="radio" name="belong" value="n" id="nogym" <%= @account.belong.present? ? '' :'checked' %> >
 					</div>
 				</div>
-				</div>
+				</div> -->
 			<% gyms = AccountGym.where("name !=?", "").map{|x| [x.name] + [x.id]} %>
 			
 			 <div class="input_container"> 
-			 <label></label>
+				<label>To what Gym do you belong?</label>
 		   	<%= select_tag(:gym, options_for_select(gyms, @account.gym_id), prompt: "select gym") %>	
 		   	</div>
 		   	       <div class="input_container">
-		   	           <label></label>     
+		   	           <label>Location</label>     
                         <%  if @account.gym_id.present? %>
                           <select name='location' id="locatio">
                             <option value="">Location</option>
@@ -158,8 +156,7 @@ $(window).load(function(){
 			
 			     <div class="radio <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 1 ? 'checked' :'' ) : '' %>">
 				<p>YES</p><input type="radio" name="trainer_contacts" value="1" <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 1 ? 'checked' :'' ) : '' %>>
-				</div>
-				<div class="radio <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 0 ? 'checked' :'') :'' %>">
+				</div><div class="radio <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 0 ? 'checked' :'') :'' %>">
 				<p>NO</p><input type="radio" name="trainer_contacts" value="0"  <%= @account_details.present? ? (@account_details.trainer_contacts.to_i == 0 ? 'checked=checked' :'') : '' %> >
 				</div>
 			</div>
@@ -168,17 +165,17 @@ $(window).load(function(){
 		</div>
 			<% end %>
 		<div class="submit_container">		
-			<button id="save_changes" type="submit" >Save Changes</button>
+			<button id="save_changes" type="submit" >Save</button>
 		</div>
 
 	<% end %>
 <% end %>
-<div class="about_form-new">
+<!-- div class="about_form-new">
 <% if @account_type.to_i == 2 %>
   <a class="trainer_info btn btn-primary"> Advanced details</a> 
   <div class="trainer_details_info" style="display:none;">
-    <%=  render 'trainers_details', {'account_details' => @account_details} %>
-   </div> 
+    <%  render 'trainers_details', {'account_details' => @account_details} %>
+   </div --> 
 <% end %>
 
 <% if @account_type.to_i == 3 %>

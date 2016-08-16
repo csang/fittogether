@@ -404,7 +404,6 @@ header .settings_nav nav a.selected{
 	display: inline-block;
 	vertical-align: middle;
 	line-height: 30px;
-	font-family: "Helvetica Neue","Helvetica","Arial";
 }
 
 #main_container form > div div.radio{
@@ -416,9 +415,7 @@ header .settings_nav nav a.selected{
 	text-align: center;
 	border: 1px solid rgb(47,131,82);
 	position: relative;
-	float:left;
 	margin:0px;
-	font-family: "Helvetica Neue","Helvetica","Arial";
 	
 }
 
@@ -465,7 +462,7 @@ header .settings_nav nav a.selected{
 
 #main_container #social form > div label{
 	font-weight: bold;
-	width: 350px;
+	width: 150px;
 	text-align: right;
 	margin-right: 10px;
 }
@@ -475,7 +472,6 @@ header .settings_nav nav a.selected{
 	width: 350px;
 	text-align: right;
 	margin-right: 10px;
-	vertical-align:top;
 	margin:4px 10px 0 0;
 }
 
@@ -680,7 +676,6 @@ table, table tr td{
 	text-align: center;
 	font-weight: bold;
 	line-height: 38px;
-	font-family: "Helvetica Neue","Helvetica","Arial";
 }
 .mobile input {
     margin: 0 0 0 5px !important;

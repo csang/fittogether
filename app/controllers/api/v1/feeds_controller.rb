@@ -127,6 +127,8 @@ end
   
   end
   
+
+  
   def create_album
     album =  Album.create(:account_id => params[:account_id], :title =>'untitled by app')
     if album

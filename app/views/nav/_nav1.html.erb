@@ -53,7 +53,7 @@
 				<%= @page == 'settings_about' ? link_to('About'.html_safe, 'about',  class: "selected") : link_to('<p>About</p>'.html_safe, 'about') %>
 				<%= @page == 'settings_activities' ? link_to('Activities'.html_safe, 'activities',  class: "selected") : link_to('<p>Activities</p>'.html_safe, 'activities') %>
 				<%= @page == 'settings_privacy' ? link_to('Privacy'.html_safe, 'privacy',  class: "selected") : link_to('<p>Privacy</p>'.html_safe, 'privacy') %>
-				<%= @page == 'settings_social_settings' ? link_to('Social Settings'.html_safe, 'social_settings', class: "selected") : link_to('<p>Social Settings</p>'.html_safe, 'social_settings') %>
+				<%= @page == 'settings_social_settings' ? link_to('Social'.html_safe, 'social_settings', class: "selected") : link_to('<p>Social</p>'.html_safe, 'social_settings') %>
 				<%= @page == 'settings_fitbit' ? link_to('Fitbit'.html_safe, 'fitbit', class: "selected") : link_to('<p>Fitbit</p>'.html_safe, 'fitbit') %>
 				<%= @page == 'settings_email' ? link_to('Email'.html_safe, 'email_notification_settings', class: "selected") : link_to('<p>Email</p>'.html_safe, 'email_notification_settings') %>
 				<%= link_to 'Feedback', 'javascript:void(0)', { :class => 'rps', 'data-toggle' => 'modal',  :title => 'Report a Problem', 'data-target' => '#reportForm' } %>
