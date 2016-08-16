@@ -691,6 +691,7 @@ header .gym_nav nav a.selected{
 #classes .class .roster .list > div .avatar{
 	width: 32px;
 	height: 32px;
+	line-height: 32px;
 }
 
 #classes .class .roster .list > div .actions{
