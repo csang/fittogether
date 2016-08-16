@@ -36,7 +36,7 @@ function filldata(that){
 				<div class="column_header">
 				<div class="imageRound">
 				 <% img = useravatar(abc) %>
-				  <%= image_tag(img) %>	  			    
+				  <%= image_tag(img, alt: abc.first_name[0]) %>	  			    
 					  
 				</div>
 				<div class="name">

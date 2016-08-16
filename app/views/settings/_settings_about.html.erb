@@ -170,12 +170,12 @@ $(window).load(function(){
 
 	<% end %>
 <% end %>
-<!-- div class="about_form-new">
+ <div class="about_form-new">
 <% if @account_type.to_i == 2 %>
-  <a class="trainer_info btn btn-primary"> Advanced details</a> 
+  <a class="trainer_info btn btn-primary" style="display:none;"> Advanced details</a> 
   <div class="trainer_details_info" style="display:none;">
     <%  render 'trainers_details', {'account_details' => @account_details} %>
-   </div --> 
+   </div> 
 <% end %>
 
 <% if @account_type.to_i == 3 %>
