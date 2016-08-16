@@ -50,9 +50,9 @@ module FeedHelper
   def set_fitbit(activities)
 	
     if activities.present?    
-     cal = activities['summary']['caloriesOut'].present? ? activities['summary']['caloriesOut'] :'N/A'
-			  step = activities["activities"][0]["steps"].present? ? activities["activities"][0]["steps"] :'N/A'
-			  distance =activities["activities"][0]["distance"].present? ? activities["activities"][0]["distance"] :'N/A'
+     cal = activities['summary']['caloriesOut'].present? ? activities['summary']['caloriesOut'] :0
+	 step = activities["summary"].present? ? activities['summary']['steps'] :0
+	 distance =activities["summary"].present? ? activities['summary']['distances'][0]['distance'] :0
       @fit = Fitbit.where(:account_id => @account.id).first
        text = "<div class='segment'>
                                     <div class='box calories'>
@@ -74,7 +74,7 @@ module FeedHelper
                                 </div>"
 
 		  if !@fit.present?
-			 Fitbit.create(:account_id => @account.id, :steps =>activities["activities"][0]["steps"], :calories =>activities['goals']['caloriesOut'], :distance =>activities["activities"][0]["distance"], :summary_calories =>activities['summary']['caloriesOut'])
+			 Fitbit.create(:account_id => @account.id, :steps =>step, :calories =>cal, :distance =>distance, :summary_calories =>cal)
 			  
 			  if Post.create(:account_id=>@account.id,:text=>text, :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
 				puts "done"
@@ -82,7 +82,7 @@ module FeedHelper
 			  	puts "error"
 			  end
 			 else       
-			 @fit.update_attributes(:steps =>activities["activities"][0]["steps"], :calories =>activities['goals']['caloriesOut'], :distance =>activities["activities"][0]["distance"], :summary_calories =>activities['summary']['caloriesOut'])
+			 @fit.update_attributes(:steps =>step, :calories =>cal, :distance =>distance, :summary_calories =>cal)
 			  
 			if  Post.create(:account_id=>@account.id,:text=>text, :status=>1,:share_with=> 'Public',:post_type=> 'fitbit')
 			   puts "done"
@@ -97,7 +97,7 @@ module FeedHelper
    activity_objects = []
   # abort(user.inspect)
    if user.present? && user.oauth_token.present? 
-      activities = user.fitbit_data.daily_activity_summary("today")     
+      activities = user.fitbit_data.daily_activity_summary(Date.today)     
       activity_objects = activities
     end
    set_fitbit(activity_objects)

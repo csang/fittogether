@@ -404,29 +404,25 @@ class FeedController < ApplicationController
 
   end
   
-    def refresh_fitbit #call from refresh button on right side bar
-     #if request.xhr?  
+    def refresh_fitbit #call from refresh button on right side bar  
+     today = Time.now.in_time_zone("Pacific Time (US & Canada)")
+     if request.xhr?  
       activities = []
 		if @account.present? && @account.oauth_token.present?
    		  client = @account.fitbit_data
    		  #activities = client.activity_time_series(resource: 'calories', start_date: Date.today)
-   		  activities = client.daily_activity_summary("today")
-   		  #puts activities["activities"][0]["distance"]
-   		 #puts activities["activities"][0]["steps"]
-   		 #abort(activities.inspect)
-   		  if activities.present?    
-			
-			 cal = activities['summary']['caloriesOut'].present? ? activities['summary']['caloriesOut'] :'N/A'
-			  step = activities["activities"][0]["steps"].present? ? activities["activities"][0]["steps"] :'N/A'
-			  distance =activities["activities"][0]["distance"].present? ? activities["activities"][0]["distance"] :'N/A'
+   		  activities = client.daily_activity_summary(today)
+   		  if activities.present?    			
+			 cal = activities['summary']['caloriesOut'].present? ? activities['summary']['caloriesOut'] :0
+			  step = activities["summary"].present? ? activities['summary']['steps'] :0
+			  distance =activities["summary"].present? ? activities['summary']['distances'][0]['distance'] :0
 			 
 		
 			  @fit = Fitbit.where(:account_id => @account.id).first
 			    if !@fit.present?
-			       Fitbit.create(:account_id => @account.id, :steps =>activities["activities"][0]["steps"], :calories =>activities['goals']['caloriesOut'], :distance =>activities["activities"][0]["distance"], :summary_calories =>activities['summary']['caloriesOut'])  
-			   else   
-			   puts activities["activities"][0]["distance"]    
-				  @fit.update_attributes(:steps =>activities["activities"][0]["steps"], :calories =>activities['goals']['caloriesOut'], :distance =>activities["activities"][0]["distance"], :summary_calories =>activities['summary']['caloriesOut'])		
+			       Fitbit.create(:account_id => @account.id, :steps =>step, :calories =>cal, :distance =>distance, :summary_calories =>cal)  
+			   else    
+				  @fit.update_attributes(:steps =>step, :calories =>cal, :distance =>distance, :summary_calories =>cal)		
 		       end  
 		       text = "<div class='segment'>
                                     <div class='box calories'>
@@ -453,7 +449,7 @@ class FeedController < ApplicationController
 				  end			  
          end  
        end 		
-	# end
+	 end
 	 end
 	 
 	 # create comment for album
