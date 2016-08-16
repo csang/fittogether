@@ -15,8 +15,7 @@
                 <div class="radio checked">
                     <p>Show</p>
                     <input type='radio' name='<%= privacy.slug; %>' value='1' checked >
-                    </div>
-	            <div class="radio">
+                    </div><div class="radio">
                     <p>Hide</p>
                     <input type='radio' name='<%= privacy.slug; %>' value='0' >
                     </div>
@@ -27,8 +26,7 @@
                 <div class="radio <%= is_private ? 'checked' : nil %>">
                     <p>Show</p>
                     <input type='radio' name='<%= privacy.slug; %>' value='1' <%= is_private ? 'checked' : nil %>>
-                 </div>
-	           <div class="radio <%= is_private ? nil : 'checked' %>">
+                 </div><div class="radio <%= is_private ? nil : 'checked' %>">
                     <p>Hide</p>
                     <input type='radio' name='<%= privacy.slug; %>' value='0' <%= is_private ? nil : 'checked' %>>
                     </div>

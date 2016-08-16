@@ -19,8 +19,7 @@
                 <div class="radio checked">
                     <p>Yes</p>
                     <input type='radio' name='<%= privacy.slug; %>' value='1' checked >
-				</div>
-                <div class="radio">
+				</div><div class="radio">
                     <p>No</p>
                     <input type='radio' name='<%= privacy.slug; %>' value='0' >
                 </div>
@@ -31,8 +30,7 @@
                 <div class="radio  <%= is_private ? 'checked' : nil %>">
                     <p>Yes</p>
 					<input type='radio' name='<%= privacy.slug; %>' value='1' <%= is_private ? 'checked' : nil %>>
-				</div>
-	    <div class="radio <%= is_private ? nil : 'checked' %>">
+				</div><div class="radio <%= is_private ? nil : 'checked' %>">
                     <p>No</p>
                     <input type='radio' name='<%= privacy.slug; %>' value='0' <%= is_private ? nil : 'checked' %>>                   
                    </div>
