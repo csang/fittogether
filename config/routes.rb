@@ -182,7 +182,7 @@ Rails.application.routes.draw do
 
   get 'feed/index'
   get 'feed', to: 'feed#index'
-  get 'tags/:tag', to: 'feed#index', as: "tag"
+  get 'tags/(:tag)', to: 'feed#index', as: "tag"
 
   #post 'update_post', to: 'feed#update_post',:as=>:update_post
    match 'hide_notification', to: 'profile#hide_notification', :via => [:post] , :as => :hide_notification
