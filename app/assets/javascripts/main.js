@@ -679,7 +679,7 @@ Fit = {
 		$('#feed_container .header .actions button.challenge').click(Fit.challenge);
 		//$('#feed_container #feed .post .footer > div.comment').click(Fit.toggle_comments);
 		$(document).on('click','#feed_container #feed .post .footer > div.comment',Fit.toggle_comments);
-		$('#feed_container .post.photo .content img').click(Fit.view_picture_post);
+		$(document).on('click', '#feed_container .post.photo .content img', Fit.view_picture_post)
 		
 		$('header #top_nav .profile_icon').click(Fit.toggle_profile_list);
 		$('header #top_nav .notifications_icon').click(Fit.toggle_notification_list);
