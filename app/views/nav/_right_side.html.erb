@@ -293,7 +293,7 @@
 	window.location.reload();
   });
   $(".refresh-btn").on("ajax:error", function(e, data, status, xhr)  {
-   $('.flash-message').html('<div class="alert alert-danger"> Your fitbit token has been expired.Please sync with fitbit again.</div>').show();
+   $('.flash-message').html('<div class="alert alert-danger">  Your session has expired and you must re-sync their Fitbit with FitTogether.</div>').show();
   });
  });
 
