@@ -13,6 +13,7 @@ function filldata(that){
       });
   
     $('.arport').fadeOut('slow');
+    $('.posttext').focus();
  } else {
 	   abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().split(" ").pop();
       //abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().replace(/(@\S+)/gi,'');            
@@ -25,6 +26,7 @@ function filldata(that){
           value: $(that).attr('data-username')
       });
     $('.arport2').fadeOut('slow');
+    $(that).parent('.arport2').parent('.add_comment').find('.comment').focus();
    
  }
    }

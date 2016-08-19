@@ -1038,7 +1038,7 @@ $(document).ready(function () {
       }
     });
 
- $(".add_comment").on('keyup', 'textarea',function(event) {
+ $(document).on('keyup', '.add_comment textarea',function(event) {
   var that = this
    var backway = $(this).val().split(" ").pop();
     if (backway.indexOf("@") != -1) {
@@ -1064,8 +1064,8 @@ $(document).ready(function () {
             xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
           },
           success: function(data) {
-             $(that).parent().parent().parent().children('.arport2').show()
-            $(that).parent().parent().parent().children('.arport2').html(data)
+             $(that).parent().parent().parent().children('.arport2').fadeIn();
+            $(that).parent().parent().parent().children('.arport2').html(data);
 
 
           },
@@ -1077,7 +1077,7 @@ $(document).ready(function () {
         });
       }
     }else {
-    $(that).siblings('.arport2').hide()
+   $(that).parent().parent().parent().children('.arport2').fadeOut()
     }
   });
   

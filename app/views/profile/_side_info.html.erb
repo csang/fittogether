@@ -57,7 +57,12 @@
 							<% my_fav_fitspot.each do |ft| %>
 							<% img = ft.fitspot.fitspot_image    %>
                             <div>
-                                <div class="avatar"> <%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %></div>
+                                <div class="avatar"> 
+                                <% link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %>
+                                <div class="avatar_map" id="placeholder_<%= ft.fitspot.id %>" style="height:100px;"></div>
+						  <input class="sugfitpost" map_placeholder="placeholder_<%= ft.fitspot.id %>"  type="hidden" value="<%=  ft.fitspot.location %>"  size="90" />
+                      
+                                </div>
                                 <div class="description">
                                     <p class="fitspot"><%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %></p><br>
                                     <p class="location"><%= ft.fitspot.location %>, FL</p><br>
@@ -160,4 +165,21 @@
                         </div>
                     </div>
                     <% end %>
+ <script>
+   	$('.sugfitpost').each(function(i, v){		
+		var $that = $(this);
+		$that.geocomplete({ 
+			map: '#'+$that.attr('map_placeholder'),
+			mapOptions: {
+			zoom: 100,
+			draggable: false
+		  },
+		  markerOptions: {
+			disabled: true
+		  },						
+		});	
+		$that.trigger("geocode");
+	});
+ 
+ </script>                   
          

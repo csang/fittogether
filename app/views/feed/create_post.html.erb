@@ -8,7 +8,7 @@
 							 <% name = @post.account.first_name.capitalize + ' ' + last %>
 						  <% end %>
 						  
-                        <div class="post <%= @post.post_type!='text' ? @post.post_type : '' %> <%= @post.account.user_type ==3 ? 'gym' :'' %>" id="<%= @post.id %>">
+                        <div class="post <%= @post.post_type!='text' ? @post.post_type : '' %> <%= @post.account.user_type ==3 ? 'gym' :'' %> ovel" id="<%= @post.id %>">
                             <div class="header">
                                 <div class="user">
                                     <div class="avatar"><a href="profile.html">
@@ -81,7 +81,9 @@
 				<div class="comment_section"  id="cmt<%= @post.id %>">
                                 <div class="comment_container"> </div>				
 				 <div class="add_comment">
-                                    <textarea placeholder="Start commenting here..." data-id="<%= @post.id %>" ></textarea>
+							
+                                    <textarea placeholder="Start commenting here..." data-id="<%= @post.id %>" class="comment" id="pt_comnt" ></textarea>
+                                   
                                     <button class="post_comment" type="button" data-id="<%= @post.id %>">Post Comment</button>
                                     <ul class="arport2" style="display:none;"> </ul>
 									<input type="hidden" name="commentnew" id="commentnew">
@@ -105,3 +107,8 @@
                             </div>
                         </div>
 <% end %>
+<script>
+$(document).ready(function() {
+    $("#pt_comnt").hashtags();
+ });
+ </script>

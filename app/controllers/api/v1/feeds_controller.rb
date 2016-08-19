@@ -3,14 +3,23 @@ class Api::V1::FeedsController < Api::V1::BaseController
 before_action :authenticate_with_token!
  include ActionView::Helpers::DateHelper  
  include ActionView::Helpers::NumberHelper
+  include ActionView::Helpers::UrlHelper
+ include ActionView::Helpers::OutputSafetyHelper
 include ApplicationHelper
+include FeedHelper
 require 'nokogiri'
 
   def get_posts
+#~ my_string = "abcdefg"
+#~ if my_string.include? "cde"
+#~ abort("dffdf");
+   #~ puts "String includes 'cde'"
+#~ end
 
     frnds = get_frineds_ids(current_user.id)
-    if params[:tag]
-      posts = Post.tagged_with(params[:tag])      
+    if params[:tag] 
+      posts = Post.tagged_with(params[:tag]).paginate(:page => params[:page],:per_page => 5)   
+      post_count  = Post.tagged_with(params[:tag]).count
     else
     post_count = Post.where("posts.status = ? AND posts.account_id = ? OR (posts.account_id IN (?) AND posts.share_with = ? ) AND posts.share_with = ?   ",1 , current_user.id, frnds, "Friends", "Public").order("id DESC").count
        posts = Post.where("posts.status = ? AND posts.account_id = ? OR (posts.account_id IN (?) AND posts.share_with = ? ) AND posts.share_with = ?   ",1 , current_user.id, frnds, "Friends", "Public").order("id DESC").paginate(:page => params[:page], :per_page => 5)
@@ -19,9 +28,11 @@ require 'nokogiri'
    
     all_post = Array.new 
     	  posts.each do |post|
+			
 		    user = get_user_array(post.account) 
 		    acc = {}          						
-		    acc[:post] = post		    
+		    acc[:post] = post	
+		       
 		    acc[:user] = user
 		    acc[:comment] = {}	
 		    acc[:challenges] = {}		
@@ -35,7 +46,20 @@ require 'nokogiri'
 		    acc[:comment][:time] = {}	
 		    acc[:time] =  time_ago_in_words(post.created_at) 	
 		    
-		  
+				if post.text.include? "@"
+					acc[:post_text] = {}	
+					acc[:post_text] = post.text
+					post.text.split.select {|w| 
+						if  w[0] == "@"
+							users_name = raw user_links(w)   
+							acc[:post_text] = acc[:post_text].gsub(w, users_name)           
+						else    
+							w.html_safe      
+						 end       
+					} 
+					
+			end
+				
 				 case post.post_type
 					when "challenge"
 					

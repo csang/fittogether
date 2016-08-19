@@ -1,4 +1,8 @@
-<%#= render(:partial => 'feed/feed_aside') %>
+<style>
+#infinite-scrolling {
+display:none;
+}
+</style>
 <div id="seed" class="fitsport-row">
 	
 	<div class="fitsport-header">
@@ -10,30 +14,11 @@
 			
 		</div>
 	</div>
-  <% if  @fitspots.present? %>
-  <% @fitspots.each do |fs| %> 
-  <% img =  get_fit_img(fs.id) %>
-  
-           <div class="posts">
-             <div class="posts-img">
-             <% if fs.fitspot_image.present? %>
-				<%= link_to(image_tag(fs.fitspot_image(:thumb)), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
-             <% else %>
-				<%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
-              <% end %>
-              </div>
-             <div class="posts-content">
-               <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> <span class="time">    </span></h4>
-               <p><%= fs.description %></p>
-             </div>
-             <div class="clear"></div>
-           </div>
-           <% end %>
-           <% else %>
-  <h4 class="noti-heading">No Fitspots Found.</h4>
-           <% end %>
-  
-</div>
+	<%= render :partial => 'fitspot' %>
+ </div>
+  <div id="infinite-scrolling">                        
+  <%= will_paginate @fitspots %>
+</div>    
 <!-- end code -->
 <div class="modal fade" id="fitspotForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog" >
@@ -48,4 +33,22 @@
   </div>
 </div>
 </div>
+<script>
+$('.sugfitpost').each(function(i, v){		
+		var $that = $(this);
+		$that.geocomplete({ 
+			map: '#'+$that.attr('map_placeholder'),
+			mapOptions: {
+			zoom: 100,
+			draggable: false
+		  },
+		  markerOptions: {
+			disabled: true
+		  },			
+		});	
+		$that.trigger("geocode");
+	});
+
+</script>
+
 

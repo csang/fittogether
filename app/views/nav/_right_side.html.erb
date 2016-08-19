@@ -196,7 +196,12 @@
              		    <% fitspots.each do |fs| %>
 						<% img = fs.fitspot_image    %>
                             <div>
-                                <div class="avatar"><%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %></div>
+                                <div class="avatar"><% link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
+                                
+                                <div class="avatar_map" id="placeholder_<%= fs.id %>" style="height:100px;"></div>
+						  <input class="sugfitpost" map_placeholder="placeholder_<%= fs.id %>"  type="hidden" value="<%=  fs.location %>"  size="90" />
+                      
+                                </div>
                                 <div class="description">
                                     <p class="fitspot">
 										<%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> 
@@ -295,6 +300,22 @@
   $(".refresh-btn").on("ajax:error", function(e, data, status, xhr)  {
    $('.flash-message').html('<div class="alert alert-danger">  Your session has expired and you must re-sync your Fitbit with FitTogether.</div>').show();
   });
+  
+  	$('.sugfitpost').each(function(i, v){		
+		var $that = $(this);
+		$that.geocomplete({ 
+			map: '#'+$that.attr('map_placeholder'),
+			mapOptions: {
+			zoom: 50,
+			draggable: false
+		  },
+		  markerOptions: {
+			disabled: true
+		  },						
+		});	
+		$that.trigger("geocode");
+	});
+	
  });
 
   
