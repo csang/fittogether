@@ -3,7 +3,7 @@ class FitspotsController < ApplicationController
    
   
   def index    
-    @fitspots = Fitspot.order('id DESC').all.paginate(:page => params[:page],:per_page => 10)          
+    @fitspots = Fitspot.order('id DESC').all.paginate(:page => params[:page],:per_page => 5)          
   end
 
   def create	

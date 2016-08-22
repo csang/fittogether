@@ -8,18 +8,4 @@ $('#seed').append('<%= j render(:partial => 'fitspot') %>');
   $('.loading-image').css("display", "none");
 <% end %>	 
 
-  	$('.sugfitpost').each(function(i, v){		
-		var $that = $(this);
-		$that.geocomplete({ 
-			map: '#'+$that.attr('map_placeholder'),
-			mapOptions: {
-			zoom: 100,
-			draggable: false
-		  },
-		  markerOptions: {
-			disabled: true
-		  },			
-		});	
-		$that.trigger("geocode");
-	});
-
+  	

@@ -596,7 +596,8 @@ footer .chat_bar .chat .box .header .close_chat{
 .add-chat-box .imageRound img{width:100%; height:100%;}
 .add-chat-box .arport{width:96%;}
 .add-chat-box .column_header .imageRound{width:30px; height:30px;}
-.add-chat-box .column_header .name{padding: 0 0 0 40px;}
+.add-chat-box .column_header .name{padding: 0 0 0 40px; font-size:13px;}
+.add-chat-box .column_header .name h4{font-size:13px;}
 footer .chat_bar .chat .box .header .minimize_chat{
 	background-color: #a4a4a4;
 }
@@ -1061,7 +1062,7 @@ ul.review-wpr .user-name{padding: 0 0 0 80px;}
 ul.chat-user{margin:0px; padding:5px; width:100%; display:inline-block; vertical-align: top; white-space:normal;}
 ul.chat-user li{width:100%; display:inline-block; vertical-align: top; padding:5px; color:#000;}
 ul.chat-user li:hover{background:#e0e1e4;}
-.chat-user-img{width:30px; height:30px; float:left; border:1px solid #ccc;}
+.chat-user-img{width:30px; height:30px; float:left; border:1px solid #ccc;overflow:hidden;border-radius:50%; -moz-border-radius:50%; -webkit-border-radius:50%;}
 .chat-user-img img{width:100%; height:100%;}
 ul.chat-user li h6{padding:6px 0 0 40px; margin:0px; font-size:14px; color:#000;}
 .box-list .minimize_chat{background:#a4a4a4; color:#fff; cursor: pointer; float:right!important; height:32px; width:25px; text-align:center; padding:5px;}

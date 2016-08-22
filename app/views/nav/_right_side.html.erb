@@ -196,11 +196,13 @@
              		    <% fitspots.each do |fs| %>
 						<% img = fs.fitspot_image    %>
                             <div>
-                                <div class="avatar"><% link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
+                                <div class="avatar">
                                 
-                                <div class="avatar_map" id="placeholder_<%= fs.id %>" style="height:100px;"></div>
+                                <%= link_to(image_tag("fitspot_default.jpeg"), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
+                                
+                          <!--      <div class="avatar_map" id="placeholder_<%= fs.id %>" style="height:100px;"></div>
 						  <input class="sugfitpost" map_placeholder="placeholder_<%= fs.id %>"  type="hidden" value="<%=  fs.location %>"  size="90" />
-                      
+                          -->
                                 </div>
                                 <div class="description">
                                     <p class="fitspot">

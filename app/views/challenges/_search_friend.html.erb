@@ -4,8 +4,8 @@ function filldata(that){
  if ($(that).parent().attr('class')=='arport') {
     var abc = $('.posttext').val().split(" ").pop();  
     var abc = $('.posttext').val().replace(abc,'');   
-     $('.posttext').val( abc +' @'+ $(that).attr('data-name')); 
-     var str = "<span class='hashtag'> @" + $(that).attr('data-name') +"</span>";
+     $('.posttext').val( abc +' @'+ $(that).attr('data-name') + $(that).attr('data-last')); 
+     var str = "<span class='hashtag'> @" + $(that).attr('data-name') + + $(that).attr('data-last') +"</span>";
      $('.posttext').parent().parent().find(".highlighter").append(str); 
       globalVariable.push({
           key:   $(that).attr('data-name'),
@@ -18,8 +18,8 @@ function filldata(that){
 	   abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().split(" ").pop();
       //abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().replace(/(@\S+)/gi,'');            
       abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().replace(abc,'');            
-     $(that).parent('.arport2').parent('.add_comment').find('.comment').val( abc + ' @' + $(that).attr('data-name')); 
-          var str = "<span class='hashtag'> @" + $(that).attr('data-name') +"</span>";
+     $(that).parent('.arport2').parent('.add_comment').find('.comment').val( abc + ' @' + $(that).attr('data-name') + $(that).attr('data-last')); 
+          var str = "<span class='hashtag'> @" + $(that).attr('data-name') +  $(that).attr('data-last') +"</span>";
      $(that).parent('.arport2').parent('.add_comment').find(".highlighter").append(str); 
       globalVariableforComment.push({
           key:   $(that).attr('data-name'),
@@ -34,7 +34,7 @@ function filldata(that){
 		<% if @user.present? %>
 		
 			<%  @user.each do |abc| %>
-			<li class="trainers" onclick="javascript:filldata(this)"  datacid="<%= Base64.encode64(abc.id.to_s) %>" data-name="<%= abc.first_name %>" data-username="<%= '@' + Base64.encode64(abc.id.to_s) %>">
+			<li class="trainers" onclick="javascript:filldata(this)"  datacid="<%= Base64.encode64(abc.id.to_s) %>" data-name="<%= abc.first_name.capitalize %>" data-last="<%= abc.last_name.present? ? abc.last_name.capitalize : ''  %>" data-username="<%= '@' + Base64.encode64(abc.id.to_s) %>">
 				<div class="column_header">
 				<div class="imageRound">
 				 <% img = useravatar(abc) %>

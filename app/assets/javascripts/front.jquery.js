@@ -916,9 +916,26 @@ $(document).ready(function () {
     });
     
     // on enter update commment
+     var comment_div_info = [];
      $(document).on('keyup', '.comment', function(event) {	
 		var id = $(this).attr("data-id")
 		$("#" + id).addClass("ovel");
+		
+		if(comment_div_info["cmt"+id] == undefined){
+			comment_div_info["cmt"+id] = {
+				'height' : $("#cmt"+id).height() + 20
+			}
+		}
+		console.log(comment_div_info);
+		var main_div_height = $("#cmt"+id).height();
+		var text_height = $(this).height();
+		var new_height = text_height - 100 ;
+		if (new_height > 0) {
+			var abc = parseInt(comment_div_info["cmt"+id].height) + parseInt(new_height)
+			$("#cmt"+id).height(abc)
+		} else {
+			$("#cmt"+id).height(comment_div_info["cmt"+id].height)
+			}	
 	  if(event.keyCode == 13) {
 		  
 	  var that = $(this).parent().parent().siblings("button")		

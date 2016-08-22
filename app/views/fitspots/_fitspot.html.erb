@@ -11,9 +11,11 @@
 					<%= link_to(image_tag(img), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
 				  <% end %>
               <% end %>
-              <div id="placeholder_<%= fs.id %>" style="height:100px;"></div>
+              <%= link_to(image_tag("fitspot_default.jpeg"), "/fitspots/#{Base64.encode64(fs.id.to_s)}") %>
+              <!--
+              <div class="avatar_map" id="placeholder_<%= fs.id %>" style="height:100px;"></div>
 						  <input class="sugfitpost" map_placeholder="placeholder_<%= fs.id %>"  type="hidden" value="<%=  fs.location %>"  size="90" />
-                      
+                      -->
               </div>
              <div class="posts-content">
                <h4><%= link_to(fs.title.capitalize , "/fitspots/#{Base64.encode64(fs.id.to_s)}") %> <span class="time">    </span></h4>
@@ -28,3 +30,18 @@
            <% end %>
   
 
+<script>
+  $('.sugfitpost').each(function(i, v){		
+		var $that = $(this);
+		$that.geocomplete({ 
+			map: '#'+$that.attr('map_placeholder'),
+			mapOptions: {
+			draggable: false
+		  },
+		  markerOptions: {
+			disabled: true
+		  },			
+		});	
+		$that.trigger("geocode");
+	});
+</script>

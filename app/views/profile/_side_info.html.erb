@@ -58,10 +58,11 @@
 							<% img = ft.fitspot.fitspot_image    %>
                             <div>
                                 <div class="avatar"> 
-                                <% link_to(image_tag(img), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %>
+                                <%= link_to(image_tag("fitspot_default.jpeg"), "/fitspots/#{Base64.encode64(ft.fitspot.id.to_s)}") %>
+                                <!--
                                 <div class="avatar_map" id="placeholder_<%= ft.fitspot.id %>" style="height:100px;"></div>
 						  <input class="sugfitpost" map_placeholder="placeholder_<%= ft.fitspot.id %>"  type="hidden" value="<%=  ft.fitspot.location %>"  size="90" />
-                      
+							-->
                                 </div>
                                 <div class="description">
                                     <p class="fitspot"><%= link_to(ft.fitspot.title.capitalize , "/fitspots/#{Base64.encode64(ft.id.to_s)}") %></p><br>
