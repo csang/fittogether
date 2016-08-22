@@ -3915,6 +3915,6 @@ a:hover, a:focus{text-decoration: none;}
 }
 .refresh-btn{border:1px solid rgb(47, 131, 82); color: rgb(47, 131, 82);border-radius: 50px; font-size:12px; position:relative; left:100px; top:10px; display:inline-block; padding:2px 7px;}
 .link_container .data .source, .link_container .data .title{overflow: hidden; height:48px;}
-.ovel{overflow:visible!important;}
+.ovel{overflow-y:visible!important;}
 .avatar #map_canvas{height:100%!important;}
 .avatar_map{width:100%!important; z-index:1; position:relative;}
