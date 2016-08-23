@@ -8,12 +8,19 @@ function filldata(that){
      var str = "<span class='hashtag'> @" + $(that).attr('data-name') + + $(that).attr('data-last') +"</span>";
      $('.posttext').parent().parent().find(".highlighter").append(str); 
       globalVariable.push({
-          key:   $(that).attr('data-name'),
+          key:   $(that).attr('data-name') + $(that).attr('data-last'),
           value: $(that).attr('data-username')
       });
   
     $('.arport').fadeOut('slow');
-    $('.posttext').focus();
+   
+    $('.posttext').focus(function(){
+		console.log('xx')
+		$(this).val( $(this).val() + ' ')
+
+    });
+     $('.posttext').trigger('focus');
+   
  } else {
 	   abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().split(" ").pop();
       //abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().replace(/(@\S+)/gi,'');            
@@ -22,10 +29,15 @@ function filldata(that){
           var str = "<span class='hashtag'> @" + $(that).attr('data-name') +  $(that).attr('data-last') +"</span>";
      $(that).parent('.arport2').parent('.add_comment').find(".highlighter").append(str); 
       globalVariableforComment.push({
-          key:   $(that).attr('data-name'),
+          key:   $(that).attr('data-name') + $(that).attr('data-last'),
           value: $(that).attr('data-username')
       });
     $('.arport2').fadeOut('slow');
+     $(that).parent('.arport2').parent('.add_comment').find('.comment').focus(function(){
+		console.log('xx')
+		$(this).val( $(this).val() + ' ')
+
+    });
     $(that).parent('.arport2').parent('.add_comment').find('.comment').focus();
    
  }
