@@ -2,30 +2,43 @@
 function filldata(that){
  var abc ='';
  if ($(that).parent().attr('class')=='arport') {
-    var abc = $('.posttext').val().split(" ").pop();  
-    var abc = $('.posttext').val().replace(abc,'');   
-     $('.posttext').val( abc +' @'+ $(that).attr('data-name') + $(that).attr('data-last')); 
-     var str = "<span class='hashtag'> @" + $(that).attr('data-name') + + $(that).attr('data-last') +"</span>";
+    var abcd = $('.posttext').val().split(" ").pop();  
+    var abc = $('.posttext').val().replace(abcd,'');   
+     $('.posttext').val( abc +' @'+ $(that).attr('data-name') + $(that).attr('data-last') + ' '); 
+     var str = "<span class='hashtag'> @" + $(that).attr('data-name') + + $(that).attr('data-last') +" </span>";
      $('.posttext').parent().parent().find(".highlighter").append(str); 
       globalVariable.push({
           key:   $(that).attr('data-name') + $(that).attr('data-last'),
           value: $(that).attr('data-username')
       });
   
-    $('.arport').fadeOut('slow');
-   
-    $('.posttext').focus(function(){
-		console.log('xx')
-		$(this).val( $(this).val() + ' ')
-
-    });
-     $('.posttext').trigger('focus');
+    $('.arport').fadeOut('slow');       
+  
+    var str = $('.posttext').val();
+    str = str.replace(/\n/g, '<br>');
+			if(!str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?#([a-zA-Z0-9]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?@([a-zA-Z0-9]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?#([\u0600-\u06FF]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?@([\u0600-\u06FF]+)/g)) {
+                if(!str.match(/#(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))#/g)) { //arabic support
+					str = str.replace(/#(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))/g,'<span class="hashtag">#$2</span>');
+				}else{
+					str = str.replace(/#(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))#(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))/g,'<span class="hashtag">#$2</span>');
+				}
+				if(!str.match(/@(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))@/g)) {				
+					str = str.replace(/@(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))/g,'<span class="hashtag">@$2</span>');
+				}else{
+					str = str.replace(/@(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))@(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))/g,'<span class="hashtag">@$2</span>');
+				}
+			}
+			$('.posttext').parent().parent().find(".highlighter").html(str);
+		$('.posttext').focus(function(){
+			$(this).val( $(this).val() + ' ')
+		});
+     $('.posttext').trigger('focus');	
    
  } else {
-	   abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().split(" ").pop();
+	  var abcd = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().split(" ").pop();
       //abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().replace(/(@\S+)/gi,'');            
-      abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().replace(abc,'');            
-     $(that).parent('.arport2').parent('.add_comment').find('.comment').val( abc + ' @' + $(that).attr('data-name') + $(that).attr('data-last')); 
+     var abc = $(that).parent('.arport2').parent('.add_comment').find('.comment').val().replace(abcd,'');            
+     $(that).parent('.arport2').parent('.add_comment').find('.comment').val( abc + ' @' + $(that).attr('data-name') + $(that).attr('data-last') + ' '); 
           var str = "<span class='hashtag'> @" + $(that).attr('data-name') +  $(that).attr('data-last') +"</span>";
      $(that).parent('.arport2').parent('.add_comment').find(".highlighter").append(str); 
       globalVariableforComment.push({
@@ -33,13 +46,28 @@ function filldata(that){
           value: $(that).attr('data-username')
       });
     $('.arport2').fadeOut('slow');
-     $(that).parent('.arport2').parent('.add_comment').find('.comment').focus(function(){
-		console.log('xx')
-		$(this).val( $(this).val() + ' ')
-
-    });
+      var str = $(that).parent('.arport2').parent('.add_comment').find('.comment').val();
+    str = str.replace(/\n/g, '<br>');
+			if(!str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?#([a-zA-Z0-9]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?@([a-zA-Z0-9]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?#([\u0600-\u06FF]+)/g) && !str.match(/(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?@([\u0600-\u06FF]+)/g)) {
+                if(!str.match(/#(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))#/g)) { //arabic support
+					str = str.replace(/#(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))/g,'<span class="hashtag">#$2</span>');
+				}else{
+					str = str.replace(/#(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))#(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))/g,'<span class="hashtag">#$2</span>');
+				}
+				if(!str.match(/@(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))@/g)) {				
+					str = str.replace(/@(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))/g,'<span class="hashtag">@$2</span>');
+				}else{
+					str = str.replace(/@(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))@(([a-zA-Z0-9]+)|([\u0600-\u06FF]+))/g,'<span class="hashtag">@$2</span>');
+				}
+			}
+			$(that).parent('.arport2').parent('.add_comment').find('.comment').parent().parent().find(".highlighter").html(str);
+			$(that).parent('.arport2').parent('.add_comment').find('.comment').focus(function(){
+				console.log('xx');
+				$(this).val( $(this).val() + ' ');
+			});
     $(that).parent('.arport2').parent('.add_comment').find('.comment').focus();
-   
+			
+  
  }
    }
  </script>  
@@ -57,17 +85,21 @@ function filldata(that){
                                 </h3><% if abc.user_type == 2 %>
 				Trainer
 				<% elsif abc.user_type == 3 %>	
-				Gym
+				Gym 
 				<% else %>
 				User
 				<% end %>
 				 <%=  abc.id == @account.id ? '(me)' : '' %></h3>
-				
-				<% if abc.user_type == 3 %>
-					<h4> <%= abc.account_gym.name.present? ? abc.account_gym.name : abc.first_name  %></h4>
-				<% else %>
-					<h4><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></h4>
+				<% if false %>
+					<% if abc.user_type == 3 %>
+						<h4> <%= abc.account_gym.name.present? ? abc.account_gym.name : abc.first_name  %></h4>
+					<% else %>
+						<h4><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></h4>
+					<% end %>
 				<% end %>	
+					
+				<h4><%= abc.first_name %> <%= abc.last_name.present? ? abc.last_name : '' %></h4>
+				
                                        
                                        
 				</div>
